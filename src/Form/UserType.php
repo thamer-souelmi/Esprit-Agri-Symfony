@@ -23,7 +23,7 @@ class UserType extends AbstractType
             ->add('numtel')
             ->add('role', ChoiceType::class, [
                 'choices' => [
-                    'Admin' => 'admin',
+                    
                     'Agriculteur' => 'agriculteur',
                     'User' => 'user',
                 ],

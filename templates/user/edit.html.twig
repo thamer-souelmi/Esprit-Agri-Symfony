@@ -1,6 +1,18 @@
-{% extends 'base.html.twig' %}
+{% extends 'baseback.html.twig' %}
 
 {% block title %}Edit User{% endblock %}
+
+{% block css %}
+    {{ parent() }}
+    <!-- Additional CSS for the edit page -->
+    <link href="{{ asset('css/edit-styles.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+    <!-- Additional JavaScript for the edit page -->
+    <script src="{{ asset('js/edit-script.js') }}"></script>
+{% endblock %}
 
 {% block body %}
     <h1>Edit User</h1>
