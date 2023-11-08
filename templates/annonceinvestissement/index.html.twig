@@ -35,11 +35,9 @@
                     <a href="{{ path('app_annonceinvestissement_edit', {'idannonce': annonceinvestissement.idannonce}) }}">edit</a>
                 </td>
             </tr>
-        {% else %}
-            <tr>
-                <td colspan="9">no records found</td>
-            </tr>
-        {% endfor %}
+                    {% endfor %} {# Ajoutez cette ligne pour fermer la boucle for #}
+
+   
         </tbody>
     </table>
 
