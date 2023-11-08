@@ -1,82 +1,42 @@
 <?php
 
 namespace App\Entity;
-
+use App\Repository\TraitementmedicaleRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Traitementmedicale
- *
- * @ORM\Table(name="traitementmedicale")
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: TraitementmedicaleRepository::class)]
+
 class Traitementmedicale
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="numero", type="string", length=11, nullable=false)
-     */
-    private $numero;
+    #[ORM\Column(length: 11)]
+    private ?string$numero;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="etatDeSante", type="string", length=0, nullable=false)
-     */
-    private $etatdesante;
+    #[ORM\Column(length: 0)]
+    private ?string $typeintervmed;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="typeIntervMed", type="string", length=0, nullable=false)
-     */
-    private $typeintervmed;
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $dateintervmed;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateIntervMed", type="date", nullable=false)
-     */
-    private $dateintervmed;
+    #[ORM\Column]
+    private ?float $coutinterv;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="veterinaire", type="string", length=200, nullable=false)
-     */
-    private $veterinaire;
+    #[ORM\Column(length: 200)]
+    private ?string $medicament;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="coutInterv", type="float", precision=10, scale=0, nullable=false)
-     */
-    private $coutinterv;
+    #[ORM\Column(length: 200)]
+    private ?string $dureetraitement;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="medicament", type="string", length=200, nullable=false)
-     */
-    private $medicament;
+    #[ORM\Column(length: 200)]
+    private ?string $description;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="dureeTraitement", type="string", length=200, nullable=false)
-     */
-    private $dureetraitement;
+    #[ORM\ManyToOne(inversedBy: 'vets')]
+    private ?Veterinaire $idvet;
 
     public function getId(): ?int
     {
@@ -91,18 +51,6 @@ class Traitementmedicale
     public function setNumero(string $numero): static
     {
         $this->numero = $numero;
-
-        return $this;
-    }
-
-    public function getEtatdesante(): ?string
-    {
-        return $this->etatdesante;
-    }
-
-    public function setEtatdesante(string $etatdesante): static
-    {
-        $this->etatdesante = $etatdesante;
 
         return $this;
     }
@@ -127,18 +75,6 @@ class Traitementmedicale
     public function setDateintervmed(\DateTimeInterface $dateintervmed): static
     {
         $this->dateintervmed = $dateintervmed;
-
-        return $this;
-    }
-
-    public function getVeterinaire(): ?string
-    {
-        return $this->veterinaire;
-    }
-
-    public function setVeterinaire(string $veterinaire): static
-    {
-        $this->veterinaire = $veterinaire;
 
         return $this;
     }
@@ -175,6 +111,30 @@ class Traitementmedicale
     public function setDureetraitement(string $dureetraitement): static
     {
         $this->dureetraitement = $dureetraitement;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): static
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getIdvet(): ?Veterinaire
+    {
+        return $this->idvet;
+    }
+
+    public function setIdvet(?Veterinaire $idvet): static
+    {
+        $this->idvet = $idvet;
 
         return $this;
     }

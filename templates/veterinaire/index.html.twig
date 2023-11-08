@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}List Veterinaires{% endblock %}
+
+{% block body %}
+    <h1>List Veterinaires</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Idvet</th>
+                <th>Nomvet</th>
+                <th>Prenomvet</th>
+                <th>Adresscabinet</th>
+                <th>Numtel</th>
+                <th>Adressmail</th>
+                <th>Specialite</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for veterinaire in veterinaires %}
+            <tr>
+                <td>{{ veterinaire.idvet }}</td>
+                <td>{{ veterinaire.nomvet }}</td>
+                <td>{{ veterinaire.prenomvet }}</td>
+                <td>{{ veterinaire.adresscabinet }}</td>
+                <td>{{ veterinaire.numtel }}</td>
+                <td>{{ veterinaire.adressmail }}</td>
+                <td>{{ veterinaire.specialite }}</td>
+                <td>
+                    <a href="{{ path('app_veterinaire_show', {'idvet': veterinaire.idvet}) }}">show</a>
+                    <a href="{{ path('app_veterinaire_edit', {'idvet': veterinaire.idvet}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_veterinaire_new') }}">Create new</a>
+{% endblock %}
