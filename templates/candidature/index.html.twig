@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Candidature index{% endblock %}
+
+{% block body %}
+    <h1>Candidature index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Idcandidature</th>
+                <th>Messagemotivation</th>
+                <th>Statuscandidature</th>
+                <th>Datecandidature</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for candidature in candidatures %}
+            <tr>
+                <td>{{ candidature.idcandidature }}</td>
+                <td>{{ candidature.messagemotivation }}</td>
+                <td>{{ candidature.statuscandidature }}</td>
+                <td>{{ candidature.datecandidature ? candidature.datecandidature|date('Y-m-d') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_candidature_show', {'idcandidature': candidature.idcandidature}) }}">show</a>
+                    <a href="{{ path('app_candidature_edit', {'idcandidature': candidature.idcandidature}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_candidature_new') }}">Create new</a>
+{% endblock %}

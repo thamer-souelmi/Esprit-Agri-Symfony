@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Negociation index{% endblock %}
+
+{% block body %}
+    <h1>Negociation index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Montantpropose</th>
+                <th>Message</th>
+                <th>Etatnego</th>
+                <th>Datenegociation</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for negociation in negociations %}
+            <tr>
+                <td>{{ negociation.id }}</td>
+                <td>{{ negociation.montantpropose }}</td>
+                <td>{{ negociation.message }}</td>
+                <td>{{ negociation.etatnego }}</td>
+                <td>{{ negociation.datenegociation ? negociation.datenegociation|date('Y-m-d') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_negociation_show', {'id': negociation.id}) }}">show</a>
+                    <a href="{{ path('app_negociation_edit', {'id': negociation.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_negociation_new') }}">Create new</a>
+{% endblock %}

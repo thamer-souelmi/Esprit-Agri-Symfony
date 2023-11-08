@@ -1,0 +1,13 @@
+
+
+{% block title %}Edit Annoncerecrutement{% endblock %}
+
+{% block body %}
+    <h1>Edit Annoncerecrutement</h1>
+
+    {{ include('annoncerecrutement/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_annoncerecrutement_index') }}">back to list</a>
+
+    {{ include('annoncerecrutement/_delete_form.html.twig') }}
+{% endblock %}
