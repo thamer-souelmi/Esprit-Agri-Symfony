@@ -4,6 +4,8 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -19,8 +21,15 @@ class UserType extends AbstractType
             ->add('mail')
             ->add('adresse')
             ->add('numtel')
-            ->add('role')
-            ->add('image')
+            ->add('role', ChoiceType::class, [
+                'choices' => [
+                    'Admin' => 'admin',
+                    'Agriculteur' => 'agriculteur',
+                    'User' => 'user',
+                ],
+            ])
+            // ->add('image')
+            ->add('save',SubmitType::class)
         ;
     }
 
