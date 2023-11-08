@@ -1,0 +1,13 @@
+
+
+
+
+{% block body %}
+    <h1>Edit Annonce Investissement</h1>
+
+    {{ include('annonceinvestissement/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_annonceinvestissement_index') }}">back to list</a>
+
+    {{ include('annonceinvestissement/_delete_form.html.twig') }}
+{% endblock %}

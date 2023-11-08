@@ -1,0 +1,47 @@
+
+
+
+
+{% block body %}
+    <h1>Annonce Investissement </h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Idannonce</th>
+                <th>Titre</th>
+                <th>Montant</th>
+                <th>Datepublication</th>
+                <th>Localisation</th>
+                <th>Description</th>
+                <th>Photo</th>
+                <th>Iduser</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for annonceinvestissement in annonceinvestissements %}
+            <tr>
+                <td>{{ annonceinvestissement.idannonce }}</td>
+                <td>{{ annonceinvestissement.titre }}</td>
+                <td>{{ annonceinvestissement.montant }}</td>
+                <td>{{ annonceinvestissement.datepublication ? annonceinvestissement.datepublication|date('Y-m-d') : '' }}</td>
+                <td>{{ annonceinvestissement.localisation }}</td>
+                <td>{{ annonceinvestissement.description }}</td>
+                <td>{{ annonceinvestissement.photo }}</td>
+                <td>{{ annonceinvestissement.iduser }}</td>
+                <td>
+                    <a href="{{ path('app_annonceinvestissement_show', {'idannonce': annonceinvestissement.idannonce}) }}">show</a>
+                    <a href="{{ path('app_annonceinvestissement_edit', {'idannonce': annonceinvestissement.idannonce}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_annonceinvestissement_new') }}">Create new</a>
+{% endblock %}
