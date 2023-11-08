@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Culture
  *
- * @ORM\Table(name="culture", indexes={@ORM\Index(name="fk_category_id", columns={"category_id"}), @ORM\Index(name="fk_user_id", columns={"user_id"})})
+ * @ORM\Table(name="culture", indexes={@ORM\Index(name="fk_category_id", columns={"category_id"})})
  * @ORM\Entity
  */
 class Culture
@@ -74,15 +74,7 @@ class Culture
      */
     private $category;
 
-    /**
-     * @var \User
-     *
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user_id", referencedColumnName="userId")
-     * })
-     */
-    private $user;
+    
 
     public function getId(): ?int
     {
