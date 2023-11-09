@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Culture
  *
- * @ORM\Table(name="culture", indexes={@ORM\Index(name="fk_category_id", columns={"category_id"})})
+ * @ORM\Table(name="culture")
  * @ORM\Entity
  */
 class Culture
@@ -153,17 +153,7 @@ class Culture
         return $this;
     }
 
-    public function getCategory(): ?Category
-    {
-        return $this->category;
-    }
-
-    public function setCategory(?Category $category): static
-    {
-        $this->category = $category;
-
-        return $this;
-    }
+    
 
     
 

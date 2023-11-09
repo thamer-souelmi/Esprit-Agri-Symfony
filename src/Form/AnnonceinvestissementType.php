@@ -23,7 +23,6 @@ class AnnonceinvestissementType extends AbstractType
                 'mapped' => false, // To prevent the form from trying to set this as a property on your entity
                 'required' => false, // Allow the field to be optional
             ])
-            ->add('iduser')
         ;
     }
 
