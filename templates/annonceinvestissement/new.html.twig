@@ -1,11 +1,20 @@
-
-
-
+{% extends 'inv.html.twig' %}
 
 {% block body %}
-    <h1>Create new Annonce Investissement</h1>
+    <div class="container mt-5">
+        
 
-    {{ include('annonceinvestissement/_form.html.twig') }}
+        {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 
-    <a href="{{ path('app_annonceinvestissement_index') }}">back to list</a>
+        {{ form_row(form.titre, {'attr': {'class': 'form-control', 'placeholder': 'Title'}}) }}
+        {{ form_row(form.montant, {'attr': {'class': 'form-control', 'placeholder': 'Amount'}}) }}
+        {{ form_row(form.datepublication, {'attr': {'class': 'form-control', 'placeholder': 'Publication Date'}}) }}
+        {{ form_row(form.localisation, {'attr': {'class': 'form-control', 'placeholder': 'Location'}}) }}
+        {{ form_row(form.description, {'attr': {'class': 'form-control', 'placeholder': 'Description'}}) }}
+        {{ form_row(form.photo, {'attr': {'class': 'form-control', 'placeholder': 'Image File'}}) }}
+
+        <button type="submit" class="btn btn-primary">Create</button>
+
+        {{ form_end(form) }}
+    </div>
 {% endblock %}

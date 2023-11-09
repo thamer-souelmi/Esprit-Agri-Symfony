@@ -1,13 +1,65 @@
-
-
-
+{% extends 'inv.html.twig' %}
 
 {% block body %}
-    <h1>Edit Annonce Investissement</h1>
+    <div class="col-lg-7">
+        <div class="p-5">
+            
+                
+                {{ form_start(form) }}
 
-    {{ include('annonceinvestissement/_form.html.twig', {'button_label': 'Update'}) }}
+                <div class="form-group row">
+                    <div class="col-sm-20 mb-3 mb-sm-0">
+                        {{ form_row(form.titre, {'attr': {'class': 'form-control form-control-user form-control-lg', 'placeholder': 'Entrez le titre'}}) }}
+                    </div>
+                </div>
 
-    <a href="{{ path('app_annonceinvestissement_index') }}">back to list</a>
+                <div class="form-group row">
+                    <div class="col-sm-20 mb-3 mb-sm-0">
+                        {{ form_row(form.montant, {'attr': {'class': 'form-control form-control-user form-control-lg', 'placeholder': 'Entrez le montant'}}) }}
+                    </div>
+                </div>
 
-    {{ include('annonceinvestissement/_delete_form.html.twig') }}
+                <div class="form-group row">
+                    <div class="col-sm-20 mb-3 mb-sm-0">
+                        {{ form_row(form.datepublication, {'attr': {'class': 'form-control form-control-user form-control-lg', 'placeholder': 'Entrez la date de publication'}}) }}
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-20 mb-3 mb-sm-0">
+                        {{ form_row(form.localisation, {'attr': {'class': 'form-control form-control-user form-control-lg', 'placeholder': 'Entrez la localisation'}}) }}
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-20 mb-3 mb-sm-0">
+                        {{ form_row(form.description, {'attr': {'class': 'form-control form-control-user form-control-lg', 'placeholder': 'Entrez la description'}}) }}
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-20 mb-3 mb-sm-0">
+                        {{ form_row(form.photo, {'attr': {'class': 'form-control form-control-user form-control-lg', 'placeholder': 'Upload an image'}}) }}
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Modifier</button>
+
+                <div class="form-group row">
+                    <div class="col-sm-20 mb-3 mb-sm-0">
+                        <div class="my-2"></div>
+                        <a href="{{ path('app_annonceinvestissement_index') }}" class="btn btn-light btn-icon-split btn-lg">
+                            <span class="icon text-gray-600">
+                                <i class="fas fa-arrow-right"></i>
+                            </span>
+                            <span class="text">Retour Annonce</span>
+                        </a>
+                    </div>  
+                </div>
+
+                {{ form_end(form) }}
+            
+        </div>
+    </div>
 {% endblock %}
+
