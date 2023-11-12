@@ -1,48 +1,25 @@
-
-
 {% extends 'annoncerecrut.html.twig' %}
 
 
 {% block body %}
-    <h1>Annoncerecrutement index</h1>
+{% for annoncerecrutement in annoncerecrutements %}
+    <div class="container">
+    
+        <div class="box">
+            <td>{{ annoncerecrutement.idrecurt }}</p>
+                <p class="text-white mb-4">{{ annoncerecrutement.postedemande }}</p>
+                <i class="bi bi-geo-fill"></i>
+                <p class="text-white mb-4">{{ annoncerecrutement.salairepropose }}</p>
+                <p class="text-white mb-4">{{ annoncerecrutement.typecontrat }}</p>
+                <p class="text-white mb-4">{{ annoncerecrutement.datepub ? annoncerecrutement.datepub|date('Y-m-d') : '' }}</p>
+                <p class="text-white mb-4">{{ annoncerecrutement.localisation }}</p>
+                <p class="text-white mb-4">{{ annoncerecrutement.dateembauche ? annoncerecrutement.dateembauche|date('Y-m-d') : '' }}</p>
+                <p class="text-white mb-4">{{ annoncerecrutement.nbposterecherche }}</p>
+        </div>
+        
+        
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Idrecurt</th>
-                <th>Postedemande</th>
-                <th>Salairepropose</th>
-                <th>Typecontrat</th>
-                <th>Datepub</th>
-                <th>Localisation</th>
-                <th>Dateembauche</th>
-                <th>Nbposterecherche</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for annoncerecrutement in annoncerecrutements %}
-            <tr>
-                <td>{{ annoncerecrutement.idrecurt }}</td>
-                <td>{{ annoncerecrutement.postedemande }}</td>
-                <td>{{ annoncerecrutement.salairepropose }}</td>
-                <td>{{ annoncerecrutement.typecontrat }}</td>
-                <td>{{ annoncerecrutement.datepub ? annoncerecrutement.datepub|date('Y-m-d') : '' }}</td>
-                <td>{{ annoncerecrutement.localisation }}</td>
-                <td>{{ annoncerecrutement.dateembauche ? annoncerecrutement.dateembauche|date('Y-m-d') : '' }}</td>
-                <td>{{ annoncerecrutement.nbposterecherche }}</td>
-                <td>
-                    <a href="{{ path('app_annoncerecrutement_show', {'idrecurt': annoncerecrutement.idrecurt}) }}">show</a>
-                    <a href="{{ path('app_annoncerecrutement_edit', {'idrecurt': annoncerecrutement.idrecurt}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="9">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_annoncerecrutement_new') }}">Create new</a>
+        <!-- Répétez ces balises de boîte pour chaque annonce supplémentaire -->
+    </div>
+    {% endfor %}
 {% endblock %}
