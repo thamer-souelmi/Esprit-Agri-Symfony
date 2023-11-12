@@ -2,31 +2,38 @@
 
 
 {% block body %}
-<div class="container px-4 px-lg-5 my-5">
-                <div class="text-center text-black">
-                    <h1 class="display-4 fw-bolder">    Annonces recrutement </h1>
-  
+
+            <header class="bg-dark py-5">
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="text-center text-white">
+                    <h1 class="display-4 fw-bolder text-white">Annonces Recrutement</h1>
                 </div>
             </div>
+        </header>
 {% for annoncerecrutement in annoncerecrutements %}
-
-    <div class="container">
-
-      <div class="box" style="font-family: Palatino; font-size: 20px;">
-    <p>{{ annoncerecrutement.idrecurt }}</p>
-    <p class="text-white mb-4"> Poste proposé : {{ annoncerecrutement.postedemande }}</p>
-
-    <p class="text-white mb-4"> Salaire:  {{ annoncerecrutement.salairepropose }} <i class="bi bi-cash-stack"></i></p>
-    <p class="text-white mb-4"> Contrat proposé : {{ annoncerecrutement.typecontrat }}</p>
-    <p class="text-white mb-4"> Date prévue d'embauche : <i class="bi bi-calendar3"></i>   {{ annoncerecrutement.dateembauche ? annoncerecrutement.dateembauche|date('Y-m-d') : '' }}</p>
-    <p class="text-white mb-4"> <i class="bi bi-geo-fill"></i> {{ annoncerecrutement.localisation }}</p>
-    <p class="text-white mb-4"> Nombre de postes recherchés : <i class="bi bi-people-fill"></i> {{ annoncerecrutement.nbposterecherche }}</p>
-</div>
-
-        
-        
-
-        <!-- Répétez ces balises de boîte pour chaque annonce supplémentaire -->
+  <section class="py-5">
+    <div class="container px-4 px-lg-5 my-5">
+      <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col mb-5">
+          <div class="card h-100">
+            <div class="card-body p-4">
+              <div class="text-center">
+                <div class="box" style="font-family: Palatino; font-size: 20px;">
+                  <p>{{ annoncerecrutement.idrecurt }}</p>
+                  <p class="fw-bolder"> Poste proposé : {{ annoncerecrutement.postedemande }}</p>
+                  <p class="fw-bolder"> Salaire:  {{ annoncerecrutement.salairepropose }} <i class="bi bi-cash-stack"></i></p>
+                  <p class="fw-bolder"> Contrat proposé : {{ annoncerecrutement.typecontrat }}</p>
+                  <p class="fw-bolder"> Date prévue d'embauche : <i class="bi bi-calendar3"></i>   {{ annoncerecrutement.dateembauche ? annoncerecrutement.dateembauche|date('Y-m-d') : '' }}</p>
+                  <p class="fw-bolder"> <i class="bi bi-geo-fill"></i> {{ annoncerecrutement.localisation }}</p>
+                  <p class="fw-bolder"> Nombre de postes recherchés : <i class="bi bi-people-fill"></i> {{ annoncerecrutement.nbposterecherche }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    {% endfor %}
+  </section>
+{% endfor %}
+
 {% endblock %}
