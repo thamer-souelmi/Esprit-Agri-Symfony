@@ -2,20 +2,27 @@
 
 
 {% block body %}
+<div class="container px-4 px-lg-5 my-5">
+                <div class="text-center text-black">
+                    <h1 class="display-4 fw-bolder">    Annonces recrutement </h1>
+  
+                </div>
+            </div>
 {% for annoncerecrutement in annoncerecrutements %}
+
     <div class="container">
-    
-        <div class="box">
-            <td>{{ annoncerecrutement.idrecurt }}</p>
-                <p class="text-white mb-4">{{ annoncerecrutement.postedemande }}</p>
-                <i class="bi bi-geo-fill"></i>
-                <p class="text-white mb-4">{{ annoncerecrutement.salairepropose }}</p>
-                <p class="text-white mb-4">{{ annoncerecrutement.typecontrat }}</p>
-                <p class="text-white mb-4">{{ annoncerecrutement.datepub ? annoncerecrutement.datepub|date('Y-m-d') : '' }}</p>
-                <p class="text-white mb-4">{{ annoncerecrutement.localisation }}</p>
-                <p class="text-white mb-4">{{ annoncerecrutement.dateembauche ? annoncerecrutement.dateembauche|date('Y-m-d') : '' }}</p>
-                <p class="text-white mb-4">{{ annoncerecrutement.nbposterecherche }}</p>
-        </div>
+
+      <div class="box" style="font-family: Palatino; font-size: 20px;">
+    <p>{{ annoncerecrutement.idrecurt }}</p>
+    <p class="text-white mb-4"> Poste proposé : {{ annoncerecrutement.postedemande }}</p>
+
+    <p class="text-white mb-4"> Salaire:  {{ annoncerecrutement.salairepropose }} <i class="bi bi-cash-stack"></i></p>
+    <p class="text-white mb-4"> Contrat proposé : {{ annoncerecrutement.typecontrat }}</p>
+    <p class="text-white mb-4"> Date prévue d'embauche : <i class="bi bi-calendar3"></i>   {{ annoncerecrutement.dateembauche ? annoncerecrutement.dateembauche|date('Y-m-d') : '' }}</p>
+    <p class="text-white mb-4"> <i class="bi bi-geo-fill"></i> {{ annoncerecrutement.localisation }}</p>
+    <p class="text-white mb-4"> Nombre de postes recherchés : <i class="bi bi-people-fill"></i> {{ annoncerecrutement.nbposterecherche }}</p>
+</div>
+
         
         
 
