@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+
+    <!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8">
@@ -30,8 +31,10 @@
     <!-- Template Stylesheet -->
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     </head>
+
+
     <body id="page-top">
-        <!-- Spinner Start -->
+    <!-- Spinner Start -->
     <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
         <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
     </div>
@@ -93,47 +96,23 @@
         </div>
     </nav>
     <!-- Navbar End -->
-    <!-- Banner Start -->
-    <div class="container-fluid banner my-5 py-5" data-parallax="scroll" data-image-src="{{ asset('img/investissement.jpg') }}">
+
+        <!-- Page Header Start -->
+    <div class="container-fluid banner my-5 py-5" data-parallax="scroll" data-image-src="{{ asset('img/tibarabarka.jpg') }}">
         <div class="container py-5">
             <div class="row g-5">
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.3s">
-                    <div class="row g-4 align-items-center">
-                      
+                <div class="container text-center py-5">
+                    <h1 class="display-3 text-white mb-4 animated slideInDown">Candidature</h1>
+                        <nav aria-label="breadcrumb animated slideInDown">
 
-{#chanti#}
-
-
-   {% for annonceinvestissement in annonceinvestissements %}
-    <div class="col-sm-8">
-        <div class="col-sm-4">
-            <img class="img-fluid rounded" src="{{ asset('img/' ~ annonceinvestissement.photo) }}" alt="{{ annonceinvestissement.titre }}">
-
-        </div>
-        <h2 class="text-white mb-3">{{ annonceinvestissement.titre }}</h2>
-        <p class="text-white mb-4">{{ annonceinvestissement.montant }}</p>
-        <p class="text-white mb-4">{{ annonceinvestissement.datepublication ? annonceinvestissement.datepublication|date('Y-m-d') : '' }}</p>
-        <p class="text-white mb-4">{{ annonceinvestissement.description }}</p>
-        <p class="text-white mb-4">{{ annonceinvestissement.localisation }}</p>
-        <a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_annonceinvestissement_edit', {'idannonce': annonceinvestissement.idannonce}) }}">Modifier</a><a  onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette annonce ?')">Supprimer</a>
-
-    </div>
-{% endfor %}
-
-
-
-<a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_annonceinvestissement_new') }}">Ajouter Annonce</a>
-
-
-{#chanti#}
-
-                    </div>
+                        </nav>
                 </div>
-                
+                </div>
             </div>
         </div>
     </div>
-    <!-- Banner End -->
+    <!-- Page Header End -->
     {% block body %}{% endblock %}
        <!-- Footer Start -->
     <div class="container-fluid bg-dark footer mt-5 py-5 wow fadeIn" data-wow-delay="0.1s">
@@ -207,6 +186,6 @@
 
     <!-- Template Javascript -->
     <script src="{{ asset('js/main.js') }}"></script>
-    
-    </body>
+        </body>
 </html>
+
