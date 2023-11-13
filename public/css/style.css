@@ -11,6 +11,10 @@
 .candidature-row.details-visible {
     background-color: lightgray; /* or any other styling for visible details */
 }
+.text-center {
+    text-align: center;
+}
+
 
 .back-to-top {
     position: fixed;

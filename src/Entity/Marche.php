@@ -32,7 +32,7 @@ class Marche
     /**
      * @var string
      *
-     * @ORM\Column(name="cat", type="string", length=0, nullable=false)
+     * @ORM\Column(name="cat", type="string", length=255, nullable=false)
      */
     private $cat;
 
@@ -67,7 +67,7 @@ class Marche
     /**
      * @var string
      *
-     * @ORM\Column(name="status", type="string", length=0, nullable=false)
+     * @ORM\Column(name="status", type="string", length=255, nullable=false)
      */
     private $status;
 

@@ -27,7 +27,7 @@
                                     <p class="fw-bolder"> Date prévue d'embauche : <i class="bi bi-calendar3"></i>   {{ annoncerecrutement.dateembauche ? annoncerecrutement.dateembauche|date('Y-m-d') : '' }}</p>
                                     <p class="fw-bolder"> <i class="bi bi-geo-fill"></i> {{ annoncerecrutement.localisation }}</p>
                                     <p class="fw-bolder"> Nombre de postes recherchés : <i class="bi bi-people-fill"></i> {{ annoncerecrutement.nbposterecherche }}</p>
-                                    <a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_candidature_new', {'idannonce': annoncerecrutement.idrecurt }) }}" onclick="return confirm('Êtes-vous sûr de vouloir postuler pour cette annonce ?')"> Postuler  </a>
+                                    <a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_candidature_new', {'idrecurt': annoncerecrutement.idrecurt }) }}" onclick="return confirm('Êtes-vous sûr de vouloir postuler pour cette annonce ?')"> Postuler  </a>
                                 </div>
                             </div>
                         </div>
@@ -37,6 +37,10 @@
         </div>
     </div>
 </section>
+<div class="text-center">
+    <a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_annoncerecrutement_new') }}">Ajouter Annonce</a>
+
+</div>
 
 <script>
     // Add this script to handle the minimization of the box
