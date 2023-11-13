@@ -61,15 +61,9 @@ class Annonceinvestissement
      * @var string
      *
      * @ORM\Column(name="photo", type="string", length=500, nullable=false)
+     *
      */
     private $photo;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="iduser", type="integer", nullable=false)
-     */
-    private $iduser;
 
     public function getIdannonce(): ?int
     {
@@ -144,18 +138,6 @@ class Annonceinvestissement
     public function setPhoto(string $photo): static
     {
         $this->photo = $photo;
-
-        return $this;
-    }
-
-    public function getIduser(): ?int
-    {
-        return $this->iduser;
-    }
-
-    public function setIduser(int $iduser): static
-    {
-        $this->iduser = $iduser;
 
         return $this;
     }
