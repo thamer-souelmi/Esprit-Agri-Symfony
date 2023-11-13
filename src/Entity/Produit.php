@@ -57,8 +57,6 @@ class Produit
      */
     private $desc;
 
-   
-
     /**
      * @var bool
      *

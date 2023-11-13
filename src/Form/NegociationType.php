@@ -14,7 +14,6 @@ class NegociationType extends AbstractType
         $builder
             ->add('montantpropose')
             ->add('message')
-            ->add('etatnego')
             ->add('datenegociation')
         ;
     }

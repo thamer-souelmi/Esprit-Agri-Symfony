@@ -65,16 +65,11 @@ class Culture
     private $coutsplantations;
 
     /**
-     * @var \Category
+     * @var int|null
      *
-     * @ORM\ManyToOne(targetEntity="Category")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="category_id", referencedColumnName="id")
-     * })
+     * @ORM\Column(name="user_id", type="integer", nullable=true)
      */
-    private $category;
-
-    
+    private $userId;
 
     public function getId(): ?int
     {
@@ -153,9 +148,17 @@ class Culture
         return $this;
     }
 
-    
+    public function getUserId(): ?int
+    {
+        return $this->userId;
+    }
 
-    
+    public function setUserId(?int $userId): static
+    {
+        $this->userId = $userId;
+
+        return $this;
+    }
 
 
 }

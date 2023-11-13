@@ -4,17 +4,12 @@ namespace App\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\AnnoncerecrutementRepository;
-
 
 /**
  * Annoncerecrutement
  *
  * @ORM\Table(name="annoncerecrutement")
  * @ORM\Entity
- */
-/**
- * @ORM\Entity(repositoryClass=AnnoncerecrutementRepository::class)
  */
 class Annoncerecrutement
 {
