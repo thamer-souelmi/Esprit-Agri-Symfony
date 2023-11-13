@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Culture
  *
- * @ORM\Table(name="culture")
+ * @ORM\Table(name="culture", indexes={@ORM\Index(name="fk_category_id", columns={"category_id"}), @ORM\Index(name="fk_user_id", columns={"user_id"})})
  * @ORM\Entity
  */
 class Culture
@@ -69,7 +69,6 @@ class Culture
      *
      * @ORM\Column(name="user_id", type="integer", nullable=true)
      */
-    private $userId;
 
     public function getId(): ?int
     {
@@ -148,17 +147,6 @@ class Culture
         return $this;
     }
 
-    public function getUserId(): ?int
-    {
-        return $this->userId;
-    }
-
-    public function setUserId(?int $userId): static
-    {
-        $this->userId = $userId;
-
-        return $this;
-    }
 
 
 }
