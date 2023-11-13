@@ -3,17 +3,12 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\EntretienRepository;
-
 
 /**
  * Entretien
  *
  * @ORM\Table(name="entretien")
  * @ORM\Entity
- */
-/**
- * @ORM\Entity(repositoryClass=EntretienRepository::class)
  */
 class Entretien
 {

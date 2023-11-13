@@ -4,17 +4,12 @@ namespace App\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\NegociationRepository;
-
 
 /**
  * Negociation
  *
  * @ORM\Table(name="negociation")
  * @ORM\Entity
- */
-/**
- * @ORM\Entity(repositoryClass=NegociationRepository::class)
  */
 class Negociation
 {
