@@ -13,7 +13,6 @@ class CandidatureType extends AbstractType
     {
         $builder
             ->add('messagemotivation')
-            ->add('statuscandidature')
             ->add('datecandidature')
         ;
     }

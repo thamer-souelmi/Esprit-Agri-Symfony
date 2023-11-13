@@ -5,6 +5,12 @@
     --light: #F7F7F7;
     --dark: #404A3D;
 }
+.box.minimized {
+    display: none;
+}
+.candidature-row.details-visible {
+    background-color: lightgray; /* or any other styling for visible details */
+}
 
 .back-to-top {
     position: fixed;
