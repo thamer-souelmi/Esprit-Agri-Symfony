@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Candidature;
 use App\Form\CandidatureType;
-use App\Repository\CandidatureRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,10 +14,14 @@ use Symfony\Component\Routing\Annotation\Route;
 class CandidatureController extends AbstractController
 {
     #[Route('/', name: 'app_candidature_index', methods: ['GET'])]
-    public function index(CandidatureRepository $candidatureRepository): Response
+    public function index(EntityManagerInterface $entityManager): Response
     {
+        $candidatures = $entityManager
+            ->getRepository(Candidature::class)
+            ->findAll();
+
         return $this->render('candidature/index.html.twig', [
-            'candidatures' => $candidatureRepository->findAll(),
+            'candidatures' => $candidatures,
         ]);
     }
 
