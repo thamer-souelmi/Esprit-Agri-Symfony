@@ -11,11 +11,11 @@
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th>Cin</th>
+                            
                             <th>Nom</th>
                             <th>Prenom</th>
                             <th>Mail</th>
-                            <th>Numtel</th>
+                            
                             <th>Role</th>
                             <th>Image</th>
                             <th>Actions</th>
@@ -25,11 +25,10 @@
                     <tbody>
                         {% for user in users %}
                         <tr>
-                            <td>{{ user.cin }}</td>
+                            
                             <td>{{ user.nom }}</td>
                             <td>{{ user.prenom }}</td>
                             <td>{{ user.mail }}</td>
-                            <td>{{ user.numtel }}</td>
                             <td>{{ user.role }}</td>
                             <td><img src="{{ asset('img/' ~ user.image) }}" alt="User Image" style="max-width:100px;max-height:100px;"></td>
                             <td>{{ include('user/_delete_form.html.twig') }}</td>
