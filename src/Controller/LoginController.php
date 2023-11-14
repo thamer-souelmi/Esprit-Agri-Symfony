@@ -14,7 +14,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class LoginController extends AbstractController
 {
    // #[Route('/login', name: 'app_login')]
-    #[Route("/login", name:"app_login", methods:["GET", "POST"])]
+    #[Route("/login123", name:"app_login", methods:["GET", "POST"])]
     public function login(Request $request, \Symfony\Component\Security\Http\Authentication\AuthenticationUtils $authenticationUtils, UserPasswordEncoderInterface $passwordEncoder)
     {
         // Retrieve any login errors
@@ -30,13 +30,13 @@ class LoginController extends AbstractController
         // Verify the login credentials
         $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(['mail' => $email]);
     
-        if ($user && $password->isPasswordValid($user, $password)) {
-            return $this->redirectToRoute('user_dashboard'); // Assuming 'user_dashboard' is the route to the user dashboard
-        } else {
-            // Handle login errors here, for example, by setting flash messages
-            $this->addFlash('error', 'Invalid email or password. Please try again.');
-           // return $this->redirectToRoute('app_login');
-        }
+        // if ($user && $password->isPasswordValid($user, $password)) {
+        //     return $this->redirectToRoute('user_dashboard'); // Assuming 'user_dashboard' is the route to the user dashboard
+        // } else {
+        //     // Handle login errors here, for example, by setting flash messages
+        //     $this->addFlash('error', 'Invalid email or password. Please try again.');
+        //    // return $this->redirectToRoute('app_login');
+        // }
         
 
         return $this->render('login/login.html.twig', [

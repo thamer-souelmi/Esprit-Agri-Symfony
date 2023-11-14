@@ -81,12 +81,33 @@ class UserController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, User $user, EntityManagerInterface $entityManager,SluggerInterface $slugger): Response
     {
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+               /** @var UploadedFile $imageFile */
+               $imageFile = $form->get('image')->getData();
+        
+               if ($imageFile) {
+                   $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                   $safeFilename = $slugger->slug($originalFilename);
+                   $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
+       
+                   // Move the file to the directory where your images are stored
+                   try {
+                       $imageFile->move(
+                           $this->getParameter('img_directory'),
+                           $newFilename
+                       );
+                   } catch (FileException $e) {
+                       // Handle the exception if something happens during the file upload
+                   }
+       
+                   // Update the 'image' property to store the file name instead of its contents
+                   $user->setImage($newFilename);
+               }
             $entityManager->flush();
 
             return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
