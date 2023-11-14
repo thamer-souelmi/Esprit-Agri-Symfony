@@ -4,16 +4,12 @@ namespace App\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\CandidatureRepository;
 
 /**
  * Candidature
  *
- * @ORM\Table(name="candidature")
+ * @ORM\Table(name="candidature", indexes={@ORM\Index(name="fk_candidature_annonce", columns={"idRecurt"})})
  * @ORM\Entity
- */
-/**
- * @ORM\Entity(repositoryClass=CandidatureRepository::class)
  */
 class Candidature
 {
@@ -46,6 +42,13 @@ class Candidature
      * @ORM\Column(name="dateCandidature", type="date", nullable=false)
      */
     private $datecandidature;
+
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(name="idRecurt", type="integer", nullable=true)
+     */
+    private $idrecurt;
 
     public function getIdcandidature(): ?int
     {
@@ -84,6 +87,18 @@ class Candidature
     public function setDatecandidature(\DateTimeInterface $datecandidature): static
     {
         $this->datecandidature = $datecandidature;
+
+        return $this;
+    }
+
+    public function getIdrecurt(): ?int
+    {
+        return $this->idrecurt;
+    }
+
+    public function setIdrecurt(?int $idrecurt): static
+    {
+        $this->idrecurt = $idrecurt;
 
         return $this;
     }

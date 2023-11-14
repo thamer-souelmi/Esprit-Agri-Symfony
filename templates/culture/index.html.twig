@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Culture index{% endblock %}
+
+{% block body %}
+    <h1>Culture index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Libelle</th>
+                <th>Dateplantation</th>
+                <th>Daterecolte</th>
+                <th>Categorytype</th>
+                <th>Revenuescultures</th>
+                <th>Coutsplantations</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for culture in cultures %}
+            <tr>
+                <td>{{ culture.id }}</td>
+                <td>{{ culture.libelle }}</td>
+                <td>{{ culture.dateplantation ? culture.dateplantation|date('Y-m-d') : '' }}</td>
+                <td>{{ culture.daterecolte ? culture.daterecolte|date('Y-m-d') : '' }}</td>
+                <td>{{ culture.categorytype }}</td>
+                <td>{{ culture.revenuescultures }}</td>
+                <td>{{ culture.coutsplantations }}</td>
+                <td>
+                    <a href="{{ path('app_culture_show', {'id': culture.id}) }}">show</a>
+                    <a href="{{ path('app_culture_edit', {'id': culture.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_culture_new') }}">Create new</a>
+{% endblock %}

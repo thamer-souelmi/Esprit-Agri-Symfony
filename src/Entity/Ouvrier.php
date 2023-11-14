@@ -4,16 +4,12 @@ namespace App\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\OuvrierRepository;
 
 /**
  * Ouvrier
  *
  * @ORM\Table(name="ouvrier")
  * @ORM\Entity
- */
-/**
- * @ORM\Entity(repositoryClass=OuvrierRepository::class)
  */
 class Ouvrier
 {

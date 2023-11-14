@@ -99,28 +99,37 @@
             <div class="row g-5">
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.3s">
                     <div class="row g-4 align-items-center">
-                        <div class="col-sm-4">
-                            <img class="img-fluid rounded" src="{{ asset('img/banner-1.jpg') }}" alt="">
-                        </div>
-                        <div class="col-sm-8">
-                            <h2 class="text-white mb-3">We Sell Best Dairy Products</h2>
-                            <p class="text-white mb-4">Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo magna dolore erat amet</p>
-                            <a class="btn btn-secondary rounded-pill py-2 px-4" href="">Read More</a>
-                        </div>
+                      
+
+{#chanti#}
+
+
+   {% for annonceinvestissement in annonceinvestissements %}
+    <div class="col-sm-8">
+        <div class="col-sm-4">
+            <img class="img-fluid rounded" src="{{ asset('img/' ~ annonceinvestissement.photo) }}" alt="{{ annonceinvestissement.titre }}">
+
+        </div>
+        <h2 class="text-white mb-3">{{ annonceinvestissement.titre }}</h2>
+        <p class="text-white mb-4">{{ annonceinvestissement.montant }}</p>
+        <p class="text-white mb-4">{{ annonceinvestissement.datepublication ? annonceinvestissement.datepublication|date('Y-m-d') : '' }}</p>
+        <p class="text-white mb-4">{{ annonceinvestissement.description }}</p>
+        <p class="text-white mb-4">{{ annonceinvestissement.localisation }}</p>
+        <a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_annonceinvestissement_edit', {'idannonce': annonceinvestissement.idannonce}) }}">Modifier</a><a  onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette annonce ?')">Supprimer</a>
+
+    </div>
+{% endfor %}
+
+
+
+<a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_annonceinvestissement_new') }}">Ajouter Annonce</a>
+
+
+{#chanti#}
+
                     </div>
                 </div>
-                <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
-                    <div class="row g-4 align-items-center">
-                        <div class="col-sm-4">
-                            <img class="img-fluid rounded" src="{{ asset('img/banner-2.jpg') }}" alt="">
-                        </div>
-                        <div class="col-sm-8">
-                            <h2 class="text-white mb-3">We Deliver Fresh Mild Worldwide</h2>
-                            <p class="text-white mb-4">Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo magna dolore erat amet</p>
-                            <a class="btn btn-secondary rounded-pill py-2 px-4" href="">Read More</a>
-                        </div>
-                    </div>
-                </div>
+                
             </div>
         </div>
     </div>
