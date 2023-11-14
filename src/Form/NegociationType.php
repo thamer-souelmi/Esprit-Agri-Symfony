@@ -18,8 +18,8 @@ class NegociationType extends AbstractType
             ->add('datenegociation')
             /*->add('etatnego',ChoiceType::class,[
                 'choices'=>[
-                    'Acceptee'=>'acceptee',
-                    'Refusee'=>'refusee',
+                    'ACCEPTEE'=>'ACCEPTEE',
+                    'REFUSEE'=>'REFUSEE',
                 ],
             ])*/
         ;

@@ -64,7 +64,7 @@
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top px-4 px-lg-5">
         <a href="index.html" class="navbar-brand d-flex align-items-center">
-            <h1 class="m-0">Esprit-Agri</h1>
+            <img src="{{ asset('img/logoespritAgri.png') }}" alt="Logo" height="70" class="mr-2">
         </a>
         <button type="button" class="navbar-toggler me-0" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
@@ -93,11 +93,14 @@
         </div>
     </nav>
     <!-- Navbar End -->
-     {#bouton#}                   
-<a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_annonceinvestissement_new') }}">Ajouter Annonce</a>
-<a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_negociation_index') }}">Listes des Négociations</a>
+     
 <!-- Banner Start -->
 <div class="container-fluid banner my-5 py-5" data-parallax="scroll" data-image-src="{{ asset('img/investissement.jpg') }}">
+{#bouton#}
+<div class="text-center">
+    <a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_annonceinvestissement_new') }}">Ajouter Annonce</a>
+    <a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_negociation_index') }}">Listes des Négociations</a>
+</div>
     <div class="container py-5">
         <div class="row g-5">
             {% for annonceinvestissement in annonceinvestissements %}
@@ -121,7 +124,8 @@
                             <a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_annonceinvestissement_edit', {'idannonce': annonceinvestissement.idannonce}) }}">Modifier</a>
                         </div>
                         <div class="col-sm-4">
-                            <a class="btn btn-danger rounded-pill py-2 px-4" href="{{ path('app_annonceinvestissement_delete', {'idannonce': annonceinvestissement.idannonce}) }}">Supprimer</a>
+                            
+                        {% include 'annonceinvestissement/_delete_form.html.twig' with {'submit_button': 'Supprimer'} %}
                         </div>
                         <div class="col-sm-4">
                             <a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_negociation_new') }}">Négocier</a>

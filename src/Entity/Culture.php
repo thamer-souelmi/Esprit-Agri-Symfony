@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Culture
  *
- * @ORM\Table(name="culture", indexes={@ORM\Index(name="fk_category_id", columns={"category_id"}), @ORM\Index(name="fk_user_id", columns={"user_id"})})
+ * @ORM\Table(name="culture")
  * @ORM\Entity
  */
 class Culture
