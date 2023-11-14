@@ -22,7 +22,6 @@
                     <div class="card-body p-4">
                         <div class="text-center">
                             <div class="box" style="font-family: Palatino; font-size: 20px;">
-                                <p>{{ annoncerecrutement.idrecurt }}</p>
                                 <p class="fw-bolder"> Poste proposé : {{ annoncerecrutement.postedemande }}</p>
                                 <p class="fw-bolder"> Salaire:  {{ annoncerecrutement.salairepropose }} <i class="bi bi-cash-stack"></i></p>
                                 <p class="fw-bolder"> Contrat proposé : {{ annoncerecrutement.typecontrat }}</p>
@@ -52,6 +51,7 @@
 
 <div class="text-center">
     <a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_annoncerecrutement_new') }}">Ajouter Annonce</a>
+    <a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_candidature_get_all') }}">kkkkkk</a>
 
 </div>
 
