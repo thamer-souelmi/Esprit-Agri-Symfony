@@ -24,7 +24,7 @@ class CultureType extends AbstractType
             ->add('categorytype')
             ->add('revenuescultures')
             ->add('coutsplantations')
-            ->add('user')
+            // ->add('user')
             ->add('category', EntityType::class, [
                 'class' => Category::class,
                 'choice_label' => 'type',

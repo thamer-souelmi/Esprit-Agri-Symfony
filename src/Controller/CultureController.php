@@ -85,30 +85,30 @@ class CultureController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $imageFile = $form->get('image')->getData();
+            // $imageFile = $form->get('image')->getData();
 
             // this condition is needed because the 'image' field is not required
             // so the image file must be processed only when a file is uploaded
-            if ($imageFile) {
-                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-                // this is needed to safely include the file name as part of the URL
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
+            // if ($imageFile) {
+            //     $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+            //     // this is needed to safely include the file name as part of the URL
+            //     $safeFilename = $slugger->slug($originalFilename);
+            //     $newFilename = $safeFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
 
-                // Move the file to the directory where images are stored
-                try {
-                    $imageFile->move(
-                        $this->getParameter('image_directory'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    // handle exception if something happens during file upload
-                    dd("Error during file upload: " . $e->getMessage());
-                }
+            // Move the file to the directory where images are stored
+            // try {
+            //     $imageFile->move(
+            //         $this->getParameter('image_directory'),
+            //         $newFilename
+            //     );
+            // } catch (FileException $e) {
+            //     // handle exception if something happens during file upload
+            //     dd("Error during file upload: " . $e->getMessage());
+            // }
 
-                // updates the 'image' property to store the file name
-                // $culture->setImage($newFilename);
-            }
+            // updates the 'image' property to store the file name
+            // $culture->setImage($newFilename);
+            //}
 
             $cultureRepository->save($culture, true);
 
