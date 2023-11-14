@@ -1,0 +1,32 @@
+<div class="card">
+	<div class="card-body">
+		<a href="{{ path('app_category_index') }}">
+			<i class="ri-arrow-left-circle-fill" style="font-size: 50px;"></i>
+		</a>
+		<h5 class="card-title">Category</h5>
+
+		<!-- General Form Elements -->
+		{{ form_start(form,{attr:{novalidate:'novalidate'}}) }}
+
+
+		<div class="row mb-3">
+			<label for="inputPassword" class="col-sm-4 col-form-label">Type</label>
+			<div class="col-sm-10">
+				{{ form_widget(form.type,{'attr':{'class':'form-control'}}) }}
+			</div>
+			{{ form_errors(form.type,{'attr':{'class':'text-danger'}}) }}
+		</div>
+
+
+		<br/>
+		<div class="col-sm-10" style="display: flex;align-items: center;justify-content: center">
+
+			{{ form_widget(form.save,{'attr':{'class':'btn btn-primary'}}) }}
+		</div>
+
+
+		{{form_end(form) }}
+		<!-- End General Form Elements -->
+
+	</div>
+</div>
