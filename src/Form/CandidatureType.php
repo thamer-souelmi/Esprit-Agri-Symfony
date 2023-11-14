@@ -4,6 +4,8 @@ namespace App\Form;
 
 use App\Entity\Candidature;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -14,6 +16,17 @@ class CandidatureType extends AbstractType
         $builder
             ->add('messagemotivation')
             ->add('datecandidature')
+            ->add('experienceprofessionnelle')
+            ->add('formation')
+            ->add('competencestechniques')
+            ->add('certifforma', FileType::class,[
+                'label'=> 'User Image (JPG,JPEG,PNG file)',
+                'mapped'=> false,
+                'required'=>false,
+                'attr'=> ['accept'=>'image/*'],
+            ])
+
+
         ;
     }
 

@@ -23,6 +23,34 @@ class Candidature
     private $idcandidature;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(name="ExperienceProfessionnelle", type="string", length=5000, nullable=true)
+     */
+    private $experienceprofessionnelle;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="Formation", type="string", length=5000, nullable=true)
+     */
+    private $formation;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="CompetencesTechniques", type="string", length=5000, nullable=true)
+     */
+    private $competencestechniques;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="CertifForma", type="string", length=200, nullable=true)
+     */
+    private $certifforma;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="messageMotivation", type="string", length=255, nullable=false)
@@ -53,6 +81,54 @@ class Candidature
     public function getIdcandidature(): ?int
     {
         return $this->idcandidature;
+    }
+
+    public function getExperienceprofessionnelle(): ?string
+    {
+        return $this->experienceprofessionnelle;
+    }
+
+    public function setExperienceprofessionnelle(?string $experienceprofessionnelle): static
+    {
+        $this->experienceprofessionnelle = $experienceprofessionnelle;
+
+        return $this;
+    }
+
+    public function getFormation(): ?string
+    {
+        return $this->formation;
+    }
+
+    public function setFormation(?string $formation): static
+    {
+        $this->formation = $formation;
+
+        return $this;
+    }
+
+    public function getCompetencestechniques(): ?string
+    {
+        return $this->competencestechniques;
+    }
+
+    public function setCompetencestechniques(?string $competencestechniques): static
+    {
+        $this->competencestechniques = $competencestechniques;
+
+        return $this;
+    }
+
+    public function getCertifforma(): ?string
+    {
+        return $this->certifforma;
+    }
+
+    public function setCertifforma(?string $certifforma): static
+    {
+        $this->certifforma = $certifforma;
+
+        return $this;
     }
 
     public function getMessagemotivation(): ?string
