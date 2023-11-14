@@ -4,10 +4,23 @@
     <div class="container mt-5">
 
         {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
-{{ form_row(form.vars.form.messagemotivation, {'attr': {'class': 'form-control', 'placeholder': 'Message Motivation'}}) }}
-{{ form_row(form.vars.form.datecandidature, {'attr': {'class': 'form-control', 'placeholder': 'Date Candidature'}}) }}
-<button type="submit" class="btn btn-primary">Create</button>
-{{ form_end(form) }}
+        
+        {{ form_row(form.vars.form.datecandidature, {'label': 'Date de Candidature', 'attr': {'class': 'form-control', 'placeholder': 'Date Candidature'}}) }}
+        <br>
+        {{ form_row(form.vars.form.experienceprofessionnelle, {'label': 'Expérience Professionnelle', 'attr': {'class': 'form-control', 'placeholder': 'Expérience Professionnelle'}}) }}
+        <br>
+        {{ form_row(form.vars.form.formation, {'label': 'Formation', 'attr': {'class': 'form-control', 'placeholder': 'Formation'}}) }}
+        <br>
+        {{ form_row(form.vars.form.competencestechniques, {'label': 'Compétences Techniques', 'attr': {'class': 'form-control', 'placeholder': 'Compétences Techniques'}}) }}
+        <br>
+        {{ form_row(form.vars.form.certifforma, {'label': 'Certifications et Formations ', 'attr': {'class': 'form-control', 'placeholder': 'Certifications et Formations'}})}}
+<p style="color: red; font-weight: bold;">*Veuillez ajouter en pièce jointe les certifications et formations complémentaires telles que le permis de conduire, les certifications en sécurité agricole et les formations continues sous le format JPG ,JPEG ,PNG file.</p>
+        <br>
+        {{ form_row(form.vars.form.messagemotivation, {'label': 'Message de Motivation', 'attr': {'class': 'form-control', 'placeholder': 'Message Motivation'}}) }}
+<br>
+        <button type="submit" class="btn btn-primary">Create</button>
+        
+        {{ form_end(form) }}
 
+    </div>
 {% endblock %}
-

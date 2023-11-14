@@ -1,16 +1,12 @@
-
+{% extends 'inv.html.twig' %}
 
 
 
 {% block body %}
-    <h1>Annonce Investissement</h1>
+    
 
     <table class="table">
         <tbody>
-            <tr>
-                <th>Idannonce</th>
-                <td>{{ annonceinvestissement.idannonce }}</td>
-            </tr>
             <tr>
                 <th>Titre</th>
                 <td>{{ annonceinvestissement.titre }}</td>
@@ -35,16 +31,18 @@
                 <th>Photo</th>
                 <td>{{ annonceinvestissement.photo }}</td>
             </tr>
-            <tr>
-                <th>Iduser</th>
-                <td>{{ annonceinvestissement.iduser }}</td>
-            </tr>
+            
         </tbody>
     </table>
-
-    <a href="{{ path('app_annonceinvestissement_index') }}">back to list</a>
-
-    <a href="{{ path('app_annonceinvestissement_edit', {'idannonce': annonceinvestissement.idannonce}) }}">edit</a>
-
     {{ include('annonceinvestissement/_delete_form.html.twig') }}
+
+    <a href="{{ path('app_annonceinvestissement_index') }}" class="btn btn-light btn-icon-split btn-lg">
+                            <span class="icon text-gray-600">
+                                <i class="fas fa-arrow-left"></i>
+                            </span>
+                            <span class="text">Retour Annonce</span>
+                        </a>
+
+
+    
 {% endblock %}

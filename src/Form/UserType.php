@@ -30,7 +30,7 @@ class UserType extends AbstractType
                 ],
             ])
             ->add('image', FileType::class, [
-                'label' => 'User Image (JPG, JPEG, PNG file)',
+                'label' => 'Votre Image (JPG, JPEG, PNG file)',
                 'mapped' => false,
                 'required' => false,
                 'attr' => ['accept' => 'image/*'],
