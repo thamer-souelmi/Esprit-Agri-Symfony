@@ -121,7 +121,96 @@ class CultureController extends AbstractController
         ]);
     }
 
+    //partie back
+    #[Route('/back', name: 'app_cultureback_index', methods: ['GET'])]
+    public function indexback(CultureRepository $cultureRepository): Response
+    {
+        return $this->render('culture/indexback.html.twig', [
+            'cultures' => $cultureRepository->findAll(),
+        ]);
+    }
+    #[Route('/back/{id}', name: 'app_cultureback_delete', methods: ['POST'])]
+    public function deleteback(Request $request, Culture $culture, CultureRepository $cultureRepository): Response
+    {
+        if ($this->isCsrfTokenValid('delete' . $culture->getId(), $request->request->get('_token'))) {
+            $cultureRepository->remove($culture);
+        }
 
+        return $this->redirectToRoute('app_cultureback_index', [], Response::HTTP_SEE_OTHER);
+    }
+    #[Route('/new/back', name: 'app_cultureback_new', methods: ['GET', 'POST'])]
+    public function newback(Request $request, CultureRepository $cultureRepository, SluggerInterface $slugger): Response
+    {
+        $culture = new Culture();
+        $form = $this->createForm(CultureType::class, $culture);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // $imageFile = $form->get('image')->getData();
+
+            // this condition is needed because the 'image' field is not required
+            // so the image file must be processed only when a file is uploaded
+            // if ($imageFile) {
+            //     $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+            //     // this is needed to safely include the file name as part of the URL
+            //     $safeFilename = $slugger->slug($originalFilename);
+            //     $newFilename = $safeFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
+
+            // Move the file to the directory where images are stored
+            // try {
+            //     $imageFile->move(
+            //         $this->getParameter('image_directory'),
+            //         $newFilename
+            //     );
+            // } catch (FileException $e) {
+            //     // handle exception if something happens during file upload
+            //     dd("Error during file upload: " . $e->getMessage());
+            // }
+
+            // updates the 'image' property to store the file name
+            // $culture->setImage($newFilename);
+            //}
+
+            $cultureRepository->save($culture, true);
+
+            return $this->redirectToRoute('app_cultureback_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('culture/newback.html.twig', [
+            'culture' => $culture,
+            'form' => $form,
+        ]);
+    }
+    #[Route('/{id}/edit/back', name: 'app_cultureback_edit', methods: ['GET', 'POST'])]
+    public function editback(Request $request, Culture $culture, CultureRepository $cultureRepository): Response
+    {
+        $form = $this->createForm(CultureType::class, $culture, ['is_edit' => true]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Your existing logic for saving edited culture
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($culture);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Culture updated successfully!');
+
+            return $this->redirectToRoute('app_cultureback_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('culture/editback.html.twig', [
+            'culture' => $culture,
+            'form' => $form,
+        ]);
+    }
+    #[Route('/{id}/back', name: 'app_cultureback_show', methods: ['GET'])]
+    public function showback(Culture $culture): Response
+    {
+        return $this->render('culture/showback.html.twig', [
+            'culture' => $culture,
+        ]);
+    }
+    //partie back
     #[Route('/{id}', name: 'app_culture_show', methods: ['GET'])]
     public function show(Culture $culture): Response
     {
@@ -138,7 +227,11 @@ class CultureController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             // Your existing logic for saving edited culture
-            // ...
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($culture);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Culture updated successfully!');
 
             return $this->redirectToRoute('app_culture_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -149,6 +242,25 @@ class CultureController extends AbstractController
         ]);
     }
 
+    // #[Route('/{id}/edit', name: 'app_culture_edit', methods: ['GET', 'POST'])]
+    // public function edit(Request $request, Culture $culture, CultureRepository $cultureRepository): Response
+    // {
+    //     $form = $this->createForm(CultureType::class, $culture, ['is_edit' => true]);
+    //     $form->handleRequest($request);
+
+    //     if ($form->isSubmitted() && $form->isValid()) {
+    //         // Your existing logic for saving edited culture
+    //         // ...
+
+    //         return $this->redirectToRoute('app_culture_index', [], Response::HTTP_SEE_OTHER);
+    //     }
+
+    //     return $this->renderForm('culture/edit.html.twig', [
+    //         'culture' => $culture,
+    //         'form' => $form,
+    //     ]);
+    // }
+
     #[Route('/{id}', name: 'app_culture_delete', methods: ['POST'])]
     public function delete(Request $request, Culture $culture, CultureRepository $cultureRepository): Response
     {
@@ -158,6 +270,7 @@ class CultureController extends AbstractController
 
         return $this->redirectToRoute('app_culture_index', [], Response::HTTP_SEE_OTHER);
     }
+
     public function getRealEntities($cultures)
     {
         $realEntities = [];

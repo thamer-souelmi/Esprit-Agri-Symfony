@@ -21,6 +21,13 @@ class CategoryController extends AbstractController
             'categories' => $categoryRepository->findAll(),
         ]);
     }
+    #[Route('/back', name: 'app_categoryback_index', methods: ['GET'])]
+    public function indexback(CategoryRepository $categoryRepository): Response
+    {
+        return $this->render('category/indexback.html.twig', [
+            'categories' => $categoryRepository->findAll(),
+        ]);
+    }
 
     #[Route('/new', name: 'app_category_new', methods: ['GET', 'POST'])]
     public function new(Request $request, CategoryRepository $categoryRepository): Response
@@ -75,5 +82,62 @@ class CategoryController extends AbstractController
         }
 
         return $this->redirectToRoute('app_category_index', [], Response::HTTP_SEE_OTHER);
+    }
+    //back section
+
+
+    #[Route('/back/new', name: 'app_categoryback_new', methods: ['GET', 'POST'])]
+    public function newback(Request $request, CategoryRepository $categoryRepository): Response
+    {
+        $category = new Category();
+        $form = $this->createForm(CategoryType::class, $category);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $categoryRepository->save($category, true);
+
+            return $this->redirectToRoute('app_categoryback_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('category/newback.html.twig', [
+            'category' => $category,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/back/{id}', name: 'app_categoryback_show', methods: ['GET'])]
+    public function showback(Category $category): Response
+    {
+        return $this->render('category/showback.html.twig', [
+            'category' => $category,
+        ]);
+    }
+
+    #[Route('/back/{id}/edit', name: 'app_categoryback_edit', methods: ['GET', 'POST'])]
+    public function editback(Request $request, Category $category, CategoryRepository $categoryRepository): Response
+    {
+        $form = $this->createForm(CategoryType::class, $category);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $categoryRepository->save($category, true);
+
+            return $this->redirectToRoute('app_categoryback_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('category/editback.html.twig', [
+            'category' => $category,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/back/{id}', name: 'app_categoryback_delete', methods: ['POST'])]
+    public function deleteback(Request $request, Category $category, CategoryRepository $categoryRepository): Response
+    {
+        if ($this->isCsrfTokenValid('delete' . $category->getId(), $request->request->get('_token'))) {
+            $categoryRepository->remove($category, true);
+        }
+
+        return $this->redirectToRoute('app_categoryback_index', [], Response::HTTP_SEE_OTHER);
     }
 }

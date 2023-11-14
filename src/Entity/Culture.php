@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use APP\Entity\Category;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -161,10 +162,10 @@ class Culture
         return $this;
     }
 
-    // public function getCategory(): ?Category
-    // {
-    //     return $this->category;
-    // }
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
 
     public function setCategory(?Category $category): static
     {
@@ -173,15 +174,15 @@ class Culture
         return $this;
     }
 
-    // public function getUser(): ?User
-    // {
-    //     return $this->user;
-    // }
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
 
-    // public function setUser(?User $user): static
-    // {
-    //     $this->user = $user;
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
-    //     return $this;
-    // }
+        return $this;
+    }
 }
