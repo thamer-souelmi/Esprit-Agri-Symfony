@@ -1,45 +1,58 @@
-{% extends 'base.html.twig' %}
+{% block title %}Culture index
+{% endblock %}
 
-{% block title %}Culture index{% endblock %}
+{% block contenu %}
+	<h1>Culture index</h1>
 
-{% block body %}
-    <h1>Culture index</h1>
+	<div class="card">
+		<div class="card-body">
+			<h5 class="card-title"></h5>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Libelle</th>
-                <th>Dateplantation</th>
-                <th>Daterecolte</th>
-                <th>Categorytype</th>
-                <th>Revenuescultures</th>
-                <th>Coutsplantations</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for culture in cultures %}
-            <tr>
-                <td>{{ culture.id }}</td>
-                <td>{{ culture.libelle }}</td>
-                <td>{{ culture.dateplantation ? culture.dateplantation|date('Y-m-d') : '' }}</td>
-                <td>{{ culture.daterecolte ? culture.daterecolte|date('Y-m-d') : '' }}</td>
-                <td>{{ culture.categorytype }}</td>
-                <td>{{ culture.revenuescultures }}</td>
-                <td>{{ culture.coutsplantations }}</td>
-                <td>
-                    <a href="{{ path('app_culture_show', {'id': culture.id}) }}">show</a>
-                    <a href="{{ path('app_culture_edit', {'id': culture.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="8">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+			<!-- Table with stripped rows -->
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>id</th>
+						<th>Type_category</th>
+						<th>libelle</th>
+						<th>dateplantation</th>
+						<th>daterecolte</th>
+						<th>categorytype</th>
+						<th>revenuescultures</th>
+						<th>coutsplantations</th>
+						<th>actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for culture in cultures %}
+						<tr>
+							<td>{{ culture.id }}</td>
+							<td>{{ culture.category.type }}</td>
+							<td>{{ culture.libelle }}</td>
+							<td>{{ culture.dateplantation ? culture.dateplantation|date('Y-m-d') : '' }}</td>
+							<td>{{ culture.daterecolte ? culture.daterecolte|date('Y-m-d') : '' }}</td>
+							<td>{{ culture.categorytype }}</td>
+							<td>{{ culture.revenuescultures }}</td>
+							<td>{{ culture.coutsplantations }}</td>
+							<td>
+								<a href="{{ path('app_culture_show', {'id': culture.id}) }}" class="btn btn-secondary">Afficher</a>
+								<a href="{{ path('app_culture_edit', {'id': culture.id}) }}" class="btn btn-success">Modifier</a>
+								<form method="post" action="{{ path('app_culture_delete', {'id': culture.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet élément ?');" style="display: inline-block;">
+									<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ culture.id) }}">
+									<button class="btn btn-danger">Supprimer</button>
+								</form>
+							</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="8">no records found</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			<a href="{{ path('app_culture_new') }}" class="btn btn-primary">Ajouter</a>
+			<!-- Add links for other actions as needed -->
+		</div>
+	</div>
 
-    <a href="{{ path('app_culture_new') }}">Create new</a>
 {% endblock %}

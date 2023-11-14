@@ -184,6 +184,4 @@ class Culture
 
         return $this;
     }
-
-
 }
