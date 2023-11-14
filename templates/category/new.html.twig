@@ -1,0 +1,13 @@
+{% block title %}New Category
+{% endblock %}
+
+{% block contenu %}
+	<h1>
+		Formulaire d'Ajout d'un Category
+	</h1>
+
+	{{ include('category/_form.html.twig') }}
+
+
+	<a href="{{ path('app_category_index') }}">back to list</a>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% block title %}Categorie index
+{% endblock %}
+
+{% block contenu %}
+	<h1>Liste des categories</h1>
+
+	<div class="card">
+		<div class="card-body">
+			<h5 class="card-title"></h5>
+
+			<!-- Table with stripped rows -->
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Type</th>
+						<th>actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for categorie in categories %}
+						<tr>
+							<td>{{ categorie.type  }}</td>
+							<td>
+								<a href="{{ path('app_category_show', {'id': categorie.id}) }}" class="btn btn-secondary">Afficher</a>
+								<a href="{{ path('app_category_edit', {'id': categorie.id}) }}" class="btn btn-success">Modifier</a>
+								<form method="post" action="{{ path('app_category_delete', {'id': categorie.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');" style="display: inline-block;">
+									<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ categorie.id) }}">
+									<button class="btn btn-danger">Supprimer</button>
+								</form>
+							</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="11">no records found</td>
+						</tr>
+					{% endfor %}
+
+				</tbody>
+			</table>
+			<!-- End Table with stripped rows -->
+
+		</div>
+	</div>
+
+	<a href="{{ path('app_category_new') }}" class="btn btn-primary">Ajouter</a>
+{% endblock %}
