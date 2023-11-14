@@ -23,7 +23,7 @@ class CandidatureType extends AbstractType
                 'label'=> 'User Image (JPG,JPEG,PNG file)',
                 'mapped'=> false,
                 'required'=>false,
-                'attr'=> ['accept'=>'image/*'],
+                'attr'=> ['accept'=>'certifforma/*'],
             ])
 
 

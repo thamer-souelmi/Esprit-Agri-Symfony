@@ -52,7 +52,7 @@ class Entretien
     /**
      * @var string
      *
-     * @ORM\Column(name="statusEntretien", type="string", length=0, nullable=false)
+     * @ORM\Column(name="statusEntretien", type="string", length=255, nullable=false)
      */
     private $statusentretien;
 

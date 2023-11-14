@@ -44,7 +44,7 @@ class Candidature
     private $competencestechniques;
 
     /**
-     * @var string|null
+     * @var string
      *
      * @ORM\Column(name="CertifForma", type="string", length=200, nullable=true)
      */
@@ -57,20 +57,19 @@ class Candidature
      */
     private $messagemotivation;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="statusCandidature", type="string", length=0, nullable=true)
-     */
-    private $statuscandidature;
+  /**
+ * @var bool|null
+ *
+ * @ORM\Column(name="statusCandidature", type="boolean", nullable=true)
+ */
+     private $statusCandidature;
+
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="dateCandidature", type="date", nullable=false)
      */
-
-     
     private $datecandidature;
 
     public function getIdcandidature(): ?int
@@ -119,7 +118,7 @@ class Candidature
         return $this->certifforma;
     }
 
-    public function setCertifforma(?string $certifforma): static
+    public function setCertifforma(string $certifforma): static
     {
         $this->certifforma = $certifforma;
 
@@ -138,17 +137,18 @@ class Candidature
         return $this;
     }
 
-    public function getStatuscandidature(): ?string
+    public function getStatusCandidature(): ?bool
     {
-        return $this->statuscandidature;
+        return $this->statusCandidature;
     }
-
-    public function setStatuscandidature(?string $statuscandidature): static
+    
+    public function setStatusCandidature(?bool $statusCandidature): self
     {
-        $this->statuscandidature = $statuscandidature;
-
+        $this->statusCandidature = $statusCandidature;
+    
         return $this;
     }
+    
 
     public function getDatecandidature(): ?\DateTimeInterface
     {
