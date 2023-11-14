@@ -1,6 +1,6 @@
 {% extends 'nego.html.twig' %}
 
-{% block title %}Negociation index{% endblock %}
+
 
 {% block body %}
     
@@ -14,11 +14,11 @@
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item"><strong>Montant Proposé:</strong> {{ negociation.montantpropose }}</li>
                         <li class="list-group-item"><strong>Message:</strong> {{ negociation.message }}</li>
-                        <li class="list-group-item"><strong>Etatnego:</strong> {{ negociation.etatnego }}</li>
+                        <li class="list-group-item"><strong>Etat Négociation:</strong> {{ negociation.etatnego }}</li>
                         <li class="list-group-item"><strong>Date Négociation:</strong> {{ negociation.datenegociation ? negociation.datenegociation|date('Y-m-d') : '' }}</li>
-                        <li class="list-group-item">
-                            <a href="{{ path('app_negociation_delete', {'id': negociation.id}) }}">Supprimer</a>
-                            <a href="{{ path('app_negociation_edit', {'id': negociation.id}) }}">Modifier</a>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_negociation_edit', {'id': negociation.id}) }}">Modifier</a>
+                            {% include 'negociation/_delete_form.html.twig' with {'submit_button': 'Supprimer'} %}
                         </li>
                     </ul>
                 </div>
@@ -38,5 +38,5 @@
                                 <i class="fas fa-arrow-left"></i>
                             </span>
                             <span class="text">Retour Annonce</span>
-                        </a>
+</a>
 {% endblock %}
