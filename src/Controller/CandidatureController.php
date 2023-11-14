@@ -67,17 +67,7 @@ class CandidatureController extends AbstractController
             'form' => $form,
         ]);
     }
-   #[Route('/all', name: 'app_candidature_get_all', methods: ['GET'])]
-public function getAll(CandidatureRepository $repo): Response
-{
-    // Récupérez toutes les candidatures depuis la base de données
-    $list = $repo->findAll();
 
-    // Rendez la vue appropriée avec la liste des candidatures
-    return $this->render('candidature/getAll.html.twig', [
-        'candidatures' => $list,
-    ]);
-}
 
     #[Route('/{idcandidature}', name: 'app_candidature_delete', methods: ['POST'])]
     public function delete(Request $request, Candidature $candidature, EntityManagerInterface $entityManager): Response

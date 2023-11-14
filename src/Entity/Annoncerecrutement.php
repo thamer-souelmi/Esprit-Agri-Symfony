@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Annoncerecrutement
  *
- * @ORM\Table(name="annoncerecrutement", indexes={@ORM\Index(name="fk_annonce_candidature", columns={"idCandidature"})})
+ * @ORM\Table(name="annoncerecrutement")
  * @ORM\Entity
  */
 class Annoncerecrutement
@@ -72,12 +72,9 @@ class Annoncerecrutement
     private $nbposterecherche;
 
     /**
-     * @var \Candidature
+     * @var int|null
      *
-     * @ORM\ManyToOne(targetEntity="Candidature")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idCandidature", referencedColumnName="idCandidature")
-     * })
+     * @ORM\Column(name="idCandidature", type="integer", nullable=true)
      */
     private $idcandidature;
 
@@ -170,12 +167,12 @@ class Annoncerecrutement
         return $this;
     }
 
-    public function getIdcandidature(): ?Candidature
+    public function getIdcandidature(): ?int
     {
         return $this->idcandidature;
     }
 
-    public function setIdcandidature(?Candidature $idcandidature): static
+    public function setIdcandidature(?int $idcandidature): static
     {
         $this->idcandidature = $idcandidature;
 

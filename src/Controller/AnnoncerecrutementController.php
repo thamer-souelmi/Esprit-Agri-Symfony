@@ -26,21 +26,26 @@ class AnnoncerecrutementController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $annoncerecrutement = new Annoncerecrutement();
+        $currentDate = new \DateTime();
+        $annoncerecrutement->setDatepub($currentDate);
+    
         $form = $this->createForm(AnnoncerecrutementType::class, $annoncerecrutement);
         $form->handleRequest($request);
-
+    
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($annoncerecrutement);
             $entityManager->flush();
-
+    
             return $this->redirectToRoute('app_annoncerecrutement_index', [], Response::HTTP_SEE_OTHER);
         }
-
+    
         return $this->renderForm('annoncerecrutement/new.html.twig', [
             'annoncerecrutement' => $annoncerecrutement,
             'form' => $form,
         ]);
     }
+    
+    
 
     #[Route('/{idrecurt}', name: 'app_annoncerecrutement_show', methods: ['GET'])]
     public function show(Annoncerecrutement $annoncerecrutement): Response

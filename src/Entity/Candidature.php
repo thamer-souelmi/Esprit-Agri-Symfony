@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Candidature
  *
- * @ORM\Table(name="candidature", indexes={@ORM\Index(name="fk_candidature_annonce", columns={"idRecurt"})})
+ * @ORM\Table(name="candidature")
  * @ORM\Entity
  */
 class Candidature
@@ -58,9 +58,9 @@ class Candidature
     private $messagemotivation;
 
     /**
-     * @var string
+     * @var string|null
      *
-     * @ORM\Column(name="statusCandidature", type="string", length=0, nullable=false)
+     * @ORM\Column(name="statusCandidature", type="string", length=0, nullable=true)
      */
     private $statuscandidature;
 
@@ -69,14 +69,9 @@ class Candidature
      *
      * @ORM\Column(name="dateCandidature", type="date", nullable=false)
      */
-    private $datecandidature;
 
-    /**
-     * @var int|null
-     *
-     * @ORM\Column(name="idRecurt", type="integer", nullable=true)
-     */
-    private $idrecurt;
+     
+    private $datecandidature;
 
     public function getIdcandidature(): ?int
     {
@@ -148,7 +143,7 @@ class Candidature
         return $this->statuscandidature;
     }
 
-    public function setStatuscandidature(string $statuscandidature): static
+    public function setStatuscandidature(?string $statuscandidature): static
     {
         $this->statuscandidature = $statuscandidature;
 
@@ -163,18 +158,6 @@ class Candidature
     public function setDatecandidature(\DateTimeInterface $datecandidature): static
     {
         $this->datecandidature = $datecandidature;
-
-        return $this;
-    }
-
-    public function getIdrecurt(): ?int
-    {
-        return $this->idrecurt;
-    }
-
-    public function setIdrecurt(?int $idrecurt): static
-    {
-        $this->idrecurt = $idrecurt;
 
         return $this;
     }
