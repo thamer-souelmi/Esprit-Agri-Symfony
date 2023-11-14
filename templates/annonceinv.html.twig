@@ -115,7 +115,7 @@
         <p class="text-white mb-4">{{ annonceinvestissement.datepublication ? annonceinvestissement.datepublication|date('Y-m-d') : '' }}</p>
         <p class="text-white mb-4">{{ annonceinvestissement.description }}</p>
         <p class="text-white mb-4">{{ annonceinvestissement.localisation }}</p>
-        <a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_annonceinvestissement_edit', {'idannonce': annonceinvestissement.idannonce}) }}">Modifier</a><a class="btn btn-danger rounded-pill py-2 px-4" href="{{ path('app_annonceinvestissement_delete', {'idannonce': annonceinvestissement.idannonce}) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette annonce ?')">Supprimer</a>
+        <a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_annonceinvestissement_edit', {'idannonce': annonceinvestissement.idannonce}) }}">Modifier</a><a  onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette annonce ?')">Supprimer</a>
 
     </div>
 {% endfor %}
