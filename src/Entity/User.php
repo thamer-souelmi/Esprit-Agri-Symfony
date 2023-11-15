@@ -3,6 +3,8 @@ namespace App\Entity;
 
 //namespace App\Entity\User;
 
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -107,6 +109,11 @@ class User implements UserInterface
      * @ORM\Column(name="image", type="string", length=255, nullable=true)
      */
     private $image;
+
+      /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Produit", mappedBy="user")
+     */
+    private $produits;
 
     public function getId(): ?int
     {
@@ -245,7 +252,19 @@ class User implements UserInterface
         // If you store any temporary, sensitive data on the user, clear it here
     }
 
-    
+    public function __construct()
+    {
+        $this->produits = new ArrayCollection();
+    }
+
+    /**
+     * @return Collection|Produit[]
+     */
+    public function getProduits(): Collection
+    {
+        return $this->produits;
+    }
+
     
 
 

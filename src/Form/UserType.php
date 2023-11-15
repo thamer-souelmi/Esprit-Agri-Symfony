@@ -27,6 +27,9 @@ class UserType extends AbstractType
                     
                     'Agriculteur' => 'agriculteur',
                     'User' => 'user',
+                    'Investisseur'=>'investisseur',
+                    'Veterinaire'=>'veterinaire',
+                    'Ouvrier'=>'ouvrier'
                 ],
             ])
             ->add('image', FileType::class, [

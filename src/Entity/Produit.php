@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Produit
  *
@@ -13,70 +13,79 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Produit
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="Nomprod", type="string", length=30, nullable=false)
-     */
-    private $nomprod;
+/**
+ * @var int
+ *
+ * @ORM\Column(name="id", type="integer", nullable=false)
+ * @ORM\Id
+ * @ORM\GeneratedValue(strategy="IDENTITY")
+ */
+private $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="cat", type="string", length=30, nullable=false)
-     */
-    private $cat;
+/**
+ * @var string
+ *
+ * @ORM\Column(name="Nomprod", type="string", length=30, nullable=false)
+ * @Assert\NotBlank(message="Le nom du produit ne peut pas être vide.")
+ * @Assert\Length(max=30, maxMessage="Le nom du produit ne peut pas dépasser {{ limit }} caractères.")
+ */
+private $nomprod;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="prix", type="float", precision=10, scale=0, nullable=false)
-     */
-    private $prix;
+/**
+ * @var string
+ *
+ */
+private $cat;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="qte", type="float", precision=10, scale=0, nullable=false)
-     */
-    private $qte;
+/**
+ * @var float
+ *
+ * @ORM\Column(name="prix", type="float", precision=10, scale=0, nullable=false)
+ * @Assert\NotBlank(message="Le prix ne peut pas être vide.")
+ * @Assert\GreaterThan(value=0, message="Le prix doit être supérieur à zéro.")
+ */
+private $prix;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="desc", type="date", nullable=false)
-     */
-    private $desc;
+/**
+ * @var float
+ *
+ * @ORM\Column(name="qte", type="float", precision=10, scale=0, nullable=false)
+ * @Assert\NotBlank(message="La quantité ne peut pas être vide.")
+ * @Assert\GreaterThan(value=0, message="La quantité doit être supérieure à zéro.")
+ */
+private $qte;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="status", type="boolean", nullable=false)
-     */
-    private $status;
+/**
+ * @var string
+ *
+ * @ORM\Column(name="descr", type="string", nullable=false)
+ * @Assert\NotBlank(message="La description ne peut pas être vide.")
+ */
+private $descr;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="image", type="string", length=255, nullable=true)
-     */
-    private $image;
+/**
+ * @var bool
+ *
+ * @ORM\Column(name="status", type="boolean", nullable=false)
+ */
+private $status;
 
+/**
+ * @var string|null
+ *
+ * @ORM\Column(name="image", type="string", length=255, nullable=true)
+ */
+private $image;
+
+
+    
     /**
-     * @var int|null
-     *
-     * @ORM\Column(name="user_id", type="integer", nullable=true)
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="produits")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $userId;
+    private $user;
 
     public function getId(): ?int
     {
@@ -131,14 +140,14 @@ class Produit
         return $this;
     }
 
-    public function getDesc(): ?\DateTimeInterface
+    public function getDescr(): ?string
     {
-        return $this->desc;
+        return $this->descr;
     }
 
-    public function setDesc(\DateTimeInterface $desc): static
+    public function setDescr(string $descr): static
     {
-        $this->desc = $desc;
+        $this->descr = $descr;
 
         return $this;
     }
@@ -167,14 +176,15 @@ class Produit
         return $this;
     }
 
-    public function getUserId(): ?int
+   
+    public function getUser(): ?User
     {
-        return $this->userId;
+        return $this->user;
     }
 
-    public function setUserId(?int $userId): static
+    public function setUser(?User $user): self
     {
-        $this->userId = $userId;
+        $this->user = $user;
 
         return $this;
     }

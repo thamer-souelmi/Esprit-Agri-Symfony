@@ -19,7 +19,7 @@
                             <th>Role</th>
                             <th>Image</th>
                             <th>Actions</th>
-                            <th>Modif</th>
+                            <th>Supprimer</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -31,8 +31,11 @@
                             <td>{{ user.mail }}</td>
                             <td>{{ user.role }}</td>
                             <td><img src="{{ asset('img/' ~ user.image) }}" alt="User Image" style="max-width:100px;max-height:100px;"></td>
+                            <td>
+                            <a href="{{ path('app_user_edit', {'id': user.id}) }}"class="btn btn-secondary">Modifier</a>
+                            <a href="{{ path('app_user_show', {'id': user.id}) }}"class="btn btn-success">Detail</a></td>
                             <td>{{ include('user/_delete_form.html.twig') }}</td>
-                            <td><<a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a></td>
+                           
                         </tr>
                         {% endfor %}
                     </tbody>
