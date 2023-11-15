@@ -11,10 +11,6 @@
 	<table class="table">
 		<tbody>
 			<tr>
-				<th>Id</th>
-				<td>{{ culture.id }}</td>
-			</tr>
-			<tr>
 				<th>Catégorie</th>
 				<td>{{ culture.category.type }}</td>
 			</tr>
@@ -44,7 +40,7 @@
 	<form method="post" action="{{ path('app_culture_delete', {'id': culture.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');" style="display: inline-block;">
 		<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ culture.id) }}">
 		<button class="btn btn-danger">Supprimer</button>
-		<a href="{{ path('app_cultureback_index') }}" class="btn btn-primary">back to list</a>
+		<a href="{{ path('app_cultureback_index') }}" class="btn btn-primary">Retourner au list</a>
 
 	</form>
 {% endblock %}

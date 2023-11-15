@@ -1,0 +1,49 @@
+{% extends 'clientfront.html.twig' %}
+
+{% block title %}Marche
+{% endblock %}
+
+{% block body %}
+	<h1>Marche</h1>
+
+	<div class="card" style="background-color: var(--bs-dark);">
+		<div class="card-body">
+			<h5 class="card-title"></h5>
+
+			<!-- Cards -->
+			<div class="row">
+				{% for client in clients %}
+					<div class="col-md-4 mb-4">
+						<div class="card" style="background-color: var(--bs-secondary);">
+							<div class="card-body">
+								<h5 class="card-title">Client details :</h5>
+								<p class="card-text">
+
+									<td><img src="{{ asset('img/' ~ client.image) }}" alt="Product Image" width="50" height="50"></td><br>
+
+									<strong>Nomprod:</strong>
+									{{ client.nomprod }}<br>
+									<strong>Prix:</strong>
+									{{ client.prix }}<br>
+									<strong>Dateajout:</strong>
+									{{ client.dateajout ? client.dateajout|date('Y-m-d') : '' }}<br>
+									<strong>Qte:</strong>
+									{{ client.qte }}<br>
+								</p>
+								<div class="btn-group">
+									<a href="{{ path('app_client_show', {'id': client.id}) }}" class="btn btn-secondary">Afficher</a>
+									<a href="{{ path('app_client_edit', {'id': client.id}) }}" class="btn btn-success">Modifier</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				{% else %}
+					<p>No records found</p>
+				{% endfor %}
+			</div>
+
+			<a href="{{ path('app_client_new') }}" class="btn btn-primary">Ajouter</a>
+			<!-- Add links for other actions as needed -->
+		</div>
+	</div>
+{% endblock %}

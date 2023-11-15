@@ -1,0 +1,12 @@
+{% extends 'clientfront.html.twig' %}
+
+{% block title %}New Marche
+{% endblock %}
+
+{% block body %}
+	<h1>Creer Nouveau Marche</h1>
+
+	{{ include('client/_form.html.twig') }}
+
+	<a href="{{ path('app_client_index') }}" class="btn btn-secondary">Retourner au list</a>
+{% endblock %}
