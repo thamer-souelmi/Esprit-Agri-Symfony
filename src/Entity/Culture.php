@@ -5,6 +5,7 @@ namespace App\Entity;
 use APP\Entity\Category;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Culture
@@ -28,6 +29,8 @@ class Culture
      *
      * @ORM\Column(name="libelle", type="string", length=200, nullable=false)
      */
+    #[Assert\NotBlank(message: 'veuillez remplir ce champ')]
+    #[Assert\Length(min: 3, minMessage: 'Le libelle doit comporter au moins {{ limit }} caractères')]
     private $libelle;
 
     /**
@@ -35,6 +38,8 @@ class Culture
      *
      * @ORM\Column(name="datePlantation", type="date", nullable=false)
      */
+    #[Assert\NotBlank(message: 'veuillez remplir tous les champs obligatoires')]
+    #[Assert\LessThan(propertyPath: "daterecolte", message: "La date de plantation doit être inférieure à la date de recolte.")]
     private $dateplantation;
 
     /**
@@ -56,6 +61,11 @@ class Culture
      *
      * @ORM\Column(name="revenuesCultures", type="float", precision=10, scale=0, nullable=false)
      */
+    #[Assert\NotBlank(message: 'Les revenus des cultures ne peuvent pas être vides.')]
+    #[Assert\GreaterThanOrEqual(
+        value: 0,
+        message: 'Les revenus des cultures ne peuvent pas être négatifs.'
+    )]
     private $revenuescultures;
 
     /**
@@ -63,6 +73,11 @@ class Culture
      *
      * @ORM\Column(name="coutsPlantations", type="float", precision=10, scale=0, nullable=false)
      */
+    #[Assert\NotBlank(message: 'Les couts des cultures ne peuvent pas être vides.')]
+    #[Assert\GreaterThanOrEqual(
+        value: 0,
+        message: 'Les couts des cultures ne peuvent pas être négatifs.'
+    )]
     private $coutsplantations;
 
     /**

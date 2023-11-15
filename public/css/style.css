@@ -4,13 +4,23 @@
     --secondary: #EDDD5E;
     --light: #F7F7F7;
     --dark: #404A3D;
+    --light-yellow: #6a2bd8;
+
 }
+
+.custom-light-yellow-background {
+    background-color: var(--light-yellow);
+}
+
 .box.minimized {
     display: none;
 }
+
 .candidature-row.details-visible {
-    background-color: lightgray; /* or any other styling for visible details */
+    background-color: lightgray;
+    /* or any other styling for visible details */
 }
+
 .text-center {
     text-align: center;
 }
@@ -23,13 +33,17 @@
     bottom: 30px;
     z-index: 99;
 }
+
 .text-military-green {
-    color: #556B2F; /* Vert militaire */
+    color: #556B2F;
+    /* Vert militaire */
 }
 
 .bg-light-orange {
-    background-color: #FFD700; /* Orange clair */
+    background-color: #FFD700;
+    /* Orange clair */
 }
+
 .box {
     font-family: Arial;
     font-size: 16px;
@@ -135,7 +149,7 @@
 }
 
 @media (max-width: 991.98px) {
-    .navbar .navbar-nav .nav-link  {
+    .navbar .navbar-nav .nav-link {
         margin-right: 0;
         padding: 10px 0;
     }
@@ -196,7 +210,7 @@
         position: relative;
         min-height: 450px;
     }
-    
+
     #header-carousel .carousel-item img {
         position: absolute;
         width: 100%;

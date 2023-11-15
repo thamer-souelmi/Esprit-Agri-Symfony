@@ -42,9 +42,9 @@
 	<body id="page-top">
 		<!-- Spinner Start -->
 		{# <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-											<div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
-										</div>
-										<!-- Spinner End --> #}
+																																																			<div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
+																																																		</div>
+																																																		<!-- Spinner End --> #}
 
 
 		<!-- Topbar Start -->
@@ -92,6 +92,8 @@
 					<a href="index.html" class="nav-item nav-link active">Accueil</a>
 					<a href="{{ path('app_annoncerecrutement_index') }}" class="nav-item nav-link">Recrutement</a>
 					<a href="{{ path('app_annonceinvestissement_index') }}" class="nav-item nav-link">Investissement</a>
+					<a href="{{ path('app_culture_index') }}" class="nav-item nav-link">Culture</a>
+
 					<a href="product.html" class="nav-item nav-link">Visite Vétérinaire</a>
 					<div class="nav-item dropdown">
 						<a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Marché</a>
@@ -128,56 +130,53 @@
 			</div>
 		</div>
 		<!-- Page Header End -->
-		<div class="card">
+
+		<div class="card" style="background-color: var(--bs-dark);">
 			<div class="card-body">
 				<h5 class="card-title"></h5>
 
-				<!-- Table with stripped rows -->
-				<table class="table table-striped">
-					<thead>
-						<tr>
-							<th>id</th>
-							<th>Type_category</th>
-							<th>libelle</th>
-							<th>dateplantation</th>
-							<th>daterecolte</th>
-							{# <th>categorytype</th> #}
-							<th>revenuescultures</th>
-							<th>coutsplantations</th>
-							<th>actions</th>
-						</tr>
-					</thead>
-					<tbody>
-						{% for culture in cultures %}
-							<tr>
-								<td>{{ culture.id }}</td>
-								<td>{{ culture.category.type }}</td>
-								<td>{{ culture.libelle }}</td>
-								<td>{{ culture.dateplantation ? culture.dateplantation|date('Y-m-d') : '' }}</td>
-								<td>{{ culture.daterecolte ? culture.daterecolte|date('Y-m-d') : '' }}</td>
-								{# <td>{{ culture.categorytype }}</td> #}
-								<td>{{ culture.revenuescultures }}</td>
-								<td>{{ culture.coutsplantations }}</td>
-								<td>
-									<a href="{{ path('app_culture_show', {'id': culture.id}) }}" class="btn btn-secondary">Afficher</a>
-									<a href="{{ path('app_culture_edit', {'id': culture.id}) }}" class="btn btn-success">Modifier</a>
-									<form method="post" action="{{ path('app_culture_delete', {'id': culture.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet élément ?');" style="display: inline-block;">
-										<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ culture.id) }}">
-										<button class="btn btn-danger">Supprimer</button>
-									</form>
-								</td>
-							</tr>
-						{% else %}
-							<tr>
-								<td colspan="8">no records found</td>
-							</tr>
-						{% endfor %}
-					</tbody>
-				</table>
+				<!-- Cards -->
+				<div class="row">
+					{% for culture in cultures %}
+						<div class="col-md-4 mb-4">
+							<div class="card" style="background-color: var(--bs-secondary);">
+								<div class="card-body">
+									<h5 class="card-title">culture posseder :</h5>
+									<p class="card-text">
+										<strong>libelle:</strong>
+										{{ culture.libelle }}<br>
+										<strong>Type Category:</strong>
+										{{ culture.category.type }}<br>
+										<strong>Date Plantation:</strong>
+										{{ culture.dateplantation ? culture.dateplantation|date('Y-m-d') : '' }}<br>
+										<strong>Date Recolte:</strong>
+										{{ culture.daterecolte ? culture.daterecolte|date('Y-m-d') : '' }}<br>
+										<strong>Revenues Cultures:</strong>
+										{{ culture.revenuescultures }}<br>
+										<strong>Couts Plantations:</strong>
+										{{ culture.coutsplantations }}<br>
+									</p>
+									<div class="btn-group">
+										<a href="{{ path('app_culture_show', {'id': culture.id}) }}" class="btn btn-secondary">Afficher</a>
+										<a href="{{ path('app_culture_edit', {'id': culture.id}) }}" class="btn btn-success">Modifier</a>
+										<form method="post" action="{{ path('app_culture_delete', {'id': culture.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet élément ?');" style="display: inline-block;">
+											<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ culture.id) }}">
+											<button class="btn btn-danger">Supprimer</button>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					{% else %}
+						<p>No records found</p>
+					{% endfor %}
+				</div>
+
 				<a href="{{ path('app_culture_new') }}" class="btn btn-primary">Ajouter</a>
 				<!-- Add links for other actions as needed -->
 			</div>
 		</div>
+
 
 		<!-- Footer Start -->
 		<div class="container-fluid bg-dark footer mt-5 py-5 wow fadeIn" data-wow-delay="0.1s">
