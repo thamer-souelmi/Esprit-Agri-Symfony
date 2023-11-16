@@ -4,17 +4,12 @@ namespace App\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
-use App\Repository\CandidatureRepository;
 
 /**
  * Candidature
  *
  * @ORM\Table(name="candidature")
  * @ORM\Entity
- */
-/*
-@ORM\Entity(repositoryClass=CandidatureRepository::class)
  */
 class Candidature
 {
@@ -31,28 +26,25 @@ class Candidature
      * @var string|null
      *
      * @ORM\Column(name="ExperienceProfessionnelle", type="string", length=5000, nullable=true)
-* @Assert\NotBlank(message="vueillez ajouter votre experience professionnelle")
-*/
+     */
     private $experienceprofessionnelle;
 
     /**
      * @var string|null
      *
      * @ORM\Column(name="Formation", type="string", length=5000, nullable=true)
-* @Assert\NotBlank(message="vueillez ajouter vos formation")
-*/
+     */
     private $formation;
 
     /**
      * @var string|null
      *
      * @ORM\Column(name="CompetencesTechniques", type="string", length=5000, nullable=true)
-* @Assert\NotBlank(message="vueillez ajouter vos compétence techniques  ")
-*/
+     */
     private $competencestechniques;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="CertifForma", type="string", length=200, nullable=true)
      */
@@ -62,17 +54,8 @@ class Candidature
      * @var string
      *
      * @ORM\Column(name="messageMotivation", type="string", length=255, nullable=false)
-* @Assert\NotBlank(message="vueillez ajouter votre message de motivation")
-*/
+     */
     private $messagemotivation;
-
-  /**
- * @var bool|null
- *
- * @ORM\Column(name="statusCandidature", type="boolean", nullable=true)
- */
-     private $statusCandidature;
-
 
     /**
      * @var \DateTime
@@ -80,6 +63,13 @@ class Candidature
      * @ORM\Column(name="dateCandidature", type="date", nullable=false)
      */
     private $datecandidature;
+
+    /**
+     * @var bool|null
+     *
+     * @ORM\Column(name="statusCandidature", type="boolean", nullable=true)
+     */
+    private $statuscandidature;
 
     public function getIdcandidature(): ?int
     {
@@ -127,7 +117,7 @@ class Candidature
         return $this->certifforma;
     }
 
-    public function setCertifforma(string $certifforma): static
+    public function setCertifforma(?string $certifforma): static
     {
         $this->certifforma = $certifforma;
 
@@ -146,19 +136,6 @@ class Candidature
         return $this;
     }
 
-    public function getStatusCandidature(): ?bool
-    {
-        return $this->statusCandidature;
-    }
-    
-    public function setStatusCandidature(?bool $statusCandidature): self
-    {
-        $this->statusCandidature = $statusCandidature;
-    
-        return $this;
-    }
-    
-
     public function getDatecandidature(): ?\DateTimeInterface
     {
         return $this->datecandidature;
@@ -167,6 +144,18 @@ class Candidature
     public function setDatecandidature(\DateTimeInterface $datecandidature): static
     {
         $this->datecandidature = $datecandidature;
+
+        return $this;
+    }
+
+    public function isStatuscandidature(): ?bool
+    {
+        return $this->statuscandidature;
+    }
+
+    public function setStatuscandidature(?bool $statuscandidature): static
+    {
+        $this->statuscandidature = $statuscandidature;
 
         return $this;
     }

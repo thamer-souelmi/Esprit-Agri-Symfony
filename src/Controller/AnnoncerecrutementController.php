@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Annoncerecrutement;
+use App\Entity\User;
 use App\Form\AnnoncerecrutementType;
 use App\Repository\AnnoncerecrutementRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -33,14 +34,16 @@ class AnnoncerecrutementController extends AbstractController
     #[Route('/new', name: 'app_annoncerecrutement_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $user = $entityManager->getRepository(User::class)->find(7);
+
         $annoncerecrutement = new Annoncerecrutement();
         $currentDate = new \DateTime();
         $annoncerecrutement->setDatepub($currentDate);
-    
         $form = $this->createForm(AnnoncerecrutementType::class, $annoncerecrutement);
         $form->handleRequest($request);
     
         if ($form->isSubmitted() && $form->isValid()) {
+            $annoncerecrutement -> setIduser($user);
             $entityManager->persist($annoncerecrutement);
             $entityManager->flush();
     

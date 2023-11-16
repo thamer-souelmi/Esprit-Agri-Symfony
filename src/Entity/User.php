@@ -1,11 +1,8 @@
 <?php
+
 namespace App\Entity;
 
-//namespace App\Entity\User;
-
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * User
@@ -13,8 +10,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Table(name="user")
  * @ORM\Entity
  */
-
-class User 
+class User
 {
     /**
      * @var int
@@ -26,12 +22,10 @@ class User
     private $id;
 
     /**
-     * @var string
+     * @var int
      *
-     * @ORM\Column(name="cin", type="string", nullable=false)
+     * @ORM\Column(name="cin", type="integer", nullable=false)
      */
-    #[Assert\NotBlank(message: 'Le CIN ne doit pas être vide.')]
-    #[Assert\Type(type: 'numeric', message: 'Le CIN doit être un nombre.')]
     private $cin;
 
     /**
@@ -39,7 +33,6 @@ class User
      *
      * @ORM\Column(name="nom", type="string", length=20, nullable=false)
      */
-    #[Assert\NotBlank(message: 'L\'Le nom ne doit pas être vide.')]
     private $nom;
 
     /**
@@ -47,7 +40,6 @@ class User
      *
      * @ORM\Column(name="prenom", type="string", length=20, nullable=false)
      */
-    #[Assert\NotBlank(message: 'L\'Le pronom ne doit pas être vide.')]
     private $prenom;
 
     /**
@@ -55,11 +47,6 @@ class User
      *
      * @ORM\Column(name="mdp", type="string", length=200, nullable=false)
      */
-    #[Assert\NotBlank(message: 'Le mot de passe ne doit pas être vide.')]
-    #[Assert\Length(
-        min: 8,
-        minMessage: 'Le mot de passe doit contenir au moins 8 caractères.'
-    )]
     private $mdp;
 
     /**
@@ -67,8 +54,6 @@ class User
      *
      * @ORM\Column(name="mail", type="string", length=30, nullable=false)
      */
-    #[Assert\NotBlank(message: 'L\'email ne doit pas être vide.')]
-    #[Assert\Email(message: 'Format d\'email invalide.')]
     private $mail;
 
     /**
@@ -76,8 +61,6 @@ class User
      *
      * @ORM\Column(name="adresse", type="string", length=50, nullable=false)
      */
-    #[Assert\NotBlank(message: 'L\'adresse ne peut pas être vide.')]
-    #[Assert\Length(max: 50, maxMessage: 'L\'adresse ne peut pas dépasser {{ limit }} caractères.')]
     private $adresse;
 
     /**
@@ -85,13 +68,6 @@ class User
      *
      * @ORM\Column(name="numtel", type="integer", nullable=false)
      */
-    #[Assert\NotBlank(message: 'Le numéro de téléphone ne peut pas être vide.')]
-    #[Assert\Length(
-        min: 8,
-    max: 8,
-    exactMessage: 'Le numéro de téléphone doit comporter exactement {{ limit }} chiffres.',
-    
-    )]
     private $numtel;
 
     /**
@@ -220,13 +196,6 @@ class User
 
         return $this;
     }
-
-
-    public function eraseCredentials()
-    {
-        // If you store any temporary, sensitive data on the user, clear it here
-    }
-    
 
 
 }
