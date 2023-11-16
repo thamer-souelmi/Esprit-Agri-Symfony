@@ -22,25 +22,38 @@ class AnnoncerecrutementController extends AbstractController
         ]);
     }
 
+    #[Route('/back', name: 'app_annoncerecrutementback_index', methods: ['GET'])]
+    public function indexba(AnnoncerecrutementRepository $annoncerecrutementRepository): Response
+    {
+        return $this->render('annoncerecrutement/indexback.html.twig', [
+            'annoncerecrutements' => $annoncerecrutementRepository->findAll(),
+        ]);
+    }
+
     #[Route('/new', name: 'app_annoncerecrutement_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $annoncerecrutement = new Annoncerecrutement();
+        $currentDate = new \DateTime();
+        $annoncerecrutement->setDatepub($currentDate);
+    
         $form = $this->createForm(AnnoncerecrutementType::class, $annoncerecrutement);
         $form->handleRequest($request);
-
+    
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($annoncerecrutement);
             $entityManager->flush();
-
+    
             return $this->redirectToRoute('app_annoncerecrutement_index', [], Response::HTTP_SEE_OTHER);
         }
-
+    
         return $this->renderForm('annoncerecrutement/new.html.twig', [
             'annoncerecrutement' => $annoncerecrutement,
             'form' => $form,
         ]);
     }
+    
+    
 
     #[Route('/{idrecurt}', name: 'app_annoncerecrutement_show', methods: ['GET'])]
     public function show(Annoncerecrutement $annoncerecrutement): Response
