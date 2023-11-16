@@ -23,7 +23,13 @@ class CandidatureController extends AbstractController
             'candidatures' => $candidatureRepository->findAll(),
         ]);
     }
-
+    #[Route('/back', name: 'app_candidatureback_index', methods: ['GET'])]
+    public function indexb(CandidatureRepository $candidatureRepository): Response
+    {
+        return $this->render('candidature/indexback.html.twig', [
+            'candidatures' => $candidatureRepository->findAll(),
+        ]);
+    }
     #[Route('/new', name: 'app_candidature_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {

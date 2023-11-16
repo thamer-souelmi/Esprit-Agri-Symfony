@@ -22,6 +22,14 @@ class AnnoncerecrutementController extends AbstractController
         ]);
     }
 
+    #[Route('/back', name: 'app_annoncerecrutementback_index', methods: ['GET'])]
+    public function indexba(AnnoncerecrutementRepository $annoncerecrutementRepository): Response
+    {
+        return $this->render('annoncerecrutement/indexback.html.twig', [
+            'annoncerecrutements' => $annoncerecrutementRepository->findAll(),
+        ]);
+    }
+
     #[Route('/new', name: 'app_annoncerecrutement_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
