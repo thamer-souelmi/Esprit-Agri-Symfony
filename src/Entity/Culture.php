@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Culture
  *
- * @ORM\Table(name="culture", indexes={@ORM\Index(name="fk_user_id", columns={"user_id"}), @ORM\Index(name="fk_category_id", columns={"category_id"})})
+ * @ORM\Table(name="culture", indexes={@ORM\Index(name="fk_category_id", columns={"category_id"}), @ORM\Index(name="fk_user_id", columns={"user_id"})})
  * @ORM\Entity
  */
 class Culture
@@ -65,16 +65,6 @@ class Culture
     private $coutsplantations;
 
     /**
-     * @var \Category
-     *
-     * @ORM\ManyToOne(targetEntity="Category")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="category_id", referencedColumnName="id")
-     * })
-     */
-    private $category;
-
-    /**
      * @var \User
      *
      * @ORM\ManyToOne(targetEntity="User")
@@ -83,6 +73,16 @@ class Culture
      * })
      */
     private $user;
+
+    /**
+     * @var \Category
+     *
+     * @ORM\ManyToOne(targetEntity="Category")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="category_id", referencedColumnName="id")
+     * })
+     */
+    private $category;
 
     public function getId(): ?int
     {
@@ -161,18 +161,6 @@ class Culture
         return $this;
     }
 
-    public function getCategory(): ?Category
-    {
-        return $this->category;
-    }
-
-    public function setCategory(?Category $category): static
-    {
-        $this->category = $category;
-
-        return $this;
-    }
-
     public function getUser(): ?User
     {
         return $this->user;
@@ -181,6 +169,18 @@ class Culture
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): static
+    {
+        $this->category = $category;
 
         return $this;
     }

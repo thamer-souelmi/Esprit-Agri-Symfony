@@ -1,15 +1,21 @@
 <?php
 
 namespace App\Entity;
+use App\Repository\AnnoncerecrutementRepository;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use PHPUnit\Util\Color;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Annoncerecrutement
  *
  * @ORM\Table(name="annoncerecrutement", indexes={@ORM\Index(name="fk_idrecrute_user", columns={"idUser"})})
  * @ORM\Entity
+ */
+/**
+ * @ORM\Entity(repositoryClass=AnnoncerecrutementRepository::class)
  */
 class Annoncerecrutement
 {
@@ -27,6 +33,7 @@ class Annoncerecrutement
      *
      * @ORM\Column(name="posteDemande", type="string", length=255, nullable=false)
      */
+    #[Assert\NotBlank(message: 'Les revenus des cultures ne peuvent pas être vides.' )]
     private $postedemande;
 
     /**

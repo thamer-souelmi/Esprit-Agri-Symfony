@@ -3,8 +3,12 @@
 {% block body %}
     <div class="container mt-5">
         {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
-        {{ form_row(form.postedemande, {'label': 'Poste Demandé','attr': {'class': 'form-control', 'placeholder': 'Poste Demandé'}}) }}
         <br>
+         <label for="inputEmail" class="col-sm-4 col-form-label">Poste Demandé</label>
+    <div class="col-sm-10">
+        {{ form_widget(form.postedemande, {'attr': {'class': 'form-control ' ~ (form.postedemande.vars.errors|length > 0 ? 'is-invalid' : '')}}) }}
+        {{ form_errors(form.postedemande, {'attr': {'class': 'text-danger' ,'placeholder': 'Poste Demandé'}}) }}
+    </div>
         {{ form_row(form.salairepropose, {'label': 'Salaire Proposé','attr': {'class': 'form-control', 'placeholder': 'Salaire Proposé'}}) }}
         <br>
         {{ form_row(form.typecontrat, {'label': 'Type de Contrat','attr': {'class': 'form-control', 'placeholder': 'Type de Contrat'}}) }}
@@ -22,5 +26,12 @@
         {{ form_end(form) }}
 
     </div>
+
+<style>
+    .text-danger {
+        color: red;
+    }
+</style>
 {% endblock %}
+
 

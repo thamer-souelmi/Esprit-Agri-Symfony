@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Candidature
  *
- * @ORM\Table(name="candidature")
+ * @ORM\Table(name="candidature", indexes={@ORM\Index(name="fk_idOuvrier", columns={"idOuvrierfor"}), @ORM\Index(name="fk_idAnnRecru", columns={"idAnnRecru"})})
  * @ORM\Entity
  */
 class Candidature
@@ -70,6 +70,26 @@ class Candidature
      * @ORM\Column(name="statusCandidature", type="boolean", nullable=true)
      */
     private $statuscandidature;
+
+    /**
+     * @var \Annoncerecrutement
+     *
+     * @ORM\ManyToOne(targetEntity="Annoncerecrutement")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idAnnRecru", referencedColumnName="idRecurt")
+     * })
+     */
+    private $idannrecru;
+
+    /**
+     * @var \Ouvrier
+     *
+     * @ORM\ManyToOne(targetEntity="Ouvrier")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idOuvrierfor", referencedColumnName="idOuvrier")
+     * })
+     */
+    private $idouvrierfor;
 
     public function getIdcandidature(): ?int
     {
@@ -156,6 +176,30 @@ class Candidature
     public function setStatuscandidature(?bool $statuscandidature): static
     {
         $this->statuscandidature = $statuscandidature;
+
+        return $this;
+    }
+
+    public function getIdannrecru(): ?Annoncerecrutement
+    {
+        return $this->idannrecru;
+    }
+
+    public function setIdannrecru(?Annoncerecrutement $idannrecru): static
+    {
+        $this->idannrecru = $idannrecru;
+
+        return $this;
+    }
+
+    public function getIdouvrierfor(): ?Ouvrier
+    {
+        return $this->idouvrierfor;
+    }
+
+    public function setIdouvrierfor(?Ouvrier $idouvrierfor): static
+    {
+        $this->idouvrierfor = $idouvrierfor;
 
         return $this;
     }

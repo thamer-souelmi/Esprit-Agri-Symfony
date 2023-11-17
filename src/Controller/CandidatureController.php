@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Annoncerecrutement;
 use App\Entity\Candidature;
+use App\Entity\Ouvrier;
 use App\Form\CandidatureType;
 use App\Repository\CandidatureRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -30,10 +32,16 @@ class CandidatureController extends AbstractController
             'candidatures' => $candidatureRepository->findAll(),
         ]);
     }
-    #[Route('/new', name: 'app_candidature_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
-    {
+    #[Route('/new/{idrecurt}', name: 'app_candidature_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager , $idrecurt): Response
+    {        //$idrecurt = $request->get('idRecurt');
         $candidature = new Candidature();
+
+        $ouvrier = $entityManager->getRepository(ouvrier::class)->find(1);
+        $candidature ->setIdouvrierfor($ouvrier);
+
+        $annoncerecrutement = $entityManager->getRepository(Annoncerecrutement::class)->find($idrecurt);
+        $candidature ->setIdannrecru($annoncerecrutement);
         $form = $this->createForm(CandidatureType::class, $candidature);
         $form->handleRequest($request);
         $currentDate = new \DateTime();
@@ -62,6 +70,8 @@ class CandidatureController extends AbstractController
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
+            //$candidature -> setIdannrecru($annoncerecrutement);
+
             $entityManager->persist($candidature);
             $entityManager->flush();
 
