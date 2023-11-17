@@ -6,9 +6,16 @@
 		</title>
 		<meta content="width=device-width, initial-scale=1.0" name="viewport">
 		<meta content="" name="keywords">
-		<meta
-		content="" name="description">
+		<meta content="" name="description">
+		<style>
+			/* Mettez ici le code CSS pour le dégradé */
+			.gradient-box {
 
+				background: linear-gradient(to right, #d9bb89, #6b4f1e);
+				/* Dégradé allant du vert (#00ff00) au jaune (#ffff00) de gauche à droite */
+
+			}
+		</style>
 		<!-- Favicon -->
 		<link
 		href="{{ asset('img/favicon.ico') }}" rel="icon">
@@ -42,9 +49,9 @@
 	<body id="page-top">
 		<!-- Spinner Start -->
 		{# <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-																																																					<div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
-																																																				</div>
-																																																				<!-- Spinner End --> #}
+																																																																																											<div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
+																																																																																										</div>
+																																																																																										<!-- Spinner End --> #}
 
 
 		<!-- Topbar Start -->
@@ -133,7 +140,7 @@
 		</div>
 		<!-- Page Header End -->
 
-		<div class="card" style="background-color: var(--bs-dark);">
+		<div class="card">
 			<div class="card-body">
 				<h5 class="card-title"></h5>
 
@@ -141,30 +148,38 @@
 				<div class="row">
 					{% for culture in cultures %}
 						<div class="col-md-4 mb-4">
-							<div class="card" style="background-color: var(--bs-secondary);">
-								<div class="card-body">
-									<h5 class="card-title">culture posseder :</h5>
-									<p class="card-text">
-										<strong>libelle:</strong>
-										{{ culture.libelle }}<br>
-										<strong>Type Category:</strong>
-										{{ culture.category.type }}<br>
-										<strong>Date Plantation:</strong>
-										{{ culture.dateplantation ? culture.dateplantation|date('Y-m-d') : '' }}<br>
-										<strong>Date Recolte:</strong>
-										{{ culture.daterecolte ? culture.daterecolte|date('Y-m-d') : '' }}<br>
-										<strong>Revenues Cultures:</strong>
-										{{ culture.revenuescultures }}<br>
-										<strong>Couts Plantations:</strong>
-										{{ culture.coutsplantations }}<br>
-									</p>
-									<div class="btn-group">
-										<a href="{{ path('app_culture_show', {'id': culture.id}) }}" class="btn btn-secondary">Afficher</a>
-										<a href="{{ path('app_culture_edit', {'id': culture.id}) }}" class="btn btn-success">Modifier</a>
-										<form method="post" action="{{ path('app_culture_delete', {'id': culture.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet élément ?');" style="display: inline-block;">
-											<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ culture.id) }}">
-											<button class="btn btn-danger">Supprimer</button>
-										</form>
+							<div class="card">
+								<div class="gradient-box">
+									<div class="card-body">
+										<h5 class="card-title">culture posseder :</h5>
+										<p class="card-text" style="color: #ffdc4b;">
+											<strong style="color: #ffff;">libelle:</strong>
+											{{ culture.libelle }}<br>
+
+											<strong style="color: #ffff;">Type Category:</strong>
+											{{ culture.category.type }}<br>
+
+											<strong style="color: #ffff;">Date Plantation:</strong>
+											{{ culture.dateplantation ? culture.dateplantation|date('Y-m-d') : '' }}<br>
+
+											<strong style="color: #ffff;">Date Recolte:</strong>
+											{{ culture.daterecolte ? culture.daterecolte|date('Y-m-d') : '' }}<br>
+
+											<strong style="color: #ffff;">Revenues Cultures:</strong>
+											{{ culture.revenuescultures }}<br>
+
+											<strong style="color: #ffff;">Couts Plantations:</strong>
+											{{ culture.coutsplantations }}<br>
+										</p>
+
+										<div class="btn-group">
+											<a href="{{ path('app_culture_show', {'id': culture.id}) }}" class="btn btn-secondary">Afficher</a>
+											<a href="{{ path('app_culture_edit', {'id': culture.id}) }}" class="btn btn-success">Modifier</a>
+											<form method="post" action="{{ path('app_culture_delete', {'id': culture.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet élément ?');" style="display: inline-block;">
+												<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ culture.id) }}">
+												<button class="btn btn-danger">Supprimer</button>
+											</form>
+										</div>
 									</div>
 								</div>
 							</div>

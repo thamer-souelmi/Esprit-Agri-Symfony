@@ -8,6 +8,18 @@
 
 }
 
+/* Styles de la boîte */
+.gradient-box {
+    width: 200px;
+    /* Ajustez la largeur selon vos besoins */
+    height: 200px;
+    /* Ajustez la hauteur selon vos besoins */
+    background: linear-gradient(to right, #00ff00, #ffff00);
+    /* Dégradé allant du vert (#00ff00) au jaune (#ffff00) de gauche à droite */
+    border: 1px solid #000;
+    /* Bordure noire (facultatif) */
+}
+
 .custom-light-yellow-background {
     background-color: var(--light-yellow);
 }

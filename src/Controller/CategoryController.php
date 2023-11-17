@@ -134,8 +134,17 @@ class CategoryController extends AbstractController
     #[Route('/back/{id}', name: 'app_categoryback_delete', methods: ['POST'])]
     public function deleteback(Request $request, Category $category, CategoryRepository $categoryRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $category->getId(), $request->request->get('_token'))) {
-            $categoryRepository->remove($category, true);
+        // Ajouter la vérification si la catégorie est utilisée par une culture
+        if ($categoryRepository->isCategoryInUse($category)) {
+            $this->addFlash('danger', 'La catégorie est utilisée par au moins une culture. Suppression impossible.');
+        } else {
+            // Supprimer la catégorie si le jeton CSRF est valide et qu'elle n'est pas utilisée par une culture
+            if ($this->isCsrfTokenValid('delete' . $category->getId(), $request->request->get('_token'))) {
+                $categoryRepository->remove($category, true);
+                $this->addFlash('success', 'La catégorie a été supprimée avec succès.');
+            } else {
+                $this->addFlash('danger', 'Le jeton CSRF n\'est pas valide. Suppression impossible.');
+            }
         }
 
         return $this->redirectToRoute('app_categoryback_index', [], Response::HTTP_SEE_OTHER);

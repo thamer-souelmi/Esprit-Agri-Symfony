@@ -204,6 +204,8 @@ class CultureController extends AbstractController
     #[Route('/{id}/edit', name: 'app_culture_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Culture $culture, CultureRepository $cultureRepository): Response
     {
+        $culture = new Culture();
+
         $form = $this->createForm(CultureType::class, $culture, ['is_edit' => true]);
         $form->handleRequest($request);
 
@@ -214,6 +216,7 @@ class CultureController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash('success', 'Culture updated successfully!');
+            $cultureRepository->save($culture, true);
 
             return $this->redirectToRoute('app_culture_index', [], Response::HTTP_SEE_OTHER);
         }
