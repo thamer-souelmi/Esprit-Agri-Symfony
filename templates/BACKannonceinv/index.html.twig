@@ -1,0 +1,40 @@
+{% extends 'baseback.html.twig' %}
+
+
+{% block body %}
+    <h1>Annonces Investissements </h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Titre</th>
+                <th>Montant</th>
+                <th>Datepublication</th>
+                <th>Localisation</th>
+                <th>Description</th>
+                <th>Photo</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for annonceinvestissement in annonceinvestissements %}
+            <tr>
+                <td>{{ annonceinvestissement.titre }}</td>
+                <td>{{ annonceinvestissement.montant }}</td>
+                <td>{{ annonceinvestissement.datepublication ? annonceinvestissement.datepublication|date('Y-m-d') : '' }}</td>
+                <td>{{ annonceinvestissement.localisation }}</td>
+                <td>{{ annonceinvestissement.description }}</td>
+                <td><img src="{{ asset('img/' ~ annonceinvestissement.photo) }}" alt=" Image" style="max-width:100px;max-height:100px;"></td>
+                <td style="display: flex; align-items: center;">
+                    <a href="{{ path('app_annonceinvestissement_show_back', {'idannonce': annonceinvestissement.idannonce}) }}" class="btn btn-secondary rounded-pill py-2 px-4">Afficher</a>
+
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

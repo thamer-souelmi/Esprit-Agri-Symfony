@@ -69,6 +69,7 @@ class Culture
      *
      * @ORM\Column(name="user_id", type="integer", nullable=true)
      */
+    private $userId;
 
     public function getId(): ?int
     {
@@ -147,6 +148,17 @@ class Culture
         return $this;
     }
 
+    public function getUserId(): ?int
+    {
+        return $this->userId;
+    }
+
+    public function setUserId(?int $userId): static
+    {
+        $this->userId = $userId;
+
+        return $this;
+    }
 
 
 }

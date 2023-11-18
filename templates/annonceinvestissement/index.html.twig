@@ -95,12 +95,7 @@
     <!-- Navbar End -->
      
 <!-- Banner Start -->
-<div class="container-fluid banner my-5 py-5" data-parallax="scroll" data-image-src="{{ asset('img/investissement.jpg') }}">
-{#bouton#}
-<div class="text-center">
-    <a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_annonceinvestissement_new') }}">Ajouter Annonce</a>
-    <a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_negociation_index') }}">Listes des Négociations</a>
-</div>
+<div class="container-fluid banner my-5 py-5" data-parallax="scroll" data-image-src="{{ asset('img/17.jpg') }}">
     <div class="container py-5">
         <div class="row g-5">
             {% for annonceinvestissement in annonceinvestissements %}
@@ -128,7 +123,10 @@
                         {% include 'annonceinvestissement/_delete_form.html.twig' with {'submit_button': 'Supprimer'} %}
                         </div>
                         <div class="col-sm-4">
-                            <a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_negociation_new') }}">Négocier</a>
+                            <a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_negociation_new', {'idannonce': annonceinvestissement.idannonce }) }}">Négocier</a>
+                        </div>
+                         <div class="col-sm-4">
+                            <a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_negociation_show', {'idannonce': annonceinvestissement.idannonce }) }}">Afficher Négociations</a>
                         </div>
                     </div>
                 </div>
@@ -140,6 +138,12 @@
             {% endfor %}
         </div>
     </div>
+</div>
+
+{#bouton#}
+<div class="text-center">
+    <a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_annonceinvestissement_new') }}">Ajouter Annonce</a>
+    <a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_negociation_index') }}">Listes des Négociations</a>
 </div>
 <!-- Banner End -->
 

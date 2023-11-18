@@ -4,12 +4,17 @@ namespace App\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use App\Repository\AnnonceinvestissementRepository;
 
 /**
  * Annonceinvestissement
  *
  * @ORM\Table(name="annonceinvestissement")
  * @ORM\Entity
+ */
+/**
+ * @ORM\Entity(repositoryClass=AnnonceinvestissementRepository::class)
  */
 class Annonceinvestissement
 {
@@ -26,6 +31,7 @@ class Annonceinvestissement
      * @var string
      *
      * @ORM\Column(name="titre", type="string", length=200, nullable=false)
+     * @Assert\NotBlank(message="Veuillez ajouter le titre !")
      */
     private $titre;
 
@@ -33,6 +39,7 @@ class Annonceinvestissement
      * @var float
      *
      * @ORM\Column(name="montant", type="float", precision=10, scale=0, nullable=false)
+     * @Assert\NotBlank(message="Veuillez ajouter le montant !")
      */
     private $montant;
 
@@ -40,6 +47,7 @@ class Annonceinvestissement
      * @var \DateTime
      *
      * @ORM\Column(name="datePublication", type="date", nullable=false)
+     * @Assert\NotBlank(message="Veuillez ajouter la date de publication !")
      */
     private $datepublication;
 
@@ -47,6 +55,7 @@ class Annonceinvestissement
      * @var string
      *
      * @ORM\Column(name="localisation", type="string", length=100, nullable=false)
+     * @Assert\NotBlank(message="Veuillez ajouter la localisation !")
      */
     private $localisation;
 
@@ -54,6 +63,7 @@ class Annonceinvestissement
      * @var string
      *
      * @ORM\Column(name="description", type="string", length=400, nullable=false)
+     * @Assert\NotBlank(message="Veuillez ajouter la description !")
      */
     private $description;
 
@@ -61,7 +71,6 @@ class Annonceinvestissement
      * @var string
      *
      * @ORM\Column(name="photo", type="string", length=500, nullable=false)
-     *
      */
     private $photo;
 

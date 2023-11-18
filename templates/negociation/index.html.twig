@@ -14,12 +14,12 @@
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item"><strong>Montant Proposé:</strong> {{ negociation.montantpropose }}</li>
                         <li class="list-group-item"><strong>Message:</strong> {{ negociation.message }}</li>
-                        <li class="list-group-item"><strong>Etat Négociation:</strong> {{ negociation.etatnego }}</li>
                         <li class="list-group-item"><strong>Date Négociation:</strong> {{ negociation.datenegociation ? negociation.datenegociation|date('Y-m-d') : '' }}</li>
-                        <li class="list-group-item d-flex justify-content-between">
-                            <a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_negociation_edit', {'id': negociation.id}) }}">Modifier</a>
-                            {% include 'negociation/_delete_form.html.twig' with {'submit_button': 'Supprimer'} %}
-                        </li>
+                        <li class="list-group-item"><strong>Etat Négociation:</strong> <a href="{{ path('app_nego_decision', {'id': negociation.id, 'decision': 'accept'}) }}" class="btn btn-primary" data-decision="accept">Accepter</a>
+
+                        <a href="{{ path('app_nego_decision', {'id': negociation.id, 'decision': 'refuse'}) }}" class="btn btn-primary" data-decision="refuse">Refuser</a></li>
+                        
+                        
                     </ul>
                 </div>
             </div>
