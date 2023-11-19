@@ -12,17 +12,29 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Knp\Component\Pager\PaginatorInterface;
+
+
 
 #[Route('/negociation')]
 class NegociationController extends AbstractController
 {
     #[Route('/', name: 'app_negociation_index', methods: ['GET'])]
-    public function index(NegociationRepository $negociationRepository): Response
-    {
-        return $this->render('negociation/index.html.twig', [
-            'negociations' => $negociationRepository->findAll(),
-        ]);
-    }
+public function index(NegociationRepository $negociationRepository, PaginatorInterface $paginator, Request $request): Response
+{
+    $queryBuilder = $negociationRepository->createQueryBuilder('n')
+        ->orderBy('n.datenegociation', 'DESC'); // Assuming you want to order by creation date
+
+    $pagination = $paginator->paginate(
+        $queryBuilder->getQuery(),
+        $request->query->getInt('page', 1), // Get the page number from the request, default to 1
+        4 // Items per page
+    );
+
+    return $this->render('negociation/index.html.twig', [
+        'negociations' => $pagination,
+    ]);
+}
      /////////////////////////////BACK//////////////////////////////////////////
      #[Route('/backnego', name: 'app_negociation_index_back', methods: ['GET'])]
     public function indexNego(NegociationRepository $negociationRepository): Response

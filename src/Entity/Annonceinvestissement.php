@@ -2,77 +2,61 @@
 
 namespace App\Entity;
 
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\AnnonceinvestissementRepository;
 
 /**
- * Annonceinvestissement
- *
  * @ORM\Table(name="annonceinvestissement")
- * @ORM\Entity
- */
-/**
  * @ORM\Entity(repositoryClass=AnnonceinvestissementRepository::class)
  */
 class Annonceinvestissement
 {
     /**
-     * @var int
-     *
      * @ORM\Column(name="idAnnonce", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $idannonce;
+    private int $idannonce;
 
     /**
-     * @var string
-     *
      * @ORM\Column(name="titre", type="string", length=200, nullable=false)
      * @Assert\NotBlank(message="Veuillez ajouter le titre !")
      */
-    private $titre;
+    private string $titre;
 
     /**
-     * @var float
-     *
      * @ORM\Column(name="montant", type="float", precision=10, scale=0, nullable=false)
      * @Assert\NotBlank(message="Veuillez ajouter le montant !")
      */
-    private $montant;
+    private float $montant;
 
     /**
-     * @var \DateTime
-     *
      * @ORM\Column(name="datePublication", type="date", nullable=false)
      * @Assert\NotBlank(message="Veuillez ajouter la date de publication !")
+     * @Assert\GreaterThanOrEqual(
+     *     "today",
+     *     message="La date de publication ne peut pas être antérieure à aujourd'hui"
+     * )
      */
-    private $datepublication;
+    private \DateTimeInterface $datepublication;
 
     /**
-     * @var string
-     *
      * @ORM\Column(name="localisation", type="string", length=100, nullable=false)
      * @Assert\NotBlank(message="Veuillez ajouter la localisation !")
      */
-    private $localisation;
+    private string $localisation;
 
     /**
-     * @var string
-     *
      * @ORM\Column(name="description", type="string", length=400, nullable=false)
      * @Assert\NotBlank(message="Veuillez ajouter la description !")
      */
-    private $description;
+    private string $description;
 
     /**
-     * @var string
-     *
      * @ORM\Column(name="photo", type="string", length=500, nullable=false)
      */
-    private $photo;
+    private string $photo;
 
     public function getIdannonce(): ?int
     {
@@ -84,7 +68,7 @@ class Annonceinvestissement
         return $this->titre;
     }
 
-    public function setTitre(string $titre): static
+    public function setTitre(string $titre): self
     {
         $this->titre = $titre;
 
@@ -96,7 +80,7 @@ class Annonceinvestissement
         return $this->montant;
     }
 
-    public function setMontant(float $montant): static
+    public function setMontant(float $montant): self
     {
         $this->montant = $montant;
 
@@ -108,7 +92,7 @@ class Annonceinvestissement
         return $this->datepublication;
     }
 
-    public function setDatepublication(\DateTimeInterface $datepublication): static
+    public function setDatepublication(\DateTimeInterface $datepublication): self
     {
         $this->datepublication = $datepublication;
 
@@ -120,7 +104,7 @@ class Annonceinvestissement
         return $this->localisation;
     }
 
-    public function setLocalisation(string $localisation): static
+    public function setLocalisation(string $localisation): self
     {
         $this->localisation = $localisation;
 
@@ -132,7 +116,7 @@ class Annonceinvestissement
         return $this->description;
     }
 
-    public function setDescription(string $description): static
+    public function setDescription(string $description): self
     {
         $this->description = $description;
 
@@ -144,12 +128,10 @@ class Annonceinvestissement
         return $this->photo;
     }
 
-    public function setPhoto(string $photo): static
+    public function setPhoto(string $photo): self
     {
         $this->photo = $photo;
 
         return $this;
     }
-
-
 }

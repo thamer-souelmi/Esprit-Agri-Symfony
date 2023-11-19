@@ -45,4 +45,21 @@ class AnnonceinvestissementRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+/**
+     * Check if an Annonceinvestissement is associated with any negotiations.
+     *
+     * @param Annonceinvestissement $annonceinvestissement
+     *
+     * @return bool
+     */
+    public function hasAssociatedNegotiations(Annonceinvestissement $annonceinvestissement): bool
+{
+    return $this->createQueryBuilder('a')
+        ->select('COUNT(n.id)')
+        ->leftJoin('App\Entity\Negotiation', 'n', 'WITH', 'n.annonceinvestissement = a.idannonce') // Assuming Negotiation entity and field, adjust as needed
+        ->andWhere('a = :annonceinvestissement')
+        ->setParameter('annonceinvestissement', $annonceinvestissement)
+        ->getQuery()
+        ->getSingleScalarResult() > 0;
+}
 }

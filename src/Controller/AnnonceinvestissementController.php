@@ -11,17 +11,29 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Knp\Component\Pager\PaginatorInterface;
 
 #[Route('/annonceinvestissement')]
 class AnnonceinvestissementController extends AbstractController
 {
-    #[Route('/', name: 'app_annonceinvestissement_index', methods: ['GET'])]
-    public function index(AnnonceinvestissementRepository $annonceinvestissementRepository): Response
-    {
-        return $this->render('annonceinvestissement/index.html.twig', [
-            'annonceinvestissements' => $annonceinvestissementRepository->findAll(),
-        ]);
-    }
+#[Route('/', name: 'app_annonceinvestissement_index', methods: ['GET'])]
+public function index(AnnonceinvestissementRepository $annonceinvestissementRepository, PaginatorInterface $paginator, Request $request): Response
+{
+    $annonceinvestissements = $annonceinvestissementRepository->findAll();
+
+    $pagination = $paginator->paginate(
+        $annonceinvestissements,
+        $request->query->getInt('page', 1),
+        4 // Number of items per page
+    );
+
+    return $this->render('annonceinvestissement/index.html.twig', [
+        'pagination' => $pagination,
+    ]);
+}
     /////////////////////////////BACK//////////////////////////////////////////
     #[Route('/back', name: 'app_annonceinvestissement_index_back', methods: ['GET'])]
     public function indexBack(AnnonceinvestissementRepository $annonceinvestissementRepository): Response
@@ -163,12 +175,29 @@ class AnnonceinvestissementController extends AbstractController
      }
       /////////////////////////////BACK//////////////////////////////////////////
 
-    #[Route('/{idannonce}', name: 'app_annonceinvestissement_delete', methods: ['POST'])]
-    public function delete(Request $request, Annonceinvestissement $annonceinvestissement, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$annonceinvestissement->getIdannonce(), $request->request->get('_token'))) {
-            $entityManager->remove($annonceinvestissement);
-            $entityManager->flush();
+      #[Route('/{idannonce}', name: 'app_annonceinvestissement_delete', methods: ['POST'])]
+    public function delete(
+        Request $request,
+        Annonceinvestissement $annonceinvestissement,
+        EntityManagerInterface $entityManager,
+        SessionInterface $session,
+        UrlGeneratorInterface $urlGenerator
+    ): Response {
+        if ($this->isCsrfTokenValid('delete' . $annonceinvestissement->getIdannonce(), $request->request->get('_token'))) {
+            try {
+                // Your existing code to delete the announcement
+            } catch (\Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException $e) {
+                // Handle the foreign key constraint violation
+                $this->addFlash('error', 'Cannot delete the announcement because it has associated negotiations.');
+
+                // Use RedirectToRoute to create a new RedirectResponse
+                $redirectResponse = new RedirectResponse(
+                    $urlGenerator->generate('app_annonceinvestissement_index')
+                );
+
+                // Return the new RedirectResponse
+                return $redirectResponse;
+            }
         }
 
         return $this->redirectToRoute('app_annonceinvestissement_index', [], Response::HTTP_SEE_OTHER);

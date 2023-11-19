@@ -1,42 +1,49 @@
 {% extends 'nego.html.twig' %}
 
-
-
 {% block body %}
-    
+    <!-- Banner Start -->
 
-    <div class="row">
-    {% for negociation in negociations %}
-        <div class="col-md-4 mb-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Négociation {{ loop.index }}</h5>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item"><strong>Montant Proposé:</strong> {{ negociation.montantpropose }}</li>
-                        <li class="list-group-item"><strong>Message:</strong> {{ negociation.message }}</li>
-                        <li class="list-group-item"><strong>Date Négociation:</strong> {{ negociation.datenegociation ? negociation.datenegociation|date('Y-m-d') : '' }}</li>
-                        <li class="list-group-item"><strong>Etat Négociation:</strong> <a href="{{ path('app_nego_decision', {'id': negociation.id, 'decision': 'accept'}) }}" class="btn btn-primary" data-decision="accept">Accepter</a>
-
-                        <a href="{{ path('app_nego_decision', {'id': negociation.id, 'decision': 'refuse'}) }}" class="btn btn-primary" data-decision="refuse">Refuser</a></li>
-                        
-                        
-                    </ul>
+        <div class="container-xxl py-5">
+            <div class="container">
+                <div class="row gx-4">
+                    {% for negociation in negociations %}
+                        <div class="col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.1s">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">Négociation {{ loop.index }}</h5>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item"><strong>Montant Proposé:</strong> {{ negociation.montantpropose }}</li>
+                                        <li class="list-group-item"><strong>Message:</strong> {{ negociation.message }}</li>
+                                        <li class="list-group-item"><strong>Date Négociation:</strong> {{ negociation.datenegociation ? negociation.datenegociation|date('Y-m-d') : '' }}</li>
+                                        <li class="list-group-item">
+                                            <strong>Etat Négociation:</strong>
+                                            <a href="{{ path('app_nego_decision', {'id': negociation.id, 'decision': 'accept'}) }}" class="btn btn-primary" data-decision="accept">Accepter</a>
+                                            <a href="{{ path('app_nego_decision', {'id': negociation.id, 'decision': 'refuse'}) }}" class="btn btn-primary" data-decision="refuse">Refuser</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="col-md-12">
+                            <p>no records found</p>
+                        </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
-    {% else %}
-        <div class="col-md-12">
-            <p>no records found</p>
+
+        {# Pagination #}
+        <div class="text-center">
+            {{ knp_pagination_render(negociations) }}
         </div>
-    {% endfor %}
-</div>
+   
+    <!-- Banner End -->
 
-
-
-<a href="{{ path('app_annonceinvestissement_index') }}" class="btn btn-light btn-icon-split btn-lg">
-                            <span class="icon text-gray-600">
-                                <i class="fas fa-arrow-left"></i>
-                            </span>
-                            <span class="text">Retour Annonce</span>
-</a>
+    <a href="{{ path('app_annonceinvestissement_index') }}" class="btn btn-light btn-icon-split btn-lg">
+        <span class="icon text-gray-600">
+            <i class="fas fa-arrow-left"></i>
+        </span>
+        <span class="text">Retour Annonce</span>
+    </a>
 {% endblock %}
