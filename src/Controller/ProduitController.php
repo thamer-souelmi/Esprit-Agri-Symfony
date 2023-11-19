@@ -20,6 +20,8 @@ class ProduitController extends AbstractController
     #[Route('/', name: 'app_produit_index', methods: ['GET'])]
     public function index(EntityManagerInterface $entityManager): Response
     {
+        dump($this->getUser()->getRoles());
+
         $produits = $entityManager
             ->getRepository(Produit::class)
             ->findAll();
@@ -28,17 +30,17 @@ class ProduitController extends AbstractController
             'produits' => $produits,
         ]);
     }
-    #[Route('/back', name: 'app_produit_indexb', methods: ['GET'])]
-    public function indexb(EntityManagerInterface $entityManager): Response
-    {
-        $produits = $entityManager
-            ->getRepository(Produit::class)
-            ->findAll();
+    // #[Route('/back', name: 'app_produit_indexb', methods: ['GET'])]
+    // public function indexb(EntityManagerInterface $entityManager): Response
+    // {
+    //     $produits = $entityManager
+    //         ->getRepository(Produit::class)
+    //         ->findAll();
 
-        return $this->render('produit/indexb.html.twig', [
-            'produits' => $produits,
-        ]);
-    }
+    //     return $this->render('produit/indexb.html.twig', [
+    //         'produits' => $produits,
+    //     ]);
+    // }
 
     #[Route('/new', name: 'app_produit_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager ,Security $security,SluggerInterface $slugger): Response

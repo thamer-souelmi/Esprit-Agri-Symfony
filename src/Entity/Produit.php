@@ -2,90 +2,54 @@
 
 namespace App\Entity;
 
+use App\Repository\ProduitRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-/**
- * Produit
- *
- * @ORM\Table(name="produit")
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: ProduitRepository::class)]
+#[ORM\Table(name: '`produit`')]
 class Produit
 {
     
 
-/**
- * @var int
- *
- * @ORM\Column(name="id", type="integer", nullable=false)
- * @ORM\Id
- * @ORM\GeneratedValue(strategy="IDENTITY")
- */
-private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-/**
- * @var string
- *
- * @ORM\Column(name="Nomprod", type="string", length=30, nullable=false)
- * @Assert\NotBlank(message="Le nom du produit ne peut pas être vide.")
- * @Assert\Length(max=30, maxMessage="Le nom du produit ne peut pas dépasser {{ limit }} caractères.")
- */
-private $nomprod;
+    #[ORM\Column]
+    #[Assert\NotBlank(message: "Le nom du produit ne peut pas être vide.")]
+    #[Assert\Length(max: 30, maxMessage: "Le nom du produit ne peut pas dépasser {{ limit }} caractères.")]
+    private ?string $nomprod = null;
 
-/**
- * @var string
- *
- */
-private $cat;
+    #[ORM\Column]
+    private ?string $cat = null;
 
-/**
- * @var float
- *
- * @ORM\Column(name="prix", type="float", precision=10, scale=0, nullable=false)
- * @Assert\NotBlank(message="Le prix ne peut pas être vide.")
- * @Assert\GreaterThan(value=0, message="Le prix doit être supérieur à zéro.")
- */
-private $prix;
+    #[ORM\Column]
+    #[Assert\NotBlank(message: "Le prix ne peut pas être vide.")]
+    #[Assert\GreaterThan(value: 0, message: "Le prix doit être supérieur à zéro.")]
+    private ?float $prix = null;
 
-/**
- * @var float
- *
- * @ORM\Column(name="qte", type="float", precision=10, scale=0, nullable=false)
- * @Assert\NotBlank(message="La quantité ne peut pas être vide.")
- * @Assert\GreaterThan(value=0, message="La quantité doit être supérieure à zéro.")
- */
-private $qte;
+    #[ORM\Column]
+    #[Assert\NotBlank(message: "La quantité ne peut pas être vide.")]
+    #[Assert\GreaterThan(value: 0, message: "La quantité doit être supérieure à zéro.")]
+    private ?float $qte = null;
 
-/**
- * @var string
- *
- * @ORM\Column(name="descr", type="string", nullable=false)
- * @Assert\NotBlank(message="La description ne peut pas être vide.")
- */
-private $descr;
+    #[ORM\Column]
+    #[Assert\NotBlank(message: "La description ne peut pas être vide.")]
+    private ?string $descr = null;
 
-/**
- * @var bool
- *
- * @ORM\Column(name="status", type="boolean", nullable=false)
- */
-private $status;
+    #[ORM\Column]
+    private ?bool $status = null;
 
-/**
- * @var string|null
- *
- * @ORM\Column(name="image", type="string", length=255, nullable=true)
- */
-private $image;
+    #[ORM\Column]
+    private ?string $image = null;
 
 
     
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="produits")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $user;
+#[ORM\ManyToOne(targetEntity: "App\Entity\User", inversedBy: "produits")]
+#[ORM\JoinColumn(nullable: false)]
+private ?User $user = null;
 
     public function getId(): ?int
     {
@@ -188,6 +152,8 @@ private $image;
 
         return $this;
     }
+
+
 
 
 }

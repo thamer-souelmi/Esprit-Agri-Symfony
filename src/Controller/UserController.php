@@ -2,7 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Produit;
 use App\Entity\User;
+use App\Repository\UserRepository;
+use App\Form\ProduitType;
 use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,12 +29,63 @@ class UserController extends AbstractController
     #[Route('/', name: 'app_user_index', methods: ['GET'])]
     public function index(EntityManagerInterface $entityManager): Response
     {
-        $users = $entityManager
-            ->getRepository(User::class)
+        //$this->denyAccessUnlessGranted('admin', null, 'Access denied!');
+        $usersRepository = $entityManager->getRepository(User::class);
+    
+        $users = $usersRepository->findByRoles('admin');
+
+
+    return $this->render('user/index.html.twig', [
+        'users' => $users,
+    ]);
+    }
+    #[Route('/produit', name: 'app_produit_indexb', methods: ['GET'])]
+    public function indexb(EntityManagerInterface $entityManager): Response
+    {
+        $produits = $entityManager
+            ->getRepository(Produit::class)
             ->findAll();
 
-        return $this->render('user/index.html.twig', [
-            'users' => $users,
+        return $this->render('produit/indexb.html.twig', [
+            'produits' => $produits,
+        ]);
+    }
+    #[Route('produit/{id}/edit', name: 'app_produit_editb', methods: ['GET', 'POST'])]
+    public function editprod(Request $request, Produit $produit, EntityManagerInterface $entityManager,SluggerInterface $slugger): Response
+    {
+        $form = $this->createForm(ProduitType::class, $produit);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+             /** @var UploadedFile $imageFile */
+             $imageFile = $form->get('image')->getData();
+        
+             if ($imageFile) {
+                 $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                 $safeFilename = $slugger->slug($originalFilename);
+                 $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
+     
+                 // Move the file to the directory where your images are stored
+                 try {
+                     $imageFile->move(
+                         $this->getParameter('img_directory'),
+                         $newFilename
+                     );
+                 } catch (FileException $e) {
+                     // Handle the exception if something happens during the file upload
+                 }
+     
+                 // Update the 'image' property to store the file name instead of its contents
+                 $produit->setImage($newFilename);
+             }
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_produit_indexb', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('produit/editb.html.twig', [
+            'produit' => $produit,
+            'form' => $form,
         ]);
     }
 
@@ -134,6 +188,7 @@ class UserController extends AbstractController
 
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
     }
+    
 
     
    

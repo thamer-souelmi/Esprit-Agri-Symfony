@@ -1,14 +1,10 @@
-{% extends 'prod.html.twig' %}
+{% extends 'baseback.html.twig' %}
 
-{% block title %}New Produit{% endblock %}
-{% block banner_image %}
-{{ asset('img/1.jpeg') }}
-{% endblock %}
+{% block title %}Edit Produit{% endblock %}
 
 {% block body %}
-    <h1>Créer un nouveau produit</h1>
+    <h1>Modifier Produit</h1>
 
-   
     {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 
         {{ form_row(form.nomprod, {'attr': {'class': 'form-control', 'placeholder': 'Nom du produit'}}) }}
@@ -20,9 +16,11 @@
 {{ form_row(form.image, {'attr': {'class': 'form-control', 'placeholder': 'Image'}}) }}
 
 
-        <button type="submit" class="btn btn-primary">Ajouter</button>
+        <button type="submit" class="btn btn-primary">Modifier</button>
 
         {{ form_end(form) }}
 
-    <a href="{{ path('app_produit_index') }}">back to list</a>
+    <a href="{{ path('app_produit_indexb') }}">back to list</a>
+
+    {{ include('produit/_delete_form.html.twig') }}
 {% endblock %}

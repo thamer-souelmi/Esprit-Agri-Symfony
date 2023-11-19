@@ -2,91 +2,65 @@
 namespace App\Entity;
 
 //namespace App\Entity\User;
-
-use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\ArrayCollection;
+use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * User
- *
- * @ORM\Table(name="user")
- * @ORM\Entity
- */
+
+
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\Table(name: '`user`')]
 
 class User implements UserInterface
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="cin", type="string", nullable=false)
-     */
+    #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'Le CIN ne doit pas être vide.')]
     #[Assert\Type(type: 'numeric', message: 'Le CIN doit être un nombre.')]
-    private $cin;
+    private ?string $cin = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="nom", type="string", length=20, nullable=false)
-     */
+    #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'L\'Le nom ne doit pas être vide.')]
-    private $nom;
+    #[Assert\Length(
+        min: 2,
+        max: 50,
+        minMessage: 'Il faut inserer au moins {{ limit }} characteres',
+        maxMessage: 'Il faut inserer au maximum {{ limit }} characteres',
+    )]
+    #[Assert\Type(
+        type:"string",
+        message:"veuillez inserer un nom correct "
+    )]
+    private ?string $nom = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="prenom", type="string", length=20, nullable=false)
-     */
+    #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'L\'Le pronom ne doit pas être vide.')]
-    private $prenom;
+    private ?string $prenom = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="mdp", type="string", length=200, nullable=false)
-     */
+    #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'Le mot de passe ne doit pas être vide.')]
     #[Assert\Length(
         min: 8,
         minMessage: 'Le mot de passe doit contenir au moins 8 caractères.'
     )]
-    private $mdp;
+    private ?string $mdp = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="mail", type="string", length=30, nullable=false)
-     */
+    #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'L\'email ne doit pas être vide.')]
     #[Assert\Email(message: 'Format d\'email invalide.')]
-    private $mail;
+    private ?string $mail = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="adresse", type="string", length=50, nullable=false)
-     */
+    #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'L\'adresse ne peut pas être vide.')]
     #[Assert\Length(max: 50, maxMessage: 'L\'adresse ne peut pas dépasser {{ limit }} caractères.')]
-    private $adresse;
+    private ?int $adresse = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="numtel", type="integer", nullable=false)
-     */
+    #[ORM\Column]
     #[Assert\NotBlank(message: 'Le numéro de téléphone ne peut pas être vide.')]
     #[Assert\Length(
         min: 8,
@@ -94,26 +68,13 @@ class User implements UserInterface
     exactMessage: 'Le numéro de téléphone doit comporter exactement {{ limit }} chiffres.',
     
     )]
-    private $numtel;
+    private ?int $numtel = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="role", type="string", length=0, nullable=false)
-     */
+    #[ORM\Column(length: 255)]
     private $role;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="image", type="string", length=255, nullable=true)
-     */
-    private $image;
-
-      /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Produit", mappedBy="user")
-     */
-    private $produits;
+    #[ORM\Column(length: 255)]
+    private ?string $image = null;
 
     public function getId(): ?int
     {
@@ -252,19 +213,7 @@ class User implements UserInterface
         // If you store any temporary, sensitive data on the user, clear it here
     }
 
-    public function __construct()
-    {
-        $this->produits = new ArrayCollection();
-    }
-
-    /**
-     * @return Collection|Produit[]
-     */
-    public function getProduits(): Collection
-    {
-        return $this->produits;
-    }
-
+    
     
 
 
