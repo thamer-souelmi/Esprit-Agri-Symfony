@@ -4,8 +4,8 @@ namespace App\Entity;
 
 use APP\Entity\Category;
 use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
+    use Doctrine\ORM\Mapping as ORM;
+    use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Culture

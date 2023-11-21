@@ -202,21 +202,26 @@ class CultureController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_culture_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Culture $culture, CultureRepository $cultureRepository): Response
+    public function edit(Request $request, $id, CultureRepository $cultureRepository): Response
     {
-        $culture = new Culture();
+        // Fetch the existing Culture object based on the provided id
+        $culture = $cultureRepository->find($id);
 
+        // Check if the Culture object was found
+        if (!$culture) {
+            throw $this->createNotFoundException('Culture not found for id ' . $id);
+        }
+
+        // Create the form using the existing Culture object
         $form = $this->createForm(CultureType::class, $culture, ['is_edit' => true]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             // Your existing logic for saving edited culture
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($culture);
-            $entityManager->flush();
+            $entityManager->flush(); // No need to persist again since the object is already managed
 
             $this->addFlash('success', 'Culture updated successfully!');
-            $cultureRepository->save($culture, true);
 
             return $this->redirectToRoute('app_culture_index', [], Response::HTTP_SEE_OTHER);
         }

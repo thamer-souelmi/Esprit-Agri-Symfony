@@ -1,4 +1,4 @@
-{% extends 'clientfront.html.twig' %}
+{% extends 'culturefront.html.twig' %}
 
 {% block title %}Marche
 {% endblock %}
@@ -15,10 +15,10 @@
 
 					<div class="row gx-4">
 						{% for client in clients %}
-							<div class="col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.1s">
+							<div class="col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.2s">
 								<div class="product-item">
 									<div class="position-relative">
-										<img class="img-fluid rounded" src="{{ asset('img/' ~ client.image) }}" style="width: 100%; height: 200px; object-fit: cover;">
+										<img class="img-fluid rounded" src="{{ asset('img/' ~ client.image) }}" style="width: 336px; height: 336px; object-fit: cover;">
 										<div class="product-overlay">
 											<a class="btn btn-square btn-secondary rounded-circle m-1" href="{{ path('app_client_show', {'id': client.id}) }}">
 												<i class="bi bi-link"></i>

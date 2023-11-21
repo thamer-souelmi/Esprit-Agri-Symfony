@@ -1,4 +1,4 @@
-{% extends 'clientfront.html.twig' %}
+{% extends 'culturefront.html.twig' %}
 
 {% block title %}Marche
 {% endblock %}
@@ -35,9 +35,9 @@
 		</tbody>
 	</table>
 
-	<a href="{{ path('app_client_index') }}">Retourner au list</a>
+	<a href="{{ path('app_client_index') }}" class="btn btn-secondary">Retourner au list</a>
 
-	<a href="{{ path('app_client_edit', {'id': client.id}) }}">edit</a>
+	<a href="{{ path('app_client_edit', {'id': client.id}) }}" class="btn btn-primary">edit</a>
 
 	{{ include('client/_delete_form.html.twig') }}
 {% endblock %}
