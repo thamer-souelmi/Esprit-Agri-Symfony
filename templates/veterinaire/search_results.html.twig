@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Visite Médicale{% endblock %}</title>
+        <title>{% block title %}Véterinaire{% endblock %}</title>
          <meta content="width=device-width, initial-scale=1.0" name="viewport">
          <meta content="" name="keywords">
          <meta content="" name="description">
@@ -45,6 +45,16 @@
     <!-- Template Javascript -->
     <script src="{{asset("js/main.js")}}"></script>
         {% endblock %}
+         <style>
+        .star {
+            font-size: 1.5rem;
+             
+        }
+        
+        .hover {
+            color: rgb(255, 196, 0);
+        }
+    </style>
     </head>
          <!-- Topbar Start -->
     <div class="container-fluid bg-dark px-0">
@@ -87,7 +97,7 @@
 
 
                 <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Visite Médical</a>
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Visite médical</a>
                     <div class="dropdown-menu bg-light m-0">
                         <a href="{{ path('app_traitementmedicale_index') }}" class="dropdown-item">Traitement médical</a>
                         <a href="{{ path('frontaffich')}}" class="dropdown-item">Véterinaire</a>
@@ -108,7 +118,6 @@
 
         <div class="container text-center py-5">
             <h1 class="display-3 text-white mb-4 animated slideInDown">Alliance Santé</h1>
-           
         </div>
     </div>
     <!-- Page Header End -->
@@ -116,51 +125,43 @@
     <div class="container-xxl py-5">
         <div class="container">
             <div class="text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
-                <p class="section-title bg-white text-center text-primary px-3">Visite Médical</p>
-                <h1 class="mb-5">Modifier un traitement Médical!</h1>
+                <p class="section-title bg-white text-center text-primary px-3">Nos partenaires</p>
+                <h1 class="mb-5">Vétérinaires Expérimentés</h1>
             </div>
-            
+
+
+
+
+
+
 
 {% block body %}
- <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-lg-7">
-                        <div class="p-5">
-                             {{ form_start(form,{'attr': {'novalidate': 'novalidate'}} ) }}
-
-{{ form_row(form.numero, {'label' : 'Numéro de bétail','attr': {'class': 'form-control form-control-user', 'placeholder': 'Entrez le numéro du betail'}}) }}
-<br>
-{{ form_row(form.typeintervmed, {'label' : 'Traitement médical','attr': {'class': 'form-control form-control-user'}}) }}
-<br>
-{{ form_row(form.dateintervmed, {'label' : 'Date de traitement','attr': {'class': 'form-control form-control-user'}}) }}
-<br>
-{{ form_row(form.coutinterv, {'label' : 'Cout','attr': {'class': 'form-control form-control-user', 'placeholder': 'Entrez le cout du traitement médicale'}}) }}
-<br>
-{{ form_row(form.medicament, {'label' : 'Médicaments','attr': {'class': 'form-control form-control-user', 'placeholder': 'Entrez les médicaments'}}) }}
-<br>
-{{ form_row(form.dureetraitement, {'label' : 'Durée de traitement','attr': {'class': 'form-control form-control-user', 'placeholder': 'Entrez la durée du traitement medicale'}}) }}
-<br>
-{{ form_row(form.description, {'label' : 'Déscription','attr': {'class': 'form-control form-control-user', 'placeholder': 'Entrez la description de son état'}}) }}
-<br>
-{{ form_row(form.idvet, {'label' : 'Véterinaire','attr': {'class': 'form-control form-control-user'}}) }}
-
-
-   {{ include('traitementmedicale/_form.html.twig', {'button_label': 'Modifier'}) }}        
-{{ form_end(form) }}
-
-
-
-
     
-   
-</div>
-      </div>
+
+    {% if veterinaires is not empty %}
+        <div class="row g-4">
+            {% for veterinaire in veterinaires %}
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="{{ loop.index * 0.2 }}s">
+                    <div class="team-item rounded p-4">
+                        <img class="img-fluid rounded mb-4" src="{{ asset('img/team-' ~ loop.index ~ '.jpg') }}" alt="">
+                        <h5>{{ veterinaire.prenomvet }}  {{ veterinaire.nomvet }} </h5>
+                        <p class="text-primary">{{ veterinaire.adresscabinet|split(':')[0]|trim }}</p>
+
+                        <i class="star" data-note="1">&#9733;</i>
+                        <i class="star" data-note="2">&#9733;</i>
+                        <i class="star" data-note="3">&#9733;</i>
+                        <i class="star" data-note="4">&#9733;</i>
+                        <i class="star" data-note="5">&#9733;</i>
+                        <i class="note">Note:</i>
+
+                        <div class="d-flex justify-content-center">
+                            <a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('contactvet', {'id': veterinaire.idvet}) }}"> Contacter  </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
-           </div>
-
-
-    
+    {% else %}
+        <p>Aucun résultat trouvé.</p>
+    {% endif %}
 {% endblock %}
-
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
