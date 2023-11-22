@@ -3,6 +3,7 @@
 namespace App\Entity;
 use App\Repository\TraitementmedicaleRepository;
 use Doctrine\DBAL\Types\Types;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TraitementmedicaleRepository::class)]
@@ -15,15 +16,26 @@ class Traitementmedicale
     private ?int $id;
 
     #[ORM\Column(length: 11)]
+    #[Assert\NotBlank(message: 'veuillez remplir le champ du numero')]
+    #[Assert\Regex(
+            pattern:"/^\d+$/",
+            message:'Le numéro doit être composé uniquement de chiffres')]
     private ?string$numero;
 
-    #[ORM\Column(length: 0)]
-    private ?string $typeintervmed;
+    #[ORM\Column(length: 200)]
+    private ?string $typeintervmed ='Vaccination';
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $dateintervmed;
+    #[Assert\NotNull(message: 'La date de commande ne peut pas être vide')]
+    #[Assert\GreaterThanOrEqual(
+        "today",
+        message: 'La date de traitement ne peut pas être antérieure à aujourd\'hui'
+    )]
+    private ?\DateTimeInterface $dateintervmed =null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'veuillez remplir le champ du cout')]
+    #[Assert\Type(type: 'numeric', message: 'Le champ du cout doit être un nombre.')]
     private ?float $coutinterv;
 
     #[ORM\Column(length: 200)]
@@ -33,9 +45,17 @@ class Traitementmedicale
     private ?string $dureetraitement;
 
     #[ORM\Column(length: 200)]
+    #[Assert\NotBlank(message: 'veuillez remplir le champ du nom')]
+    #[Assert\Length(
+        min: 2,
+        max: 50,
+        minMessage: 'Il faut inserer au moins {{ limit }} characteres',
+        maxMessage: 'Il faut inserer au maximum {{ limit }} characteres',
+    )]
     private ?string $description;
 
-    #[ORM\ManyToOne(inversedBy: 'vets')]
+    #[ORM\ManyToOne(inversedBy: 'traitements')]
+    #[ORM\JoinColumn(name: 'idvet', referencedColumnName: 'idvet')]
     private ?Veterinaire $idvet;
 
     public function getId(): ?int
