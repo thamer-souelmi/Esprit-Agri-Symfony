@@ -38,6 +38,11 @@ class Traitementmedicale
     #[Assert\Type(type: 'numeric', message: 'Le champ du cout doit être un nombre.')]
     private ?float $coutinterv;
 
+    #[ORM\Column(length: 200)]
+    private ?string $medicament;
+
+    #[ORM\Column(length: 200)]
+    private ?string $dureetraitement;
 
     #[ORM\Column(length: 200)]
     #[Assert\NotBlank(message: 'veuillez remplir le champ du nom')]
