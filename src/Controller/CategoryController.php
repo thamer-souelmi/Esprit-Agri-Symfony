@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Service\TwilioService;
+
 use App\Entity\Category;
 use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
@@ -87,7 +89,7 @@ class CategoryController extends AbstractController
 
 
     #[Route('/back/new', name: 'app_categoryback_new', methods: ['GET', 'POST'])]
-    public function newback(Request $request, CategoryRepository $categoryRepository): Response
+    public function newback(Request $request, CategoryRepository $categoryRepository, TwilioService $twilioService): Response
     {
         $category = new Category();
         $form = $this->createForm(CategoryType::class, $category);
@@ -95,7 +97,10 @@ class CategoryController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $categoryRepository->save($category, true);
+            $to = '+21652474552'; // Static phone number
 
+            $message = 'New category created: ' . $category->getType(); // Modify the message as needed
+            $twilioService->sendSMS($to, $message);
             return $this->redirectToRoute('app_categoryback_index', [], Response::HTTP_SEE_OTHER);
         }
 

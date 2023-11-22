@@ -69,11 +69,26 @@ class CultureController extends AbstractController
     //     return $this->render('culture/showCultures.html.twig', ['cultures' => $cultures]);
     // }
 
+    // #[Route('/', name: 'app_culture_index', methods: ['GET'])]
+    // public function index(CultureRepository $cultureRepository): Response
+    // {
+    //     return $this->render('culture/index.html.twig', [
+    //         'cultures' => $cultureRepository->findAll(),
+    //     ]);
+    // }
     #[Route('/', name: 'app_culture_index', methods: ['GET'])]
-    public function index(CultureRepository $cultureRepository): Response
+    public function index(CultureRepository $cultureRepository, PaginatorInterface $paginator, Request $request): Response
     {
+        $cultures = $cultureRepository->findAll();
+
+        $pagination = $paginator->paginate(
+            $cultures,
+            $request->query->getInt('page', 1),
+            3 // Number of items per page
+        );
+
         return $this->render('culture/index.html.twig', [
-            'cultures' => $cultureRepository->findAll(),
+            'pagination' => $pagination,
         ]);
     }
 

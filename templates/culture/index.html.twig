@@ -2,6 +2,12 @@
 
 {%block body%}
 <div class="card">
+	<div class="d-flex justify-content-end">
+		<a href="{{ path('app_culture_new') }}" class="btn btn-primary">
+			<i class="bi bi-plus"></i>
+			Ajouter
+		</a>
+	</div>
 	<div class="card-body">
 		<h5 class="card-title"></h5>
 
@@ -9,7 +15,9 @@
 
 
 		<div class="row">
-			{% for culture in cultures %}
+
+
+			{% for culture in pagination %}
 				<div class="col-md-4 mb-4">
 					<div class="card">
 						<div>
@@ -37,11 +45,19 @@
 										{{ culture.coutsplantations }}</li>
 									<li class="list-group-item d-flex justify-content-between">
 										<a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_culture_show', {'id': culture.id}) }}">
-											<i class="fas fa-camera"></i>Afficher</a>
-										<a class="btn btn-success rounded-pill py-2 px-4" href="{{ path('app_culture_edit', {'id': culture.id}) }}">Modifier</a>
+											<i class="bi bi-eye"></i>
+										</a>
+										{# Afficher #}
+										<a class="btn btn-success rounded-pill py-2 px-4" href="{{ path('app_culture_edit', {'id': culture.id}) }}">
+											<i class="bi bi-pencil"></i>
+										</a>
+										{# Modifier #}
 										<form method="post" action="{{ path('app_culture_delete', {'id': culture.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet élément ?');" style="display: inline-block;">
 											<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ culture.id) }}">
-											<button class="btn btn-danger rounded-pill py-2 px-4">Supprimer</button>
+											<button class="btn btn-danger rounded-pill py-2 px-4">
+												<i class="bi bi-trash"></i>
+											</button>
+											{# Supprimer #}
 										</form>
 									</li>
 								</ul>
@@ -54,13 +70,62 @@
 					<p>No records found</p>
 				</div>
 			{% endfor %}
+			<div class="container mt-5">
+				<div class="row justify-content-center">
+					<div class="text-center">
+						<div class="pagination">
+							{{ knp_pagination_render(pagination) }}
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
+		{# Pagination #}
 
-		<a href="{{ path('app_culture_new') }}" class="btn btn-primary">Ajouter</a>
+		<br>
+		<br>
+
 		<!-- Add links for other actions as needed -->
 	</div>
 
 </div>
 
+<style>
+	.pagination {
+		display: flex;
+		justify-content: center;
+		list-style: none;
+		padding: 0;
+	}
+
+	.pagination li {
+		margin: 0 5px;
+	}
+
+	.button-container {
+		display: flex;
+		flex-direction: row;
+		overflow-x: auto;
+		white-space: nowrap;
+	}
+
+
+	.button-container button {
+		margin-right: 10px; /* Espacement entre les boutons */
+	}
+
+	.pagination a {
+		text-decoration: none;
+		padding: 5px 10px;
+		border: 1px solid #3498db; /* Bleu */
+		border-radius: 3px;
+		color: #3498db; /* Bleu */
+	}
+
+	.pagination a:hover {
+		background-color: #3498db; /* Bleu au survol */
+		color: #fff; /* Texte blanc au survol */
+	}
+</style>
 
 {%endblock%}
