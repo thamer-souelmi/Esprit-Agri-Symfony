@@ -1,11 +1,24 @@
-{% extends 'base.html.twig' %}
+{% extends 'nego.html.twig' %}
 
-{% block title %}New Negociation{% endblock %}
+
 
 {% block body %}
-    <h1>Create new Negociation</h1>
+<div class="container mt-5">
+        
 
-    {{ include('negociation/_form.html.twig') }}
+        {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 
-    <a href="{{ path('app_negociation_index') }}">back to list</a>
+        {{ form_row(form.montantpropose, {'attr': {'class': 'form-control', 'placeholder': 'Montant Propose'}}) }}
+        {{ form_row(form.message, {'attr': {'class': 'form-control', 'placeholder': 'Message'}}) }}
+        {{ form_row(form.datenegociation, {'attr': {'class': 'form-control', 'placeholder': 'Date de Négociation'}}) }}
+        
+
+        <button type="submit" class="btn btn-primary">Ajouter</button>
+
+        {{ form_end(form) }}
+    </div>
+    
+
+
+    
 {% endblock %}

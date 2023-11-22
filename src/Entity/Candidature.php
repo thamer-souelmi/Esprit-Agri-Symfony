@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\CandidatureRepository;
 
 /**
@@ -12,8 +13,8 @@ use App\Repository\CandidatureRepository;
  * @ORM\Table(name="candidature")
  * @ORM\Entity
  */
-/**
- * @ORM\Entity(repositoryClass=CandidatureRepository::class)
+/*
+@ORM\Entity(repositoryClass=CandidatureRepository::class)
  */
 class Candidature
 {
@@ -27,18 +28,51 @@ class Candidature
     private $idcandidature;
 
     /**
-     * @var string
+     * @var string|null
      *
-     * @ORM\Column(name="messageMotivation", type="string", length=255, nullable=false)
-     */
-    private $messagemotivation;
+     * @ORM\Column(name="ExperienceProfessionnelle", type="string", length=5000, nullable=true)
+* @Assert\NotBlank(message="vueillez ajouter votre experience professionnelle")
+*/
+    private $experienceprofessionnelle;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="Formation", type="string", length=5000, nullable=true)
+* @Assert\NotBlank(message="vueillez ajouter vos formation")
+*/
+    private $formation;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="CompetencesTechniques", type="string", length=5000, nullable=true)
+* @Assert\NotBlank(message="vueillez ajouter vos compétence techniques  ")
+*/
+    private $competencestechniques;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="statusCandidature", type="string", length=0, nullable=false)
+     * @ORM\Column(name="CertifForma", type="string", length=200, nullable=true)
      */
-    private $statuscandidature;
+    private $certifforma;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="messageMotivation", type="string", length=255, nullable=false)
+* @Assert\NotBlank(message="vueillez ajouter votre message de motivation")
+*/
+    private $messagemotivation;
+
+  /**
+ * @var bool|null
+ *
+ * @ORM\Column(name="statusCandidature", type="boolean", nullable=true)
+ */
+     private $statusCandidature;
+
 
     /**
      * @var \DateTime
@@ -50,6 +84,54 @@ class Candidature
     public function getIdcandidature(): ?int
     {
         return $this->idcandidature;
+    }
+
+    public function getExperienceprofessionnelle(): ?string
+    {
+        return $this->experienceprofessionnelle;
+    }
+
+    public function setExperienceprofessionnelle(?string $experienceprofessionnelle): static
+    {
+        $this->experienceprofessionnelle = $experienceprofessionnelle;
+
+        return $this;
+    }
+
+    public function getFormation(): ?string
+    {
+        return $this->formation;
+    }
+
+    public function setFormation(?string $formation): static
+    {
+        $this->formation = $formation;
+
+        return $this;
+    }
+
+    public function getCompetencestechniques(): ?string
+    {
+        return $this->competencestechniques;
+    }
+
+    public function setCompetencestechniques(?string $competencestechniques): static
+    {
+        $this->competencestechniques = $competencestechniques;
+
+        return $this;
+    }
+
+    public function getCertifforma(): ?string
+    {
+        return $this->certifforma;
+    }
+
+    public function setCertifforma(string $certifforma): static
+    {
+        $this->certifforma = $certifforma;
+
+        return $this;
     }
 
     public function getMessagemotivation(): ?string
@@ -64,17 +146,18 @@ class Candidature
         return $this;
     }
 
-    public function getStatuscandidature(): ?string
+    public function getStatusCandidature(): ?bool
     {
-        return $this->statuscandidature;
+        return $this->statusCandidature;
     }
-
-    public function setStatuscandidature(string $statuscandidature): static
+    
+    public function setStatusCandidature(?bool $statusCandidature): self
     {
-        $this->statuscandidature = $statuscandidature;
-
+        $this->statusCandidature = $statusCandidature;
+    
         return $this;
     }
+    
 
     public function getDatecandidature(): ?\DateTimeInterface
     {

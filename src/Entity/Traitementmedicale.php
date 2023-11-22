@@ -1,13 +1,17 @@
 <?php
 
 namespace App\Entity;
-use App\Repository\TraitementmedicaleRepository;
+
 use Doctrine\DBAL\Types\Types;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: TraitementmedicaleRepository::class)]
-
+/**
+ * Traitementmedicale
+ *
+ * @ORM\Table(name="traitementmedicale")
+ * @ORM\Entity
+ */
 class Traitementmedicale
 {
     #[ORM\Id]
@@ -75,6 +79,18 @@ class Traitementmedicale
         return $this;
     }
 
+    public function getEtatdesante(): ?string
+    {
+        return $this->etatdesante;
+    }
+
+    public function setEtatdesante(string $etatdesante): static
+    {
+        $this->etatdesante = $etatdesante;
+
+        return $this;
+    }
+
     public function getTypeintervmed(): ?string
     {
         return $this->typeintervmed;
@@ -95,6 +111,18 @@ class Traitementmedicale
     public function setDateintervmed(\DateTimeInterface $dateintervmed): static
     {
         $this->dateintervmed = $dateintervmed;
+
+        return $this;
+    }
+
+    public function getVeterinaire(): ?string
+    {
+        return $this->veterinaire;
+    }
+
+    public function setVeterinaire(string $veterinaire): static
+    {
+        $this->veterinaire = $veterinaire;
 
         return $this;
     }
@@ -131,30 +159,6 @@ class Traitementmedicale
     public function setDureetraitement(string $dureetraitement): static
     {
         $this->dureetraitement = $dureetraitement;
-
-        return $this;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(string $description): static
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    public function getIdvet(): ?Veterinaire
-    {
-        return $this->idvet;
-    }
-
-    public function setIdvet(?Veterinaire $idvet): static
-    {
-        $this->idvet = $idvet;
 
         return $this;
     }
