@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\DBAL\Types\Types;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -13,70 +14,53 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Traitementmedicale
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="numero", type="string", length=11, nullable=false)
-     */
-    private $numero;
+    #[ORM\Column(length: 11)]
+    #[Assert\NotBlank(message: 'veuillez remplir le champ du numero')]
+    #[Assert\Regex(
+            pattern:"/^\d+$/",
+            message:'Le numéro doit être composé uniquement de chiffres')]
+    private ?string$numero;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="etatDeSante", type="string", length=0, nullable=false)
-     */
-    private $etatdesante;
+    #[ORM\Column(length: 200)]
+    private ?string $typeintervmed ='Vaccination';
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="typeIntervMed", type="string", length=0, nullable=false)
-     */
-    private $typeintervmed;
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\NotNull(message: 'La date de commande ne peut pas être vide')]
+    #[Assert\GreaterThanOrEqual(
+        "today",
+        message: 'La date de traitement ne peut pas être antérieure à aujourd\'hui'
+    )]
+    private ?\DateTimeInterface $dateintervmed =null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateIntervMed", type="date", nullable=false)
-     */
-    private $dateintervmed;
+    #[ORM\Column]
+    #[Assert\NotBlank(message: 'veuillez remplir le champ du cout')]
+    #[Assert\Type(type: 'numeric', message: 'Le champ du cout doit être un nombre.')]
+    private ?float $coutinterv;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="veterinaire", type="string", length=200, nullable=false)
-     */
-    private $veterinaire;
+    #[ORM\Column(length: 200)]
+    private ?string $medicament;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="coutInterv", type="float", precision=10, scale=0, nullable=false)
-     */
-    private $coutinterv;
+    #[ORM\Column(length: 200)]
+    private ?string $dureetraitement;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="medicament", type="string", length=200, nullable=false)
-     */
-    private $medicament;
+    #[ORM\Column(length: 200)]
+    #[Assert\NotBlank(message: 'veuillez remplir le champ du nom')]
+    #[Assert\Length(
+        min: 2,
+        max: 50,
+        minMessage: 'Il faut inserer au moins {{ limit }} characteres',
+        maxMessage: 'Il faut inserer au maximum {{ limit }} characteres',
+    )]
+    private ?string $description;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="dureeTraitement", type="string", length=200, nullable=false)
-     */
-    private $dureetraitement;
+    #[ORM\ManyToOne(inversedBy: 'traitements')]
+    #[ORM\JoinColumn(name: 'idvet', referencedColumnName: 'idvet')]
+    private ?Veterinaire $idvet;
 
     public function getId(): ?int
     {

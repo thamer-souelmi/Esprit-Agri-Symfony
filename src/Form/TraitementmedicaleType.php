@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Traitementmedicale;
+use App\Entity\Veterinaire;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -21,7 +23,7 @@ class TraitementmedicaleType extends AbstractType
             ->add('medicament')
             ->add('dureetraitement')
             ->add('description')
-            ->add('idvet')
+            ->add('idvet',EntityType::class,[ 'class'=>Veterinaire::class, 'choice_label'=>'prenomvet','expanded'=>false,'multiple'=>false])
         ;
     }
 

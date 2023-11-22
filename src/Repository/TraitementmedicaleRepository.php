@@ -45,4 +45,25 @@ class TraitementmedicaleRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+// Exemple de méthode de recherche dans le repository
+public function search($searchQuery)
+{
+    return $this->createQueryBuilder('tm')
+        ->leftJoin('tm.idvet', 'v') // Remplacez 'idvet' par le nom réel de l'association vers la classe Veterinaire
+        ->where('tm.numero = :query OR v.prenomvet = :query')
+        ->setParameter('query', $searchQuery)
+        ->getQuery()
+        ->getResult();
+}
+public function compterTraitementsParNumero($numeroTraitement)
+    {
+        $queryBuilder = $this->createQueryBuilder('t')
+            ->select('COUNT(t.id)')
+            ->where('t.numero = :numero')
+            ->setParameter('numero', $numeroTraitement);
+
+        return $queryBuilder->getQuery()->getSingleScalarResult();
+    }
+
+
 }
