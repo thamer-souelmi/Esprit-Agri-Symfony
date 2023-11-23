@@ -22,6 +22,57 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 #[Route('/culture')]
 class CultureController extends AbstractController
 {
+
+    //composer require dompdf/dompdf
+    #[Route('/pdf', name: 'pdf', methods: ['GET'])]
+    public function index_pdf(CultureRepository $cultureRepository, Request $request): Response
+    {
+        // Création d'une nouvelle instance de la classe Dompdf
+        $dompdf = new Dompdf();
+
+        // Récupération de la liste des événements à partir du repository
+        $cultures = $cultureRepository->findAll();
+        $imagePath = $this->getParameter('kernel.project_dir') . '/public/img/1.jpeg';
+        // Encode the image to base64
+        $imageData = base64_encode(file_get_contents($imagePath));
+        $imageSrc = 'data:image/jpeg;base64,' . $imageData;
+        // Génération du HTML à partir du template Twig 'evenement/pdf_file.html.twig' en passant la liste des événements
+        $html = $this->renderView('culture/pdf_file.html.twig', [
+            'cultures' => $cultures,
+            'imagePath' => $imageSrc,
+
+        ]);
+
+        // Récupération des options de Dompdf et activation du chargement des ressources à distance
+        $options = $dompdf->getOptions();
+        $options->set([
+            'isHtml5ParserEnabled' => true,
+            'isPhpEnabled' => true,  // Enable PHP rendering
+        ]);
+
+        $dompdf->setOptions($options);
+
+        // Chargement du HTML généré dans Dompdf
+        $dompdf->loadHtml($html);
+
+        // Configuration du format de la page en A4 en mode portrait
+        $dompdf->setPaper('A4', 'portrait');
+
+        // Génération du PDF
+        $dompdf->render();
+
+        // Récupération du contenu du PDF généré
+        $output = $dompdf->output();
+
+        // Set headers for PDF download
+        $response = new Response($output, 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="list.pdf"',
+        ]);
+
+        return $response;
+    }
+
     #[Route('/searchculture', name: 'searchculture', methods: ['GET', 'POST'])]
     public function searchCulture(Request $request, CultureRepository $cultureRepository): JsonResponse
     {
