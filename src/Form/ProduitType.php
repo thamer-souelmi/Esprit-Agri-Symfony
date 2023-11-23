@@ -31,7 +31,7 @@ class ProduitType extends AbstractType
                 'placeholder' => 'Catégorie',
             ],
             'choices' => [
-                'Feruit' => 'feruit',
+                'Fruit' => 'fruit',
                 'Legume' => 'legume',
                 
             ],

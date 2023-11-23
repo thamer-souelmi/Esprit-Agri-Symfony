@@ -28,6 +28,24 @@
 </head>
 
 <body id="page-top">
+{% if app.user is null %}
+    {# Redirect non-authenticated users to the logout page #}
+    {% set targetPath = path('app_logout') %}
+    <script>
+        window.location.href = "{{ targetPath }}";
+    </script>
+{% elseif not is_granted('IS_AUTHENTICATED_FULLY') %}
+    {# Redirect users without full authentication to the logout page #}
+    {% set targetPath = path('app_logout') %}
+    <script>
+        window.location.href = "{{ targetPath }}";
+    </script>
+{% endif %}
+{% if app.user.role != 'admin' %}
+        <script>
+            window.location.href = "{{ path('app_home') }}";
+        </script>
+    {% endif %}
 
     <!-- Page Wrapper -->
     <div id="wrapper">

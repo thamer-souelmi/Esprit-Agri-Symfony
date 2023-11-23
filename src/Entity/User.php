@@ -3,7 +3,10 @@ namespace App\Entity;
 
 //namespace App\Entity\User;
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -11,6 +14,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
+#[UniqueEntity(fields: ['mail'], message: 'There is already an account with this mail')]
 
 class User implements UserInterface
 {
@@ -58,7 +62,7 @@ class User implements UserInterface
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'L\'adresse ne peut pas être vide.')]
     #[Assert\Length(max: 50, maxMessage: 'L\'adresse ne peut pas dépasser {{ limit }} caractères.')]
-    private ?int $adresse = null;
+    private ?string $adresse = null;
 
     #[ORM\Column]
     #[Assert\NotBlank(message: 'Le numéro de téléphone ne peut pas être vide.')]
@@ -75,6 +79,50 @@ class User implements UserInterface
 
     #[ORM\Column(length: 255)]
     private ?string $image = null;
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Produit", mappedBy="user")
+     */
+    private $products;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $isBanned = false; // Indicates if the user is banned
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeInterface  $banExpiresAt = null;
+
+    #[ORM\Column(type: 'boolean')]
+    private $isVerified = false;
+
+    
+    public function isBanned(): ?bool
+    {
+        return $this->isBanned;
+    }
+
+    public function setIsBanned(?bool $isBanned): static
+    {
+        $this->isBanned = $isBanned;
+
+        return $this;
+    }
+
+    public function getBanExpiresAt(): ?\DateTimeInterface
+    {
+        return $this->banExpiresAt;
+    }
+
+    public function setBanExpiresAt(?\DateTimeInterface $banExpiresAt): static
+    {
+        $this->banExpiresAt = $banExpiresAt;
+
+        return $this;
+    }
+
+    
+
+ 
+
+    
 
     public function getId(): ?int
     {
@@ -213,8 +261,22 @@ class User implements UserInterface
         // If you store any temporary, sensitive data on the user, clear it here
     }
 
-    
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): static
+    {
+        $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
     
 
+    
+
+    
 
 }

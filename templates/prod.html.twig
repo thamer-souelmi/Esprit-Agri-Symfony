@@ -40,6 +40,7 @@
     </style>
     <!-- Customized Bootstrap Stylesheet -->
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/all.css') }}" rel="stylesheet">
 
     <!-- Template Stylesheet -->
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
@@ -112,6 +113,10 @@
     
         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
             <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{{ path('app_user_editf', {'id': app.user.id}) }}">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Profile
+                                </a>
             <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">
                 <i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>
                 Logout

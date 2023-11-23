@@ -2,69 +2,72 @@
 
 {% block title %}New Produit{% endblock %}
 {% block banner_image %}
-{{ asset('img/pngtree-fruits-and-vegetables-picture-image_3712726.jpg') }}
+    {{ asset('img/pngtree-fruits-and-vegetables-picture-image_3712726.jpg') }}
 {% endblock %}
-    {%  block body %}
-<a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_produit_new') }}">Ajouter Produit</a>
 
+{% block body %}
+    <a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_produit_new') }}">Ajouter Produit</a>
 
-    <!-- Banner Start -->
-
-            {% for produit in produits %}
-                {% if loop.index % 2 == 1 %}
-                    <div class="col-lg-6 wow fadeIn" data-wow-delay="0.3s">
-                        <div class="row g-4 align-items-center">
-                {% endif %}
-
-                <div class="col-sm-6">
-                    <img class="img-fluid rounded" src="{{ asset('img/' ~ produit.image) }}" >
-                </div>
-                <div class="col-sm-6">
-                    
-                    <h2  style="color: #000000;">{{ produit.nomprod }}</h2>
-
-        <p class="text-white mb-4"><strong style="color: #ffcc00;">Prix:</strong> <span style="color: #000000;">{{ produit.prix }}</span></p>
-
-        <p class="text-white mb-4"><strong style="color: #ffcc00;">Quantité:</strong> <span style="color: #000000;">{{ produit.qte }}</span></p>
-
-<p class="text-white mb-4"><strong style="color: #ffcc00;">Description:</strong> <span style="color: #000000;">{{ produit.descr }}</span></p>
-
-<p class="text-white mb-4">
-    <strong style="color: #ffcc00;">Status:</strong>
-    <span style="color: #000000;">{{ produit.status ? 'Disponible' : 'Non Disponible' }}</span>
-</p>
-
-
-                <div class="row">
-                        <div class="col-sm-4">
-                            <a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_produit_edit', {'id': produit.id}) }}">Modifier</a>
+    <div class="container-xxl py-5">
+        <div class="row gx-4">
+            {% for produit in pagination %}
+                <div class="col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="product-item">
+                        <div class="position-relative">
+                            <!-- Your existing code for each produit -->
+                            <img class="img-fluid rounded" src="{{ asset('img/' ~ produit.image) }}" style="width: 336px; height: 336px; object-fit: cover;">
+                            <div class="product-overlay">
+                                <a class="btn btn-square btn-secondary rounded-circle m-1"
+                                    href="{{ path('app_produit_edit', {'id': produit.id}) }}">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <form method="post" action="{{ path('app_produit_delete', {'id': produit.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ produit.id) }}">
+                                    <button type="submit" class="btn btn-secondary rounded-circle m-1">
+                                         <i class="bi bi-trash"></i>
+                                    </button>
+                            </form>
+                                
+                                <a class="btn btn-square btn-secondary rounded-circle m-1"
+                                    href="{{ path('app_produit_show', {'id': produit.id }) }}">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                
+                                <a class="btn btn-square btn-secondary rounded-circle m-1"
+                                    href="{{ path('app_reclamation_new', {'productId': produit.id }) }}">
+                                    <i class="btn btn-square btn-secondary rounded-circle m-1"></i>
+                                </a>
+                            </div>
                         </div>
-                        <div class="col-sm-4">
-                            {# produit/_delete_form.html.twig #}
-<form method="post" action="{{ path('app_produit_delete', {'id': produit.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet élément ?');" style="display: inline-block;">
-    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ produit.id) }}">
-    <button type="submit" class="btn btn-danger rounded-pill py-2 px-4">Supprimer</button>
-</form>
+                                <div class="text-center p-4">
+                                    <i class="fa-solid fa-file-pen"></i>
+                                    <h2 style="color: #000000;">{{ produit.nomprod }}</h2>
 
-                        </div>
-                        <div class="col-sm-4">
-                            <a class="btn btn-success rounded-pill py-2 px-4" href="{{ path('app_produit_show', {'id': produit.id}) }}">Detail</a>
-                        </div>
-                        
-                    </div>
-                </div>
-                   
-                    
-                    
-                
-
-                {% if loop.index % 2 == 0 or loop.last %}
+                                    {% if produit.status == 1 %}
+                                        <span class="text-primary me-1">Prix:{{ produit.prix }}$</span>
+                                    {% else %}
+                                        <span class="text-decoration-line-through">Prix:{{ produit.prix }}$</span>
+                                    {% endif %}
+                                    <span class="text-primary me-1">Quantité:{{ produit.qte }}Kg</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                {% endif %}
+                </div>
+            {% else %}
+                <p>No records found</p>
             {% endfor %}
         </div>
     </div>
-</div>
-<!-- Banner End -->
-      {% endblock %}
+
+   {# Pagination #}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="text-center">
+                {{ knp_pagination_render(pagination) }}
+            </div>
+        </div>
+    </div>
+
+    
+{% endblock %}

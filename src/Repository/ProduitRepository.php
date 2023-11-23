@@ -45,4 +45,13 @@ class ProduitRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+public function findByUserId(int $id): array
+{
+    $qb = $this->createQueryBuilder('c')
+        ->where('c.user= :id')
+        ->setParameter('id', $id)
+        ->getQuery();
+
+    return $qb->getResult();
+}
 }

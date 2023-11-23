@@ -4,7 +4,9 @@ namespace App\Repository;
 
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @extends ServiceEntityRepository<User>
@@ -16,9 +18,12 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class UserRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private $entityManager;
+
+    public function __construct(ManagerRegistry $registry, EntityManagerInterface $entityManager)
     {
         parent::__construct($registry, User::class);
+        $this->entityManager = $entityManager;
     }
 
 //    /**
@@ -54,4 +59,26 @@ public function findByRoles(string $role): array
 
     return $qb->getResult();
 }
+// public function findOneBynom($nom): ?User
+//     {
+//         return $this->createQueryBuilder('u')
+//             ->andWhere('u.nom = :nom')
+//             ->setParameter('nom', $nom)
+//             ->getQuery()
+//             ->getOneOrNullResult()
+//         ;
+//     }
+// public function getUsersWithMoreThanFiveReclamationsCount()
+//     {
+//         return $this->entityManager
+//             ->createQueryBuilder()
+//             ->select('u.id, u.nom, COUNT(r.id) AS totalReclamations')
+//             ->from(User::class, 'u')
+//             ->join('u.products', 'p')
+//             ->join('p.reclamations', 'r')
+//             ->groupBy('u.id')
+//             ->having('COUNT(r.id) < 5')
+//             ->getQuery()
+//             ->getResult();
+//     }
 }

@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Controller;
-
+use App\Entity\User;
 use App\Entity\Produit;
 use App\Form\ProduitType;
+use App\Repository\ProduitRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -13,21 +14,34 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Knp\Component\Pager\PaginatorInterface;
 
 #[Route('/produit')]
 class ProduitController extends AbstractController
 {
     #[Route('/', name: 'app_produit_index', methods: ['GET'])]
-    public function index(EntityManagerInterface $entityManager): Response
-    {
-        dump($this->getUser()->getRoles());
+    // public function index(EntityManagerInterface $entityManager, Security $security): Response
+    // {
+    //     $user = $security->getUser();
+        
+    //         $id = $user->getId(); // Assuming getId() returns the user's ID
+    //         $produits = $entityManager
+    //             ->getRepository(Produit::class)
+    //             ->findByUserId($id);
 
-        $produits = $entityManager
-            ->getRepository(Produit::class)
-            ->findAll();
-
+    //         return $this->render('produit/index.html.twig', [
+    //             'produits' => $produits,
+    //         ]);
+    // }
+    public function index(ProduitRepository $produitRepository,PaginatorInterface $paginator,Request $request): Response
+    {   $produit = $produitRepository->findAll();
+        $pagination = $paginator->paginate(
+            $produit,
+            $request->query->getInt('page', 1),
+            4 // Number of items per page
+        );
         return $this->render('produit/index.html.twig', [
-            'produits' => $produits,
+            'pagination' => $pagination,
         ]);
     }
     // #[Route('/back', name: 'app_produit_indexb', methods: ['GET'])]

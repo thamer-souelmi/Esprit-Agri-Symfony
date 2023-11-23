@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProduitRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -50,6 +52,15 @@ class Produit
 #[ORM\ManyToOne(targetEntity: "App\Entity\User", inversedBy: "produits")]
 #[ORM\JoinColumn(nullable: false)]
 private ?User $user = null;
+
+#[ORM\OneToMany(mappedBy: 'produit', targetEntity: Reclamation::class)]
+private Collection $reclamations;
+
+public function __construct()
+{
+    $this->reclamations = new ArrayCollection();
+}
+
 
     public function getId(): ?int
     {
@@ -152,6 +163,42 @@ private ?User $user = null;
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Reclamation>
+     */
+    public function getReclamations(): Collection
+    {
+        return $this->reclamations;
+    }
+
+    public function addReclamation(Reclamation $reclamation): static
+    {
+        if (!$this->reclamations->contains($reclamation)) {
+            $this->reclamations->add($reclamation);
+            $reclamation->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReclamation(Reclamation $reclamation): static
+    {
+        if ($this->reclamations->removeElement($reclamation)) {
+            // set the owning side to null (unless already changed)
+            if ($reclamation->getProduit() === $this) {
+                $reclamation->setProduit(null);
+            }
+        }
+
+        return $this;
+    }
+    public function getUserId(): ?int
+{
+    return $this->user ? $this->user->getId() : null;
+}
+
+  
 
 
 
