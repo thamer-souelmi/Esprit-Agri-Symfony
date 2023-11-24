@@ -4,17 +4,12 @@ namespace App\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
-use App\Repository\CandidatureRepository;
 
 /**
  * Candidature
  *
- * @ORM\Table(name="candidature")
+ * @ORM\Table(name="candidature", indexes={@ORM\Index(name="fk_idOuvrier", columns={"idOuvrierfor"}), @ORM\Index(name="fk_idAnnRecru", columns={"idAnnRecru"})})
  * @ORM\Entity
- */
-/*
-@ORM\Entity(repositoryClass=CandidatureRepository::class)
  */
 class Candidature
 {
@@ -31,28 +26,25 @@ class Candidature
      * @var string|null
      *
      * @ORM\Column(name="ExperienceProfessionnelle", type="string", length=5000, nullable=true)
-* @Assert\NotBlank(message="vueillez ajouter votre experience professionnelle")
-*/
+     */
     private $experienceprofessionnelle;
 
     /**
      * @var string|null
      *
      * @ORM\Column(name="Formation", type="string", length=5000, nullable=true)
-* @Assert\NotBlank(message="vueillez ajouter vos formation")
-*/
+     */
     private $formation;
 
     /**
      * @var string|null
      *
      * @ORM\Column(name="CompetencesTechniques", type="string", length=5000, nullable=true)
-* @Assert\NotBlank(message="vueillez ajouter vos compétence techniques  ")
-*/
+     */
     private $competencestechniques;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="CertifForma", type="string", length=200, nullable=true)
      */
@@ -62,17 +54,8 @@ class Candidature
      * @var string
      *
      * @ORM\Column(name="messageMotivation", type="string", length=255, nullable=false)
-* @Assert\NotBlank(message="vueillez ajouter votre message de motivation")
-*/
+     */
     private $messagemotivation;
-
-  /**
- * @var bool|null
- *
- * @ORM\Column(name="statusCandidature", type="boolean", nullable=true)
- */
-     private $statusCandidature;
-
 
     /**
      * @var \DateTime
@@ -80,6 +63,33 @@ class Candidature
      * @ORM\Column(name="dateCandidature", type="date", nullable=false)
      */
     private $datecandidature;
+
+    /**
+     * @var bool|null
+     *
+     * @ORM\Column(name="statusCandidature", type="boolean", nullable=true)
+     */
+    private $statuscandidature;
+
+    /**
+     * @var \Annoncerecrutement
+     *
+     * @ORM\ManyToOne(targetEntity="Annoncerecrutement")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idAnnRecru", referencedColumnName="idRecurt")
+     * })
+     */
+    private $idannrecru;
+
+    /**
+     * @var \Ouvrier
+     *
+     * @ORM\ManyToOne(targetEntity="Ouvrier")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idOuvrierfor", referencedColumnName="idOuvrier")
+     * })
+     */
+    private $idouvrierfor;
 
     public function getIdcandidature(): ?int
     {
@@ -127,7 +137,7 @@ class Candidature
         return $this->certifforma;
     }
 
-    public function setCertifforma(string $certifforma): static
+    public function setCertifforma(?string $certifforma): static
     {
         $this->certifforma = $certifforma;
 
@@ -146,19 +156,6 @@ class Candidature
         return $this;
     }
 
-    public function getStatusCandidature(): ?bool
-    {
-        return $this->statusCandidature;
-    }
-    
-    public function setStatusCandidature(?bool $statusCandidature): self
-    {
-        $this->statusCandidature = $statusCandidature;
-    
-        return $this;
-    }
-    
-
     public function getDatecandidature(): ?\DateTimeInterface
     {
         return $this->datecandidature;
@@ -167,6 +164,42 @@ class Candidature
     public function setDatecandidature(\DateTimeInterface $datecandidature): static
     {
         $this->datecandidature = $datecandidature;
+
+        return $this;
+    }
+
+    public function isStatuscandidature(): ?bool
+    {
+        return $this->statuscandidature;
+    }
+
+    public function setStatuscandidature(?bool $statuscandidature): static
+    {
+        $this->statuscandidature = $statuscandidature;
+
+        return $this;
+    }
+
+    public function getIdannrecru(): ?Annoncerecrutement
+    {
+        return $this->idannrecru;
+    }
+
+    public function setIdannrecru(?Annoncerecrutement $idannrecru): static
+    {
+        $this->idannrecru = $idannrecru;
+
+        return $this;
+    }
+
+    public function getIdouvrierfor(): ?Ouvrier
+    {
+        return $this->idouvrierfor;
+    }
+
+    public function setIdouvrierfor(?Ouvrier $idouvrierfor): static
+    {
+        $this->idouvrierfor = $idouvrierfor;
 
         return $this;
     }

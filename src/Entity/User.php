@@ -1,5 +1,5 @@
 <?php
-namespace App\Entity;
+
 
 //namespace App\Entity\User;
 use App\Repository\UserRepository;
@@ -17,11 +17,13 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[UniqueEntity(fields: ['mail'], message: 'There is already an account with this mail')]
 
 class User 
+
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'Le CIN ne doit pas être vide.')]
@@ -73,6 +75,7 @@ class User
     
     )]
     private ?int $numtel = null;
+
 
     #[ORM\Column(length: 255)]
     private $role;
@@ -238,6 +241,7 @@ class User
     }
 
 
+
     public function eraseCredentials()
     {
         // If you store any temporary, sensitive data on the user, clear it here
@@ -264,3 +268,4 @@ class User
     
 
 }
+
