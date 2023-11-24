@@ -26,7 +26,10 @@ class UserType extends AbstractType
                 'choices' => [
                     
                     'Agriculteur' => 'agriculteur',
-                    'User' => 'user',
+                    'Client' => 'client',
+                    'Investisseur'=>'investisseur',
+                    'Veterinaire'=>'veterinaire',
+                    'Ouvrier'=>'ouvrier'
                 ],
             ])
             ->add('image', FileType::class, [
@@ -34,6 +37,20 @@ class UserType extends AbstractType
                 'mapped' => false,
                 'required' => false,
                 'attr' => ['accept' => 'image/*'],
+            ])
+            ->add('isBanned', ChoiceType::class, [
+                'choices' => [
+                    'Banned' => true,
+                    'Not Banned' => false,
+                ],
+                'expanded' => true,
+                'label' => 'Ban User',
+                'required' => true,
+            ])
+            ->add('banExpiresAt', null, [
+                'label' => 'Ban Duration',
+                
+                'attr' => ['class' => 'js-datetimepicker'],
             ])
             ->add('save',SubmitType::class)
         ;

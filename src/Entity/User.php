@@ -1,88 +1,131 @@
 <?php
 
-namespace App\Entity;
 
+//namespace App\Entity\User;
+use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * User
- *
- * @ORM\Table(name="user")
- * @ORM\Entity
- */
-class User
+
+
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\Table(name: '`user`')]
+#[UniqueEntity(fields: ['mail'], message: 'There is already an account with this mail')]
+
+class User 
+
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="cin", type="integer", nullable=false)
-     */
-    private $cin;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="nom", type="string", length=20, nullable=false)
-     */
-    private $nom;
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Le CIN ne doit pas être vide.')]
+    #[Assert\Type(type: 'numeric', message: 'Le CIN doit être un nombre.')]
+    private ?string $cin = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="prenom", type="string", length=20, nullable=false)
-     */
-    private $prenom;
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'L\'Le nom ne doit pas être vide.')]
+    #[Assert\Length(
+        min: 2,
+        max: 50,
+        minMessage: 'Il faut inserer au moins {{ limit }} characteres',
+        maxMessage: 'Il faut inserer au maximum {{ limit }} characteres',
+    )]
+    #[Assert\Type(
+        type:"string",
+        message:"veuillez inserer un nom correct "
+    )]
+    private ?string $nom = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="mdp", type="string", length=200, nullable=false)
-     */
-    private $mdp;
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'L\'Le pronom ne doit pas être vide.')]
+    private ?string $prenom = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="mail", type="string", length=30, nullable=false)
-     */
-    private $mail;
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Le mot de passe ne doit pas être vide.')]
+    #[Assert\Length(
+        min: 8,
+        minMessage: 'Le mot de passe doit contenir au moins 8 caractères.'
+    )]
+    private ?string $mdp = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="adresse", type="string", length=50, nullable=false)
-     */
-    private $adresse;
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'L\'email ne doit pas être vide.')]
+    #[Assert\Email(message: 'Format d\'email invalide.')]
+    private ?string $mail = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="numtel", type="integer", nullable=false)
-     */
-    private $numtel;
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'L\'adresse ne peut pas être vide.')]
+    #[Assert\Length(max: 50, maxMessage: 'L\'adresse ne peut pas dépasser {{ limit }} caractères.')]
+    private ?string $adresse = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="role", type="string", length=0, nullable=false)
-     */
+    #[ORM\Column]
+    #[Assert\NotBlank(message: 'Le numéro de téléphone ne peut pas être vide.')]
+    #[Assert\Length(
+        min: 8,
+    max: 8,
+    exactMessage: 'Le numéro de téléphone doit comporter exactement {{ limit }} chiffres.',
+    
+    )]
+    private ?int $numtel = null;
+
+
+    #[ORM\Column(length: 255)]
     private $role;
 
+    #[ORM\Column(length: 255)]
+    private ?string $image = null;
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="image", type="string", length=255, nullable=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Produit", mappedBy="user")
      */
-    private $image;
+    private $products;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $isBanned = false; // Indicates if the user is banned
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeInterface  $banExpiresAt = null;
+
+    #[ORM\Column(type: 'boolean')]
+    private $isVerified = false;
+
+    
+    public function isBanned(): ?bool
+    {
+        return $this->isBanned;
+    }
+
+    public function setIsBanned(?bool $isBanned): static
+    {
+        $this->isBanned = $isBanned;
+
+        return $this;
+    }
+
+    public function getBanExpiresAt(): ?\DateTimeInterface
+    {
+        return $this->banExpiresAt;
+    }
+
+    public function setBanExpiresAt(?\DateTimeInterface $banExpiresAt): static
+    {
+        $this->banExpiresAt = $banExpiresAt;
+
+        return $this;
+    }
+
+    
+
+ 
+
+    
 
     public function getId(): ?int
     {
@@ -198,4 +241,31 @@ class User
     }
 
 
+
+    public function eraseCredentials()
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+    }
+
+
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): static
+    {
+        $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+
+    
+
+    
+
+    
+
 }
+

@@ -45,4 +45,13 @@ class VeterinaireRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+public function searchByNomPrenomAdresse($query)
+    {
+        return $this->createQueryBuilder('v')
+            ->where('v.nomvet LIKE :query OR v.prenomvet LIKE :query OR v.adresscabinet LIKE :query')
+            ->setParameter('query', "%{$query}%")
+            ->getQuery()
+            ->getResult();
+    }
 }
