@@ -7,82 +7,54 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
-/**
- * Client
- *
- * @ORM\Table(name="client")
- * @ORM\Entity
- */
+
+#[ORM\Entity(repositoryClass: ClientRepository::class)]
 class Client
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id_user", type="integer", nullable=false)
-     */
-    private $idUser;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="prodid", type="integer", nullable=false)
-     */
-    private $prodid;
+    #[ORM\Column]
+    private ?int $idUser = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="Nomprod", type="string", length=20, nullable=false)
-     */
+
+    #[ORM\Column]
+    private ?int $prodid = null;
+
+
     #[Assert\NotBlank(message: 'veuillez remplir ce champ')]
     #[Assert\Length(min: 3, minMessage: 'Le libelle doit comporter au moins {{ limit }} caractères')]
-    private $nomprod;
+    #[ORM\Column(length: 150)]
+    private ?string $nomprod = null;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="prix", type="float", precision=10, scale=0, nullable=false)
-     */
+
     #[Assert\NotBlank(message: 'Le prix du produit ne peut pas être vides.')]
     #[Assert\GreaterThanOrEqual(
         value: 0,
         message: 'Le prix du produit ne peut pas être négatifs.'
     )]
-    private $prix;
+    #[ORM\Column]
+    private ?float $prix = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateajout", type="date", nullable=false)
-     */
-    private $dateajout;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="qte", type="float", precision=10, scale=0, nullable=false)
-     */
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $dateajout = null;
+
+
     #[Assert\NotBlank(message: 'La quantite ne peut pas être vides.')]
     #[Assert\GreaterThanOrEqual(
         value: 0,
         message: 'La quantite ne peut pas être négatifs.'
     )]
-    private $qte;
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="image", type="string", length=255, nullable=true)
-     */
-    private $image;
+    #[ORM\Column]
+    private ?float $qte = null;
+
+    #[ORM\Column(length: 150)]
+    private ?string $image = null;
+
     public function getImage(): ?string
     {
         return $this->image;
