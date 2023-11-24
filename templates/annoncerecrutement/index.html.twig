@@ -1,0 +1,73 @@
+{% extends 'annoncerecrut.html.twig' %}
+
+
+{% block body %}
+
+            <header class="bg-dark py-5">
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="text-center text-white">
+                    <h1 class="display-4 fw-bolder text-white">Annonces Recrutement</h1>
+                </div>
+            </div>
+        </header>
+
+ <section class="py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        {% for annoncerecrutement in annoncerecrutements %}
+            {% if loop.index % 3 == 1 %}
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+            {% endif %}
+            <div class="col mb-5">
+                <div class="card h-100">
+                    <div class="card-body p-4">
+                        <div class="text-center">
+                            <div class="box" style="font-family: Palatino; font-size: 20px;">
+                                <p class="fw-bolder"> Poste proposé : {{ annoncerecrutement.postedemande }}</p>
+                                <p class="fw-bolder"> Salaire:  {{ annoncerecrutement.salairepropose }} <i class="bi bi-cash-stack"></i></p>
+                                <p class="fw-bolder"> Contrat proposé : {{ annoncerecrutement.typecontrat }}</p>
+                                <p class="fw-bolder"> Date de publication de l'annonce :<br> <i class="bi bi-calendar3"></i>   {{ annoncerecrutement.datepub ? annoncerecrutement.datepub|date('d-m-Y') : '' }}</p>
+                                <p class="fw-bolder"> Date prévue d'embauche :  <br> <i class="bi bi-calendar3"></i>  {{ annoncerecrutement.dateembauche ? annoncerecrutement.dateembauche|date('d-m-Y') : '' }}</p>
+                                <p class="fw-bolder"> <i class="bi bi-geo-fill"></i> {{ annoncerecrutement.localisation }}</p>
+                                <p class="fw-bolder"> Nombre de postes recherchés : <i class="bi bi-people-fill"></i> {{ annoncerecrutement.nbposterecherche }}</p>
+                                <a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_candidature_new', {'idrecurt': annoncerecrutement.idrecurt }) }}" onclick="return confirm('Êtes-vous sûr de vouloir postuler pour cette annonce ?')"> Postuler  </a>
+                                <a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_annoncerecrutement_edit', {'idrecurt': annoncerecrutement.idrecurt}) }}"> modifier  </a>
+                               <div style="margin-left: 5px;">
+                               <br>
+    <div style="margin-left: 5px; ">
+        {% include 'annoncerecrutement/_delete_form.html.twig' with {'submit_button': 'Supprimer'} %}
+    </div></div>
+
+                      
+                           </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% if loop.index % 3 == 0 or loop.last %}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</section>
+
+<div class="text-center">
+    <a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_annoncerecrutement_new') }}">Ajouter Annonce</a>
+    <a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_candidature_index') }}">Les candidatures</a>
+
+</div>
+
+<script>
+    // Add this script to handle the minimization of the box
+    document.addEventListener('DOMContentLoaded', function () {
+        var boxes = document.querySelectorAll('.box');
+
+        boxes.forEach(function (box) {
+            box.addEventListener('click', function () {
+                box.classList.toggle('minimized');
+            });
+        });
+    });
+</script>
+
+
+{% endblock %}

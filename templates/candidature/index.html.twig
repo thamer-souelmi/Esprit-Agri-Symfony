@@ -1,0 +1,46 @@
+{% extends 'condi.html.twig' %}
+
+
+{% block body %}
+    <br>
+    <br>
+
+    <div class="row">
+        {% for candidature in candidatures %}
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Candidature {{ loop.index }}</h5>
+                        <ul class="list-group list-group-flush">
+                        <img class="img-fluid rounded" src="{{ asset('img/' ~ candidature.certifforma) }}" width ="500" height=500">
+
+                            <li class="list-group-item"><strong>Date de Candidature:</strong> {{ candidature.datecandidature ? candidature.datecandidature|date('Y-m-d') : '' }}</li>
+                            <li class="list-group-item"><strong>Expérience Professionnelle:</strong> {{ candidature.experienceprofessionnelle }}</li>
+                            <li class="list-group-item"><strong>Formation:</strong> {{ candidature.formation }}</li>
+                            <li class="list-group-item"><strong>Compétences Techniques:</strong> {{ candidature.competencestechniques }}</li>
+                            <li class="list-group-item"><strong>Certifications et Formations:</strong> {{ candidature.certifforma }}</li>
+                            <li class="list-group-item"><strong>Message de motivation :</strong> {{ candidature.messagemotivation }}</li>
+
+                        </ul>
+                        <div class="d-flex justify-content-between">
+                             <li class="list-group-item"><strong>Etat négociation :</strong> 
+                             <a href="{{ path('app_candidature_decision', {'id': candidature.idcandidature, 'decision': 'accept'}) }}" class="btn btn-primary" data-decision="accept">Accepter</a>
+
+<a href="{{ path('app_candidature_decision', {'id': candidature.idcandidature, 'decision': 'refuse'}) }}" class="btn btn-primary" data-decision="refuse">Refuser</a>
+
+                          </li>
+
+                        </div>
+                     </div>
+                 </div>
+            </div>
+                 {% else %}
+                      <div class="col-md-12">
+                     <p>no records found</p>
+                     </div>
+
+
+        {% endfor %}
+        </div>
+        <a href="{{ path('app_annoncerecrutement_index') }}">Retour au annonces </a>
+{% endblock %}
