@@ -22,6 +22,59 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 #[Route('/culture')]
 class CultureController extends AbstractController
 {
+
+
+
+    //composer require dompdf/dompdf
+    #[Route('/pdf', name: 'pdf', methods: ['GET'])]
+    public function index_pdf(CultureRepository $cultureRepository, Request $request): Response
+    {
+        // Création d'une nouvelle instance de la classe Dompdf
+        $dompdf = new Dompdf();
+
+        // Récupération de la liste des événements à partir du repository
+        $cultures = $cultureRepository->find();
+        $imagePath = $this->getParameter('kernel.project_dir') . '/public/img/1.jpeg';
+        // Encode the image to base64
+        $imageData = base64_encode(file_get_contents($imagePath));
+        $imageSrc = 'data:image/jpeg;base64,' . $imageData;
+        // Génération du HTML à partir du template Twig 'evenement/pdf_file.html.twig' en passant la liste des événements
+        $html = $this->renderView('culture/pdf_file.html.twig', [
+            'cultures' => $cultures,
+            'imagePath' => $imageSrc,
+
+        ]);
+
+        // Récupération des options de Dompdf et activation du chargement des ressources à distance
+        $options = $dompdf->getOptions();
+        $options->set([
+            'isHtml5ParserEnabled' => true,
+            'isPhpEnabled' => true,  // Enable PHP rendering
+        ]);
+
+        $dompdf->setOptions($options);
+
+        // Chargement du HTML généré dans Dompdf
+        $dompdf->loadHtml($html);
+
+        // Configuration du format de la page en A4 en mode portrait
+        $dompdf->setPaper('A4', 'portrait');
+
+        // Génération du PDF
+        $dompdf->render();
+
+        // Récupération du contenu du PDF généré
+        $output = $dompdf->output();
+
+        // Set headers for PDF download
+        $response = new Response($output, 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="list.pdf"',
+        ]);
+
+        return $response;
+    }
+
     #[Route('/searchculture', name: 'searchculture', methods: ['GET', 'POST'])]
     public function searchCulture(Request $request, CultureRepository $cultureRepository): JsonResponse
     {
@@ -69,11 +122,26 @@ class CultureController extends AbstractController
     //     return $this->render('culture/showCultures.html.twig', ['cultures' => $cultures]);
     // }
 
+    // #[Route('/', name: 'app_culture_index', methods: ['GET'])]
+    // public function index(CultureRepository $cultureRepository): Response
+    // {
+    //     return $this->render('culture/index.html.twig', [
+    //         'cultures' => $cultureRepository->findAll(),
+    //     ]);
+    // }
     #[Route('/', name: 'app_culture_index', methods: ['GET'])]
-    public function index(CultureRepository $cultureRepository): Response
+    public function index(CultureRepository $cultureRepository, PaginatorInterface $paginator, Request $request): Response
     {
+        $cultures = $cultureRepository->findAll();
+
+        $pagination = $paginator->paginate(
+            $cultures,
+            $request->query->getInt('page', 1),
+            3 // Number of items per page
+        );
+
         return $this->render('culture/index.html.twig', [
-            'cultures' => $cultureRepository->findAll(),
+            'pagination' => $pagination,
         ]);
     }
 
@@ -121,7 +189,78 @@ class CultureController extends AbstractController
         ]);
     }
 
+    //partie back
+    #[Route('/back', name: 'app_cultureback_index', methods: ['GET'])]
+    public function indexback(CultureRepository $cultureRepository): Response
+    {
+        return $this->render('culture/indexback.html.twig', [
+            'cultures' => $cultureRepository->findAll(),
+        ]);
+    }
+    #[Route('/back/{id}', name: 'app_cultureback_delete', methods: ['POST'])]
+    public function deleteback(Request $request, Culture $culture, CultureRepository $cultureRepository): Response
+    {
+        if ($this->isCsrfTokenValid('delete' . $culture->getId(), $request->request->get('_token'))) {
+            $cultureRepository->remove($culture);
+        }
 
+        return $this->redirectToRoute('app_cultureback_index', [], Response::HTTP_SEE_OTHER);
+    }
+    #[Route('/new/back', name: 'app_cultureback_new', methods: ['GET', 'POST'])]
+    public function newback(Request $request, CultureRepository $cultureRepository, SluggerInterface $slugger): Response
+    {
+        $culture = new Culture();
+        $form = $this->createForm(CultureType::class, $culture);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $revenuesCultures = $form->get('revenuescultures')->getData();
+
+            // Check if revenues are negative
+            if ($revenuesCultures < 0) {
+                $this->addFlash('danger', 'Les revenus des cultures ne peuvent pas être négatifs.');
+                return $this->redirectToRoute('app_cultureback_new');
+            }
+            $cultureRepository->save($culture, true);
+
+            return $this->redirectToRoute('app_cultureback_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('culture/newback.html.twig', [
+            'culture' => $culture,
+            'form' => $form,
+        ]);
+    }
+    #[Route('/{id}/edit/back', name: 'app_cultureback_edit', methods: ['GET', 'POST'])]
+    public function editback(Request $request, Culture $culture, CultureRepository $cultureRepository): Response
+    {
+        $form = $this->createForm(CultureType::class, $culture, ['is_edit' => true]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Your existing logic for saving edited culture
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($culture);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Culture updated successfully!');
+
+            return $this->redirectToRoute('app_cultureback_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('culture/editback.html.twig', [
+            'culture' => $culture,
+            'form' => $form,
+        ]);
+    }
+    #[Route('/{id}/back', name: 'app_cultureback_show', methods: ['GET'])]
+    public function showback(Culture $culture): Response
+    {
+        return $this->render('culture/showback.html.twig', [
+            'culture' => $culture,
+        ]);
+    }
+    //partie back
     #[Route('/{id}', name: 'app_culture_show', methods: ['GET'])]
     public function show(Culture $culture): Response
     {
@@ -131,14 +270,26 @@ class CultureController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_culture_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Culture $culture, CultureRepository $cultureRepository): Response
+    public function edit(Request $request, $id, CultureRepository $cultureRepository): Response
     {
+        // Fetch the existing Culture object based on the provided id
+        $culture = $cultureRepository->find($id);
+
+        // Check if the Culture object was found
+        if (!$culture) {
+            throw $this->createNotFoundException('Culture not found for id ' . $id);
+        }
+
+        // Create the form using the existing Culture object
         $form = $this->createForm(CultureType::class, $culture, ['is_edit' => true]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             // Your existing logic for saving edited culture
-            // ...
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->flush(); // No need to persist again since the object is already managed
+
+            $this->addFlash('success', 'Culture updated successfully!');
 
             return $this->redirectToRoute('app_culture_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -149,6 +300,25 @@ class CultureController extends AbstractController
         ]);
     }
 
+    // #[Route('/{id}/edit', name: 'app_culture_edit', methods: ['GET', 'POST'])]
+    // public function edit(Request $request, Culture $culture, CultureRepository $cultureRepository): Response
+    // {
+    //     $form = $this->createForm(CultureType::class, $culture, ['is_edit' => true]);
+    //     $form->handleRequest($request);
+
+    //     if ($form->isSubmitted() && $form->isValid()) {
+    //         // Your existing logic for saving edited culture
+    //         // ...
+
+    //         return $this->redirectToRoute('app_culture_index', [], Response::HTTP_SEE_OTHER);
+    //     }
+
+    //     return $this->renderForm('culture/edit.html.twig', [
+    //         'culture' => $culture,
+    //         'form' => $form,
+    //     ]);
+    // }
+
     #[Route('/{id}', name: 'app_culture_delete', methods: ['POST'])]
     public function delete(Request $request, Culture $culture, CultureRepository $cultureRepository): Response
     {
@@ -158,6 +328,7 @@ class CultureController extends AbstractController
 
         return $this->redirectToRoute('app_culture_index', [], Response::HTTP_SEE_OTHER);
     }
+
     public function getRealEntities($cultures)
     {
         $realEntities = [];
