@@ -13,7 +13,7 @@ use App\Repository\CandidatureRepository;
 class Candidature
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: "IDENTITY")]
+    #[ORM\GeneratedValue]
     #[ORM\Column(name: "idCandidature")]
 
     private ?int $idcandidature = null;
@@ -52,10 +52,10 @@ class Candidature
     private ?bool $statuscandidature;
 
    
-    #[ORM\ManyToOne(targetEntity: "APP\Entity\Annoncerecrutement",inversedBy:"candidatures")]
-    #[ORM\JoinColumn(nullable: true)]
-    private ?Annoncerecrutement $idannrecru;
-
+    // #[ORM\ManyToOne(targetEntity: "App\Entity\Annoncerecrutement", inversedBy: "candidatures")]
+    // #[ORM\JoinColumn(nullable: true)]
+    // private ?Annoncerecrutement $idannrecru;
+    
     
     
 
@@ -148,17 +148,17 @@ class Candidature
         return $this;
     }
 
-    public function getIdannrecru(): ?Annoncerecrutement
-    {
-        return $this->idannrecru;
-    }
+    // public function getIdannrecru(): ?Annoncerecrutement
+    // {
+    //     return $this->idannrecru;
+    // }
 
-    public function setIdannrecru(?Annoncerecrutement $idannrecru): static
-    {
-        $this->idannrecru = $idannrecru;
+    // public function setIdannrecru(?Annoncerecrutement $idannrecru): static
+    // {
+    //     $this->idannrecru = $idannrecru;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
 
 

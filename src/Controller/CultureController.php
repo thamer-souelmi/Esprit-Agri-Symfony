@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Entity\Culture;
 use App\Form\CultureType;
 use App\Repository\CultureRepository;
@@ -177,7 +178,11 @@ class CultureController extends AbstractController
             // updates the 'image' property to store the file name
             // $culture->setImage($newFilename);
             //}
-
+            $category = new Category();
+            $category ->settype(
+                "efsdfsdf"
+            );
+            $culture->setCategorys($category);
             $cultureRepository->save($culture, true);
 
             return $this->redirectToRoute('app_culture_index', [], Response::HTTP_SEE_OTHER);

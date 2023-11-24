@@ -14,7 +14,7 @@ class Ouvrier
    
 
      #[ORM\Id]
-     #[ORM\GeneratedValue(strategy: "IDENTITY")]
+     #[ORM\GeneratedValue]
      #[ORM\Column(name: "idOuvrier")]
     private  ?int $idouvrier= null;
 
