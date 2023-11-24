@@ -31,10 +31,11 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
         $mail = $request->request->get('mail', '');
 
         $request->getSession()->set(Security::LAST_USERNAME, $mail);
+        $hashedPassword = hash('sha1', $request->request->get('password', ''));
 
         return new Passport(
             new UserBadge($mail),
-            new PasswordCredentials($request->request->get('password', '')),
+            new PasswordCredentials($hashedPassword),
             [
                 new CsrfTokenBadge('authenticate', $request->request->get('_csrf_token')),
                 new RememberMeBadge(),

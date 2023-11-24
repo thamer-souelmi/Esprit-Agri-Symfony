@@ -1,0 +1,54 @@
+{% extends 'baseback.html.twig' %}
+
+{% block body %}
+   <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Tables Des Produits</h1>
+    
+    <!-- DataTales Example -->
+    
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Nom du produit</th>
+                            <th>Catégorie</th>
+                            <th>Prix</th>
+                            <th>Quantité</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                            
+                            <th>Nom </th>
+                            <th>Prenom </th>
+                            <th>Image</th>
+                            <th>Actions</th>
+                            <th>Supprimer</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for produit in produits %}
+                        <tr>
+                            <td>{{ produit.getNomprod() }}</td>
+                            <td>{{ produit.getCat() }}</td>
+                            <td>{{ produit.getPrix() }}</td>
+                            <td>{{ produit.getQte() }}</td>
+                            <td>{{ produit.getDescr() }}</td>
+                            <td>{{ produit.isStatus() ? 'Disponible' : 'Non Disponible' }}</td>
+                           
+                            <td>{{ produit.user.getNom() }}</td>
+                            <td>{{ produit.user.getPrenom() }}</td>
+                             <td><img src="{{ asset('img/' ~ produit.getImage()) }}" alt="Product Image" style="max-width:100px;max-height:100px;"></td>
+                            <td>
+                                <a href="{{ path('app_produit_editb', {'id': produit.getId()}) }}" class="btn btn-secondary">Modifier</a>
+                                <a href="{{ path('app_produit_showb', {'id': produit.getId()}) }}" class="btn btn-success">Detail</a>
+                            </td>
+                            
+                            <td>{{ include('produit/_delete_form.html.twig') }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    
+{% endblock %}
