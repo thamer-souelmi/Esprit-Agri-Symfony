@@ -12,11 +12,14 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
-
+use Endroid\QrCode\QrCode;
+use App\Repository\ClientRepository;
+use Endroid\QrCode\Writer\PngWriter;
 
 #[Route('/client')]
 class ClientController extends AbstractController
 {
+
     #[Route('/', name: 'app_client_index', methods: ['GET'])]
     public function index(EntityManagerInterface $entityManager): Response
     {
@@ -28,6 +31,36 @@ class ClientController extends AbstractController
             'clients' => $clients,
         ]);
     }
+    //QR CODE 
+
+    #[Route('/generate-qr/{id}', name: 'app_client_generate_qr', methods: ['GET'])]
+    public function generateQrCodeForClient($id, ClientRepository $clientRepository): Response
+    {
+        $client = $clientRepository->find($id);
+
+        // Générer le contenu du QR Code (utilisez toutes les informations du client)
+        $qrContent = sprintf(
+            "Nom du produit: %s\nPrix: %s\nQuantité: %s",
+            $client->getNomprod(),
+            $client->getPrix(),
+            $client->getQte()
+        );
+
+        // Créer une instance de QrCode
+        $qrCode = new QrCode($qrContent);
+
+        // Créer une instance de PngWriter pour générer le résultat sous forme d'image PNG
+        $writer = new PngWriter();
+        $result = $writer->write($qrCode);
+
+        // Créer une réponse avec le résultat du QR Code
+        $response = new Response($result->getString(), Response::HTTP_OK, [
+            'Content-Type' => $result->getMimeType(),
+        ]);
+
+        return $response;
+    }
+    //QR CODE 
     #[Route('/back', name: 'app_clientback_index', methods: ['GET'])]
     public function indexback(EntityManagerInterface $entityManager): Response
     {

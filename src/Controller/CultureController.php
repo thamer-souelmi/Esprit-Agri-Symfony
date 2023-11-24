@@ -23,6 +23,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class CultureController extends AbstractController
 {
 
+
+
     //composer require dompdf/dompdf
     #[Route('/pdf', name: 'pdf', methods: ['GET'])]
     public function index_pdf(CultureRepository $cultureRepository, Request $request): Response

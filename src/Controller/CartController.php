@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Client;
 use App\Repository\ClientRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -80,8 +81,31 @@ class CartController extends AbstractController
 
         // Save to the session
         $session->set("panier", $panier);
-        return $this->redirectToRoute("cart_index");
+
+        // You can add additional logic here if needed, but no need to redirect or render
+
+        // If you want to return a response (e.g., JSON response), you can do so:
+        return new JsonResponse(['success' => true]);
     }
+    // /**
+    //  * @Route("/add/{id}", name="add")
+    //  */
+    // public function add(Client $client, SessionInterface $session)
+    // {
+    //     // Get the current cart
+    //     $panier = $session->get("panier", []);
+    //     $id = $client->getId();
+
+    //     if (!empty($panier[$id])) {
+    //         $panier[$id]++;
+    //     } else {
+    //         $panier[$id] = 1;
+    //     }
+
+    //     // Save to the session
+    //     $session->set("panier", $panier);
+    //     return $this->redirectToRoute("cart_index");
+    // }
 
     /**
      * @Route("/remove/{id}", name="remove")

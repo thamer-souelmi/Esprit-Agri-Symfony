@@ -31,6 +31,11 @@
 												<i class="bi bi-cart-plus"></i>
 												Ajouter au panier
 											</a>
+											<!-- Add button/link for generating QR code -->
+											<a href="{{ path('app_client_generate_qr', {'id': client.id}) }}" class="btn btn-primary">
+												<i class="bi bi-qrcode"></i>
+												Générer QR Code
+											</a>
 
 										</div>
 									</div>
