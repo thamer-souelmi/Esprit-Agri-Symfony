@@ -1,47 +1,61 @@
 {% extends 'inv.html.twig' %}
 
 {% block body %}
+<div class="container mt-5">
+        <div class="row justify-content-center">
     <div class="col-lg-7">
         <div class="p-5">
             
                 
                 {{ form_start(form) }}
 
-                <div class="form-group row">
-                    <div class="col-sm-20 mb-3 mb-sm-0">
-                        {{ form_row(form.titre, {'attr': {'class': 'form-control form-control-user form-control-lg', 'placeholder': 'Entrez le titre'}}) }}
-                    </div>
-                </div>
+                <div class="row mb-3">
+			<label for="inputEmail" class="col-sm-4 col-form-label">Titre</label>
+			<div class="col-sm-10">
+				{{ form_widget(form.titre, {'attr': {'class': 'form-control ' ~ (form.titre.vars.errors|length > 0 ? 'is-invalid' : '')}}) }}
+				{{ form_errors(form.titre, {'attr': {'class': 'text-danger'}}) }}
+			</div>
+            </div>
 
-                <div class="form-group row">
-                    <div class="col-sm-20 mb-3 mb-sm-0">
-                        {{ form_row(form.montant, {'attr': {'class': 'form-control form-control-user form-control-lg', 'placeholder': 'Entrez le montant'}}) }}
-                    </div>
-                </div>
+                <div class="row mb-3">
+			<label for="inputEmail" class="col-sm-4 col-form-label">Montant</label>
+			<div class="col-sm-10">
+				{{ form_widget(form.montant, {'attr': {'class': 'form-control ' ~ (form.montant.vars.errors|length > 0 ? 'is-invalid' : '')}}) }}
+				{{ form_errors(form.montant, {'attr': {'class': 'text-danger'}}) }}
+			</div>
+            </div>
 
-                <div class="form-group row">
-                    <div class="col-sm-20 mb-3 mb-sm-0">
-                        {{ form_row(form.datepublication, {'attr': {'class': 'form-control form-control-user form-control-lg', 'placeholder': 'Entrez la date de publication'}}) }}
-                    </div>
-                </div>
+                <div class="row mb-3">
+			<label for="inputEmail" class="col-sm-4 col-form-label">Date publication</label>
+			<div class="col-sm-10">
+				{{ form_widget(form.datepublication, {'attr': {'class': 'form-control ' ~ (form.datepublication.vars.errors|length > 0 ? 'is-invalid' : '')}}) }}
+				{{ form_errors(form.datepublication, {'attr': {'class': 'text-danger'}}) }}
+			</div>
+        </div>
 
-                <div class="form-group row">
-                    <div class="col-sm-20 mb-3 mb-sm-0">
-                        {{ form_row(form.localisation, {'attr': {'class': 'form-control form-control-user form-control-lg', 'placeholder': 'Entrez la localisation'}}) }}
-                    </div>
-                </div>
+               <div class="row mb-3">
+			<label for="inputEmail" class="col-sm-4 col-form-label">Localisation</label>
+			<div class="col-sm-10">
+				{{ form_widget(form.localisation, {'attr': {'class': 'form-control ' ~ (form.localisation.vars.errors|length > 0 ? 'is-invalid' : '')}}) }}
+				{{ form_errors(form.localisation, {'attr': {'class': 'text-danger'}}) }}
+			</div>
+        </div>
 
-                <div class="form-group row">
-                    <div class="col-sm-20 mb-3 mb-sm-0">
-                        {{ form_row(form.description, {'attr': {'class': 'form-control form-control-user form-control-lg', 'placeholder': 'Entrez la description'}}) }}
-                    </div>
-                </div>
+               <div class="row mb-3">
+			<label for="inputEmail" class="col-sm-4 col-form-label">Description</label>
+			<div class="col-sm-10">
+				{{ form_widget(form.description, {'attr': {'class': 'form-control ' ~ (form.description.vars.errors|length > 0 ? 'is-invalid' : '')}}) }}
+				{{ form_errors(form.description, {'attr': {'class': 'text-danger'}}) }}
+			</div>
+        </div>
 
-                <div class="form-group row">
-                    <div class="col-sm-20 mb-3 mb-sm-0">
-                        {{ form_row(form.photo, {'attr': {'class': 'form-control form-control-user form-control-lg', 'placeholder': 'Upload an image'}}) }}
-                    </div>
-                </div>
+                <div class="row mb-3">
+			<label for="inputEmail" class="col-sm-4 col-form-label">Photo</label>
+			<div class="col-sm-10">
+				{{ form_widget(form.photo, {'attr': {'class': 'form-control ' ~ (form.photo.vars.errors|length > 0 ? 'is-invalid' : '')}}) }}
+				{{ form_errors(form.photo, {'attr': {'class': 'text-danger'}}) }}
+			</div>
+        </div>
 
                 <button type="submit" class="btn btn-primary">Modifier</button>
 
@@ -60,6 +74,8 @@
                 {{ form_end(form) }}
             
         </div>
+    </div>
+    </div>
     </div>
 {% endblock %}
 

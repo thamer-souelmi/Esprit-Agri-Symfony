@@ -6,56 +6,37 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\AnnonceinvestissementRepository;
 
-/**
- * @ORM\Table(name="annonceinvestissement")
- * @ORM\Entity(repositoryClass=AnnonceinvestissementRepository::class)
- */
+#[ORM\Table(name: "annonceinvestissement")]
+#[ORM\Entity(repositoryClass: AnnonceinvestissementRepository::class)]
 class Annonceinvestissement
 {
-    /**
-     * @ORM\Column(name="idAnnonce", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
+    #[ORM\Column(name: "idAnnonce", type: "integer", nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "IDENTITY")]
     private int $idannonce;
 
-    /**
-     * @ORM\Column(name="titre", type="string", length=200, nullable=false)
-     * @Assert\NotBlank(message="Veuillez ajouter le titre !")
-     */
+    #[ORM\Column(name: "titre", type: "string", length: 200, nullable: false)]
+    #[Assert\NotBlank(message: "Veuillez ajouter le titre !")]
     private string $titre;
 
-    /**
-     * @ORM\Column(name="montant", type="float", precision=10, scale=0, nullable=false)
-     * @Assert\NotBlank(message="Veuillez ajouter le montant !")
-     */
+    #[ORM\Column(name: "montant", type: "float", precision: 10, scale: 0, nullable: false)]
+    #[Assert\NotBlank(message: "Veuillez ajouter le montant !")]
     private float $montant;
 
-    /**
-     * @ORM\Column(name="datePublication", type="date", nullable=false)
-     * @Assert\NotBlank(message="Veuillez ajouter la date de publication !")
-     * @Assert\GreaterThanOrEqual(
-     *     "today",
-     *     message="La date de publication ne peut pas être antérieure à aujourd'hui"
-     * )
-     */
+    #[ORM\Column(name: "datePublication", type: "date", nullable: false)]
+    #[Assert\NotBlank(message: "Veuillez ajouter la date de publication !")]
+    #[Assert\GreaterThanOrEqual("today", message: "La date de publication ne peut pas être antérieure à aujourd'hui")]
     private \DateTimeInterface $datepublication;
 
-    /**
-     * @ORM\Column(name="localisation", type="string", length=100, nullable=false)
-     * @Assert\NotBlank(message="Veuillez ajouter la localisation !")
-     */
+    #[ORM\Column(name: "localisation", type: "string", length: 100, nullable: false)]
+    #[Assert\NotBlank(message: "Veuillez ajouter la localisation !")]
     private string $localisation;
 
-    /**
-     * @ORM\Column(name="description", type="string", length=400, nullable=false)
-     * @Assert\NotBlank(message="Veuillez ajouter la description !")
-     */
+    #[ORM\Column(name: "description", type: "string", length: 400, nullable: false)]
+    #[Assert\NotBlank(message: "Veuillez ajouter la description !")]
     private string $description;
 
-    /**
-     * @ORM\Column(name="photo", type="string", length=500, nullable=false)
-     */
+    #[ORM\Column(name: "photo", type: "string", length: 500, nullable: false)]
     private string $photo;
 
     public function getIdannonce(): ?int

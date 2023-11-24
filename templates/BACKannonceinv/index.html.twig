@@ -2,14 +2,14 @@
 
 
 {% block body %}
-    <h1>Annonces Investissements </h1>
+    <h1 class="text-center">Annonces Investissements </h1>
 
     <table class="table">
         <thead>
             <tr>
                 <th>Titre</th>
                 <th>Montant</th>
-                <th>Datepublication</th>
+                <th>Date publication</th>
                 <th>Localisation</th>
                 <th>Description</th>
                 <th>Photo</th>
@@ -17,7 +17,7 @@
             </tr>
         </thead>
         <tbody>
-        {% for annonceinvestissement in annonceinvestissements %}
+        {% for annonceinvestissement in pagination %}
             <tr>
                 <td>{{ annonceinvestissement.titre }}</td>
                 <td>{{ annonceinvestissement.montant }}</td>
@@ -26,8 +26,10 @@
                 <td>{{ annonceinvestissement.description }}</td>
                 <td><img src="{{ asset('img/' ~ annonceinvestissement.photo) }}" alt=" Image" style="max-width:100px;max-height:100px;"></td>
                 <td style="display: flex; align-items: center;">
-                    <a href="{{ path('app_annonceinvestissement_show_back', {'idannonce': annonceinvestissement.idannonce}) }}" class="btn btn-secondary rounded-pill py-2 px-4">Afficher</a>
-
+                    <a href="{{ path('app_annonceinvestissement_show_back', {'idannonce': annonceinvestissement.idannonce}) }}" class="btn btn-success rounded-pill py-2 px-4">
+                     <i class="fas fa-eye"></i>
+                    </a>
+                </td>
             </tr>
         {% else %}
             <tr>
@@ -36,5 +38,51 @@
         {% endfor %}
         </tbody>
     </table>
+    {# Pagination #}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="text-center">
+                {{ knp_pagination_render(pagination) }}
+            </div>
+        </div>
+    </div>
+            {# style of pagination #}
+<style>
+	.pagination {
+		display: flex;
+		justify-content: center;
+		list-style: none;
+		padding: 0;
+	}
 
+	.pagination li {
+		margin: 0 5px;
+	}
+
+	.button-container {
+		display: flex;
+		flex-direction: row;
+		overflow-x: auto;
+		white-space: nowrap;
+	}
+
+
+	.button-container button {
+		margin-right: 10px; /* Espacement entre les boutons */
+	}
+
+	.pagination a {
+		text-decoration: none;
+		padding: 5px 10px;
+		border: 1px solid #1cc88a; /* Bleu */
+		border-radius: 3px;
+		color: #1cc88a; /* Bleu */
+	}
+
+	.pagination a:hover {
+		background-color: #1cc88a; /* Bleu au survol */
+		color: #fff; /* Texte blanc au survol */
+	}
+</style>
+<br>
 {% endblock %}

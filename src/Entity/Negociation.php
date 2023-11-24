@@ -7,63 +7,35 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\NegociationRepository;
 
-/**
- * Negociation
- *
- * @ORM\Table(name="negociation", indexes={@ORM\Index(name="fk_annonceinvestissement", columns={"idAnnonce"})})
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: NegociationRepository::class)]
 class Negociation
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
+    #[ORM\Column(name: "id", type: "integer", nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "IDENTITY")]
     private $id;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="montantPropose", type="float", precision=10, scale=0, nullable=false)
-     * @Assert\NotBlank(message="Veuillez ajouter le montant proposé !")
-     */
+    #[ORM\Column(name: "montantPropose", type: "float", precision: 10, scale: 0, nullable: false)]
+    #[Assert\NotBlank(message: "Veuillez ajouter le montant proposé !")]
     private $montantpropose;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="message", type="string", length=255, nullable=false)
-     * @Assert\NotBlank(message="Veuillez ajouter un message pour l'agriculteur !")
-     */
+    #[ORM\Column(name: "message", type: "string", length: 255, nullable: false)]
+    #[Assert\NotBlank(message: "Veuillez ajouter un message pour l'agriculteur !")]
     private $message;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="etatNego", type="boolean", length=0, nullable=true)
-     */
+    #[ORM\Column(name: "etatNego", type: "boolean", length: 0, nullable: true)]
     private $etatnego;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateNegociation", type="date", nullable=false)
-     * @Assert\NotBlank(message="Veuillez ajouter la date de négociation !")
-     */
+    #[ORM\Column(name: "dateNegociation", type: "date", nullable: false)]
+    #[Assert\NotBlank(message: "Veuillez ajouter la date de négociation !")]
     private $datenegociation;
 
-    /**
-     * @var \Annonceinvestissement
-     *
-     * @ORM\ManyToOne(targetEntity="Annonceinvestissement")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idAnnonce", referencedColumnName="idAnnonce")
-     * })
-     */
-    private $idannonce;
+    
+    #[ORM\ManyToOne(inversedBy: 'negociations')]
+     private ?Annonceinvestissement $idannonce = null;
+    
+    
+
 
     public function getId(): ?int
     {
@@ -129,6 +101,4 @@ class Negociation
 
         return $this;
     }
-
-
 }

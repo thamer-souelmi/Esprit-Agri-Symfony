@@ -15,6 +15,10 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Endroid\QrCode\QrCode; 
+use Endroid\QrCode\Writer\PngWriter;
+use Endroid\QrCodeBundle\Response\QrCodeResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 #[Route('/annonceinvestissement')]
 class AnnonceinvestissementController extends AbstractController
@@ -36,10 +40,18 @@ public function index(AnnonceinvestissementRepository $annonceinvestissementRepo
 }
     /////////////////////////////BACK//////////////////////////////////////////
     #[Route('/back', name: 'app_annonceinvestissement_index_back', methods: ['GET'])]
-    public function indexBack(AnnonceinvestissementRepository $annonceinvestissementRepository): Response
+    public function indexBack(AnnonceinvestissementRepository $annonceinvestissementRepository, PaginatorInterface $paginator, Request $request): Response
     {
+        $annonceinvestissements = $annonceinvestissementRepository->findAll();
+    
+        $pagination = $paginator->paginate(
+            $annonceinvestissements,
+            $request->query->getInt('page', 1),
+            4 // Number of items per page
+        );
+    
         return $this->render('BACKannonceinv/index.html.twig', [
-            'annonceinvestissements' => $annonceinvestissementRepository->findAll(),
+            'pagination' => $pagination,
         ]);
     }
     /////////////////////////////BACK//////////////////////////////////////////
@@ -174,34 +186,31 @@ public function index(AnnonceinvestissementRepository $annonceinvestissementRepo
          ]);
      }
       /////////////////////////////BACK//////////////////////////////////////////
-
-      #[Route('/{idannonce}', name: 'app_annonceinvestissement_delete', methods: ['POST'])]
-    public function delete(
-        Request $request,
-        Annonceinvestissement $annonceinvestissement,
-        EntityManagerInterface $entityManager,
-        SessionInterface $session,
-        UrlGeneratorInterface $urlGenerator
-    ): Response {
+      #[Route('/delete/{idannonce}', name: 'app_annonceinvestissement_delete', methods: ['POST'])]
+public function delete(
+    Request $request,
+    Annonceinvestissement $annonceinvestissement,
+    AnnonceinvestissementRepository $annonceinvestissementRepository,
+    EntityManagerInterface $entityManager
+): Response {
+    // Ajouter la vérification si l'annonce est utilisée par une négociation
+    if ($annonceinvestissementRepository->isAnnonceInUse($annonceinvestissement)) {
+        $this->addFlash('danger', 'Cette annonce contient une ou plusieurs négociations. Suppression impossible.');
+    } else {
         if ($this->isCsrfTokenValid('delete' . $annonceinvestissement->getIdannonce(), $request->request->get('_token'))) {
-            try {
-                // Your existing code to delete the announcement
-            } catch (\Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException $e) {
-                // Handle the foreign key constraint violation
-                $this->addFlash('error', 'Cannot delete the announcement because it has associated negotiations.');
+            // Use the entity manager to remove the entity
+            $entityManager->remove($annonceinvestissement);
+            $entityManager->flush();
 
-                // Use RedirectToRoute to create a new RedirectResponse
-                $redirectResponse = new RedirectResponse(
-                    $urlGenerator->generate('app_annonceinvestissement_index')
-                );
-
-                // Return the new RedirectResponse
-                return $redirectResponse;
-            }
+            $this->addFlash('success', 'Annonce a été supprimée avec succès.');
+        } else {
+            $this->addFlash('danger', 'Le jeton CSRF n\'est pas valide. Suppression impossible.');
         }
-
-        return $this->redirectToRoute('app_annonceinvestissement_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    return $this->redirectToRoute('app_annonceinvestissement_index', [], Response::HTTP_SEE_OTHER);
+}
+
     /////////////////////////////BACK//////////////////////////////////////////
     #[Route('/{idannonce}/backinvsupp', name: 'app_annonceinvestissement_delete_back', methods: ['POST'])]
     public function deleteBack(Request $request, Annonceinvestissement $annonceinvestissement, EntityManagerInterface $entityManager): Response
@@ -214,5 +223,29 @@ public function index(AnnonceinvestissementRepository $annonceinvestissementRepo
         return $this->redirectToRoute('app_annonceinvestissement_index_back', [], Response::HTTP_SEE_OTHER);
     }
     /////////////////////////////BACK//////////////////////////////////////////
+
+
+    //******************************************QR CODE**************************************************//
+    #[Route('/{idannonce}/qrcode', name: 'app_annonceinvestissement_qrcode', methods: ['GET'])]
+    public function generateQrCode(Annonceinvestissement $annonceinvestissement)
+    {
+        
+        // Créer un nouvel objet QRCode
+        $qrCode = new QrCode($annonceinvestissement->getIdannonce());
+
+        // Modifier les options du QRCode
+        $qrCode->setSize(250); // Définir la taille du QRCode en pixels
+
+        // Générer l'image du QRCode
+        $qrCodeImage = $qrCode->writeString();
+
+        // Créer une réponse HTTP avec l'image du QRCode
+        $response = new Response($qrCodeImage, Response::HTTP_OK, [
+            'Content-Type' => 'image/png',
+        ]);
+
+        return $response;
+    }
+    
     
 }

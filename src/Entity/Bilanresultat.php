@@ -5,105 +5,49 @@ namespace App\Entity;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Bilanresultat
- *
- * @ORM\Table(name="bilanresultat")
- * @ORM\Entity
- */
+#[ORM\Table(name: "bilanresultat")]
+#[ORM\Entity]
 class Bilanresultat
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="idBilanR", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
+    #[ORM\Column(name: "idBilanR", type: "integer", nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "IDENTITY")]
     private $idbilanr;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="anneeR", type="date", nullable=false)
-     */
+    #[ORM\Column(name: "anneeR", type: "date", nullable: false)]
     private $anneer;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="idUser", type="integer", nullable=false)
-     */
+    #[ORM\Column(name: "idUser", type: "integer", nullable: false)]
     private $iduser;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="autreRevenus", type="float", precision=10, scale=0, nullable=false)
-     */
+    #[ORM\Column(name: "autreRevenus", type: "float", precision: 10, scale: 0, nullable: false)]
     private $autrerevenus;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="subvention", type="float", precision=10, scale=0, nullable=false)
-     */
+    #[ORM\Column(name: "subvention", type: "float", precision: 10, scale: 0, nullable: false)]
     private $subvention;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="revenuesCultures", type="float", precision=10, scale=0, nullable=false)
-     */
+    #[ORM\Column(name: "revenuesCultures", type: "float", precision: 10, scale: 0, nullable: false)]
     private $revenuescultures;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="semences", type="float", precision=10, scale=0, nullable=false)
-     */
+    #[ORM\Column(name: "semences", type: "float", precision: 10, scale: 0, nullable: false)]
     private $semences;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="coutMainOeuvre", type="float", precision=10, scale=0, nullable=false)
-     */
+    #[ORM\Column(name: "coutMainOeuvre", type: "float", precision: 10, scale: 0, nullable: false)]
     private $coutmainoeuvre;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="coutInterventionMedicale", type="float", precision=10, scale=0, nullable=false)
-     */
+    #[ORM\Column(name: "coutInterventionMedicale", type: "float", precision: 10, scale: 0, nullable: false)]
     private $coutinterventionmedicale;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="coutsPlantations", type="float", precision=10, scale=0, nullable=false)
-     */
+    #[ORM\Column(name: "coutsPlantations", type: "float", precision: 10, scale: 0, nullable: false)]
     private $coutsplantations;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="chargesElectricite", type="float", precision=10, scale=0, nullable=false)
-     */
+    #[ORM\Column(name: "chargesElectricite", type: "float", precision: 10, scale: 0, nullable: false)]
     private $chargeselectricite;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="chargeEntretien", type="float", precision=10, scale=0, nullable=false)
-     */
+    #[ORM\Column(name: "chargeEntretien", type: "float", precision: 10, scale: 0, nullable: false)]
     private $chargeentretien;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="chargeAdministratives", type="float", precision=10, scale=0, nullable=false)
-     */
+    #[ORM\Column(name: "chargeAdministratives", type: "float", precision: 10, scale: 0, nullable: false)]
     private $chargeadministratives;
 
     public function getIdbilanr(): ?int

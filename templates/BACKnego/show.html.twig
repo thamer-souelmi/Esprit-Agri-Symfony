@@ -1,36 +1,42 @@
 {% extends 'baseback.html.twig' %}
 
 {% block body %}
-    <h1>Négociation</h1>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="text-center">
+                    <h1>Négociation</h1>
+                    {% set montantFormatted = negociation.montantpropose|number_format(2, '.', ',') ~ ' TND' %}
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Montantpropose</th>
-                <td>{{ negociation.montantpropose }}</td>
-            </tr>
-            <tr>
-                <th>Message</th>
-                <td>{{ negociation.message }}</td>
-            </tr>
-            <tr>
-                <th>Datenegociation</th>
-                <td>{{ negociation.datenegociation ? negociation.datenegociation|date('Y-m-d') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
-  
-    <div class="form-group row">
-                    <div class="col-sm-20 mb-3 mb-sm-0">
-                        <div class="my-2"></div>
-                        <a href="{{ path('app_negociation_index_back') }}" class="btn btn-light btn-icon-split btn-lg">
-                            <span class="icon text-gray-600">
-                                <i class="fas fa-arrow-left"></i>
-                            </span>
-                            <span class="text">Retour Négociations</span>
-                        </a>
-                    </div>  
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <th>Montant proposé</th>
+                                <td>{{ montantFormatted }}</td>
+                            </tr>
+                            <tr>
+                                <th>Message</th>
+                                <td>{{ negociation.message }}</td>
+                            </tr>
+                            <tr>
+                                <th>Date négociation</th>
+                                <td>{{ negociation.datenegociation ? negociation.datenegociation|date('Y-m-d') : '' }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="d-flex justify-content-center mt-3">
+                        <div class="col-sm-20 mb-3 mb-sm-0">
+                            <a href="{{ path('app_negociation_index_back') }}" class="btn btn-outline-warning ">
+                                <span class="icon text-primary-600">
+                                    <i class="fas fa-arrow-left"></i>
+                                </span>
+                                {# <span class="text"></span> #}
+                            </a>
+                        </div>
+                    </div>
                 </div>
-
-    
+            </div>
+        </div>
+    </div>
 {% endblock %}

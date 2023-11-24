@@ -5,126 +5,58 @@ namespace App\Entity;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Bilancomptable
- *
- * @ORM\Table(name="bilancomptable")
- * @ORM\Entity
- */
+#[ORM\Table(name: "bilancomptable")]
+#[ORM\Entity]
 class Bilancomptable
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="idBilanC", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
+    #[ORM\Column(name: "idBilanC", type: "integer", nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "IDENTITY")]
     private $idbilanc;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="idUser", type="integer", nullable=false)
-     */
+    #[ORM\Column(name: "idUser", type: "integer", nullable: false)]
     private $iduser;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="annee", type="date", nullable=false)
-     */
+    #[ORM\Column(name: "annee", type: "date", nullable: false)]
     private $annee;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="resultatNet", type="float", precision=10, scale=0, nullable=false)
-     */
+    #[ORM\Column(name: "resultatNet", type: "float", precision: 10, scale: 0, nullable: false)]
     private $resultatnet;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="valeurTerrain", type="float", precision=10, scale=0, nullable=false)
-     */
+    #[ORM\Column(name: "valeurTerrain", type: "float", precision: 10, scale: 0, nullable: false)]
     private $valeurterrain;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="materiels", type="float", precision=10, scale=0, nullable=false)
-     */
+    #[ORM\Column(name: "materiels", type: "float", precision: 10, scale: 0, nullable: false)]
     private $materiels;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="autresImmobilisations", type="float", precision=10, scale=0, nullable=false)
-     */
+    #[ORM\Column(name: "autresImmobilisations", type: "float", precision: 10, scale: 0, nullable: false)]
     private $autresimmobilisations;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="stocksProduits", type="float", precision=10, scale=0, nullable=false)
-     */
+    #[ORM\Column(name: "stocksProduits", type: "float", precision: 10, scale: 0, nullable: false)]
     private $stocksproduits;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="creanceClient", type="float", precision=10, scale=0, nullable=false)
-     */
+    #[ORM\Column(name: "creanceClient", type: "float", precision: 10, scale: 0, nullable: false)]
     private $creanceclient;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="tresorie", type="float", precision=10, scale=0, nullable=false)
-     */
+    #[ORM\Column(name: "tresorie", type: "float", precision: 10, scale: 0, nullable: false)]
     private $tresorie;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="capitalSocial", type="float", precision=10, scale=0, nullable=false)
-     */
+    #[ORM\Column(name: "capitalSocial", type: "float", precision: 10, scale: 0, nullable: false)]
     private $capitalsocial;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="reserves", type="float", precision=10, scale=0, nullable=false)
-     */
+    #[ORM\Column(name: "reserves", type: "float", precision: 10, scale: 0, nullable: false)]
     private $reserves;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="emprunts", type="float", precision=10, scale=0, nullable=false)
-     */
+    #[ORM\Column(name: "emprunts", type: "float", precision: 10, scale: 0, nullable: false)]
     private $emprunts;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="dettesCT", type="float", precision=10, scale=0, nullable=false)
-     */
+    #[ORM\Column(name: "dettesCT", type: "float", precision: 10, scale: 0, nullable: false)]
     private $dettesct;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="dettesIT", type="float", precision=10, scale=0, nullable=false)
-     */
+    #[ORM\Column(name: "dettesIT", type: "float", precision: 10, scale: 0, nullable: false)]
     private $dettesit;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="fournisseurs", type="float", precision=10, scale=0, nullable=false)
-     */
+    #[ORM\Column(name: "fournisseurs", type: "float", precision: 10, scale: 0, nullable: false)]
     private $fournisseurs;
 
     public function getIdbilanc(): ?int

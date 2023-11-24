@@ -15,59 +15,81 @@ use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
 
 
-
 #[Route('/negociation')]
 class NegociationController extends AbstractController
 {
-    #[Route('/', name: 'app_negociation_index', methods: ['GET'])]
-public function index(NegociationRepository $negociationRepository, PaginatorInterface $paginator, Request $request): Response
-{
-    $queryBuilder = $negociationRepository->createQueryBuilder('n')
-        ->orderBy('n.datenegociation', 'DESC'); // Assuming you want to order by creation date
+        #[Route('/', name: 'app_negociation_index', methods: ['GET'])]
+        public function index(NegociationRepository $negociationRepository, PaginatorInterface $paginator, Request $request): Response
+    {
+        $pagination = $paginator->paginate(
+            $negociationRepository->findAll(),
+            $request->query->getInt('page', 1),
+            3 // Number of items per page
+        );
 
-    $pagination = $paginator->paginate(
-        $queryBuilder->getQuery(),
-        $request->query->getInt('page', 1), // Get the page number from the request, default to 1
-        4 // Items per page
-    );
-
-    return $this->render('negociation/index.html.twig', [
-        'negociations' => $pagination,
-    ]);
-}
+        return $this->render('negociation/index.html.twig', [
+            'pagination' => $pagination,
+        ]);
+    }
      /////////////////////////////BACK//////////////////////////////////////////
      #[Route('/backnego', name: 'app_negociation_index_back', methods: ['GET'])]
-    public function indexNego(NegociationRepository $negociationRepository): Response
-    {
-        return $this->render('BACKnego/index.html.twig', [
-            'negociations' => $negociationRepository->findAll(),
-        ]);
-    }
+     public function indexNego(NegociationRepository $negociationRepository, PaginatorInterface $paginator, Request $request): Response
+     {
+         // Separate negotiations into accepted and rejected based on etatnego
+         $acceptedNegociations = $negociationRepository->findBy(['etatnego' => 1]);
+         $rejectedNegociations = $negociationRepository->findBy(['etatnego' => 0]);
+     
+         // Paginate both sets of negotiations
+         $acceptedPagination = $paginator->paginate(
+             $acceptedNegociations,
+             $request->query->getInt('page_accepted', 1), // Change 'page_accepted' to your preference
+             4 // Number of items per page
+         );
+     
+         $rejectedPagination = $paginator->paginate(
+             $rejectedNegociations,
+             $request->query->getInt('page_rejected', 1), // Change 'page_rejected' to your preference
+             4 // Number of items per page
+         );
+     
+         return $this->render('BACKnego/index.html.twig', [
+             'acceptedPagination' => $acceptedPagination,
+             'rejectedPagination' => $rejectedPagination,
+         ]);
+     }
+
       /////////////////////////////BACK//////////////////////////////////////////
 
-    #[Route('/new/{idannonce}', name: 'app_negociation_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager,$idannonce): Response
-    {
-        $annonceinvestissement = $entityManager->getRepository(Annonceinvestissement::class)->find($idannonce);
-        $negociation = new Negociation();
-        $negociation ->setIdannonce($annonceinvestissement);
-        $currentDate = new \DateTime();
-        $negociation->setDatenegociation($currentDate);
-        $form = $this->createForm(NegociationType::class, $negociation);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($negociation);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_negociation_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('negociation/new.html.twig', [
-            'negociation' => $negociation,
-            'form' => $form,
-        ]);
-    }
+      #[Route('/new/{idannonce}', name: 'app_negociation_new', methods: ['GET', 'POST'])]
+      public function new(Request $request, EntityManagerInterface $entityManager, $idannonce): Response
+      {
+          $annonceinvestissement = $entityManager->getRepository(Annonceinvestissement::class)->find($idannonce);
+          $negociation = new Negociation();
+          $negociation->setIdannonce($annonceinvestissement);
+          $currentDate = new \DateTime();
+          $negociation->setDatenegociation($currentDate);
+          $form = $this->createForm(NegociationType::class, $negociation);
+          $form->handleRequest($request);
+      
+          if ($form->isSubmitted() && $form->isValid()) {
+              $entityManager->persist($negociation);
+              $entityManager->flush();
+      
+              // Add flash message after successful flush
+              $this->addFlash(
+                  'success',
+                  'Négociation ajoutée avec succès'
+              );
+      
+              return $this->redirectToRoute('app_annonceinvestissement_index', [], Response::HTTP_SEE_OTHER);
+          }
+      
+          return $this->renderForm('negociation/new.html.twig', [
+              'negociation' => $negociation,
+              'form' => $form,
+          ]);
+      }
+      
      /////////////////////////////BACK//////////////////////////////////////////
      #[Route('/newNegoBack', name: 'app_negociation_new_back', methods: ['GET', 'POST'])]
     public function newBack(Request $request, EntityManagerInterface $entityManager): Response
@@ -93,24 +115,31 @@ public function index(NegociationRepository $negociationRepository, PaginatorInt
       /////////////////////////////BACK//////////////////////////////////////////
 
 
-    #[Route('/{idannonce}', name: 'app_negociation_show', methods: ['GET'])]
+   #[Route('/{idannonce}', name: 'app_negociation_show', methods: ['GET'])]
     /*public function show(Negociation $negociation): Response
     {
         return $this->render('negociation/show.html.twig', [
             'negociation' => $negociation,
         ]);
     }*/
-    public function afficherNegociations(int $idannonce): Response
-    {
-        // Fetch the necessary data based on the $idannonce
-        $negociations = $this->getDoctrine()->getRepository(Negociation::class)->findBy(['idannonce' => $idannonce]);
+   public function afficherNegociations(int $idannonce, PaginatorInterface $paginator, Request $request): Response
+{
+    // Fetch the necessary data based on the $idannonce
+    $negociations = $this->getDoctrine()->getRepository(Negociation::class)->findBy(['idannonce' => $idannonce]);
 
-        // You can do additional processing or fetch more data if needed
+    // Paginate the results
+    $pagination = $paginator->paginate(
+        $negociations,
+        $request->query->getInt('page', 1),
+        3 // Number of items per page
+    );
 
-        return $this->render('negociation/index.html.twig', [
-            'negociations' => $negociations,
-        ]);
-    }
+    // You can do additional processing or fetch more data if needed
+
+    return $this->render('negociation/show.html.twig', [
+        'pagination' => $pagination,
+    ]);
+}
     /////////////////////////////BACK//////////////////////////////////////////
     #[Route('/{id}/backnego', name: 'app_negociation_show_back', methods: ['GET'])]
     public function showBAck(Negociation $negociation): Response
@@ -199,5 +228,31 @@ public function handleNegociationDecision(int $id, string $decision, EntityManag
     // Redirect the admin back to the page that displays the candidates for the specific concours
     // You might want to replace 'your_route_name' with the actual route name you want to redirect to
     return $this->redirectToRoute('app_negociation_index');
+}
+////////////////////////////////////
+
+
+
+
+#[Route('/stats', name: 'app_negociation_stats', methods: ['GET'])]
+public function statistics(Request $request, NegociationRepository $negoRepo, PaginatorInterface $paginator): Response
+{
+    // Fetch data for statistics
+    $etat0Count = $negoRepo->countByEtat(0);
+    $etat1Count = $negoRepo->countByEtat(1);
+
+    // Fetch data for pagination
+    $pagination = $paginator->paginate(
+        $negoRepo->findAll(), // Assuming you want to paginate all negotiations
+        $request->query->getInt('page', 1),
+        10 // Items per page
+    );
+
+    return $this->render('BACKnego/stats.html.twig', [
+        'etat0Count' => $etat0Count,
+        'etat1Count' => $etat1Count,
+        'pagination' => $pagination,
+        // Add more data as needed
+    ]);
 }
 }

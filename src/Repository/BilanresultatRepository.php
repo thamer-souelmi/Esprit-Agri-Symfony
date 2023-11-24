@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Bilanresultat;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -20,6 +21,34 @@ class BilanresultatRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Bilanresultat::class);
     }
+    public function sumOfTotalRevenus(int $idBilanR): float
+{
+    return $this->createQueryBuilder('br')
+        ->select('SUM(br.revenuescultures + br.subvention + br.autrerevenus) as totalRevenus')
+        ->where('br.idbilanr = :idBilanR')
+        ->setParameter('idBilanR', $idBilanR)
+        ->getQuery()
+        ->getSingleScalarResult();
+}
+public function sumOfProductionCosts(int $idBilanR): float
+{
+    return $this->createQueryBuilder('br')
+        ->select('SUM(br.semences + br.coutmainoeuvre + br.coutsplantations + br.coutinterventionmedicale) as productionCosts')
+        ->where('br.idbilanr = :idBilanR')
+        ->setParameter('idBilanR', $idBilanR)
+        ->getQuery()
+        ->getSingleScalarResult();
+}
+public function sumOfOperatingExpenses(int $idBilanR): float
+    {
+        return $this->createQueryBuilder('br')
+            ->select('SUM(br.chargeselectricite + br.chargeentretien + br.chargeadministratives) as totalExploitationCharges')
+            ->where('br.idbilanr = :idBilanR')
+            ->setParameter('idBilanR', $idBilanR)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
 
 //    /**
 //     * @return Bilanresultat[] Returns an array of Bilanresultat objects
