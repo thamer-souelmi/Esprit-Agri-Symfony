@@ -2,81 +2,65 @@
 
 namespace App\Entity;
 
+use App\Repository\ProduitRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
-/**
- * Produit
- *
- * @ORM\Table(name="produit")
- * @ORM\Entity
- */
+use Symfony\Component\Validator\Constraints as Assert;
+#[ORM\Entity(repositoryClass: ProduitRepository::class)]
+#[ORM\Table(name: '`produit`')]
 class Produit
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="Nomprod", type="string", length=30, nullable=false)
-     */
-    private $nomprod;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="cat", type="string", length=30, nullable=false)
-     */
-    private $cat;
+    #[ORM\Column]
+    #[Assert\NotBlank(message: "Le nom du produit ne peut pas être vide.")]
+    #[Assert\Length(max: 30, maxMessage: "Le nom du produit ne peut pas dépasser {{ limit }} caractères.")]
+    private ?string $nomprod = null;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="prix", type="float", precision=10, scale=0, nullable=false)
-     */
-    private $prix;
+    #[ORM\Column]
+    private ?string $cat = null;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="qte", type="float", precision=10, scale=0, nullable=false)
-     */
-    private $qte;
+    #[ORM\Column]
+    #[Assert\NotBlank(message: "Le prix ne peut pas être vide.")]
+    #[Assert\GreaterThan(value: 0, message: "Le prix doit être supérieur à zéro.")]
+    private ?float $prix = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="desc", type="date", nullable=false)
-     */
-    private $desc;
+    #[ORM\Column]
+    #[Assert\NotBlank(message: "La quantité ne peut pas être vide.")]
+    #[Assert\GreaterThan(value: 0, message: "La quantité doit être supérieure à zéro.")]
+    private ?float $qte = null;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="status", type="boolean", nullable=false)
-     */
-    private $status;
+    #[ORM\Column]
+    #[Assert\NotBlank(message: "La description ne peut pas être vide.")]
+    private ?string $descr = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="image", type="string", length=255, nullable=true)
-     */
-    private $image;
+    #[ORM\Column]
+    private ?bool $status = null;
 
-    /**
-     * @var int|null
-     *
-     * @ORM\Column(name="user_id", type="integer", nullable=true)
-     */
-    private $userId;
+    #[ORM\Column]
+    private ?string $image = null;
+
+
+    
+#[ORM\ManyToOne(targetEntity: "App\Entity\User", inversedBy: "produits")]
+#[ORM\JoinColumn(nullable: false)]
+private ?User $user = null;
+
+#[ORM\OneToMany(mappedBy: 'produit', targetEntity: Reclamation::class)]
+private Collection $reclamations;
+
+public function __construct()
+{
+    $this->reclamations = new ArrayCollection();
+}
+
 
     public function getId(): ?int
     {
@@ -131,14 +115,14 @@ class Produit
         return $this;
     }
 
-    public function getDesc(): ?\DateTimeInterface
+    public function getDescr(): ?string
     {
-        return $this->desc;
+        return $this->descr;
     }
 
-    public function setDesc(\DateTimeInterface $desc): static
+    public function setDescr(string $descr): static
     {
-        $this->desc = $desc;
+        $this->descr = $descr;
 
         return $this;
     }
@@ -167,17 +151,56 @@ class Produit
         return $this;
     }
 
-    public function getUserId(): ?int
+   
+    public function getUser(): ?User
     {
-        return $this->userId;
+        return $this->user;
     }
 
-    public function setUserId(?int $userId): static
+    public function setUser(?User $user): self
     {
-        $this->userId = $userId;
+        $this->user = $user;
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Reclamation>
+     */
+    public function getReclamations(): Collection
+    {
+        return $this->reclamations;
+    }
+
+    public function addReclamation(Reclamation $reclamation): static
+    {
+        if (!$this->reclamations->contains($reclamation)) {
+            $this->reclamations->add($reclamation);
+            $reclamation->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReclamation(Reclamation $reclamation): static
+    {
+        if ($this->reclamations->removeElement($reclamation)) {
+            // set the owning side to null (unless already changed)
+            if ($reclamation->getProduit() === $this) {
+                $reclamation->setProduit(null);
+            }
+        }
+
+        return $this;
+    }
+    public function getUserId(): ?int
+{
+    return $this->user ? $this->user->getId() : null;
+}
+
+  
+
+
 
 
 }

@@ -50,6 +50,8 @@
 {{ form_row(form.role, {'attr': {'class': 'form-control form-control-user'}}) }}
 {{ form_row(form.mdp, {'attr': {'class': 'form-control form-control-user', 'placeholder': 'Entrez votre mot de passe'}}) }}
 {{ form_row(form.image, {'attr': {'class': 'form-control form-control-user'}}) }}
+{{ form_row(form.isBanned)}}
+{{ form_row(form.banExpiresAt)}}
 {{ form_widget(form.save, { 'label': 'Créer un compte', 'attr': {'class': 'btn btn-primary btn-user btn-block'} }) }}
 
 {{ form_end(form) }}

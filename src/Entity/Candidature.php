@@ -4,79 +4,60 @@ namespace App\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\CandidatureRepository;
 
-/**
- * Candidature
- *
- * @ORM\Table(name="candidature", indexes={@ORM\Index(name="fk_candidature_annonce", columns={"idRecurt"})})
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: CandidatureRepository::class)]
+#[ORM\Table(name: "candidature")]
+
+
 class Candidature
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="idCandidature", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $idcandidature;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "IDENTITY")]
+    #[ORM\Column(name: "idCandidature")]
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="ExperienceProfessionnelle", type="string", length=5000, nullable=true)
-     */
-    private $experienceprofessionnelle;
+    private ?int $idcandidature = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="Formation", type="string", length=5000, nullable=true)
-     */
-    private $formation;
+    #[ORM\Column( length: 5000)]
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="CompetencesTechniques", type="string", length=5000, nullable=true)
-     */
-    private $competencestechniques;
+    private ?String $experienceprofessionnelle = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="CertifForma", type="string", length=200, nullable=true)
-     */
-    private $certifforma;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="messageMotivation", type="string", length=255, nullable=false)
-     */
-    private $messagemotivation;
+    #[ORM\Column( length:5000)]
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="statusCandidature", type="string", length=0, nullable=false)
-     */
-    private $statuscandidature;
+    private ?String $formation  = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateCandidature", type="date", nullable=false)
-     */
-    private $datecandidature;
+    #[ORM\Column( length:5000)]
 
-    /**
-     * @var int|null
-     *
-     * @ORM\Column(name="idRecurt", type="integer", nullable=true)
-     */
-    private $idrecurt;
+    private ?String $competencestechniques = null;
+
+    
+    #[ORM\Column( length:200)]
+
+    private ?String $certifforma  = null;
+
+   
+    #[ORM\Column( length:255,)]
+
+    private String $messagemotivation;
+
+
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+
+    private ?\DateTimeInterface $datecandidature = null;
+
+  
+    #[ORM\Column]
+
+    private ?bool $statuscandidature;
+
+   
+    #[ORM\ManyToOne(targetEntity: "APP\Entity\Annoncerecrutement",inversedBy:"candidatures")]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Annoncerecrutement $idannrecru;
+
+    
+    
 
     public function getIdcandidature(): ?int
     {
@@ -143,18 +124,6 @@ class Candidature
         return $this;
     }
 
-    public function getStatuscandidature(): ?string
-    {
-        return $this->statuscandidature;
-    }
-
-    public function setStatuscandidature(string $statuscandidature): static
-    {
-        $this->statuscandidature = $statuscandidature;
-
-        return $this;
-    }
-
     public function getDatecandidature(): ?\DateTimeInterface
     {
         return $this->datecandidature;
@@ -167,17 +136,31 @@ class Candidature
         return $this;
     }
 
-    public function getIdrecurt(): ?int
+    public function isStatuscandidature(): ?bool
     {
-        return $this->idrecurt;
+        return $this->statuscandidature;
     }
 
-    public function setIdrecurt(?int $idrecurt): static
+    public function setStatuscandidature(?bool $statuscandidature): static
     {
-        $this->idrecurt = $idrecurt;
+        $this->statuscandidature = $statuscandidature;
 
         return $this;
     }
+
+    public function getIdannrecru(): ?Annoncerecrutement
+    {
+        return $this->idannrecru;
+    }
+
+    public function setIdannrecru(?Annoncerecrutement $idannrecru): static
+    {
+        $this->idannrecru = $idannrecru;
+
+        return $this;
+    }
+
+
 
 
 }
