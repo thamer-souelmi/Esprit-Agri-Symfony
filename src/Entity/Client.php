@@ -59,6 +59,7 @@ class Client
     {
         return $this->image;
     }
+    
 
     public function setImage(?string $image): static
     {
