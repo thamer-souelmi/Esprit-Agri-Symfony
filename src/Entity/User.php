@@ -1,7 +1,7 @@
 <?php
 
+namespace App\Entity;
 
-//namespace App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -16,7 +16,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\Table(name: '`user`')]
 #[UniqueEntity(fields: ['mail'], message: 'There is already an account with this mail')]
 
-class User 
+class User implements UserInterface  
 
 {
     #[ORM\Id]
@@ -242,10 +242,7 @@ class User
 
 
 
-    public function eraseCredentials()
-    {
-        // If you store any temporary, sensitive data on the user, clear it here
-    }
+    
 
 
     public function isVerified(): bool
@@ -258,6 +255,30 @@ class User
         $this->isVerified = $isVerified;
 
         return $this;
+    }
+    public function getRoles()
+    {
+        return [$this->role]; // You might need to adjust this depending on your use case
+    }
+
+    public function getPassword()
+    {
+        return $this->mdp;
+    }
+
+    public function getSalt()
+    {
+        // not needed when using the "bcrypt" algorithm in security.yaml
+    }
+
+    public function getUsername()
+    {
+        return $this->mail;
+    }
+
+    public function eraseCredentials()
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
     }
 
 

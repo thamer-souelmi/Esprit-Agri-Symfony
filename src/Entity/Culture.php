@@ -48,8 +48,11 @@ class Culture
     #[ORM\Column]
     private ?float $coutsplantations = null;
 
-    #[ORM\ManyToOne(inversedBy: 'cultures')]
-    private ?Category $category = null;
+    #[ORM\ManyToOne(targetEntity: "App\Entity\Category", inversedBy: "cultures")]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Category $categorys = null;
+
+    
 
 
     public function getId(): ?int
@@ -123,14 +126,19 @@ class Culture
         return $this;
     }
 
-    public function getCategory(): ?Category
+    public function getCategorys(): ?Category
     {
-        return $this->category;
+        return $this->categorys;
     }
 
-    public function setCategory(?Category $category): static
+    public function setCategorys(?Category $categorys): static
     {
-        $this->category = $category;
+        $this->categorys = $categorys;
+
         return $this;
     }
+
+    
+
+    
 }
