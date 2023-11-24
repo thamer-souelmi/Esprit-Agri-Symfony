@@ -7,7 +7,9 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+
 #[ORM\Entity(repositoryClass: CultrueRepository::class)]
+
 class Culture
 {
     #[ORM\Id]
@@ -40,6 +42,7 @@ class Culture
     private ?float $revenuescultures = null;
 
 
+
     #[Assert\NotBlank(message: 'Les couts des cultures ne peuvent pas être vides.')]
     #[Assert\GreaterThanOrEqual(value: 0, message: 'Les couts des cultures ne peuvent pas être négatifs.')]
     #[ORM\Column]
@@ -47,6 +50,7 @@ class Culture
 
     #[ORM\ManyToOne(inversedBy: 'cultures')]
     private ?Category $category = null;
+
 
     public function getId(): ?int
     {
