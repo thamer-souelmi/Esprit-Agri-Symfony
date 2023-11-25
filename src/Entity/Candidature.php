@@ -49,9 +49,9 @@ class Candidature
     private ?bool $statuscandidature;
 
    
-    #[ORM\ManyToOne(targetEntity: "APP\Entity\Annoncerecrutement", inversedBy: "candidatures")]
-    #[ORM\JoinColumn(name: "idannrecru_id", referencedColumnName: "idRecrut")]  // Update this line
-    private ?Annoncerecrutement $idannrecru;
+    // #[ORM\ManyToOne(targetEntity: "APP\Entity\Annoncerecrutement", inversedBy: "candidatures")]
+    // #[ORM\JoinColumn(name: "idannrecru_id", referencedColumnName: "idRecrut")]  // Update this line
+    // private ?Annoncerecrutement $idannrecru;
     
     
 
