@@ -2,20 +2,17 @@
 
 namespace App\Entity;
 
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\CandidatureRepository;
+use Doctrine\DBAL\Types\Types;
 
 #[ORM\Entity(repositoryClass: CandidatureRepository::class)]
 #[ORM\Table(name: "candidature")]
-
-
 class Candidature
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: "IDENTITY")]
     #[ORM\Column(name: "idCandidature")]
-
     private ?int $idcandidature = null;
 
     #[ORM\Column( length: 5000)]
@@ -52,10 +49,9 @@ class Candidature
     private ?bool $statuscandidature;
 
    
-    #[ORM\ManyToOne(targetEntity: "APP\Entity\Annoncerecrutement",inversedBy:"candidatures")]
-    #[ORM\JoinColumn(nullable: true)]
+    #[ORM\ManyToOne(targetEntity: "APP\Entity\Annoncerecrutement", inversedBy: "candidatures")]
+    #[ORM\JoinColumn(name: "idannrecru_id", referencedColumnName: "idRecrut")]  // Update this line
     private ?Annoncerecrutement $idannrecru;
-
     
     
 

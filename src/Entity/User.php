@@ -1,6 +1,6 @@
 <?php
 
-
+namespace App\Entity;
 //namespace App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -95,6 +95,8 @@ class User
 
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
+    #[ORM\OneToMany(mappedBy: "user", targetEntity: Annoncerecrutement::class)]
+    private Collection $annonces;
 
     
     public function isBanned(): ?bool
@@ -258,6 +260,11 @@ class User
         $this->isVerified = $isVerified;
 
         return $this;
+    }
+
+    public function getAnnonces(): Collection
+    {
+        return $this->annonces;
     }
 
 

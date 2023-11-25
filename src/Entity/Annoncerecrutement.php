@@ -1,11 +1,12 @@
 <?php
 
-
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\AnnoncerecrutementRepository;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\DBAL\Types\Types;
 
 #[ORM\Entity(repositoryClass: AnnoncerecrutementRepository::class)]
 #[ORM\Table(name: "annoncerecrutement")]
@@ -14,22 +15,22 @@ class Annoncerecrutement
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: "IDENTITY")]
     #[ORM\Column(name: "idRecrut")]
-    private ?int $idRecrut= null;
+    private ?int $idRecrut = null;
 
-    #[ORM\Column( length: 255)]
-    private ?String $posteDemande = null;
+    #[ORM\Column(length: 255)]
+    private ?string $posteDemande = null;
 
-    #[ORM\Column( precision: 10, scale: 0)]
+    #[ORM\Column(precision: 10, scale: 0)]
     private ?float $salairePropose = null;
 
-    #[ORM\Column( length:0)]
-    private ?String $typeContrat = null;
+    #[ORM\Column(length: 0)]
+    private ?string $typeContrat = null;
 
-    #[ORM\Column( type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $datePub = null;
 
     #[ORM\Column(length: 25)]
-    private ?String $localisation = null;
+    private ?string $localisation = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $dateEmbauche;
@@ -37,10 +38,18 @@ class Annoncerecrutement
     #[ORM\Column()]
     private ?int $nbPosteRecherche;
 
-   
-
-    #[ORM\OneToMany(mappedBy:"Annoncerecrutement",targetEntity:Candidature::class)]
+    #[ORM\OneToMany(mappedBy: "idannrecru", targetEntity: Candidature::class)]
     private Collection $candidatures;
+
+    #[ORM\ManyToOne(targetEntity: User::class)]
+#[ORM\JoinColumn(name: "user_id", referencedColumnName: "id")]
+private ?User $user;
+
+
+    public function __construct()
+    {
+        $this->candidatures = new ArrayCollection();
+    }
 
     public function getIdRecrut(): ?int
     {
@@ -131,14 +140,43 @@ class Annoncerecrutement
         return $this;
     }
 
-    public function getIdUser(): ?User
+    public function getUser(): ?User
     {
-        return $this->idUser;
+        return $this->user;
     }
 
-    public function setIdUser(?User $idUser): static
+    public function setUser(?User $user): static
     {
-        $this->idUser = $idUser;
+        $this->user = $user;
+        return $this;
+    }
+
+    /**
+     * @return Collection|Candidature[]
+     */
+    public function getCandidatures(): Collection
+    {
+        return $this->candidatures;
+    }
+
+    public function addCandidature(Candidature $candidature): self
+    {
+        if (!$this->candidatures->contains($candidature)) {
+            $this->candidatures[] = $candidature;
+            $candidature->setIdannrecru($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCandidature(Candidature $candidature): self
+    {
+        if ($this->candidatures->removeElement($candidature)) {
+            // set the owning side to null (unless already changed)
+            if ($candidature->getIdannrecru() === $this) {
+                $candidature->setIdannrecru(null);
+            }
+        }
 
         return $this;
     }
