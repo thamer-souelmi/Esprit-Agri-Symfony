@@ -2,94 +2,58 @@
 
 namespace App\Entity;
 
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\CandidatureRepository;
+use Doctrine\DBAL\Types\Types;
 
-/**
- * Candidature
- *
- * @ORM\Table(name="candidature", indexes={@ORM\Index(name="fk_idOuvrier", columns={"idOuvrierfor"}), @ORM\Index(name="fk_idAnnRecru", columns={"idAnnRecru"})})
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: CandidatureRepository::class)]
+#[ORM\Table(name: "candidature")]
 class Candidature
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="idCandidature", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $idcandidature;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "IDENTITY")]
+    #[ORM\Column(name: "idCandidature")]
+    private ?int $idcandidature = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="ExperienceProfessionnelle", type="string", length=5000, nullable=true)
-     */
-    private $experienceprofessionnelle;
+    #[ORM\Column( length: 5000)]
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="Formation", type="string", length=5000, nullable=true)
-     */
-    private $formation;
+    private ?String $experienceprofessionnelle = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="CompetencesTechniques", type="string", length=5000, nullable=true)
-     */
-    private $competencestechniques;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="CertifForma", type="string", length=200, nullable=true)
-     */
-    private $certifforma;
+    #[ORM\Column( length:5000)]
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="messageMotivation", type="string", length=255, nullable=false)
-     */
-    private $messagemotivation;
+    private ?String $formation  = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateCandidature", type="date", nullable=false)
-     */
-    private $datecandidature;
+    #[ORM\Column( length:5000)]
 
-    /**
-     * @var bool|null
-     *
-     * @ORM\Column(name="statusCandidature", type="boolean", nullable=true)
-     */
-    private $statuscandidature;
+    private ?String $competencestechniques = null;
 
-    /**
-     * @var \Annoncerecrutement
-     *
-     * @ORM\ManyToOne(targetEntity="Annoncerecrutement")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idAnnRecru", referencedColumnName="idRecurt")
-     * })
-     */
-    private $idannrecru;
+    
+    #[ORM\Column( length:200)]
 
-    /**
-     * @var \Ouvrier
-     *
-     * @ORM\ManyToOne(targetEntity="Ouvrier")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idOuvrierfor", referencedColumnName="idOuvrier")
-     * })
-     */
-    private $idouvrierfor;
+    private ?String $certifforma  = null;
+
+   
+    #[ORM\Column( length:255,)]
+
+    private String $messagemotivation;
+
+
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+
+    private ?\DateTimeInterface $datecandidature = null;
+
+  
+    #[ORM\Column]
+
+    private ?bool $statuscandidature;
+
+   
+    #[ORM\ManyToOne(targetEntity: "APP\Entity\Annoncerecrutement", inversedBy: "candidatures")]
+    #[ORM\JoinColumn(name: "idannrecru_id", referencedColumnName: "idRecrut")]  // Update this line
+    private ?Annoncerecrutement $idannrecru;
+    
+    
 
     public function getIdcandidature(): ?int
     {
@@ -192,17 +156,7 @@ class Candidature
         return $this;
     }
 
-    public function getIdouvrierfor(): ?Ouvrier
-    {
-        return $this->idouvrierfor;
-    }
 
-    public function setIdouvrierfor(?Ouvrier $idouvrierfor): static
-    {
-        $this->idouvrierfor = $idouvrierfor;
-
-        return $this;
-    }
 
 
 }
