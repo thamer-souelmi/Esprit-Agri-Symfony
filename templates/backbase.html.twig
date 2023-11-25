@@ -10,8 +10,6 @@
     <meta name="author" content="">
 
     <title>Esprit-Agri</title>
-
-    
     {% block css%}
     <!-- Custom fonts for this template-->
     <link href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
@@ -28,24 +26,6 @@
 </head>
 
 <body id="page-top">
-{% if app.user is null %}
-    {# Redirect non-authenticated users to the logout page #}
-    {% set targetPath = path('app_logout') %}
-    <script>
-        window.location.href = "{{ targetPath }}";
-    </script>
-{% elseif not is_granted('IS_AUTHENTICATED_FULLY') %}
-    {# Redirect users without full authentication to the logout page #}
-    {% set targetPath = path('app_logout') %}
-    <script>
-        window.location.href = "{{ targetPath }}";
-    </script>
-{% endif %}
-{% if app.user.role != 'admin' %}
-        <script>
-            window.location.href = "{{ path('app_home') }}";
-        </script>
-    {% endif %}
 
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -55,79 +35,61 @@
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-               
-                <div class="sidebar-brand-text mx-3">Esprit-Agri</div>
+                <div class="sidebar-brand-icon rotate-n-15">
+                    <i class="fas fa-laugh-wink"></i>
+                </div>
+                <div class="sidebar-brand-text mx-3">Esprit-Agri Admin</div>
             </a>
 
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
-            <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
-                <a class="nav-link" href="{{ path('app_user_index') }}">
+                    <li class="nav-item active">
+                <a class="nav-link" href="">
+
+                    <span>Dashboard</span></a>
                     
-                    <span>Utilisateurs</span></a>
             </li>
             <li class="nav-item active">
                 <a class="nav-link" href="index.html">
-                    
+                <a class="nav-link" href="">
+
                     <span>Culture</span></a>
             </li>
             <li class="nav-item active">
                 <a class="nav-link" href="index.html">
-                    
+
                     <span>Investissement</span></a>
             </li>
             <li class="nav-item active">
                 <a class="nav-link" href="index.html">
-                    
-                    <span>Marcher</span></a>
-            </li>
-            </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="{{ path('app_produit_indexb') }}">
-                    
+
                     <span>Produit</span></a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="{{ path('app_candidatureback_index') }}">
-                    
-                    <span> Candidatures  </span></a>
+                <a class="nav-link" href="index.html">
+
+                    <span>Recrutement</span></a>
             </li>
-
-
-            <li class="nav-item active">
-                <a class="nav-link" href="{{ path('app_annoncerecrutementback_index') }}">
-                    
-                    <span>Annonce Recrutement</span></a>
-            </li>
-
-
-
             <li class="nav-item active">
                 <a class="nav-link" href="index.html">
-                    
+
                     <span>Terrain</span></a>
             </li>
-            
+
             <li class="nav-item active">
                 <a class="nav-link" href="index.html">
-                    
+
+
                     <span>Traitement Medicale</span></a>
             </li>
-            
+
             <li class="nav-item active">
                 <a class="nav-link" href="index.html">
-                    
+
+                
                     <span>Veterinaire</span></a>
             </li>
-
-            
-
-           
-
-           
-
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
@@ -316,11 +278,27 @@
 
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
-                            
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Souelmi Thamer</span>
+                                <img class="img-profile rounded-circle" src="{{ asset('img/undraw_profile.svg') }}">
+
+                            </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Profile
+                                </a>
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Settings
+                                </a>
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Activity Log
+                                </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -342,13 +320,11 @@
 
             </div>
             <!-- End of Main Content -->
-
-
             <!-- Footer -->
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Esprit-Agri 2023</span>
+                        <span>Copyright &copy; Your Website 2021</span>
                     </div>
                 </div>
             </footer>
@@ -379,8 +355,7 @@
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="{{ path('app_logout') }}">Logout</a>
-
+                    <a class="btn btn-primary" href="login.html">Logout</a>
                 </div>
             </div>
         </div>
