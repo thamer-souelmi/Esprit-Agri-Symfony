@@ -5,7 +5,9 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\AnnoncerecrutementRepository;
+
 use Doctrine\Common\Collections\ArrayCollection;
+
 use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: AnnoncerecrutementRepository::class)]
@@ -26,11 +28,14 @@ class Annoncerecrutement
     #[ORM\Column( length:0)]
     private ?String $typeContrat = null;
 
+
     #[ORM\Column(nullable: true)]
+
     private ?\DateTimeInterface $datePub = null;
 
     #[ORM\Column(length: 25)]
     private ?String $localisation = null;
+
 
      #[ORM\Column(nullable: true)]
     private ?\DateTimeInterface $dateEmbauche;
@@ -40,12 +45,14 @@ class Annoncerecrutement
 
    
 
+
     // #[ORM\OneToMany(mappedBy: "idannrecru", targetEntity: Candidature::class)]
     // private Collection $candidatures;
     // public function __construct()
     // {
     //     $this->candidatures = new ArrayCollection();
     // }
+
 
 
     public function getIdRecrut(): ?int
@@ -136,6 +143,7 @@ class Annoncerecrutement
 
         return $this;
     }
+
 
     // public function getIdUser(): ?User
     // {

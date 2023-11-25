@@ -48,6 +48,19 @@
 
 
     <body id="page-top">
+    {% if app.user is null %}
+    {# Redirect non-authenticated users to the logout page #}
+    {% set targetPath = path('app_logout') %}
+    <script>
+        window.location.href = "{{ targetPath }}";
+    </script>
+{% elseif not is_granted('IS_AUTHENTICATED_FULLY') %}
+    {# Redirect users without full authentication to the logout page #}
+    {% set targetPath = path('app_logout') %}
+    <script>
+        window.location.href = "{{ targetPath }}";
+    </script>
+{% endif %}
     <!-- Spinner Start -->
     <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
         <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>

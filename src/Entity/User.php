@@ -82,9 +82,9 @@ class User implements UserInterface
 
     #[ORM\Column(length: 255)]
     private ?string $image = null;
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Produit", mappedBy="user")
-     */
+    
+     #[ORM\OneToMany(targetEntity:"App\Entity\Produit", mappedBy:"user")]
+     
     private $products;
 
     #[ORM\Column(nullable: true)]
