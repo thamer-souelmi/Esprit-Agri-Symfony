@@ -4,82 +4,60 @@ namespace App\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\CandidatureRepository;
 
-/**
- * Candidature
- *
- * @ORM\Table(name="candidature")
- * @ORM\Entity
- */
-/*
-@ORM\Entity(repositoryClass=CandidatureRepository::class)
- */
+#[ORM\Entity(repositoryClass: CandidatureRepository::class)]
+#[ORM\Table(name: "candidature")]
+
+
 class Candidature
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="idCandidature", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $idcandidature;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "IDENTITY")]
+    #[ORM\Column(name: "idCandidature")]
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="ExperienceProfessionnelle", type="string", length=5000, nullable=true)
-* @Assert\NotBlank(message="vueillez ajouter votre experience professionnelle")
-*/
-    private $experienceprofessionnelle;
+    private ?int $idcandidature = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="Formation", type="string", length=5000, nullable=true)
-* @Assert\NotBlank(message="vueillez ajouter vos formation")
-*/
-    private $formation;
+    #[ORM\Column( length: 5000)]
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="CompetencesTechniques", type="string", length=5000, nullable=true)
-* @Assert\NotBlank(message="vueillez ajouter vos compétence techniques  ")
-*/
-    private $competencestechniques;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="CertifForma", type="string", length=200, nullable=true)
-     */
-    private $certifforma;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="messageMotivation", type="string", length=255, nullable=false)
-* @Assert\NotBlank(message="vueillez ajouter votre message de motivation")
-*/
-    private $messagemotivation;
-
-  /**
- * @var bool|null
- *
- * @ORM\Column(name="statusCandidature", type="boolean", nullable=true)
- */
-     private $statusCandidature;
+    private ?String $experienceprofessionnelle = null;
 
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateCandidature", type="date", nullable=false)
-     */
-    private $datecandidature;
+    #[ORM\Column( length:5000)]
+
+    private ?String $formation  = null;
+
+    #[ORM\Column( length:5000)]
+
+    private ?String $competencestechniques = null;
+
+    
+    #[ORM\Column( length:200)]
+
+    private ?String $certifforma  = null;
+
+   
+    #[ORM\Column( length:255,)]
+
+    private String $messagemotivation;
+
+
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+
+    private ?\DateTimeInterface $datecandidature = null;
+
+  
+    #[ORM\Column]
+
+    private ?bool $statuscandidature;
+
+   
+    #[ORM\ManyToOne(targetEntity: "APP\Entity\Annoncerecrutement",inversedBy:"candidatures")]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Annoncerecrutement $idannrecru;
+
+    
+    
 
     public function getIdcandidature(): ?int
     {
@@ -127,7 +105,7 @@ class Candidature
         return $this->certifforma;
     }
 
-    public function setCertifforma(string $certifforma): static
+    public function setCertifforma(?string $certifforma): static
     {
         $this->certifforma = $certifforma;
 
@@ -146,19 +124,6 @@ class Candidature
         return $this;
     }
 
-    public function getStatusCandidature(): ?bool
-    {
-        return $this->statusCandidature;
-    }
-    
-    public function setStatusCandidature(?bool $statusCandidature): self
-    {
-        $this->statusCandidature = $statusCandidature;
-    
-        return $this;
-    }
-    
-
     public function getDatecandidature(): ?\DateTimeInterface
     {
         return $this->datecandidature;
@@ -170,6 +135,32 @@ class Candidature
 
         return $this;
     }
+
+    public function isStatuscandidature(): ?bool
+    {
+        return $this->statuscandidature;
+    }
+
+    public function setStatuscandidature(?bool $statuscandidature): static
+    {
+        $this->statuscandidature = $statuscandidature;
+
+        return $this;
+    }
+
+    public function getIdannrecru(): ?Annoncerecrutement
+    {
+        return $this->idannrecru;
+    }
+
+    public function setIdannrecru(?Annoncerecrutement $idannrecru): static
+    {
+        $this->idannrecru = $idannrecru;
+
+        return $this;
+    }
+
+
 
 
 }

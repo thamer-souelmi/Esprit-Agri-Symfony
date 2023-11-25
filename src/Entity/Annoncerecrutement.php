@@ -1,151 +1,96 @@
 <?php
 
+
 namespace App\Entity;
 
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\AnnoncerecrutementRepository;
+use Doctrine\Common\Collections\Collection;
 
-/**
- * Annoncerecrutement
- *
- * @ORM\Table(name="annoncerecrutement")
- * @ORM\Entity
- */
-/*
-@ORM\Entity(repositoryClass=AnnoncerecrutementRepository::class)
- */
+#[ORM\Entity(repositoryClass: AnnoncerecrutementRepository::class)]
+#[ORM\Table(name: "annoncerecrutement")]
 class Annoncerecrutement
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="idRecurt", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $idrecurt;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "IDENTITY")]
+    #[ORM\Column(name: "idRecrut")]
+    private ?int $idRecrut= null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="posteDemande", type="string", length=255, nullable=false)
-* @Assert\NotBlank(message="vueillez ajouter le poste demander")
-*/
-    private $postedemande;
+    #[ORM\Column( length: 255)]
+    private ?String $posteDemande = null;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="salairePropose", type="float", precision=10, scale=0, nullable=false)
-    
-* @Assert\NotBlank(message="vueillez ajouter le salaire proposer ")
-*/
-    private $salairepropose;
+    #[ORM\Column( precision: 10, scale: 0)]
+    private ?float $salairePropose = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="typeContrat", type="string", length=0, nullable=false)
- 
-* @Assert\NotBlank(message="vueillez ajouter le type de contrat")
-*/
-    private $typecontrat;
+    #[ORM\Column( length:0)]
+    private ?String $typeContrat = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="datePub", type="date", nullable=false)
-  
-* @Assert\NotBlank(message="vueillez ajouter date de publication ")
-*/
-    private $datepub;
+    #[ORM\Column( type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $datePub = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="localisation", type="string", length=255, nullable=false)
-    
-* @Assert\NotBlank(message="vueillez une localisation")
-*/
-    private $localisation;
+    #[ORM\Column(length: 25)]
+    private ?String $localisation = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateEmbauche", type="date", nullable=false)
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $dateEmbauche;
+
+    #[ORM\Column()]
+    private ?int $nbPosteRecherche;
+
    
-* @Assert\NotBlank(message="vueillez ajouter date de publication")
-*/
-    private $dateembauche;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="nbPosteRecherche", type="integer", nullable=false)
- 
-* @Assert\NotBlank(message="vueillez ajouter le nombre de poste recherché ")
-*/
-    private $nbposterecherche;
+    #[ORM\OneToMany(mappedBy:"Annoncerecrutement",targetEntity:Candidature::class)]
+    private Collection $candidatures;
 
-    /**
-     * @var int|null
-     *
-     * @ORM\Column(name="idCandidature", type="integer", nullable=true)
- 
-*/
-    private $idcandidature;
-
-    public function getIdrecurt(): ?int
+    public function getIdRecrut(): ?int
     {
-        return $this->idrecurt;
+        return $this->idRecrut;
     }
 
-    public function getPostedemande(): ?string
+    public function getPosteDemande(): ?string
     {
-        return $this->postedemande;
+        return $this->posteDemande;
     }
 
-    public function setPostedemande(string $postedemande): static
+    public function setPosteDemande(string $posteDemande): static
     {
-        $this->postedemande = $postedemande;
+        $this->posteDemande = $posteDemande;
 
         return $this;
     }
 
-    public function getSalairepropose(): ?float
+    public function getSalairePropose(): ?float
     {
-        return $this->salairepropose;
+        return $this->salairePropose;
     }
 
-    public function setSalairepropose(float $salairepropose): static
+    public function setSalairePropose(float $salairePropose): static
     {
-        $this->salairepropose = $salairepropose;
+        $this->salairePropose = $salairePropose;
 
         return $this;
     }
 
-    public function getTypecontrat(): ?string
+    public function getTypeContrat(): ?string
     {
-        return $this->typecontrat;
+        return $this->typeContrat;
     }
 
-    public function setTypecontrat(string $typecontrat): static
+    public function setTypeContrat(string $typeContrat): static
     {
-        $this->typecontrat = $typecontrat;
+        $this->typeContrat = $typeContrat;
 
         return $this;
     }
 
-    public function getDatepub(): ?\DateTimeInterface
+    public function getDatePub(): ?\DateTimeInterface
     {
-        return $this->datepub;
+        return $this->datePub;
     }
 
-    public function setDatepub(\DateTimeInterface $datepub): static
+    public function setDatePub(\DateTimeInterface $datePub): static
     {
-        $this->datepub = $datepub;
+        $this->datePub = $datePub;
 
         return $this;
     }
@@ -162,41 +107,39 @@ class Annoncerecrutement
         return $this;
     }
 
-    public function getDateembauche(): ?\DateTimeInterface
+    public function getDateEmbauche(): ?\DateTimeInterface
     {
-        return $this->dateembauche;
+        return $this->dateEmbauche;
     }
 
-    public function setDateembauche(\DateTimeInterface $dateembauche): static
+    public function setDateEmbauche(\DateTimeInterface $dateEmbauche): static
     {
-        $this->dateembauche = $dateembauche;
+        $this->dateEmbauche = $dateEmbauche;
 
         return $this;
     }
 
-    public function getNbposterecherche(): ?int
+    public function getNbPosteRecherche(): ?int
     {
-        return $this->nbposterecherche;
+        return $this->nbPosteRecherche;
     }
 
-    public function setNbposterecherche(int $nbposterecherche): static
+    public function setNbPosteRecherche(int $nbPosteRecherche): static
     {
-        $this->nbposterecherche = $nbposterecherche;
+        $this->nbPosteRecherche = $nbPosteRecherche;
 
         return $this;
     }
 
-    public function getIdcandidature(): ?int
+    public function getIdUser(): ?User
     {
-        return $this->idcandidature;
+        return $this->idUser;
     }
 
-    public function setIdcandidature(?int $idcandidature): static
+    public function setIdUser(?User $idUser): static
     {
-        $this->idcandidature = $idcandidature;
+        $this->idUser = $idUser;
 
         return $this;
     }
-
-
 }
