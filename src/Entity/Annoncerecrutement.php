@@ -5,6 +5,9 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\AnnoncerecrutementRepository;
+
+use Doctrine\Common\Collections\ArrayCollection;
+
 use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: AnnoncerecrutementRepository::class)]
@@ -12,7 +15,7 @@ use Doctrine\Common\Collections\Collection;
 class Annoncerecrutement
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: "IDENTITY")]
+    #[ORM\GeneratedValue]
     #[ORM\Column(name: "idRecrut")]
     private ?int $idRecrut= null;
 
@@ -25,13 +28,16 @@ class Annoncerecrutement
     #[ORM\Column( length:0)]
     private ?String $typeContrat = null;
 
-    #[ORM\Column( type: Types::DATE_MUTABLE)]
+
+    #[ORM\Column(nullable: true)]
+
     private ?\DateTimeInterface $datePub = null;
 
     #[ORM\Column(length: 25)]
     private ?String $localisation = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+
+     #[ORM\Column(nullable: true)]
     private ?\DateTimeInterface $dateEmbauche;
 
     #[ORM\Column()]
@@ -39,8 +45,15 @@ class Annoncerecrutement
 
    
 
-    #[ORM\OneToMany(mappedBy:"Annoncerecrutement",targetEntity:Candidature::class)]
-    private Collection $candidatures;
+
+    // #[ORM\OneToMany(mappedBy: "idannrecru", targetEntity: Candidature::class)]
+    // private Collection $candidatures;
+    // public function __construct()
+    // {
+    //     $this->candidatures = new ArrayCollection();
+    // }
+
+
 
     public function getIdRecrut(): ?int
     {
@@ -131,15 +144,16 @@ class Annoncerecrutement
         return $this;
     }
 
-    public function getIdUser(): ?User
-    {
-        return $this->idUser;
-    }
 
-    public function setIdUser(?User $idUser): static
-    {
-        $this->idUser = $idUser;
+    // public function getIdUser(): ?User
+    // {
+    //     return $this->idUser;
+    // }
 
-        return $this;
-    }
+    // public function setIdUser(?User $idUser): static
+    // {
+    //     $this->idUser = $idUser;
+
+    //     return $this;
+    // }
 }

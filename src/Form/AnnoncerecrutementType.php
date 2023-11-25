@@ -21,7 +21,7 @@ class AnnoncerecrutementType extends AbstractType
       'CDI' => 'CDI', 
             ]
             ])
-            ->add('datepub')
+            
             ->add('localisation')
             ->add('dateembauche')
             ->add('nbposterecherche')
