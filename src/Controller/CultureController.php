@@ -34,7 +34,7 @@ class CultureController extends AbstractController
         $dompdf = new Dompdf();
 
         // Récupération de la liste des événements à partir du repository
-        $cultures = $cultureRepository->find();
+        $cultures = $cultureRepository->findAll();
         $imagePath = $this->getParameter('kernel.project_dir') . '/public/img/1.jpeg';
         // Encode the image to base64
         $imageData = base64_encode(file_get_contents($imagePath));
@@ -178,11 +178,7 @@ class CultureController extends AbstractController
             // updates the 'image' property to store the file name
             // $culture->setImage($newFilename);
             //}
-            $category = new Category();
-            $category ->settype(
-                "efsdfsdf"
-            );
-            $culture->setCategorys($category);
+
             $cultureRepository->save($culture, true);
 
             return $this->redirectToRoute('app_culture_index', [], Response::HTTP_SEE_OTHER);

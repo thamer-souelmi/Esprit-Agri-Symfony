@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use App\Repository\CategoryRepository;
+
 use Doctrine\ORM\Mapping as ORM;
 
 
@@ -19,13 +21,13 @@ class Category
     #[ORM\Column(length: 150)]
     private ?string $type = null;
 
-    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Culture::class)]
-    private Collection $cultures;
+    // #[ORM\OneToMany(mappedBy: 'category', targetEntity: Culture::class)]
+    // private Collection $cultures;
 
-    public function __construct()
-    {
-        $this->cultures = new ArrayCollection();
-    }
+    // public function __construct()
+    // {
+    //     $this->cultures = new ArrayCollection();
+    // }
 
     public function getId(): ?int
     {
@@ -43,6 +45,4 @@ class Category
 
         return $this;
     }
-
-    
 }

@@ -25,13 +25,13 @@ class CultureType extends AbstractType
             ->add('revenuescultures')
             ->add('coutsplantations')
             // ->add('user')
-            // ->add('categorys', EntityType::class, [
-            //     'class' => Category::class,
-            //     'choice_label' => 'type',
-            //     'label' => 'Catégorie',
-            //     'placeholder' => 'Sélectionner une catégorie',
-            //     'required' => true,
-            // ])
+            ->add('category', EntityType::class, [
+                'class' => Category::class,
+                'choice_label' => 'type',
+                'label' => 'Catégorie',
+                'placeholder' => 'Sélectionner une catégorie',
+                'required' => true,
+            ])
             ->add('save', SubmitType::class);
     }
 
