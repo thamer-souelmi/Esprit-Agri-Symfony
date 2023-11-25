@@ -16,7 +16,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\Table(name: '`user`')]
 #[UniqueEntity(fields: ['mail'], message: 'There is already an account with this mail')]
 
-class User 
+class User implements UserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -255,6 +255,26 @@ class User
 
         return $this;
     }
+    public function getRoles()
+    {
+        return [$this->role]; // You might need to adjust this depending on your use case
+    }
+    public function getPassword()
+    {
+        return $this->mdp;
+    }
+    public function getSalt()
+    {
+        // not needed when using the "bcrypt" algorithm in security.yaml
+    }
+    public function getUsername()
+    {
+        return $this->mail;
+    }
+    // public function eraseCredentials()
+    // {
+    //     // If you store any temporary, sensitive data on the user, clear it here
+    // }
 
 
     
