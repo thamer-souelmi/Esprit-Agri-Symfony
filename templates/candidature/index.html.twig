@@ -11,27 +11,35 @@
                     <div class="card-body">
                         <h5 class="card-title">Candidature {{ loop.index }}</h5>
                         <ul class="list-group list-group-flush">
-                            <img class="img-fluid rounded" src="{{ asset('img/' ~ candidature.certifforma) }}" width="500" height="500">
-
+                          
                             <li class="list-group-item"><strong>Date de Candidature:</strong> {{ candidature.datecandidature ? candidature.datecandidature|date('Y-m-d') : '' }}</li>
                             <li class="list-group-item"><strong>Expérience Professionnelle:</strong> {{ candidature.experienceprofessionnelle }}</li>
                             <li class="list-group-item"><strong>Formation:</strong> {{ candidature.formation }}</li>
                             <li class="list-group-item"><strong>Compétences Techniques:</strong> {{ candidature.competencestechniques }}</li>
-                            <li class="list-group-item"><strong>Certifications et Formations:</strong>
-                                {% if candidature.certifforma|lower ends with '.pdf' %}
+                            <li class="list-group-item"><strong>Message de motivation :</strong> {{ candidature.messagemotivation }}</li>
+                              {% if candidature.certifforma|lower ends with '.pdf' %}
+                                <li class="list-group-item"><strong>Certifications et Formations:</strong>
                                     <a href="{{ asset('img/' ~ candidature.certifforma) }}" download="{{ candidature.certifforma }}">
                                         Télécharger le fichier PDF
                                     </a>
-                                {% else %}
-                                    {{ candidature.certifforma }}
-                                {% endif %}
-                            </li>
-                            <li class="list-group-item"><strong>Message de motivation :</strong> {{ candidature.messagemotivation }}</li>
+                                </li>
+                            {% else %}
+                            <li class="list-group-item"><strong>Certifications et Formations:</strong>
+
+                                <div>
+                                    <a href="{{ asset('img/' ~ candidature.certifforma) }}" download="{{ candidature.certifforma }}">
+                                        Télécharger la photo
+                                    </a>
+                                </div>
+                            {% endif %}
+
                         </ul>
                         <div class="d-flex justify-content-between">
                             <li class="list-group-item"><strong>Etat négociation :</strong>
-                                <a href="{{ path('app_candidature_decision', {'id': candidature.idcandidature, 'decision': 'accept'}) }}" class="btn btn-primary" data-decision="accept">Accepter</a>
-                                <a href="{{ path('app_candidature_decision', {'id': candidature.idcandidature, 'decision': 'refuse'}) }}" class="btn btn-primary" data-decision="refuse">Refuser</a>
+                           <a href="{{ path('confirm_candidature', {'id': candidature.idcandidature, 'decision': 'accept'}) }}" class="btn btn-primary" data-decision="accept">Accepter</a>
+
+<a href="{{ path('confirm_candidature', {'id': candidature.idcandidature, 'decision': 'refuse'}) }}" class="btn btn-primary" data-decision="refuse">Refuser</a>
+
                             </li>
                         </div>
                     </div>

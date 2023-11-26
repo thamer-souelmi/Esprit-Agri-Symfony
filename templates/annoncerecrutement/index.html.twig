@@ -56,7 +56,7 @@
                                 <p class="fw-bolder"> Date prévue d'embauche :  <br> <i class="bi bi-calendar3"></i>  {{ annoncerecrutement.dateembauche ? annoncerecrutement.dateembauche|date('d-m-Y') : '' }}</p>
                                 <p class="fw-bolder"> <i class="bi bi-geo-fill"></i> {{ annoncerecrutement.localisation }}</p>
                                 <p class="fw-bolder"> Nombre de postes recherchés : <i class="bi bi-people-fill"></i> {{ annoncerecrutement.nbposterecherche }}</p>
-<a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_candidature_new', {'idRecrut': annoncerecrutement.idRecrut }) }}"> <i class="bi bi-person-plus"></i> </a>
+<a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_candidature_new', {'idRecurt': annoncerecrutement.idRecrut }) }}"> <i class="bi bi-person-plus"></i> </a>
                                <a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_annoncerecrutement_edit', {'idRecrut': annoncerecrutement.idRecrut}) }}"><i class="bi bi-pencil"></i>  </a>
 <a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_annoncerecrutement_edit', {'idRecrut': annoncerecrutement.idRecrut}) }}"><i class="bi bi-eye"></i>  </a>
 <br>

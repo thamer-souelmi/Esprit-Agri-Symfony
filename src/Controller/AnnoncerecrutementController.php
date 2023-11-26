@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 #[Route('/annoncerecrutement')]
 class AnnoncerecrutementController extends AbstractController
@@ -41,11 +42,11 @@ class AnnoncerecrutementController extends AbstractController
     }
 
     #[Route('/new', name: 'app_annoncerecrutement_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager ,AnnoncerecrutementRepository $annoncerecrutementRepository): Response
+    public function new(Request $request, EntityManagerInterface $entityManager ,Security $security,AnnoncerecrutementRepository $annoncerecrutementRepository): Response
     {
-        $user = $entityManager->getRepository(User::class)->find(7);
-
+        $user = $security->getUser();
         $annoncerecrutement = new Annoncerecrutement();
+        $annoncerecrutement->setUser($user);
         $currentDate = new \DateTime();
         $annoncerecrutement->setDatepub($currentDate);
         $form = $this->createForm(AnnoncerecrutementType::class, $annoncerecrutement);
@@ -142,4 +143,17 @@ public function deleteback(
 
     return $this->redirectToRoute('app_annoncerecrutementback_index', [], Response::HTTP_SEE_OTHER);
 }
+#[Route('/post', name: 'app_covoiturage_post', methods: ['GET'])]
+public function post(AnnoncerecrutementRepository $annoncerecrutementRepository): Response
+{
+    $annoncerecrutement = $annoncerecrutementRepository->findAll();
+    $filteredCovoiturage = array_filter($annoncerecrutement, function ($c) {
+        return $c->getNbPosteRecherche() > 0;
+    });
+    return $this->render('candidature/index.html.twig', [
+        'annoncerecrutement' => $filteredCovoiturage,
+    ]);
+}
+
+
 }
