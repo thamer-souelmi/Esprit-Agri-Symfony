@@ -41,9 +41,9 @@ class Annoncerecrutement
 //     #[ORM\OneToMany(mappedBy: "idannrecru", targetEntity: Candidature::class)]
 //     private Collection $candidatures;
 
-//     #[ORM\ManyToOne(targetEntity: User::class)]
-// #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id")]
-// private ?User $user;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+#[ORM\JoinColumn(name: "user_id", referencedColumnName: "id")]
+private ?User $user;
 
 
     // public function __construct()
@@ -140,16 +140,16 @@ class Annoncerecrutement
         return $this;
     }
 
-    // public function getUser(): ?User
-    // {
-    //     return $this->user;
-    // }
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
 
-    // public function setUser(?User $user): static
-    // {
-    //     $this->user = $user;
-    //     return $this;
-    // }
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+        return $this;
+    }
 
     // /**
     //  * @return Collection|Candidature[]

@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Form\AnnoncerecrutementType;
 use App\Repository\AnnoncerecrutementRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,10 +17,18 @@ use Symfony\Component\Routing\Annotation\Route;
 class AnnoncerecrutementController extends AbstractController
 {
     #[Route('/', name: 'app_annoncerecrutement_index', methods: ['GET'])]
-    public function index(AnnoncerecrutementRepository $annoncerecrutementRepository): Response
+    public function index(AnnoncerecrutementRepository $annoncerecrutementRepository, PaginatorInterface $paginator, Request $request): Response
     {
+        $annoncerecrutements = $annoncerecrutementRepository->findAll();
+
+        $pagination = $paginator->paginate(
+            $annoncerecrutements,
+            $request->query->getInt('page', 1),
+            3 // Number of items per page
+        );
+
         return $this->render('annoncerecrutement/index.html.twig', [
-            'annoncerecrutements' => $annoncerecrutementRepository->findAll(),
+            'pagination' => $pagination,
         ]);
     }
 
@@ -43,7 +52,7 @@ class AnnoncerecrutementController extends AbstractController
         $form->handleRequest($request);
     
         if ($form->isSubmitted() && $form->isValid()) {
-            $annoncerecrutement -> setIduser($user);
+            $annoncerecrutement -> setUser($user);
             $entityManager->persist($annoncerecrutement);
             $entityManager->flush();
        //     $annoncerecrutementRepository->save($annoncerecrutement, true);
@@ -89,16 +98,16 @@ class AnnoncerecrutementController extends AbstractController
         ]);
     }
 
-    #[Route('/{idrecurt}', name: 'app_annoncerecrutement_delete', methods: ['POST'])]
-    public function delete(Request $request, Annoncerecrutement $annoncerecrutement, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$annoncerecrutement->getIdrecurt(), $request->request->get('_token'))) {
-            $entityManager->remove($annoncerecrutement);
-            $entityManager->flush();
-        }
+        #[Route('/{idrecurt}', name: 'app_annoncerecrutement_delete', methods: ['POST'])]
+        public function delete(Request $request, Annoncerecrutement $annoncerecrutement, EntityManagerInterface $entityManager): Response
+        {
+            if ($this->isCsrfTokenValid('delete'.$annoncerecrutement->getIdRecrut(), $request->request->get('_token'))) {
+                $entityManager->remove($annoncerecrutement);
+                $entityManager->flush();
+            }
 
-        return $this->redirectToRoute('app_annoncerecrutement_index', [], Response::HTTP_SEE_OTHER);
-    }
+            return $this->redirectToRoute('app_annoncerecrutement_index', [], Response::HTTP_SEE_OTHER);
+        }
     #[Route('/search/annoncerecrut', name: 'annoncerecrut_search', methods: ['GET'])]
 public function search(Request $request, AnnoncerecrutementRepository $annoncerecrutementRepository): Response
 {
