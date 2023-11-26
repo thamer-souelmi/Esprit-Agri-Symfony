@@ -24,7 +24,7 @@ class AnnoncerecrutementController extends AbstractController
         $pagination = $paginator->paginate(
             $annoncerecrutements,
             $request->query->getInt('page', 1),
-            3 // Number of items per page
+            6 // Number of items per page
         );
 
         return $this->render('annoncerecrutement/index.html.twig', [
@@ -72,15 +72,15 @@ class AnnoncerecrutementController extends AbstractController
     
     
 
-    #[Route('/{idrecurt}', name: 'app_annoncerecrutement_show', methods: ['GET'])]
-    public function show(Annoncerecrutement $annoncerecrutement): Response
-    {
+    #[Route('/{idRecrut}', name: 'app_annoncerecrutement_show', methods: ['GET'])]
+public function show(Annoncerecrutement $annoncerecrutement): Response
+{
         return $this->render('annoncerecrutement/show.html.twig', [
             'annoncerecrutement' => $annoncerecrutement,
         ]);
     }
 
-    #[Route('/{idrecurt}/edit', name: 'app_annoncerecrutement_edit', methods: ['GET', 'POST'])]
+    #[Route('/{idRecrut}/edit', name: 'app_annoncerecrutement_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Annoncerecrutement $annoncerecrutement, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(AnnoncerecrutementType::class, $annoncerecrutement);
@@ -98,16 +98,16 @@ class AnnoncerecrutementController extends AbstractController
         ]);
     }
 
-        #[Route('/{idrecurt}', name: 'app_annoncerecrutement_delete', methods: ['POST'])]
-        public function delete(Request $request, Annoncerecrutement $annoncerecrutement, EntityManagerInterface $entityManager): Response
-        {
-            if ($this->isCsrfTokenValid('delete'.$annoncerecrutement->getIdRecrut(), $request->request->get('_token'))) {
-                $entityManager->remove($annoncerecrutement);
-                $entityManager->flush();
-            }
+        // #[Route('/{IdRecrut}', name: 'app_annoncerecrutement_delete', methods: ['POST'])]
+        // public function delete(Request $request, Annoncerecrutement $annoncerecrutement, EntityManagerInterface $entityManager): Response
+        // {
+        //     if ($this->isCsrfTokenValid('delete'.$annoncerecrutement->getIdRecrut(), $request->request->get('_token'))) {
+        //         $entityManager->remove($annoncerecrutement);
+        //         $entityManager->flush();
+        //     }
 
-            return $this->redirectToRoute('app_annoncerecrutement_index', [], Response::HTTP_SEE_OTHER);
-        }
+        //     return $this->redirectToRoute('app_annoncerecrutement_index', [], Response::HTTP_SEE_OTHER);
+        // }
     #[Route('/search/annoncerecrut', name: 'annoncerecrut_search', methods: ['GET'])]
 public function search(Request $request, AnnoncerecrutementRepository $annoncerecrutementRepository): Response
 {
@@ -120,13 +120,19 @@ public function search(Request $request, AnnoncerecrutementRepository $annoncere
         'annoncerecrutements' => $resultats,
     ]);
 }
-#[Route('/back/{id}', name: 'app_annoncerecruback_delete', methods: ['POST'])]
-public function deleteback(Request $request, Annoncerecrutement $annoncerecrutement, AnnoncerecrutementRepository $annoncerecrutementRepository): Response
+#[Route('/back/{IdRecrut}', name: 'app_annoncerecruback_delete', methods: ['POST'])]
+public function deleteback(
+    Request $request,
+    Annoncerecrutement $annoncerecrutement,
+    AnnoncerecrutementRepository $annoncerecrutementRepository
+): Response
 {
     if ($annoncerecrutementRepository->isAnnReInUse($annoncerecrutement)) {
-        $this->addFlash('danger', 'L\'annonce a des condidatues obtenue . Suppression impossible.');
+        $this->addFlash('danger', 'L\'annonce a des candidatures obtenues. Suppression impossible.');
     } else {
-        if ($this->isCsrfTokenValid('delete' . $annoncerecrutement->getIdrecurt(), $request->request->get('_token'))) {
+        $csrfToken = $request->request->get('_token');
+
+        if ($this->isCsrfTokenValid('delete' . $annoncerecrutement->getIdRecrut(), $csrfToken)) {
             $annoncerecrutementRepository->remove($annoncerecrutement, true);
             $this->addFlash('success', 'L\'annonce a été supprimée avec succès.');
         } else {

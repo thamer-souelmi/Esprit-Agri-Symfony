@@ -32,57 +32,53 @@ class CandidatureController extends AbstractController
             'candidatures' => $candidatureRepository->findAll(),
         ]);
     }
-    #[Route('/new/{idrecurt}', name: 'app_candidature_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager , $idrecurt): Response
-    {        //$idrecurt = $request->get('idRecurt');
+    #[Route('/new/{idRecrut}', name: 'app_candidature_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager, $idRecrut): Response
+    {
         $candidature = new Candidature();
-
+    
         $ouvrier = $entityManager->getRepository(ouvrier::class)->find(1);
-        $candidature ->setIdouvrierfor($ouvrier);
-
-        $annoncerecrutement = $entityManager->getRepository(Annoncerecrutement::class)->find($idrecurt);
-        $candidature ->setIdannrecru($annoncerecrutement);
+    
+        $annoncerecrutement = $entityManager->getRepository(Annoncerecrutement::class)->find($idRecrut);
+        $candidature->setIdannrecru($annoncerecrutement);
+    
         $form = $this->createForm(CandidatureType::class, $candidature);
         $form->handleRequest($request);
+    
         $currentDate = new \DateTime();
         $candidature->setDatecandidature($currentDate);
+    
         if ($form->isSubmitted() && $form->isValid()) {
             // Handle file upload
             $file = $form->get('certifforma')->getData();
-            
+    
             if ($file instanceof UploadedFile) {
                 $fileName = uniqid().'.'.$file->guessExtension();
-
+    
                 // Move the file to the desired directory
                 $file->move(
-                    'img/',
+                    $this->getParameter('kernel.project_dir') . '/public/img/',
                     $fileName
                 );
-
+    
                 // Save the image file name to the entity
                 $candidature->setCertifforma($fileName);
             }
-
+    
             $entityManager->persist($candidature);
             $entityManager->flush();
-
+    
             return $this->redirectToRoute('app_annoncerecrutement_index', [], Response::HTTP_SEE_OTHER);
         }
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            //$candidature -> setIdannrecru($annoncerecrutement);
-
-            $entityManager->persist($candidature);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_candidature_index', [], Response::HTTP_SEE_OTHER);
-        }
-
+    
+        // If the form is not valid, you can handle it here
+    
         return $this->renderForm('candidature/new.html.twig', [
             'candidature' => $candidature,
             'form' => $form,
         ]);
     }
+    
 
     #[Route('/{idcandidature}', name: 'app_candidature_show', methods: ['GET'])]
     public function show(Candidature $candidature): Response

@@ -46,14 +46,19 @@ class Candidature
   
     #[ORM\Column]
 
-    private ?bool $statuscandidature;
+    private ?bool $statuscandidature = false;
 
    
-    // #[ORM\ManyToOne(targetEntity: "APP\Entity\Annoncerecrutement", inversedBy: "candidatures")]
-    // #[ORM\JoinColumn(name: "idannrecru_id", referencedColumnName: "idRecrut")]  // Update this line
-    // private ?Annoncerecrutement $idannrecru;
+    #[ORM\ManyToOne(targetEntity: "App\Entity\Annoncerecrutement", inversedBy: "candidatures")]
+    #[ORM\JoinColumn(name: "idannrecru_id", referencedColumnName: "idRecrut")]
+    private ?Annoncerecrutement $idannrecru;
     
     
+    public function __construct()
+{
+    $this->statuscandidature = false;
+    // Add any other default values here if needed
+}
 
     public function getIdcandidature(): ?int
     {
