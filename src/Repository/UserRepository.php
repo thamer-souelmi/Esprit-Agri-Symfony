@@ -81,4 +81,31 @@ public function findByRoles(string $role): array
 //             ->getQuery()
 //             ->getResult();
 //     }
+// public function findUsersWithMoreThanTwoReclamations()
+//     {
+//         return $this->createQueryBuilder('u')
+//             ->select('u.id, u.nom, u.prenom, COUNT(r.id) AS reclamations_count')
+//             ->join('u.produits', 'p')
+//             ->join('p.reclamations', 'r')
+//             ->groupBy('u.id')
+//             ->having('COUNT(r.id) > 2')
+//             ->getQuery()
+//             ->getResult();
+//     }
+public function findUsersWithMoreThanTwoReclamations(): array
+{
+    $entityManager = $this->getEntityManager();
+
+    $query = $entityManager->createQuery('
+            SELECT u.id, u.nom, u.prenom,u.image, COUNT(r.id) AS reclamationsCount
+            FROM App\Entity\User u
+            JOIN u.products p
+            JOIN p.reclamations r
+            GROUP BY u.id, u.nom, u.prenom
+            HAVING COUNT(r.id) > 2
+        ');
+
+    return $query->getResult();
+}
+
 }

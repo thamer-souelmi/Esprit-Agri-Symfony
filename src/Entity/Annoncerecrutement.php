@@ -6,6 +6,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\AnnoncerecrutementRepository;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 
 #[ORM\Entity(repositoryClass: AnnoncerecrutementRepository::class)]
 #[ORM\Table(name: "annoncerecrutement")]
@@ -39,8 +40,8 @@ class Annoncerecrutement
 
    
 
-    #[ORM\OneToMany(mappedBy:"Annoncerecrutement",targetEntity:Candidature::class)]
-    private Collection $candidatures;
+    // #[ORM\OneToMany(mappedBy:"Annoncerecrutement",targetEntity:Candidature::class)]
+    // private Collection $candidatures;
 
     public function getIdRecrut(): ?int
     {
@@ -131,15 +132,15 @@ class Annoncerecrutement
         return $this;
     }
 
-    public function getIdUser(): ?User
-    {
-        return $this->idUser;
-    }
+    // public function getIdUser(): ?User
+    // {
+    //     return $this->idUser;
+    // }
 
-    public function setIdUser(?User $idUser): static
-    {
-        $this->idUser = $idUser;
+    // public function setIdUser(?User $idUser): static
+    // {
+    //     $this->idUser = $idUser;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 }

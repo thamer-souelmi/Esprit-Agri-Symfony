@@ -61,6 +61,14 @@ public function __construct()
     $this->reclamations = new ArrayCollection();
 }
 
+// #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Reclamation::class)]
+// private Collection $reclamations;
+
+// public function __construct()
+// {
+//     $this->reclamations = new ArrayCollection();
+// }
+
 
     public function getId(): ?int
     {
@@ -164,6 +172,40 @@ public function __construct()
         return $this;
     }
 
+    // /**
+    //  * @return Collection<int, Reclamation>
+    //  */
+    // public function getReclamations(): Collection
+    // {
+    //     return $this->reclamations;
+    // }
+
+    // public function addReclamation(Reclamation $reclamation): static
+    // {
+    //     if (!$this->reclamations->contains($reclamation)) {
+    //         $this->reclamations->add($reclamation);
+    //         $reclamation->setProduit($this);
+    //     }
+
+    //     return $this;
+    // }
+
+    // public function removeReclamation(Reclamation $reclamation): static
+    // {
+    //     if ($this->reclamations->removeElement($reclamation)) {
+    //         // set the owning side to null (unless already changed)
+    //         if ($reclamation->getProduit() === $this) {
+    //             $reclamation->setProduit(null);
+    //         }
+    //     }
+
+    //     return $this;
+    // }
+    public function getUserId(): ?int
+{
+    return $this->user ? $this->user->getId() : null;
+}
+
     /**
      * @return Collection<int, Reclamation>
      */
@@ -193,10 +235,6 @@ public function __construct()
 
         return $this;
     }
-    public function getUserId(): ?int
-{
-    return $this->user ? $this->user->getId() : null;
-}
 
   
 

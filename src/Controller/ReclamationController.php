@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 #[Route('/reclamation')]
 class ReclamationController extends AbstractController
@@ -24,10 +25,12 @@ class ReclamationController extends AbstractController
     }
 
     #[Route('/new/{productId}', name: 'app_reclamation_new', methods: ['GET', 'POST'])]
-    public function new($productId,Request $request, EntityManagerInterface $entityManager): Response
+    public function new($productId,Request $request, EntityManagerInterface $entityManager,Security $security): Response
     {
         $reclamation = new Reclamation();
         $produit = $entityManager->getRepository(Produit::class)->find($productId);
+        $user = $security->getUser();
+        $reclamation->setUser($user);
         $reclamation->setProduit($produit);
         // $produit = $entityManager->getproduit();
         // $produit->setProduit($produit);
