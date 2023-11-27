@@ -1,20 +1,27 @@
-
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8">
-    <title>Esprit-Agri </title>
+    <title>Esprit-Agri</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
 
     <!-- Favicon -->
-    <link href="{{ asset('img/favicon.ico') }}" rel="icon">
+    <link href="{{ asset('img/favicon.png') }}" rel="icon">
+   
+    <style>
+    .user-profile-img {
+        width: 40px; /* Adjust the width to your preference */
+        height: 40px; /* Adjust the height to your preference */
+        border-radius: 50%; /* Optional: Makes the image rounded */
+    }
+</style>
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="{{ asset('https://fonts.googleapis.com') }}">
     <link rel="preconnect" href="{{ asset('https://fonts.gstatic.com') }}" crossorigin>
-    <link href="{{ asset('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&family=Open+Sans:wght@400;500;600&display=swap') }}" rel="stylesheet">   
+    <link href="{{ asset('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&family=Open+Sans:wght@400;500;600&display=swap') }}" rel="stylesheet">  
 
     <!-- Icon Font Stylesheet -->
     <link href="{{ asset('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css') }}" rel="stylesheet">
@@ -24,23 +31,9 @@
     <link href="{{ asset('lib/animate/animate.min.css') }}" rel="stylesheet">
     <link href="{{ asset('lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
     <link href="{{ asset('lib/lightbox/css/lightbox.min.css') }}" rel="stylesheet">
-    <style>
-        .custom-checkbox-class {
-            width: 20px;
-            height: 20px;
-            /* You can add more styles if needed */
-        }
-    </style>
-    <style>
-        .user-profile-img {
-            width: 40px; /* Adjust the width to your preference */
-            height: 40px; /* Adjust the height to your preference */
-            border-radius: 50%; /* Optional: Makes the image rounded */
-         }
-    </style>
+
     <!-- Customized Bootstrap Stylesheet -->
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/all.css') }}" rel="stylesheet">
 
     <!-- Template Stylesheet -->
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
@@ -61,6 +54,7 @@
         window.location.href = "{{ targetPath }}";
     </script>
 {% endif %}
+
     <!-- Spinner Start -->
     <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
         <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
@@ -94,7 +88,7 @@
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top px-4 px-lg-5">
         <a href="index.html" class="navbar-brand d-flex align-items-center">
-            <h1 class="m-0">Esprit-Agri</h1>
+        <img src="{{ asset('img/logoespritAgri.png') }}" alt="Logo" height="70" class="mr-2">
         </a>
         <button type="button" class="navbar-toggler me-0" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>

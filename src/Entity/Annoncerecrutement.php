@@ -9,6 +9,7 @@ use App\Repository\AnnoncerecrutementRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 
 #[ORM\Entity(repositoryClass: AnnoncerecrutementRepository::class)]
 #[ORM\Table(name: "annoncerecrutement")]
