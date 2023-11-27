@@ -8,6 +8,11 @@ use App\Repository\AnnoncerecrutementRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Doctrine\Common\Collections\Collection;
+<<<<<<<<< Temporary merge branch 1
+=========
+use Doctrine\Common\Collections\ArrayCollection;
+>>>>>>>>> Temporary merge branch 2
+use Doctrine\DBAL\Types\Types;
 
 #[ORM\Entity(repositoryClass: AnnoncerecrutementRepository::class)]
 #[ORM\Table(name: "annoncerecrutement")]
@@ -18,16 +23,28 @@ class Annoncerecrutement
     #[ORM\Column(name: "idRecrut")]
     private ?int $idRecrut = null;
 
-    #[ORM\Column( length: 255)]
+    #[ORM\Column(length: 255)]
+<<<<<<<<< Temporary merge branch 1
     private ?String $posteDemande = null;
+=========
+    private ?string $posteDemande = null;
+>>>>>>>>> Temporary merge branch 2
 
     #[ORM\Column(precision: 10, scale: 0)]
     private ?float $salairePropose = null;
 
-    #[ORM\Column( length:0)]
+    #[ORM\Column(length: 0)]
+<<<<<<<<< Temporary merge branch 1
     private ?String $typeContrat = null;
 
-    #[ORM\Column( type: Types::DATE_MUTABLE)]
+
+    #[ORM\Column(nullable: true)]
+
+=========
+    private ?string $typeContrat = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+>>>>>>>>> Temporary merge branch 2
     private ?\DateTimeInterface $datePub = null;
 
     #[ORM\Column(length: 25)]
@@ -42,10 +59,36 @@ class Annoncerecrutement
     #[ORM\Column()]
     private ?int $nbPosteRecherche;
 
-   
+<<<<<<<<< Temporary merge branch 1
 
-    #[ORM\OneToMany(mappedBy:"Annoncerecrutement",targetEntity:Candidature::class)]
+
+
+    // #[ORM\OneToMany(mappedBy: "idannrecru", targetEntity: Candidature::class)]
+    // private Collection $candidatures;
+    // public function __construct()
+    // {
+    //     $this->candidatures = new ArrayCollection();
+    // }
+
+
+=========
+    #[ORM\Column]
+
+    private  ?bool $archived = false;
+
+    #[ORM\OneToMany(mappedBy: "idannrecru", targetEntity: Candidature::class)]
     private Collection $candidatures;
+>>>>>>>>> Temporary merge branch 2
+
+    #[ORM\ManyToOne(targetEntity: User::class)]
+#[ORM\JoinColumn(name: "user_id", referencedColumnName: "id")]
+private ?User $user;
+
+
+    public function __construct()
+    {
+        $this->candidatures = new ArrayCollection();
+    }
 
     public function getIdRecrut(): ?int
     {
@@ -136,17 +179,71 @@ class Annoncerecrutement
         return $this;
     }
 
+<<<<<<<<< Temporary merge branch 1
 
-    public function getIdUser(): ?User
-    {
-        return $this->idUser;
-    }
+    // public function getIdUser(): ?User
+    // {
+    //     return $this->idUser;
+    // }
 
-    public function setIdUser(?User $idUser): static
-    {
-        $this->idUser = $idUser;
+    // public function setIdUser(?User $idUser): static
+    // {
+    //     $this->idUser = $idUser;
 
     //     return $this;
     // }
-}
+=========
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+        return $this;
+    }
+
+    public function isArchived(): bool
+    {
+        return $this->archived;
+    }
+
+    public function setArchived(bool $archived): self
+    {
+        $this->archived = $archived;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Candidature[]
+     */
+    public function getCandidatures(): Collection
+    {
+        return $this->candidatures;
+    }
+
+    public function addCandidature(Candidature $candidature): self
+    {
+        if (!$this->candidatures->contains($candidature)) {
+            $this->candidatures[] = $candidature;
+            $candidature->setIdannrecru($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCandidature(Candidature $candidature): self
+    {
+        if ($this->candidatures->removeElement($candidature)) {
+            // set the owning side to null (unless already changed)
+            if ($candidature->getIdannrecru() === $this) {
+                $candidature->setIdannrecru(null);
+            }
+        }
+
+        return $this;
+    }
+>>>>>>>>> Temporary merge branch 2
 }

@@ -4,13 +4,10 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-<<<<<<< HEAD
-    "content-hash": "1c91d25b63bed2aa303995262010668d",
-=======
+
 
     "content-hash": "44f41b7c0fad0214b347608a32042633",
 
->>>>>>> 07ea0df1d3f65b96ceb9439313392fcd2fd5356d
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -2878,15 +2875,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-<<<<<<< HEAD
-                    "dev-master": "6.2-dev"
-                }
-            },
-            "autoload": {
-                "files": [
-                    "lib/swift_required.php"
-                ]
-=======
+
                     "dev-master": "2.0-dev"
                 }
             },
@@ -2894,7 +2883,7 @@
                 "psr-4": {
                     "Stripe\\": "lib/"
                 }
->>>>>>> 07ea0df1d3f65b96ceb9439313392fcd2fd5356d
+
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -2902,7 +2891,7 @@
             ],
             "authors": [
                 {
-<<<<<<< HEAD
+
                     "name": "Chris Corbyn"
                 },
                 {
@@ -2933,7 +2922,7 @@
             ],
             "abandoned": "symfony/mailer",
             "time": "2021-10-18T15:26:12+00:00"
-=======
+
                     "name": "Stripe and contributors",
                     "homepage": "https://github.com/stripe/stripe-php/contributors"
                 }
@@ -2950,7 +2939,6 @@
                 "source": "https://github.com/stripe/stripe-php/tree/v13.4.0"
             },
             "time": "2023-11-21T20:08:15+00:00"
->>>>>>> 07ea0df1d3f65b96ceb9439313392fcd2fd5356d
         },
         {
             "name": "symfony/amqp-messenger",

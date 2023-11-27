@@ -1,11 +1,9 @@
 <?php
 
 namespace App\Entity;
-<<<<<<< HEAD
 //namespace App\Entity\User;
-=======
 
->>>>>>> 07ea0df1d3f65b96ceb9439313392fcd2fd5356d
+
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -97,10 +95,8 @@ class User implements UserInterface
 
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
-<<<<<<< HEAD
     #[ORM\OneToMany(mappedBy: "user", targetEntity: Annoncerecrutement::class)]
     private Collection $annonces;
-=======
     #[ORM\OneToMany(targetEntity:"App\Entity\Produit", mappedBy:"user")]
      
     private $products;
@@ -112,7 +108,10 @@ class User implements UserInterface
     {
         $this->reclamations = new ArrayCollection();
     }
->>>>>>> 07ea0df1d3f65b96ceb9439313392fcd2fd5356d
+
+    #[ORM\OneToMany(mappedBy: "user", targetEntity: Annoncerecrutement::class)]
+    private Collection $annonces;
+
 
     
     public function isBanned(): ?bool

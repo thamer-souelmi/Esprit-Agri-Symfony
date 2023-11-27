@@ -228,7 +228,6 @@
             "./config/packages/security.yaml"
         ]
     },
-<<<<<<< HEAD
     "symfony/swiftmailer-bundle": {
         "version": "3.5",
         "recipe": {
@@ -242,7 +241,7 @@
             "./config/packages/swiftmailer.yaml",
             "./config/packages/test/swiftmailer.yaml"
         ]
-=======
+
     "symfony/sendgrid-mailer": {
         "version": "5.4",
         "recipe": {
@@ -251,7 +250,7 @@
             "version": "4.4",
             "ref": "224aedffb66812dc2b0965dabc14d5f800941da6"
         }
->>>>>>> 07ea0df1d3f65b96ceb9439313392fcd2fd5356d
+
     },
     "symfony/translation": {
         "version": "5.4",
