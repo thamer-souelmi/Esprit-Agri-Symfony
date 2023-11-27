@@ -15,6 +15,9 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 use Endroid\QrCode\QrCode;
 use App\Repository\ClientRepository;
 use Endroid\QrCode\Writer\PngWriter;
+use Picqer\Barcode\BarcodeGeneratorHTML;
+use Symfony\Component\HttpFoundation\File\File;
+
 
 #[Route('/client')]
 class ClientController extends AbstractController
@@ -61,6 +64,35 @@ class ClientController extends AbstractController
         return $response;
     }
     //QR CODE 
+    //BARRE CODE
+    #[Route('/generate-barcode/{id}', name: 'app_client_generate_barcode', methods: ['GET'])]
+    public function generateBarcodeForClient($id, ClientRepository $clientRepository): Response
+    {
+        $client = $clientRepository->find($id);
+
+        // Générer le contenu du code-barres (utilisez toutes les informations du client)
+        $barcodeContent = sprintf(
+            "Nom du produit: %s\nPrix: %s\nQuantité: %s",
+            $client->getNomprod(),
+            $client->getPrix(),
+            $client->getQte()
+        );
+
+        // Créer une instance de BarcodeGeneratorHTML
+        $generator = new BarcodeGeneratorHTML();
+
+        // Générer le code-barres HTML
+        $barcodeHtml = $generator->getBarcode($barcodeContent, $generator::TYPE_CODE_128);
+
+        // Créer une réponse avec le code-barres HTML
+        $response = new Response($barcodeHtml, Response::HTTP_OK, [
+            'Content-Type' => 'text/html',
+        ]);
+        
+        return $response;
+    }
+
+    //BARRE CODE
     #[Route('/back', name: 'app_clientback_index', methods: ['GET'])]
     public function indexback(EntityManagerInterface $entityManager): Response
     {

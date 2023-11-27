@@ -19,8 +19,14 @@ class CultureType extends AbstractType
     {
         $builder
             ->add('libelle')
-            ->add('dateplantation')
-            ->add('daterecolte')
+            ->add('dateplantation', null, [
+                'widget' => 'single_text',
+                'data' => $options['is_edit'] ? $options['data']->getDateplantation() : new \DateTime(),
+            ])
+            ->add('daterecolte', null, [
+                'widget' => 'single_text',
+                'data' => $options['is_edit'] ? $options['data']->getDaterecolte() : new \DateTime(),
+            ])
             // ->add('categorytype')
             ->add('revenuescultures')
             ->add('coutsplantations')
