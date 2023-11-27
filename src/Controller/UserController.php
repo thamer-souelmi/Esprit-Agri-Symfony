@@ -34,7 +34,6 @@ class UserController extends AbstractController
         $users = $usersRepository->findByRoles('admin');
       //  $count = $userRepository->getUsersWithMoreThanFiveReclamationsCount(); 
     
-        
 
 
     return $this->render('user/index.html.twig', [
