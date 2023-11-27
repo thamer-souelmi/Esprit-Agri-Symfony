@@ -7,6 +7,7 @@ use App\Entity\Candidature;
 use App\Entity\Ouvrier;
 use App\Form\CandidatureType;
 use App\Repository\CandidatureRepository;
+use App\Repository\AnnoncerecrutementRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -137,66 +138,102 @@ class CandidatureController extends AbstractController
 #[Route('/candidature/{id}/{decision}', name: 'confirm_candidature', methods: ['GET'])]
 
 public function handleCandidatureDecision(int $id, string $decision, EntityManagerInterface $entityManager): RedirectResponse
-{
-    // Check if the user is an admin (you can implement your own logic to check admin access)
+// {
+//     // Check if the user is an admin (you can implement your own logic to check admin access)
 
+//     $candidature = $entityManager->getRepository(Candidature::class)->find($id);
+
+//     if (!$candidature) {
+//         throw $this->createNotFoundException('Candidature not found');
+//     }
+
+//     // Update the candidacy's "accepte" field based on the admin's decision
+//     if ($decision === 'accept') {
+//         $candidature->setStatusCandidature(true);
+
+//         // Archive the candidature when accepted
+//         $candidature->setArchived(true);
+//     } elseif ($decision === 'refuse') {
+//         $candidature->setStatusCandidature(false);
+//     }
+
+//     $entityManager->flush();
+
+//     $this->addFlash('success', 'Candidature decision has been saved.');
+
+//     // Redirect the admin back to the page that displays the candidates for the specific concours
+//     return $this->redirectToRoute('app_candidature_index');
+// }
+
+// #[Route('/confirm_candidature/{id}', name: 'confirm_candidature', methods: ['GET', 'POST'])]
+// public function confirmCandidature($id, Request $request, ?string $decision, EntityManagerInterface $entityManager): Response
+{
     $candidature = $entityManager->getRepository(Candidature::class)->find($id);
 
     if (!$candidature) {
-        throw $this->createNotFoundException('Candidature not found');
+        return new Response($this->json(['error' => 'Confirmation not found']), Response::HTTP_NOT_FOUND);
     }
 
-    // Update the candidacy's "accepte" field based on the admin's decision
+    if ($decision === 'accept') {
+        if (!$candidature->isArchived() && !$candidature->isStatuscandidature()) {
+            $candidature->setStatusCandidature(true);
+            $candidature->setArchived(true);
+
+            $annoncerecrutement = $candidature->getIdannrecru();
+
+            // Reduce the number of available positions
+            $newAvailableSeats = max(0, $annoncerecrutement->getNbPosteRecherche() - 1);
+            $annoncerecrutement->setNbPosteRecherche($newAvailableSeats);
+
+            $entityManager->persist($annoncerecrutement);
+            $entityManager->persist($candidature);
+            $entityManager->flush();
+        }
+    } elseif ($decision === 'refuse') {
+        $candidature->setStatusCandidature(false);
+
+        $entityManager->persist($candidature);
+        $entityManager->flush();
+    } else {
+        // Handle invalid decision, throw an exception, or return an appropriate response.
+        throw new \InvalidArgumentException('Invalid decision');
+    }
+
+    return $this->redirectToRoute('app_candidature_index');
+}
+#[Route('/confirm_candidature/{id}', name: 'confirm_candidature', methods: ['GET', 'POST'])]
+public function confirmCandidature($id, Request $request, ?string $decision, EntityManagerInterface $entityManager, AnnoncerecrutementRepository $annoncerecrutementRepository): Response
+{
+    $candidature = $entityManager->getRepository(Candidature::class)->find($id);
+
+    if (!$candidature) {
+        throw $this->createNotFoundException('Confirmation not found');
+    }
+
+    $annoncerecrutement = $candidature->getIdannrecru();
+
     if ($decision === 'accept') {
         $candidature->setStatusCandidature(true);
 
-        // Archive the candidature when accepted
-        $candidature->setArchived(true);
+        // Reduce the number of available seats
+        $newAvailableSeats = $annoncerecrutement->getNbPosteRecherche() - 1;
+
+        if ($newAvailableSeats <= 0) {
+            // If no more available seats, archive the announcement
+            $annoncerecrutement->setArchived(true);
+        }
+
+        $annoncerecrutement->setNbPosteRecherche($newAvailableSeats);
     } elseif ($decision === 'refuse') {
         $candidature->setStatusCandidature(false);
     }
 
+    $entityManager->persist($annoncerecrutement);
+    $entityManager->persist($candidature);
     $entityManager->flush();
 
-    $this->addFlash('success', 'Candidature decision has been saved.');
-
-    // Redirect the admin back to the page that displays the candidates for the specific concours
     return $this->redirectToRoute('app_candidature_index');
 }
-
-// #[Route('/confirm_candidature/{id}', name: 'confirm_candidature', methods: ['GET', 'POST'])]
-// public function confirmCandidature($id, Request $request, ?string $decision, EntityManagerInterface $entityManager): Response
-// {
-//     $candidature = $entityManager->getRepository(Candidature::class)->find($id);
-
-//     if (!$candidature) {
-//         throw $this->createNotFoundException('Confirmation not found');
-//     }
-
-//     if ($decision === 'accept') {
-//                 $candidature->setStatusCandidature(true);
-        
-//                 // Archive the candidature when accepted
-//                 $candidature->setArchived(true);
-//             } elseif ($decision === 'refuse') {
-//                 $candidature->setStatusCandidature(false);
-//             }
-        
-
-//     $annoncerecrutement = $candidature->getIdannrecru();
-//     $newAvailableSeats = $annoncerecrutement->getNbPosteRecherche() - $candidature->getIdannrecru()->getNbPosteRecherche();
-//     $annoncerecrutement->setNbPosteRecherche($newAvailableSeats);
-
-//     // No need to set the statusCandidature again, as it's already set based on the decision.
-
-//     $entityManager->persist($annoncerecrutement);
-//     $entityManager->persist($candidature);
-//     $entityManager->flush();
-
-//     // $this->sendConfirmationEmail($confirmCovoiturage);
-
-//     return $this->redirectToRoute('app_candidature_index');
-// }
 
 
 

@@ -38,6 +38,10 @@ class Annoncerecrutement
     #[ORM\Column()]
     private ?int $nbPosteRecherche;
 
+    #[ORM\Column]
+
+    private  ?bool $archived = false;
+
 //     #[ORM\OneToMany(mappedBy: "idannrecru", targetEntity: Candidature::class)]
 //     private Collection $candidatures;
 
@@ -148,6 +152,18 @@ private ?User $user;
     public function setUser(?User $user): static
     {
         $this->user = $user;
+        return $this;
+    }
+
+    public function isArchived(): bool
+    {
+        return $this->archived;
+    }
+
+    public function setArchived(bool $archived): self
+    {
+        $this->archived = $archived;
+
         return $this;
     }
 

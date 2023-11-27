@@ -143,17 +143,17 @@ public function deleteback(
 
     return $this->redirectToRoute('app_annoncerecrutementback_index', [], Response::HTTP_SEE_OTHER);
 }
-#[Route('/post', name: 'app_covoiturage_post', methods: ['GET'])]
-public function post(AnnoncerecrutementRepository $annoncerecrutementRepository): Response
-{
-    $annoncerecrutement = $annoncerecrutementRepository->findAll();
-    $filteredCovoiturage = array_filter($annoncerecrutement, function ($c) {
-        return $c->getNbPosteRecherche() > 0;
-    });
-    return $this->render('candidature/index.html.twig', [
-        'annoncerecrutement' => $filteredCovoiturage,
-    ]);
-}
+// #[Route('/post', name: 'app_covoiturage_post', methods: ['GET'])]
+// public function post(AnnoncerecrutementRepository $annoncerecrutementRepository): Response
+// {
+//     $annoncerecrutement = $annoncerecrutementRepository->findAll();
+//     $filteredCovoiturage = array_filter($annoncerecrutement, function ($c) {
+//         return $c->getNbPosteRecherche() > 0;
+//     });
+//     return $this->render('candidature/index.html.twig', [
+//         'annoncerecrutement' => $filteredCovoiturage,
+//     ]);
+// }
 
 
 }
