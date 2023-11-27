@@ -8,11 +8,14 @@ use App\Repository\AnnoncerecrutementRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Doctrine\Common\Collections\Collection;
-<<<<<<<<< Temporary merge branch 1
-=========
+<<<<<<< HEAD
+=======
+
 use Doctrine\Common\Collections\ArrayCollection;
->>>>>>>>> Temporary merge branch 2
+
+
 use Doctrine\DBAL\Types\Types;
+>>>>>>> 7268abaacaabe26ee5281d6e4f216470f1d6abab
 
 #[ORM\Entity(repositoryClass: AnnoncerecrutementRepository::class)]
 #[ORM\Table(name: "annoncerecrutement")]
@@ -23,28 +26,29 @@ class Annoncerecrutement
     #[ORM\Column(name: "idRecrut")]
     private ?int $idRecrut = null;
 
-    #[ORM\Column(length: 255)]
-<<<<<<<<< Temporary merge branch 1
+<<<<<<< HEAD
+    #[ORM\Column( length: 255)]
     private ?String $posteDemande = null;
-=========
+=======
+    #[ORM\Column(length: 255)]
     private ?string $posteDemande = null;
->>>>>>>>> Temporary merge branch 2
+
+>>>>>>> 7268abaacaabe26ee5281d6e4f216470f1d6abab
 
     #[ORM\Column(precision: 10, scale: 0)]
     private ?float $salairePropose = null;
 
-    #[ORM\Column(length: 0)]
-<<<<<<<<< Temporary merge branch 1
+<<<<<<< HEAD
+    #[ORM\Column( length:0)]
     private ?String $typeContrat = null;
 
-
-    #[ORM\Column(nullable: true)]
-
-=========
+    #[ORM\Column( type: Types::DATE_MUTABLE)]
+=======
+    #[ORM\Column(length: 0)]
     private ?string $typeContrat = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
->>>>>>>>> Temporary merge branch 2
+>>>>>>> 7268abaacaabe26ee5281d6e4f216470f1d6abab
     private ?\DateTimeInterface $datePub = null;
 
     #[ORM\Column(length: 25)]
@@ -59,26 +63,19 @@ class Annoncerecrutement
     #[ORM\Column()]
     private ?int $nbPosteRecherche;
 
-<<<<<<<<< Temporary merge branch 1
+<<<<<<< HEAD
+   
 
-
-
-    // #[ORM\OneToMany(mappedBy: "idannrecru", targetEntity: Candidature::class)]
-    // private Collection $candidatures;
-    // public function __construct()
-    // {
-    //     $this->candidatures = new ArrayCollection();
-    // }
-
-
-=========
+    #[ORM\OneToMany(mappedBy:"Annoncerecrutement",targetEntity:Candidature::class)]
+    private Collection $candidatures;
+=======
     #[ORM\Column]
 
     private  ?bool $archived = false;
 
     #[ORM\OneToMany(mappedBy: "idannrecru", targetEntity: Candidature::class)]
     private Collection $candidatures;
->>>>>>>>> Temporary merge branch 2
+
 
     #[ORM\ManyToOne(targetEntity: User::class)]
 #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id")]
@@ -89,6 +86,7 @@ private ?User $user;
     {
         $this->candidatures = new ArrayCollection();
     }
+>>>>>>> 7268abaacaabe26ee5281d6e4f216470f1d6abab
 
     public function getIdRecrut(): ?int
     {
@@ -179,20 +177,21 @@ private ?User $user;
         return $this;
     }
 
-<<<<<<<<< Temporary merge branch 1
+<<<<<<< HEAD
 
-    // public function getIdUser(): ?User
-    // {
-    //     return $this->idUser;
-    // }
+    public function getIdUser(): ?User
+    {
+        return $this->idUser;
+    }
 
-    // public function setIdUser(?User $idUser): static
-    // {
-    //     $this->idUser = $idUser;
+    public function setIdUser(?User $idUser): static
+    {
+        $this->idUser = $idUser;
 
     //     return $this;
     // }
-=========
+}
+=======
     public function getUser(): ?User
     {
         return $this->user;
@@ -245,5 +244,6 @@ private ?User $user;
 
         return $this;
     }
->>>>>>>>> Temporary merge branch 2
+
+>>>>>>> 7268abaacaabe26ee5281d6e4f216470f1d6abab
 }
