@@ -38,18 +38,22 @@ class Annoncerecrutement
     #[ORM\Column()]
     private ?int $nbPosteRecherche;
 
-//     #[ORM\OneToMany(mappedBy: "idannrecru", targetEntity: Candidature::class)]
-//     private Collection $candidatures;
+    #[ORM\Column]
 
-//     #[ORM\ManyToOne(targetEntity: User::class)]
-// #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id")]
-// private ?User $user;
+    private  ?bool $archived = false;
+
+    #[ORM\OneToMany(mappedBy: "idannrecru", targetEntity: Candidature::class)]
+    private Collection $candidatures;
+
+    #[ORM\ManyToOne(targetEntity: User::class)]
+#[ORM\JoinColumn(name: "user_id", referencedColumnName: "id")]
+private ?User $user;
 
 
-    // public function __construct()
-    // {
-    //     $this->candidatures = new ArrayCollection();
-    // }
+    public function __construct()
+    {
+        $this->candidatures = new ArrayCollection();
+    }
 
     public function getIdRecrut(): ?int
     {
@@ -140,44 +144,56 @@ class Annoncerecrutement
         return $this;
     }
 
-    // public function getUser(): ?User
-    // {
-    //     return $this->user;
-    // }
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
 
-    // public function setUser(?User $user): static
-    // {
-    //     $this->user = $user;
-    //     return $this;
-    // }
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+        return $this;
+    }
 
-    // /**
-    //  * @return Collection|Candidature[]
-    //  */
-    // public function getCandidatures(): Collection
-    // {
-    //     return $this->candidatures;
-    // }
+    public function isArchived(): bool
+    {
+        return $this->archived;
+    }
 
-    // public function addCandidature(Candidature $candidature): self
-    // {
-    //     if (!$this->candidatures->contains($candidature)) {
-    //         $this->candidatures[] = $candidature;
-    //         $candidature->setIdannrecru($this);
-    //     }
+    public function setArchived(bool $archived): self
+    {
+        $this->archived = $archived;
 
-    //     return $this;
-    // }
+        return $this;
+    }
 
-    // public function removeCandidature(Candidature $candidature): self
-    // {
-    //     if ($this->candidatures->removeElement($candidature)) {
-    //         // set the owning side to null (unless already changed)
-    //         if ($candidature->getIdannrecru() === $this) {
-    //             $candidature->setIdannrecru(null);
-    //         }
-    //     }
+    /**
+     * @return Collection|Candidature[]
+     */
+    public function getCandidatures(): Collection
+    {
+        return $this->candidatures;
+    }
 
-    //     return $this;
-    // }
+    public function addCandidature(Candidature $candidature): self
+    {
+        if (!$this->candidatures->contains($candidature)) {
+            $this->candidatures[] = $candidature;
+            $candidature->setIdannrecru($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCandidature(Candidature $candidature): self
+    {
+        if ($this->candidatures->removeElement($candidature)) {
+            // set the owning side to null (unless already changed)
+            if ($candidature->getIdannrecru() === $this) {
+                $candidature->setIdannrecru(null);
+            }
+        }
+
+        return $this;
+    }
 }
