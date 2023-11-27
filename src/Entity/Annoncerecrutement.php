@@ -8,14 +8,10 @@ use App\Repository\AnnoncerecrutementRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Doctrine\Common\Collections\Collection;
-<<<<<<< HEAD
-=======
 
-use Doctrine\Common\Collections\ArrayCollection;
 
 
 use Doctrine\DBAL\Types\Types;
->>>>>>> 7268abaacaabe26ee5281d6e4f216470f1d6abab
 
 #[ORM\Entity(repositoryClass: AnnoncerecrutementRepository::class)]
 #[ORM\Table(name: "annoncerecrutement")]
@@ -26,29 +22,19 @@ class Annoncerecrutement
     #[ORM\Column(name: "idRecrut")]
     private ?int $idRecrut = null;
 
-<<<<<<< HEAD
-    #[ORM\Column( length: 255)]
-    private ?String $posteDemande = null;
-=======
+
     #[ORM\Column(length: 255)]
     private ?string $posteDemande = null;
 
->>>>>>> 7268abaacaabe26ee5281d6e4f216470f1d6abab
 
     #[ORM\Column(precision: 10, scale: 0)]
     private ?float $salairePropose = null;
 
-<<<<<<< HEAD
-    #[ORM\Column( length:0)]
-    private ?String $typeContrat = null;
 
-    #[ORM\Column( type: Types::DATE_MUTABLE)]
-=======
     #[ORM\Column(length: 0)]
     private ?string $typeContrat = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
->>>>>>> 7268abaacaabe26ee5281d6e4f216470f1d6abab
     private ?\DateTimeInterface $datePub = null;
 
     #[ORM\Column(length: 25)]
@@ -63,12 +49,7 @@ class Annoncerecrutement
     #[ORM\Column()]
     private ?int $nbPosteRecherche;
 
-<<<<<<< HEAD
-   
 
-    #[ORM\OneToMany(mappedBy:"Annoncerecrutement",targetEntity:Candidature::class)]
-    private Collection $candidatures;
-=======
     #[ORM\Column]
 
     private  ?bool $archived = false;
@@ -86,7 +67,6 @@ private ?User $user;
     {
         $this->candidatures = new ArrayCollection();
     }
->>>>>>> 7268abaacaabe26ee5281d6e4f216470f1d6abab
 
     public function getIdRecrut(): ?int
     {
@@ -177,21 +157,6 @@ private ?User $user;
         return $this;
     }
 
-<<<<<<< HEAD
-
-    public function getIdUser(): ?User
-    {
-        return $this->idUser;
-    }
-
-    public function setIdUser(?User $idUser): static
-    {
-        $this->idUser = $idUser;
-
-    //     return $this;
-    // }
-}
-=======
     public function getUser(): ?User
     {
         return $this->user;
@@ -223,27 +188,26 @@ private ?User $user;
         return $this->candidatures;
     }
 
-    public function addCandidature(Candidature $candidature): self
-    {
-        if (!$this->candidatures->contains($candidature)) {
-            $this->candidatures[] = $candidature;
-            $candidature->setIdannrecru($this);
-        }
+    // public function addCandidature(Candidature $candidature): self
+    // {
+    //     if (!$this->candidatures->contains($candidature)) {
+    //         $this->candidatures[] = $candidature;
+    //         $candidature->setIdannrecru($this);
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    public function removeCandidature(Candidature $candidature): self
-    {
-        if ($this->candidatures->removeElement($candidature)) {
-            // set the owning side to null (unless already changed)
-            if ($candidature->getIdannrecru() === $this) {
-                $candidature->setIdannrecru(null);
-            }
-        }
+    // public function removeCandidature(Candidature $candidature): self
+    // {
+    //     if ($this->candidatures->removeElement($candidature)) {
+    //         // set the owning side to null (unless already changed)
+    //         if ($candidature->getIdannrecru() === $this) {
+    //             $candidature->setIdannrecru(null);
+    //         }
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
->>>>>>> 7268abaacaabe26ee5281d6e4f216470f1d6abab
 }
