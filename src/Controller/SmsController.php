@@ -12,8 +12,8 @@ class SmsController extends AbstractController
     #[Route('/send-sms', name: 'send_sms')]
     public function sendSms(TwilioService $twilioService): Response
     {
-        $to = '+21652474552'; // Le numéro de téléphone destinataire
-        $message = 'Votre message ici'; // Le message que vous souhaitez envoyer
+        $to = '+21650378582'; // Le numéro de téléphone destinataire
+        $message = '7amza <3 '; // Le message que vous souhaitez envoyer
 
         $twilioService->sendSMS($to, $message);
 

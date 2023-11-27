@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\DBAL\Types\Types;
 
 
 
@@ -16,8 +17,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\Table(name: '`user`')]
 #[UniqueEntity(fields: ['mail'], message: 'There is already an account with this mail')]
 
-class User implements UserInterface  
-
+class User implements UserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -82,10 +82,8 @@ class User implements UserInterface
 
     #[ORM\Column(length: 255)]
     private ?string $image = null;
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Produit", mappedBy="user")
-     */
-    private $products;
+    
+ 
 
     #[ORM\Column(nullable: true)]
     private ?bool $isBanned = false; // Indicates if the user is banned
@@ -95,6 +93,17 @@ class User implements UserInterface
 
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
+    #[ORM\OneToMany(targetEntity:"App\Entity\Produit", mappedBy:"user")]
+     
+    private $products;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Reclamation::class)]
+    private Collection $reclamations;
+
+    public function __construct()
+    {
+        $this->reclamations = new ArrayCollection();
+    }
 
     
     public function isBanned(): ?bool
