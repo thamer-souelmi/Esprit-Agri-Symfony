@@ -4,8 +4,14 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\AnnoncerecrutementRepository;
-use Doctrine\Common\Collections\Collection;
+
 use Doctrine\Common\Collections\ArrayCollection;
+
+use Doctrine\Common\Collections\Collection;
+
+use Doctrine\Common\Collections\ArrayCollection;
+
+
 use Doctrine\DBAL\Types\Types;
 
 #[ORM\Entity(repositoryClass: AnnoncerecrutementRepository::class)]
@@ -13,12 +19,13 @@ use Doctrine\DBAL\Types\Types;
 class Annoncerecrutement
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: "IDENTITY")]
+    #[ORM\GeneratedValue]
     #[ORM\Column(name: "idRecrut")]
     private ?int $idRecrut = null;
 
     #[ORM\Column(length: 255)]
     private ?string $posteDemande = null;
+
 
     #[ORM\Column(precision: 10, scale: 0)]
     private ?float $salairePropose = null;
@@ -32,8 +39,11 @@ class Annoncerecrutement
     #[ORM\Column(length: 25)]
     private ?string $localisation = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+
+
+     #[ORM\Column(nullable: true)]
     private ?\DateTimeInterface $dateEmbauche;
+
 
     #[ORM\Column()]
     private ?int $nbPosteRecherche;
@@ -44,6 +54,7 @@ class Annoncerecrutement
 
     #[ORM\OneToMany(mappedBy: "idannrecru", targetEntity: Candidature::class)]
     private Collection $candidatures;
+
 
     #[ORM\ManyToOne(targetEntity: User::class)]
 #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id")]
@@ -196,4 +207,5 @@ private ?User $user;
 
         return $this;
     }
+
 }

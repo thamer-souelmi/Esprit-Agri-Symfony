@@ -13,7 +13,8 @@ class Candidature
     private $confirmed; // Declare the property
 
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: "IDENTITY")]
+
+    #[ORM\GeneratedValue]
     #[ORM\Column(name: "idCandidature")]
     private ?int $idcandidature = null;
 
@@ -58,6 +59,7 @@ class Candidature
     #[ORM\ManyToOne(targetEntity: "App\Entity\Annoncerecrutement", inversedBy: "candidatures")]
     #[ORM\JoinColumn(name: "idannrecru_id", referencedColumnName: "idRecrut")]
     private ?Annoncerecrutement $idannrecru;
+
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id")]
@@ -159,17 +161,18 @@ class Candidature
         return $this;
     }
 
-    public function getIdannrecru(): ?Annoncerecrutement
-    {
-        return $this->idannrecru;
-    }
+    // public function getIdannrecru(): ?Annoncerecrutement
+    // {
+    //     return $this->idannrecru;
+    // }
 
-    public function setIdannrecru(?Annoncerecrutement $idannrecru): static
-    {
-        $this->idannrecru = $idannrecru;
+    // public function setIdannrecru(?Annoncerecrutement $idannrecru): static
+    // {
+    //     $this->idannrecru = $idannrecru;
 
-        return $this;
-    }
+    //     return $this;
+    // }
+
 
     public function getUser(): ?User
     {
