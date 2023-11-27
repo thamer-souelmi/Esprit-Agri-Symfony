@@ -18,15 +18,15 @@ class Annoncerecrutement
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(name: "idRecrut")]
-    private ?int $idRecrut= null;
+    private ?int $idRecrut = null;
 
-    #[ORM\Column( length: 255)]
+    #[ORM\Column(length: 255)]
     private ?String $posteDemande = null;
 
-    #[ORM\Column( precision: 10, scale: 0)]
+    #[ORM\Column(precision: 10, scale: 0)]
     private ?float $salairePropose = null;
 
-    #[ORM\Column( length:0)]
+    #[ORM\Column(length: 0)]
     private ?String $typeContrat = null;
 
 
@@ -38,13 +38,15 @@ class Annoncerecrutement
     private ?String $localisation = null;
 
 
+
      #[ORM\Column(nullable: true)]
     private ?\DateTimeInterface $dateEmbauche;
+
 
     #[ORM\Column()]
     private ?int $nbPosteRecherche;
 
-   
+
 
 
     // #[ORM\OneToMany(mappedBy: "idannrecru", targetEntity: Candidature::class)]
