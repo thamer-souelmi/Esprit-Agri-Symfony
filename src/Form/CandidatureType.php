@@ -15,7 +15,6 @@ class CandidatureType extends AbstractType
     {
         $builder
             ->add('messagemotivation')
-            ->add('datecandidature')
             ->add('experienceprofessionnelle')
             ->add('formation')
             ->add('competencestechniques')

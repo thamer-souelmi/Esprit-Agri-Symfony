@@ -2,13 +2,17 @@
 
 namespace App\Entity;
 
+
+use App\Repository\CultureRepository;
 use App\Entity\Category;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
-#[ORM\Entity(repositoryClass: CultrueRepository::class)]
+
+#[ORM\Entity(repositoryClass: CultureRepository::class)]
+
 
 class Culture
 {
@@ -48,8 +52,17 @@ class Culture
     #[ORM\Column]
     private ?float $coutsplantations = null;
 
+
+    // #[ORM\ManyToOne(targetEntity: "App\Entity\Category", inversedBy: "cultures")]
+    // #[ORM\JoinColumn(nullable: false)]
+    // private ?Category $categorys = null;
+
     #[ORM\ManyToOne(inversedBy: 'cultures')]
+    #[ORM\JoinColumn(name: 'categorys_id', referencedColumnName: 'id')]
     private ?Category $category = null;
+
+
+
 
 
     public function getId(): ?int
@@ -131,6 +144,7 @@ class Culture
     public function setCategory(?Category $category): static
     {
         $this->category = $category;
+
         return $this;
     }
 }

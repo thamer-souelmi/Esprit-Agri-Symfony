@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Category;
+use App\Entity\Culture;
+
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -39,6 +41,13 @@ class CategoryRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    //METIERRRRRRR :
+    public function isCategoryInUse(Category $category): bool
+    {
+        return $this->_em->getRepository(Culture::class)->findOneBy(['category' => $category]) !== null;
+    }
+    //METIERRRRRRR:
     //    /**
     //     * @return Category[] Returns an array of Category objects
     //     */
