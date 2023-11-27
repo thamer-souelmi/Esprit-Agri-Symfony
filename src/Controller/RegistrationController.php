@@ -34,25 +34,25 @@ class RegistrationController extends AbstractController
     }
     
 
-    #[Route('/mail', name: 'mail')]
-    public function sendEmail(MailerInterface $mailer)
-    {
-        $email = (new Email())
-            ->from('espritagri1@gmail.com')
-            ->to('nasriamin300@gmail.com')
-            ->subject('amin')
-            ->text('amin');
-        // ->html('<p>Contenu du message en HTML</p>');
+    // #[Route('/mail', name: 'mail')]
+    // public function sendEmail(MailerInterface $mailer)
+    // {
+    //     $email = (new Email())
+    //         ->from('espritagri1@gmail.com')
+    //         ->to('nasriamin300@gmail.com')
+    //         ->subject('amin')
+    //         ->text('amin');
+    //     // ->html('<p>Contenu du message en HTML</p>');
 
-        try {
-            $mailer->send($email);
-            // Envoyé avec succès, vous pouvez renvoyer une réponse de succès
-            return new Response('Email envoyé avec succès!');
-        } catch (\Exception $e) {
-            // En cas d'échec, renvoyez un message d'erreur ou utilisez un gestionnaire d'erreurs
-            return new Response('Erreur lors de l\'envoi de l\'email : ' . $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
-    }
+    //     try {
+    //         $mailer->send($email);
+    //         // Envoyé avec succès, vous pouvez renvoyer une réponse de succès
+    //         return new Response('Email envoyé avec succès!');
+    //     } catch (\Exception $e) {
+    //         // En cas d'échec, renvoyez un message d'erreur ou utilisez un gestionnaire d'erreurs
+    //         return new Response('Erreur lors de l\'envoi de l\'email : ' . $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+    //     }
+    // }
 
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, UserAuthenticator $authenticator, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
@@ -129,6 +129,6 @@ class RegistrationController extends AbstractController
         // @TODO Change the redirect on success and handle or remove the flash message in your templates
         $this->addFlash('success', 'Your email address has been verified.');
 
-        return $this->redirectToRoute('app_register');
+        return $this->redirectToRoute('app_login');
     }
 }
