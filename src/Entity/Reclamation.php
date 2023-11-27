@@ -20,10 +20,16 @@ class Reclamation
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $dateajout = null;
 
+    #[ORM\ManyToOne(inversedBy: 'reclamations')]
+    private ?User $user = null;
+
+    #[ORM\ManyToOne(inversedBy: 'reclamations')]
+    private ?Produit $produit = null;
+
     
 
-    #[ORM\ManyToOne(targetEntity: "App\Entity\Produit",inversedBy: 'reclamations')]
-    private ?Produit $produit = null;
+    // #[ORM\ManyToOne(targetEntity: "App\Entity\Produit",inversedBy: 'reclamations')]
+    // private ?Produit $produit = null;
 
     public function getId(): ?int
     {
@@ -57,6 +63,30 @@ class Reclamation
    
 
     
+
+    // public function getProduit(): ?Produit
+    // {
+    //     return $this->produit;
+    // }
+
+    // public function setProduit(?Produit $produit): static
+    // {
+    //     $this->produit = $produit;
+
+    //     return $this;
+    // }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
 
     public function getProduit(): ?Produit
     {

@@ -6,28 +6,38 @@ use App\Entity\Produit;
 use App\Entity\Reclamation;
 use App\Form\ReclamationType;
 use App\Repository\ReclamationRepository;
+use App\Service\TwilioService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 #[Route('/reclamation')]
 class ReclamationController extends AbstractController
 {
     #[Route('/', name: 'app_reclamation_index', methods: ['GET'])]
-    public function index(ReclamationRepository $reclamationRepository): Response
+    public function index(EntityManagerInterface $entityManager,ReclamationRepository $reclamationRepository, Security $security): Response
     {
+        $user = $security->getUser();
+        
+            $id = $user->getId(); // Assuming getId() returns the user's ID
+            $reclamations = $entityManager
+                ->getRepository(Reclamation::class)
+                ->findByUserId($id);
         return $this->render('reclamation/index.html.twig', [
-            'reclamations' => $reclamationRepository->findAll(),
+            'reclamations' => $reclamations,
         ]);
     }
 
     #[Route('/new/{productId}', name: 'app_reclamation_new', methods: ['GET', 'POST'])]
-    public function new($productId,Request $request, EntityManagerInterface $entityManager): Response
+    public function new($productId,Request $request, EntityManagerInterface $entityManager,Security $security,TwilioService $twilioService): Response
     {
         $reclamation = new Reclamation();
         $produit = $entityManager->getRepository(Produit::class)->find($productId);
+        $user = $security->getUser();
+        $reclamation->setUser($user);
         $reclamation->setProduit($produit);
         // $produit = $entityManager->getproduit();
         // $produit->setProduit($produit);
@@ -36,6 +46,10 @@ class ReclamationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $produit = $reclamation->getProduit();
+            $to = '+21650378582'; // Static phone number
+
+            $message = 'New category created: '; // Modify the message as needed
+            $twilioService->sendSMS($to, $message);
             
 
             $entityManager->persist($reclamation);

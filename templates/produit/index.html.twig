@@ -26,7 +26,7 @@
                                     <button type="submit" class="btn btn-secondary rounded-circle m-1">
                                          <i class="bi bi-trash"></i>
                                     </button>
-                            </form>
+                                </form>
                                 
                                 <a class="btn btn-square btn-secondary rounded-circle m-1"
                                     href="{{ path('app_produit_show', {'id': produit.id }) }}">
@@ -50,8 +50,7 @@
                                     {% endif %}
                                     <span class="text-primary me-1">Quantité:{{ produit.qte }}Kg</span>
                                 </div>
-                            </div>
-                        </div>
+                            
                     </div>
                 </div>
             {% else %}
@@ -60,7 +59,7 @@
         </div>
     </div>
 
-   {# Pagination #}
+    {# Pagination #}
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="text-center">
@@ -68,6 +67,45 @@
             </div>
         </div>
     </div>
+
+    {# style of pagination #}
+<style>
+	.pagination {
+		display: flex;
+		justify-content: center;
+		list-style: none;
+		padding: 0;
+	}
+
+	.pagination li {
+		margin: 0 5px;
+	}
+
+	.button-container {
+		display: flex;
+		flex-direction: row;
+		overflow-x: auto;
+		white-space: nowrap;
+	}
+
+
+	.button-container button {
+		margin-right: 10px; /* Espacement entre les boutons */
+	}
+
+	.pagination a {
+		text-decoration: none;
+		padding: 5px 10px;
+		border: 1px solid #404a3d; /* Bleu */
+		border-radius: 3px;
+		color: #404a3d; /* Bleu */
+	}
+
+	.pagination a:hover {
+		background-color: #404a3d; /* Bleu au survol */
+		color: #fff; /* Texte blanc au survol */
+	}
+</style>
 
     
 {% endblock %}

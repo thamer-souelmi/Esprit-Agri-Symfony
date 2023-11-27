@@ -45,6 +45,9 @@
                                         {% if error %}
                                             <div class="alert alert-danger">Verifier votre E-mail ou Mot de Passe</div>
                                         {% endif %}
+                                        {% if app.user and not user.isbanned %}
+                                            <div class="alert alert-danger">da5louni aman rani itim</div>
+                                        {% endif %}
 
                                         {% if app.user %}
                                             <div class="mb-3">
