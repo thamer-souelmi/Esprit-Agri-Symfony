@@ -17,6 +17,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Knp\Component\Pager\PaginatorInterface;
+
 
 
 
@@ -24,22 +26,29 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 class CandidatureController extends AbstractController
 {
     #[Route('/', name: 'app_candidature_index', methods: ['GET'])]
-    public function index(CandidatureRepository $candidatureRepository, TokenStorageInterface $tokenStorage): Response
+    public function index(CandidatureRepository $candidatureRepository, TokenStorageInterface $tokenStorage, PaginatorInterface $paginator, Request $request): Response
     {
         $user = $tokenStorage->getToken() ? $tokenStorage->getToken()->getUser() : null;
-
+    
         if ($user) {
-            $candidatures = $candidatureRepository->findBy(['archived' => false, 'user' => $user]);
+            $candidatures = $candidatureRepository->findBy(['archived' => false, 'statuscandidature' => false, 'user' => $user]);
         } else {
             // Utilisateur non authentifié, peut-être rediriger vers une page de connexion
-            // ou simplement afficher toutes les candidatures non archivées
-            $candidatures = $candidatureRepository->findBy(['archived' => false]);
+            // ou simplement afficher toutes les candidatures non archivées et non acceptées
+            $candidatures = $candidatureRepository->findBy(['archived' => false, 'statuscandidature' => false]);
         }
     
+        $pagination = $paginator->paginate(
+            $candidatures,
+            $request->query->getInt('page', 1),
+            6 // Nombre d'éléments par page
+        );
+    
         return $this->render('candidature/index.html.twig', [
-            'candidatures' => $candidatureRepository->findAll(),
+            'pagination' => $pagination,
         ]);
     }
+    
     #[Route('/back', name: 'app_candidatureback_index', methods: ['GET'])]
     public function indexb(CandidatureRepository $candidatureRepository): Response
     {
@@ -176,7 +185,7 @@ public function handleCandidatureDecision(int $id, string $decision, EntityManag
 
     if ($decision === 'accept') {
         if (!$candidature->isArchived() && !$candidature->isStatuscandidature()) {
-            $candidature->setStatusCandidature(true);
+            $candidature->setStatuscandidature(true);
             $candidature->setArchived(true);
 
             $annoncerecrutement = $candidature->getIdannrecru();
@@ -190,8 +199,8 @@ public function handleCandidatureDecision(int $id, string $decision, EntityManag
             $entityManager->flush();
         }
     } elseif ($decision === 'refuse') {
-        $candidature->setStatusCandidature(false);
-
+        $candidature->setStatuscandidature(false);
+        $candidature->setArchived(true);
         $entityManager->persist($candidature);
         $entityManager->flush();
     } else {
@@ -201,39 +210,39 @@ public function handleCandidatureDecision(int $id, string $decision, EntityManag
 
     return $this->redirectToRoute('app_candidature_index');
 }
-#[Route('/confirm_candidature/{id}', name: 'confirm_candidature', methods: ['GET', 'POST'])]
-public function confirmCandidature($id, Request $request, ?string $decision, EntityManagerInterface $entityManager, AnnoncerecrutementRepository $annoncerecrutementRepository): Response
-{
-    $candidature = $entityManager->getRepository(Candidature::class)->find($id);
+// #[Route('/confirm_candidature/{id}', name: 'confirm_candidature', methods: ['GET', 'POST'])]
+// public function confirmCandidature($id, Request $request, ?string $decision, EntityManagerInterface $entityManager, AnnoncerecrutementRepository $annoncerecrutementRepository): Response
+// {
+//     $candidature = $entityManager->getRepository(Candidature::class)->find($id);
 
-    if (!$candidature) {
-        throw $this->createNotFoundException('Confirmation not found');
-    }
+//     if (!$candidature) {
+//         throw $this->createNotFoundException('Confirmation not found');
+//     }
 
-    $annoncerecrutement = $candidature->getIdannrecru();
+//     $annoncerecrutement = $candidature->getIdannrecru();
 
-    if ($decision === 'accept') {
-        $candidature->setStatusCandidature(true);
+//     if ($decision === 'accept') {
+//         $candidature->setStatusCandidature(true);
 
-        // Reduce the number of available seats
-        $newAvailableSeats = $annoncerecrutement->getNbPosteRecherche() - 1;
+//         // Reduce the number of available seats
+//         $newAvailableSeats = $annoncerecrutement->getNbPosteRecherche() - 1;
 
-        if ($newAvailableSeats <= 0) {
-            // If no more available seats, archive the announcement
-            $annoncerecrutement->setArchived(true);
-        }
+//         if ($newAvailableSeats <= 0) {
+//             // If no more available seats, archive the announcement
+//             $annoncerecrutement->setArchived(true);
+//         }
 
-        $annoncerecrutement->setNbPosteRecherche($newAvailableSeats);
-    } elseif ($decision === 'refuse') {
-        $candidature->setStatusCandidature(false);
-    }
+//         $annoncerecrutement->setNbPosteRecherche($newAvailableSeats);
+//     } elseif ($decision === 'refuse') {
+//         $candidature->setStatusCandidature(false);
+//     }
 
-    $entityManager->persist($annoncerecrutement);
-    $entityManager->persist($candidature);
-    $entityManager->flush();
+//     $entityManager->persist($annoncerecrutement);
+//     $entityManager->persist($candidature);
+//     $entityManager->flush();
 
-    return $this->redirectToRoute('app_candidature_index');
-}
+//     return $this->redirectToRoute('app_candidature_index');
+// }
 
 
 

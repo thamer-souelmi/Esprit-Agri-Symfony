@@ -42,18 +42,18 @@ class Annoncerecrutement
 
     private  ?bool $archived = false;
 
-//     #[ORM\OneToMany(mappedBy: "idannrecru", targetEntity: Candidature::class)]
-//     private Collection $candidatures;
+    #[ORM\OneToMany(mappedBy: "idannrecru", targetEntity: Candidature::class)]
+    private Collection $candidatures;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
 #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id")]
 private ?User $user;
 
 
-    // public function __construct()
-    // {
-    //     $this->candidatures = new ArrayCollection();
-    // }
+    public function __construct()
+    {
+        $this->candidatures = new ArrayCollection();
+    }
 
     public function getIdRecrut(): ?int
     {
@@ -167,33 +167,33 @@ private ?User $user;
         return $this;
     }
 
-    // /**
-    //  * @return Collection|Candidature[]
-    //  */
-    // public function getCandidatures(): Collection
-    // {
-    //     return $this->candidatures;
-    // }
+    /**
+     * @return Collection|Candidature[]
+     */
+    public function getCandidatures(): Collection
+    {
+        return $this->candidatures;
+    }
 
-    // public function addCandidature(Candidature $candidature): self
-    // {
-    //     if (!$this->candidatures->contains($candidature)) {
-    //         $this->candidatures[] = $candidature;
-    //         $candidature->setIdannrecru($this);
-    //     }
+    public function addCandidature(Candidature $candidature): self
+    {
+        if (!$this->candidatures->contains($candidature)) {
+            $this->candidatures[] = $candidature;
+            $candidature->setIdannrecru($this);
+        }
 
-    //     return $this;
-    // }
+        return $this;
+    }
 
-    // public function removeCandidature(Candidature $candidature): self
-    // {
-    //     if ($this->candidatures->removeElement($candidature)) {
-    //         // set the owning side to null (unless already changed)
-    //         if ($candidature->getIdannrecru() === $this) {
-    //             $candidature->setIdannrecru(null);
-    //         }
-    //     }
+    public function removeCandidature(Candidature $candidature): self
+    {
+        if ($this->candidatures->removeElement($candidature)) {
+            // set the owning side to null (unless already changed)
+            if ($candidature->getIdannrecru() === $this) {
+                $candidature->setIdannrecru(null);
+            }
+        }
 
-    //     return $this;
-    // }
+        return $this;
+    }
 }
