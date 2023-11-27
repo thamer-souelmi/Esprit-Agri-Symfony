@@ -2,21 +2,20 @@
 
 namespace App\Entity;
 
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\CandidatureRepository;
+use Doctrine\DBAL\Types\Types;
 
 #[ORM\Entity(repositoryClass: CandidatureRepository::class)]
 #[ORM\Table(name: "candidature")]
-
-
 class Candidature
 {
+    private $confirmed; // Declare the property
+
     #[ORM\Id]
 
     #[ORM\GeneratedValue]
     #[ORM\Column(name: "idCandidature")]
-
     private ?int $idcandidature = null;
 
     #[ORM\Column( length: 5000)]
@@ -50,17 +49,28 @@ class Candidature
   
     #[ORM\Column]
 
-    private ?bool $statuscandidature;
+    private ?bool $statuscandidature = false;
+
+    #[ORM\Column]
+
+    private ?bool $archived = false;
 
    
+    #[ORM\ManyToOne(targetEntity: "App\Entity\Annoncerecrutement", inversedBy: "candidatures")]
+    #[ORM\JoinColumn(name: "idannrecru_id", referencedColumnName: "idRecrut")]
+    private ?Annoncerecrutement $idannrecru;
 
-    // #[ORM\ManyToOne(targetEntity: "App\Entity\Annoncerecrutement", inversedBy: "candidatures")]
-    // #[ORM\JoinColumn(nullable: true)]
-    // private ?Annoncerecrutement $idannrecru;
-    
 
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id")]
+    private ?User $user;
     
     
+    public function __construct()
+{
+    $this->statuscandidature = false;
+    // Add any other default values here if needed
+}
 
     public function getIdcandidature(): ?int
     {
@@ -164,6 +174,33 @@ class Candidature
     // }
 
 
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+        return $this;
+    }
+    public function isArchived(): bool
+    {
+        return $this->archived;
+    }
+
+    public function setArchived(bool $archived): self
+    {
+        $this->archived = $archived;
+        return $this;
+    }
+
+    public function isConfirmed()
+    {
+        // Logic to determine if the candidature is confirmed
+        // For example, you might have a 'confirmed' property on the entity
+        return $this->confirmed === true;
+    }
 
 
 

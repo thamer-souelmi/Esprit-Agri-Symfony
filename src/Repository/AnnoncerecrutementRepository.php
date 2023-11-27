@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Annoncerecrutement;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Controller\AnnoncerecrutementController;
 
 /**
  * @extends ServiceEntityRepository<Annoncerecrutement>
@@ -20,6 +21,7 @@ class AnnoncerecrutementRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Annoncerecrutement::class);
     }
+
 
     public function searchByPosteContratLoca($query)    { 
         

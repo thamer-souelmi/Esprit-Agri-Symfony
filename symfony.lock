@@ -228,6 +228,7 @@
             "./config/packages/security.yaml"
         ]
     },
+
     "symfony/sendgrid-mailer": {
         "version": "5.4",
         "recipe": {

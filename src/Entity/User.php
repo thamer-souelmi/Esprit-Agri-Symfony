@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Entity;
+//namespace App\Entity\User;
+
 
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -93,6 +95,8 @@ class User implements UserInterface
 
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
+    #[ORM\OneToMany(mappedBy: "user", targetEntity: Annoncerecrutement::class)]
+    private Collection $annonces;
     #[ORM\OneToMany(targetEntity:"App\Entity\Produit", mappedBy:"user")]
      
     private $products;
@@ -288,6 +292,11 @@ class User implements UserInterface
     public function eraseCredentials()
     {
         // If you store any temporary, sensitive data on the user, clear it here
+    }
+
+    public function getAnnonces(): Collection
+    {
+        return $this->annonces;
     }
 
 
