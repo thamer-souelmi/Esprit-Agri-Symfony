@@ -5,6 +5,8 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\CandidatureRepository;
 use Doctrine\DBAL\Types\Types;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: CandidatureRepository::class)]
 #[ORM\Table(name: "candidature")]
@@ -17,25 +19,30 @@ class Candidature
     #[ORM\Column(name: "idCandidature")]
     private ?int $idcandidature = null;
 
+    #[Assert\NotBlank(message: 'Le nombre de postes recherchés ne peut pas être vide.')]
+
     #[ORM\Column( length: 5000)]
 
     private ?String $experienceprofessionnelle = null;
 
+    #[Assert\NotBlank(message: 'Le nombre de postes recherchés ne peut pas être vide.')]
 
     #[ORM\Column( length:5000)]
 
     private ?String $formation  = null;
+    #[Assert\NotBlank(message: 'Le nombre de postes recherchés ne peut pas être vide.')]
 
     #[ORM\Column( length:5000)]
 
     private ?String $competencestechniques = null;
 
-    
+
     #[ORM\Column( length:200)]
 
     private ?String $certifforma  = null;
 
-   
+    #[Assert\NotBlank(message: 'Le nombre de postes recherchés ne peut pas être vide.')]
+
     #[ORM\Column( length:255,)]
 
     private String $messagemotivation;

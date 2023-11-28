@@ -13,6 +13,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Validator\Constraints\Valid;
 
 #[Route('/annoncerecrutement')]
 class AnnoncerecrutementController extends AbstractController
@@ -21,6 +23,7 @@ class AnnoncerecrutementController extends AbstractController
     public function index(AnnoncerecrutementRepository $annoncerecrutementRepository, PaginatorInterface $paginator, Request $request, EntityManagerInterface $entityManager): Response
     {
         $annoncerecrutements = $annoncerecrutementRepository->findBy(['nbPosteRecherche' => 0]);
+      //  if($annoncerecrutements->getIdannrecru()!=0){
 
 foreach ($annoncerecrutements as $annonce) {
     $annonce->setArchivedA(true);
@@ -37,7 +40,9 @@ $nonArchivedAnnonces = $annoncerecrutementRepository->findBy(['archivedA' => fal
             $request->query->getInt('page', 1),
             6 // Number of items per page
         );
-
+  //  }else {
+   //     $this->addFlash('danger', 'vous ne pouvez pas supprimer cette candidature car elle cantient des candidature  ');
+   // }
         return $this->render('annoncerecrutement/index.html.twig', [
             'pagination' => $pagination,
         ]);
@@ -57,10 +62,11 @@ $nonArchivedAnnonces = $annoncerecrutementRepository->findBy(['archivedA' => fal
         $user = $security->getUser();
         $annoncerecrutement = new Annoncerecrutement();
         $annoncerecrutement->setUser($user);
+        $annoncerecrutement->setArchivedA(false);
         $currentDate = new \DateTime();
         $annoncerecrutement->setDatepub($currentDate);
-        $form = $this->createForm(AnnoncerecrutementType::class, $annoncerecrutement);
-        $form->handleRequest($request);
+        $form = $this->createForm(AnnoncerecrutementType::class, $annoncerecrutement); 
+               $form->handleRequest($request);
     
         if ($form->isSubmitted() && $form->isValid()) {
             $annoncerecrutement -> setUser($user);
@@ -109,49 +115,95 @@ public function show(Annoncerecrutement $annoncerecrutement): Response
         ]);
     }
 
-        // #[Route('/{IdRecrut}', name: 'app_annoncerecrutement_delete', methods: ['POST'])]
-        // public function delete(Request $request, Annoncerecrutement $annoncerecrutement, EntityManagerInterface $entityManager): Response
-        // {
-        //     if ($this->isCsrfTokenValid('delete'.$annoncerecrutement->getIdRecrut(), $request->request->get('_token'))) {
-        //         $entityManager->remove($annoncerecrutement);
-        //         $entityManager->flush();
-        //     }
+        #[Route('/{IdRecrut}', name: 'app_annoncerecrutement_delete', methods: ['POST'])]
+        public function delete(Request $request, Annoncerecrutement $annoncerecrutement, EntityManagerInterface $entityManager): Response
+        {
+            if ($this->isCsrfTokenValid('delete'.$annoncerecrutement->getIdRecrut(), $request->request->get('_token'))) {
+                $entityManager->remove($annoncerecrutement);
+                $entityManager->flush();
+            }
 
-        //     return $this->redirectToRoute('app_annoncerecrutement_index', [], Response::HTTP_SEE_OTHER);
-        // }
-    #[Route('/search/annoncerecrut', name: 'annoncerecrut_search', methods: ['GET'])]
-public function search(Request $request, AnnoncerecrutementRepository $annoncerecrutementRepository): Response
+            return $this->redirectToRoute('app_annoncerecrutement_index', [], Response::HTTP_SEE_OTHER);
+        }
+        #[Route('/search/annoncerecrut', name: 'annoncerecrut_search', methods: ['GET'])]
+public function search(Request $request, AnnoncerecrutementRepository $annoncerecrutementRepository, PaginatorInterface $paginator): Response
 {
     $searchQuery = $request->query->get('search_query');
+    $filter1 = $request->query->get('filter1');
+    $pagination = $paginator->paginate(
+        $filter1,
+        $request->query->getInt('page', 1),
+        6 // Number of items per page
+    );
+    // Add more filters as needed
 
-
-    $resultats = $annoncerecrutementRepository->searchByPosteContratLoca($searchQuery);
+    $resultats = $annoncerecrutementRepository->searchByPosteContratLoca($searchQuery, $filter1);
+    // Update the method call based on your filtering logic in the repository
 
     return $this->render('annoncerecrutement/index.html.twig', [
-        'annoncerecrutements' => $resultats,
+        'pagination' => $pagination, // Assuming you are using pagination
     ]);
 }
+
+        
+//work kinda good
+// #[Route('/back/{idRecrut}', name: 'app_annoncerecruback_delete', methods: ['POST'])]
+// public function deleteback(Request $request, Annoncerecrutement $annoncerecrutement, EntityManagerInterface $entityManager): Response
+// {
+//     if ($this->isCsrfTokenValid('delete'.$annoncerecrutement->getIdRecrut(), $request->request->get('_token'))) {
+//         $entityManager->remove($annoncerecrutement);
+//         $entityManager->flush();
+//     }
+//work kinda good
+//delete with testing
 #[Route('/back/{idRecrut}', name: 'app_annoncerecruback_delete', methods: ['POST'])]
 public function deleteback(
     Request $request,
     Annoncerecrutement $annoncerecrutement,
+    EntityManagerInterface $entityManager,
     AnnoncerecrutementRepository $annoncerecrutementRepository
 ): Response {
-    if ($annoncerecrutementRepository->isAnnReInUse($annoncerecrutement)) {
-        $this->addFlash('danger', 'L\'annonce a des candidatures obtenues. Suppression impossible.');
-    } else {
-        $csrfToken = $request->request->get('_token');
+    // Check if Annoncerecrutement is used by Candidature
+    if ($annoncerecrutementRepository->isUsedByCandidature($annoncerecrutement)) {
+        // Add flash message or handle the case where Annoncerecrutement is used
+        $this->addFlash('warning', 'Cannot delete, Annoncerecrutement is used by Candidature.');
 
-        if ($this->isCsrfTokenValid('delete' . $annoncerecrutement->getIdRecrut(), $csrfToken)) {
-            $annoncerecrutementRepository->remove($annoncerecrutement, true);
-            $this->addFlash('success', 'L\'annonce a été supprimée avec succès.');
-        } else {
-            $this->addFlash('danger', 'Le jeton CSRF n\'est pas valide. Suppression impossible.');
-        }
+        return $this->redirectToRoute('app_annoncerecrutement_index');
     }
 
-    return $this->redirectToRoute('app_annoncerecrutementback_index', [], Response::HTTP_SEE_OTHER);
+    if ($this->isCsrfTokenValid('delete' . $annoncerecrutement->getIdRecrut(), $request->request->get('_token'))) {
+        $entityManager->remove($annoncerecrutement);
+        $entityManager->flush();
+
+        // Add a success flash message
+        $this->addFlash('success', 'Annoncerecrutement deleted successfully.');
+    }
+
+    return $this->redirectToRoute('app_annoncerecrutement_index');
 }
+//delete with testing
+//     return $this->redirectToRoute('app_annoncerecrutement_index', [], Response::HTTP_SEE_OTHER);
+// }
+// public function deleteback(
+//     Request $request,
+//     Annoncerecrutement $annoncerecrutement,
+//     AnnoncerecrutementRepository $annoncerecrutementRepository
+// ): Response {
+//     if ($annoncerecrutementRepository->isAnnReInUse($annoncerecrutement)) {
+//         $this->addFlash('danger', 'L\'annonce a des candidatures obtenues. Suppression impossible.');
+//     } else {
+//         $csrfToken = $request->request->get('_token');
+
+//         if ($this->isCsrfTokenValid('delete' . $annoncerecrutement->getIdRecrut(), $csrfToken)) {
+//             $annoncerecrutementRepository->remove($annoncerecrutement, true);
+//             $this->addFlash('success', 'L\'annonce a été supprimée avec succès.');
+//         } else {
+//             $this->addFlash('danger', 'Le jeton CSRF n\'est pas valide. Suppression impossible.');
+//         }
+//     }
+
+//     return $this->redirectToRoute('app_annoncerecrutementback_index', [], Response::HTTP_SEE_OTHER);
+// }
 
 
 

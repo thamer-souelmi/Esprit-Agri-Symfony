@@ -7,6 +7,7 @@
     use Doctrine\Common\Collections\Collection;
     use Doctrine\Common\Collections\ArrayCollection;
     use Doctrine\DBAL\Types\Types;
+    use Symfony\Component\Validator\Constraints as Assert;
 
     #[ORM\Entity(repositoryClass: AnnoncerecrutementRepository::class)]
     #[ORM\Table(name: "annoncerecrutement")]
@@ -17,30 +18,38 @@
         #[ORM\Column(name: "idRecrut")]
         private ?int $idRecrut = null;
 
+       #[Assert\NotBlank(message: 'Ce champ ne peut pas être vide.')]
         #[ORM\Column(length: 255)]
         private ?string $posteDemande = null;
 
-        #[ORM\Column(precision: 10, scale: 0)]
-        private ?float $salairePropose = null;
+        #[Assert\NotBlank(message: 'Ce champ ne peut pas être vide.')]
+         #[ORM\Column(precision: 10, scale: 0)]
+         private ?float $salairePropose = null;
 
-        #[ORM\Column(length: 0)]
-        private ?string $typeContrat = null;
+        #[Assert\NotBlank(message: 'Ce champ ne peut pas être vide.')]
+         #[ORM\Column(length: 0)]
+         private ?string $typeContrat = null;
 
         #[ORM\Column(type: Types::DATE_MUTABLE)]
         private ?\DateTimeInterface $datePub = null;
 
+       #[Assert\NotBlank(message: 'La localisation ne peut pas être vide.')]
         #[ORM\Column(length: 25)]
         private ?string $localisation = null;
 
+        #[Assert\NotBlank(message: 'La date d\'embauche ne peut pas être vide.')]
+        #[Assert\GreaterThan(propertyPath: "datePub", message: 'La date d\'embauche doit être supérieure à la date de publication.')]
         #[ORM\Column(type: Types::DATE_MUTABLE)]
         private ?\DateTimeInterface $dateEmbauche;
 
+        #[Assert\NotBlank(message: 'Le nombre de postes recherchés ne peut pas être vide.')]
         #[ORM\Column()]
         private ?int $nbPosteRecherche;
 
-        #[ORM\Column]
-
-        private  ?bool $archivedA = false ;
+        #[ORM\Column(name: "filter1", length: 255)]
+private ?string $filter1 ;
+#[ORM\Column(name: "archivedA")]
+private ?bool $archivedA ;
 
         #[ORM\OneToMany(mappedBy: "idannrecru", targetEntity: Candidature::class)]
         private Collection $candidatures;
@@ -64,14 +73,27 @@
         {
             return $this->posteDemande;
         }
-
-        public function setPosteDemande(string $posteDemande): static
+    
+        public function setPosteDemande(string $posteDemande): self
         {
             $this->posteDemande = $posteDemande;
-
+    
             return $this;
         }
 
+
+
+        public function getfilter1(): ?float
+        {
+            return $this->filter1;
+        }
+
+        public function setfilter1e(string $filter1): self
+        {
+            $this->filter1 = $filter1;
+
+            return $this;
+        }
         public function getSalairePropose(): ?float
         {
             return $this->salairePropose;

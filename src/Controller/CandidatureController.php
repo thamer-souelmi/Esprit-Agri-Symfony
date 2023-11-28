@@ -9,21 +9,21 @@ use App\Form\CandidatureType;
 use App\Repository\CandidatureRepository;
 use App\Repository\AnnoncerecrutementRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-
-
-
-
+use App\Service\TwilioService;
+use Symfony\Component\Mime\Address;
 
 #[Route('/candidature')]
 class CandidatureController extends AbstractController
@@ -60,7 +60,7 @@ class CandidatureController extends AbstractController
         ]);
     }
     #[Route('/new/{idRecurt}', name: 'app_candidature_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager ,Security $security, $idRecurt): Response
+    public function new(Request $request, EntityManagerInterface $entityManager ,Security $security, $idRecurt, MailerInterface $mailer): Response
     {        //$idRecurt = $request->get('idRecurt');
         $candidature = new Candidature();
         $user = $security->getUser();
@@ -72,6 +72,16 @@ class CandidatureController extends AbstractController
         $currentDate = new \DateTime();
         $candidature->setDatecandidature($currentDate);
         if ($form->isSubmitted() && $form->isValid()) {
+            $email = (new TemplatedEmail())
+            ->from(new Address('espritagri11@gmail.com', 'Esprit '))
+            ->to('haifa.bensalah@esprit.tn')
+            ->subject('Candidature')
+            ->htmlTemplate('annoncerecrutement/confirmation_email.html.twig')
+            ->context([
+                'candidature' => $candidature,
+                // Other context data...
+            ]);
+    
             // Handle file upload
             $file = $form->get('certifforma')->getData();
             
@@ -87,6 +97,7 @@ class CandidatureController extends AbstractController
                 // Save the image file name to the entity
                 $candidature->setCertifforma($fileName);
             }
+            $mailer->send($email);
 
             $entityManager->persist($candidature);
             $entityManager->flush();
@@ -94,14 +105,7 @@ class CandidatureController extends AbstractController
             return $this->redirectToRoute('app_annoncerecrutement_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            //$candidature -> setIdannrecru($annoncerecrutement);
-
-            $entityManager->persist($candidature);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_candidature_index', [], Response::HTTP_SEE_OTHER);
-        }
+       
         return $this->renderForm('candidature/new.html.twig', [
             'candidature' => $candidature,
             'form' => $form,
@@ -196,7 +200,7 @@ public function showRelatedCandidatures(int $idRecrut, CandidatureRepository $ca
 
 #[Route('/candidature/{id}/{decision}', name: 'confirm_candidature', methods: ['GET'])]
 
-public function handleCandidatureDecision(SessionInterface $session,int $id, string $decision, EntityManagerInterface $entityManager): RedirectResponse
+public function handleCandidatureDecision(SessionInterface $session,int $id, string $decision, EntityManagerInterface $entityManager, TwilioService $twilioService): RedirectResponse
 
 {
     $candidature = $entityManager->getRepository(Candidature::class)->find($id);
@@ -207,6 +211,7 @@ public function handleCandidatureDecision(SessionInterface $session,int $id, str
 if($candidature->getIdannrecru()->getNbPosteRecherche()!=0){
     if ($decision === 'accept') {
         if (!$candidature->isArchived() && !$candidature->isStatuscandidature()) {
+            $twilioService ->sendSMS("+21628181314"," felicitation vous ete accepter  ");
             $candidature->setStatuscandidature(true);
             $candidature->setArchived(true);
 
@@ -221,10 +226,13 @@ if($candidature->getIdannrecru()->getNbPosteRecherche()!=0){
             $entityManager->flush();
         }
     } elseif ($decision === 'refuse') {
+
         $candidature->setStatuscandidature(false);
         $candidature->setArchived(true);
         $entityManager->persist($candidature);
         $entityManager->flush();
+        $twilioService ->sendSMS("+21628181314"," Je suis désolé, mais votre demande a été rejetée.  ");
+
     } else {
         // Handle invalid decision, throw an exception, or return an appropriate response.
         throw new \InvalidArgumentException('Invalid decision');
