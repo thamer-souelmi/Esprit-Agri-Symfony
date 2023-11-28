@@ -13,8 +13,8 @@ class ClientType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('idUser')
-            ->add('prodid')
+            // ->add('idUser')
+            // ->add('prodid')
             ->add('nomprod')
             ->add('prix')
             ->add('dateajout')

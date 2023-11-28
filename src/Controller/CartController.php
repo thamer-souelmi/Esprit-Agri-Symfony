@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Client;
 use App\Repository\ClientRepository;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,13 +23,38 @@ class CartController extends AbstractController
     /**
      * @Route("/valid", name="mail")
      */
-    public function sendEmail(MailerInterface $mailer)
+    public function sendEmail(MailerInterface $mailer, SessionInterface $session, ClientRepository $clientRepository)
     {
-        $email = (new Email())
-            ->from('zoxzo81@gmail.com')
-            ->to('nasriamin300@gmail.com')
-            ->subject('amin')
-            ->text('amin');
+        $panier = $session->get("panier", []);
+
+        // "Manufacture" the data
+        $dataPanier = [];
+        $total = 0;
+
+        foreach ($panier as $id => $quantity) {
+            $client = $clientRepository->find($id);
+
+            if ($client) {
+                $dataPanier[] = [
+                    "produit" => $client,
+                    "quantite" => $quantity
+                ];
+
+                $total += $client->getPrix() * $quantity;
+            }
+        }
+
+        $email = (new TemplatedEmail())
+            ->from('espritagri11@gmail.com')
+            ->to('zoxzo81@gmail.com')
+            ->subject('Confirmation Commande')
+            ->text('nous a vous contacter pour confirme l achat')
+            ->htmlTemplate('cart/confirmationpayement.html.twig')
+            ->context([
+                'dataPanier' => $dataPanier,
+                'total' => $total,
+            ]);
+
         // ->html('<p>Contenu du message en HTML</p>');
 
         try {

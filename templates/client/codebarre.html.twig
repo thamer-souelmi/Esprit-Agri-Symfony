@@ -1,0 +1,12 @@
+{% block title %}Code-barre
+{% endblock %}
+
+{% block body %}
+	<h1 class="display-3 text-white mb-4 animated slideInDown">Code-barre</h1>
+
+	<div class="barcode-container">
+		{{ barcodeHtml | raw }}
+	</div>
+
+	{# Ajoutez tout autre contenu ou stylisation souhaité #}
+{% endblock %}
