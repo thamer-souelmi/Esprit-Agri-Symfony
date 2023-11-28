@@ -58,12 +58,68 @@
 				{% endfor %}
 			</tbody>
 		</table>
-		<!-- Add links for other actions as needed -->
+		<div style="width: 80%; margin: auto;">
+			<canvas id="categorycultureChart" width="400" height="400"></canvas>
+		</div>
 	</div>
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+var ctx = document.getElementById('categorycultureChart').getContext('2d');
+var data = {{ categorycultureCounts|json_encode|raw }};
+console.log(data);
+var labels = data.map(function (item) {
+return item.type;
+});
 
+var culturename = data.map(function (item) {
+return item.type;
+});
+
+var cultureCounts = data.map(function (item) {
+return item.cultureCount;
+});
+
+var backgroundColors = generateRandomColors(data.length);
+
+var chart = new Chart(ctx, {
+type: 'pie',
+data: {
+labels: culturename,
+datasets: [
+{
+data: cultureCounts,
+backgroundColor: backgroundColors,
+borderWidth: 1
+}
+]
+},
+options: {
+responsive: true,
+maintainAspectRatio: false
+}
+});
+
+function generateRandomColors(count) {
+var colors = [];
+for (var i = 0; i < count; i++) {
+colors.push(getRandomColor());
+}
+return colors;
+}
+
+function getRandomColor() {
+var letters = '0123456789ABCDEF';
+var color = '#';
+for (var i = 0; i < 6; i++) {
+color += letters[Math.floor(Math.random() * 16)];
+}
+return color;
+}
+});
+</script>
 <script>
 	$(document).ready(function () { // Function to perform the search based on the specified column
 function searchColumn(columnIndex, value) {

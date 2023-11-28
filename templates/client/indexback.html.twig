@@ -7,39 +7,49 @@
 	<h1>Marche Main</h1>
 
 	<table class="table">
-		<thead>
-			<tr>
+    <thead>
+        <tr>
+            <th>IdUser</th>
+            <th>Prodid</th>
+            <th>Nomprod</th>
+            <th>Prix</th>
+            <th>Dateajout</th>
+            <th>Qte</th>
+            <th>actions</th>
+            <th>Codebar</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for client in clients %}
+            <tr>
+                <td>{{ client.idUser }}</td>
+                <td>{{ client.prodid }}</td>
+                <td>{{ client.nomprod }}</td>
+                <td>{{ client.prix }}</td>
+                <td>{{ client.dateajout ? client.dateajout|date('Y-m-d') : '' }}</td>
+                <td>{{ client.qte }}</td>
+                <td>
+                    <a href="{{ path('app_clientback_show', {'id': client.id}) }}" class="btn btn-primary">Afficher</a>
+                    <a href="{{ path('app_clientback_edit', {'id': client.id}) }}" class="btn btn-success">Modifier</a>
+                </td>
+                <td>
+                    {# {% if barcodeHtmlArray[client.id] is defined %} #}
+                        <a href="{{ path('download_barcode', {'id': client.id}) }}" class="btn btn-secondary">Download</a>
+                    {# {% endif %} #}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="7"></td>
+                <td></td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
-				<th>IdUser</th>
-				<th>Prodid</th>
-				<th>Nomprod</th>
-				<th>Prix</th>
-				<th>Dateajout</th>
-				<th>Qte</th>
-				<th>actions</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for client in clients %}
-				<tr>
-					<td>{{ client.idUser }}</td>
-					<td>{{ client.prodid }}</td>
-					<td>{{ client.nomprod }}</td>
-					<td>{{ client.prix }}</td>
-					<td>{{ client.dateajout ? client.dateajout|date('Y-m-d') : '' }}</td>
-					<td>{{ client.qte }}</td>
-					<td>
-						<a href="{{ path('app_clientback_show', {'id': client.id}) }}" class="btn btn-primary">Afficher</a>
-						<a href="{{ path('app_clientback_edit', {'id': client.id}) }}" class="btn btn-success">Modifier</a>
-					</td>
-				</tr>
-			{% else %}
-				<tr>
-					<td colspan="8">no records found</td>
-				</tr>
-			{% endfor %}
-		</tbody>
-	</table>
 
 	<a href="{{ path('app_clientback_new') }}" class="btn btn-primary">Creer Nouveau</a>
 {% endblock %}

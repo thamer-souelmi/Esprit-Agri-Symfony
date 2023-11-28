@@ -194,8 +194,11 @@ class CultureController extends AbstractController
     #[Route('/back', name: 'app_cultureback_index', methods: ['GET'])]
     public function indexback(CultureRepository $cultureRepository): Response
     {
+
+        $categorycultureCounts = $cultureRepository->getCategoryCultureCounts();
+
         return $this->render('culture/indexback.html.twig', [
-            'cultures' => $cultureRepository->findAll(),
+            'cultures' => $cultureRepository->findAll(), 'categorycultureCounts' => $categorycultureCounts,
         ]);
     }
     #[Route('/back/{id}', name: 'app_cultureback_delete', methods: ['POST'])]

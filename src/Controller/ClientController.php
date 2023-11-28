@@ -218,6 +218,38 @@ class ClientController extends AbstractController
         ]);
     }
 
+    #[Route('/download-barcode/{id}', name: 'download_barcode')]
+    public function downloadBarcode($id): Response
+    {
+        // Retrieve the client based on the ID (adjust as needed)
+        $client = $this->getDoctrine()->getRepository(Client::class)->find($id);
+
+        if (!$client) {
+            throw $this->createNotFoundException('Client not found');
+        }
+
+        $barcodeContent = sprintf(
+            "Nom du produit: %s\nPrix: %s\nQuantité: %s",
+            $client->getNomprod(),
+            $client->getPrix(),
+            $client->getQte()
+        );
+
+        $generator = new BarcodeGeneratorHTML();
+
+        // Générer le code-barres HTML
+        $barcodeHtml = $generator->getBarcode($barcodeContent, $generator::TYPE_CODE_128);
+
+        // Create a response with the barcode content
+        $response = new Response($barcodeHtml);
+
+        // Set headers for downloading the file
+        $response->headers->set('Content-Type', 'text/html');
+        $response->headers->set('Content-Disposition', 'attachment; filename="barcode.html"');
+
+        return $response;
+    }
+    
     #[Route('/{id}', name: 'app_client_show', methods: ['GET'])]
     public function show(Client $client): Response
     {
