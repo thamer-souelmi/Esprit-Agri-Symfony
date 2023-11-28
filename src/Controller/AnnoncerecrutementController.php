@@ -18,12 +18,22 @@ use Symfony\Component\Security\Core\Security;
 class AnnoncerecrutementController extends AbstractController
 {
     #[Route('/', name: 'app_annoncerecrutement_index', methods: ['GET'])]
-    public function index(AnnoncerecrutementRepository $annoncerecrutementRepository, PaginatorInterface $paginator, Request $request): Response
+    public function index(AnnoncerecrutementRepository $annoncerecrutementRepository, PaginatorInterface $paginator, Request $request, EntityManagerInterface $entityManager): Response
     {
-        $annoncerecrutements = $annoncerecrutementRepository->findAll();
+        $annoncerecrutements = $annoncerecrutementRepository->findBy(['nbPosteRecherche' => 0]);
+
+foreach ($annoncerecrutements as $annonce) {
+    $annonce->setArchivedA(true);
+    $entityManager->persist($annonce);
+}
+
+$entityManager->flush();
+
+$nonArchivedAnnonces = $annoncerecrutementRepository->findBy(['archivedA' => false]);
+     //   $annoncerecrutements = $annoncerecrutementRepository->findAll();
 
         $pagination = $paginator->paginate(
-            $annoncerecrutements,
+            $nonArchivedAnnonces,
             $request->query->getInt('page', 1),
             6 // Number of items per page
         );
@@ -121,13 +131,12 @@ public function search(Request $request, AnnoncerecrutementRepository $annoncere
         'annoncerecrutements' => $resultats,
     ]);
 }
-#[Route('/back/{IdRecrut}', name: 'app_annoncerecruback_delete', methods: ['POST'])]
+#[Route('/back/{idRecrut}', name: 'app_annoncerecruback_delete', methods: ['POST'])]
 public function deleteback(
     Request $request,
     Annoncerecrutement $annoncerecrutement,
     AnnoncerecrutementRepository $annoncerecrutementRepository
-): Response
-{
+): Response {
     if ($annoncerecrutementRepository->isAnnReInUse($annoncerecrutement)) {
         $this->addFlash('danger', 'L\'annonce a des candidatures obtenues. Suppression impossible.');
     } else {
@@ -143,17 +152,16 @@ public function deleteback(
 
     return $this->redirectToRoute('app_annoncerecrutementback_index', [], Response::HTTP_SEE_OTHER);
 }
-// #[Route('/post', name: 'app_covoiturage_post', methods: ['GET'])]
-// public function post(AnnoncerecrutementRepository $annoncerecrutementRepository): Response
-// {
-//     $annoncerecrutement = $annoncerecrutementRepository->findAll();
-//     $filteredCovoiturage = array_filter($annoncerecrutement, function ($c) {
-//         return $c->getNbPosteRecherche() > 0;
-//     });
-//     return $this->render('candidature/index.html.twig', [
-//         'annoncerecrutement' => $filteredCovoiturage,
-//     ]);
-// }
+
+
+
+
+
+
+
+
+
+
 
 
 }

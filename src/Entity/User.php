@@ -12,11 +12,12 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 
 
+
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[UniqueEntity(fields: ['mail'], message: 'There is already an account with this mail')]
 
-class User 
+class User implements UserInterface
 
 {
     #[ORM\Id]
@@ -261,6 +262,29 @@ class User
 
         return $this;
     }
+    public function getRoles()
+    {
+        return ['ROLE_USER']; // Adjust roles as needed
+    }
+
+    public function getPassword()
+    {
+        return $this->mdp;
+    }
+    public function getSalt()
+    {
+        // you might need to return null unless you use bcrypt for passwords
+        return null;
+    }
+
+    
+
+    public function getUsername()
+    {
+        return $this->mail;
+    }
+
+    
 
     public function getAnnonces(): Collection
     {

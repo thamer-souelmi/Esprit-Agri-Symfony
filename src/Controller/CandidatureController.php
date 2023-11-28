@@ -18,6 +18,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+
 
 
 
@@ -105,13 +108,60 @@ class CandidatureController extends AbstractController
         ]);
     }
 
-    #[Route('/{idcandidature}', name: 'app_candidature_show', methods: ['GET'])]
-    public function show(Candidature $candidature): Response
-    {
-        return $this->render('candidature/show.html.twig', [
-            'candidature' => $candidature,
-        ]);
+    // #[Route('/{idcandidature}', name: 'app_candidature_show', methods: ['GET'])]
+    // public function show(Candidature $candidature): Response
+    // {
+    //     return $this->render('candidature/show.html.twig', [
+    //         'candidature' => $candidature,
+    //     ]);
+    // }
+//     #[Route('/{idRecrut}', name: 'app_candidature_show', methods: ['GET'])]
+//     public function show(Candidature $candidature, PaginatorInterface $paginator, Request $request): Response
+// {
+//     // Fetch the necessary data based on the $candidature
+//     $relatedData = $this->getDoctrine()->getRepository(Candidature::class)->findBy(['idRecurt' => $candidature->getIdannrecru()]);
+
+//     // Paginate the results
+//     $pagination = $paginator->paginate(
+//         $relatedData,
+//         $request->query->getInt('page', 1),
+//         3 // Number of items per page
+//     );
+
+//     // You can do additional processing or fetch more data if needed
+
+//     return $this->render('candidature/show.html.twig', [
+//         'candidature' => $candidature,
+//         'pagination' => $pagination,
+//     ]);
+// }
+#[Route('/{idRecrut}', name: 'app_show_related_candidatures', methods: ['GET'])]
+public function showRelatedCandidatures(int $idRecrut, CandidatureRepository $candidatureRepository, PaginatorInterface $paginator, Request $request): Response
+{
+    // Fetch the necessary data based on the $idRecrut
+    $annoncerecrutement = $this->getDoctrine()->getRepository(Annoncerecrutement::class)->find($idRecrut);
+
+    if (!$annoncerecrutement) {
+        throw $this->createNotFoundException('Annonce Recrutement not found');
     }
+
+    // Fetch related candidatures for the given annonce recrutement
+    $relatedCandidatures = $candidatureRepository->findBy(['idannrecru' => $annoncerecrutement]);
+
+    // Paginate the results
+    $pagination = $paginator->paginate(
+        $relatedCandidatures,
+        $request->query->getInt('page', 1),
+        3 // Number of items per page
+    );
+
+    // You can do additional processing or fetch more data if needed
+
+    return $this->render('candidature/show.html.twig', [
+        'pagination' => $pagination,
+        'annonceRecrutement' => $annoncerecrutement,
+    ]);
+}
 
     #[Route('/{idcandidature}/edit', name: 'app_candidature_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Candidature $candidature, EntityManagerInterface $entityManager): Response
@@ -146,43 +196,15 @@ class CandidatureController extends AbstractController
 
 #[Route('/candidature/{id}/{decision}', name: 'confirm_candidature', methods: ['GET'])]
 
-public function handleCandidatureDecision(int $id, string $decision, EntityManagerInterface $entityManager): RedirectResponse
-// {
-//     // Check if the user is an admin (you can implement your own logic to check admin access)
+public function handleCandidatureDecision(SessionInterface $session,int $id, string $decision, EntityManagerInterface $entityManager): RedirectResponse
 
-//     $candidature = $entityManager->getRepository(Candidature::class)->find($id);
-
-//     if (!$candidature) {
-//         throw $this->createNotFoundException('Candidature not found');
-//     }
-
-//     // Update the candidacy's "accepte" field based on the admin's decision
-//     if ($decision === 'accept') {
-//         $candidature->setStatusCandidature(true);
-
-//         // Archive the candidature when accepted
-//         $candidature->setArchived(true);
-//     } elseif ($decision === 'refuse') {
-//         $candidature->setStatusCandidature(false);
-//     }
-
-//     $entityManager->flush();
-
-//     $this->addFlash('success', 'Candidature decision has been saved.');
-
-//     // Redirect the admin back to the page that displays the candidates for the specific concours
-//     return $this->redirectToRoute('app_candidature_index');
-// }
-
-// #[Route('/confirm_candidature/{id}', name: 'confirm_candidature', methods: ['GET', 'POST'])]
-// public function confirmCandidature($id, Request $request, ?string $decision, EntityManagerInterface $entityManager): Response
 {
     $candidature = $entityManager->getRepository(Candidature::class)->find($id);
 
     if (!$candidature) {
         return new Response($this->json(['error' => 'Confirmation not found']), Response::HTTP_NOT_FOUND);
     }
-
+if($candidature->getIdannrecru()->getNbPosteRecherche()!=0){
     if ($decision === 'accept') {
         if (!$candidature->isArchived() && !$candidature->isStatuscandidature()) {
             $candidature->setStatuscandidature(true);
@@ -207,7 +229,9 @@ public function handleCandidatureDecision(int $id, string $decision, EntityManag
         // Handle invalid decision, throw an exception, or return an appropriate response.
         throw new \InvalidArgumentException('Invalid decision');
     }
-
+}else {
+    $this->addFlash('danger', 'vous avez ateint le nombre maximum de l\'acceptation de cette annonces ');
+}
     return $this->redirectToRoute('app_candidature_index');
 }
 // #[Route('/confirm_candidature/{id}', name: 'confirm_candidature', methods: ['GET', 'POST'])]

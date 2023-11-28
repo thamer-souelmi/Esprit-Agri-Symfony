@@ -1,46 +1,89 @@
 {% extends 'baseback.html.twig' %}
 
-
 {% block body %}
-<table class="table">
-    <thead>
-        <tr>
-            <th>#</th>
-            <th>Date de Candidature</th>
-            <th>Expérience Professionnelle</th>
-            <th>Formation</th>
-            <th>Compétences Techniques</th>
-            <th>Certifications et Formations</th>
-            <th>Message de motivation</th>
-            <th>Etat négociation</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for candidature in candidatures %}
+    <h2>Candidatures Accepté</h2>
+    <table class="table">
+        <thead>
             <tr>
-                <td>{{ loop.index }}</td>
-                <td>{{ candidature.datecandidature ? candidature.datecandidature|date('Y-m-d') : '' }}</td>
-                <td>{{ candidature.experienceprofessionnelle }}</td>
-                <td>{{ candidature.formation }}</td>
-                <td>{{ candidature.competencestechniques }}</td>
-                
-
-                <td><img src="{{ asset('img/' ~ candidature.certifforma) }}" alt="User Image" style="max-width:100px;max-height:100px;"></td>
-                            
-
-                <td>{{ candidature.messagemotivation }}</td>
-                <td>{{candidature.statusCandidature}}</td>
+                <th>#</th>
+                <th>Date de Candidature</th>
+                <th>Expérience Professionnelle</th>
+                <th>Formation</th>
+                <th>Compétences Techniques</th>
+                <th>Certifications et Formations</th>
+                <th>Message de motivation</th>
             </tr>
-        {% else %}
+        </thead>
+        <tbody>
+            {% for candidature in candidatures|filter(c => c.statusCandidature == 1) %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ candidature.datecandidature ? candidature.datecandidature|date('Y-m-d') : '' }}</td>
+                    <td>{{ candidature.experienceprofessionnelle }}</td>
+                    <td>{{ candidature.formation }}</td>
+                    <td>{{ candidature.competencestechniques }}</td>
+                    <td>  {% if candidature.certifforma|lower ends with '.pdf' %}
+                                    <a href="{{ asset('img/' ~ candidature.certifforma) }}" download="{{ candidature.certifforma }}">
+                                        Télécharger le fichier PDF
+                                    </a>
+                                </li>
+                            {% else %}
+
+                                    <a href="{{ asset('img/' ~ candidature.certifforma) }}" download="{{ candidature.certifforma }}">
+                                        Télécharger la photo
+                                    </a>
+
+                            {% endif %}</td>
+                    <td>{{ candidature.messagemotivation }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="8">Pas de candidatures en négociation</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Candidatures refuser</h2>
+    <table class="table">
+        <thead>
             <tr>
-                <td colspan="8">No records found</td>
+                <th>#</th>
+                <th>Date de Candidature</th>
+                <th>Expérience Professionnelle</th>
+                <th>Formation</th>
+                <th>Compétences Techniques</th>
+                <th>Certifications et Formations</th>
+                <th>Message de motivation</th>
             </tr>
-        {% endfor %}
+        </thead>
+        <tbody>
+            {% for candidature in candidatures|filter(c => c.statusCandidature == 0) %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ candidature.datecandidature ? candidature.datecandidature|date('Y-m-d') : '' }}</td>
+                    <td>{{ candidature.experienceprofessionnelle }}</td>
+                    <td>{{ candidature.formation }}</td>
+                    <td>{{ candidature.competencestechniques }}</td>
+                    <td>  {% if candidature.certifforma|lower ends with '.pdf' %}
+                                    <a href="{{ asset('img/' ~ candidature.certifforma) }}" download="{{ candidature.certifforma }}">
+                                        Télécharger le fichier PDF
+                                    </a>
+                                </li>
+                            {% else %}
 
-        <br> 
+                                    <a href="{{ asset('img/' ~ candidature.certifforma) }}" download="{{ candidature.certifforma }}">
+                                        Télécharger la photo
+                                    </a>
 
-        
-    </tbody>
-</table>
+                            {% endif %}</td>                    <td>{{ candidature.messagemotivation }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="8">Pas de candidatures non négociées</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
 {% endblock %}
