@@ -3,66 +3,73 @@
 namespace App\Entity;
 
 use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Client
- *
- * @ORM\Table(name="client")
- * @ORM\Entity
- */
+use App\Repository\ClientRepository;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
+
+
+#[ORM\Entity(repositoryClass: ClientRepository::class)]
 class Client
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id_user", type="integer", nullable=false)
-     */
-    private $idUser;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="prodid", type="integer", nullable=false)
-     */
-    private $prodid;
+    #[ORM\Column]
+    private ?int $idUser = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="Nomprod", type="string", length=20, nullable=false)
-     */
-    private $nomprod;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="prix", type="float", precision=10, scale=0, nullable=false)
-     */
-    private $prix;
+    #[ORM\Column]
+    private ?int $prodid = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateajout", type="date", nullable=false)
-     */
-    private $dateajout;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="qte", type="float", precision=10, scale=0, nullable=false)
-     */
-    private $qte;
+    #[Assert\NotBlank(message: 'veuillez remplir ce champ')]
+    #[Assert\Length(min: 3, minMessage: 'Le libelle doit comporter au moins {{ limit }} caractères')]
+    #[ORM\Column(length: 150)]
+    private ?string $nomprod = null;
+
+
+    #[Assert\NotBlank(message: 'Le prix du produit ne peut pas être vides.')]
+    #[Assert\GreaterThanOrEqual(
+        value: 0,
+        message: 'Le prix du produit ne peut pas être négatifs.'
+    )]
+    #[ORM\Column]
+    private ?float $prix = null;
+
+
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $dateajout = null;
+
+
+    #[Assert\NotBlank(message: 'La quantite ne peut pas être vides.')]
+    #[Assert\GreaterThanOrEqual(
+        value: 0,
+        message: 'La quantite ne peut pas être négatifs.'
+    )]
+    #[ORM\Column]
+    private ?float $qte = null;
+
+    #[ORM\Column(length: 150)]
+    private ?string $image = null;
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+
+    public function setImage(?string $image): static
+    {
+        $this->image = $image;
+
+        return $this;
+    }
 
     public function getId(): ?int
     {
@@ -140,6 +147,4 @@ class Client
 
         return $this;
     }
-
-
 }

@@ -45,6 +45,9 @@
                                         {% if error %}
                                             <div class="alert alert-danger">Verifier votre E-mail ou Mot de Passe</div>
                                         {% endif %}
+                                        {% if app.user and not user.isbanned %}
+                                            <div class="alert alert-danger">da5louni aman rani itim</div>
+                                        {% endif %}
 
                                         {% if app.user %}
                                             <div class="mb-3">
@@ -84,7 +87,7 @@
                                         <a class="small" href="forgot-password.html">Mot de passe oublie ?</a>
                                     </div>
                                     <div class="text-center">
-                                        <a class="small" href="{{ path('app_user_new') }}">Créer un compte !</a>
+                                        <a class="small" href="{{ path('app_register') }}">Créer un compte !</a>
                                     </div>
                                 </div>
                             </div>
