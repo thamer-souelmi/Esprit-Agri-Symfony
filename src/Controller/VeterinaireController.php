@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
@@ -168,4 +170,26 @@ public function yourAction(GeocodingService $geocodingService, VeterinaireReposi
     ]);
 }
 */
+#[Route('/sendEmail/{id}', name: 'send_email', methods: ['POST'])]
+public function sendEmail(Request $request, MailerInterface $mailer, Veterinaire $veterinaire ): Response
+{
+    $fname=$request->request->get('fname');
+    $email=$request->request->get('email');
+    $subject=$request->request->get('subject');
+    $message=$request->request->get('message');
+
+    // envoie du mail
+
+    $email = (new Email())
+    ->from('malek.frikhi@esprit.tn')
+    ->to('agriesprit3@gmail.com')
+    ->subject('Demande information')
+
+    ->html('<p>Bonjour, vous avez un nouveau message de '.$fname.'" "'.$subject.',<br>dont voici le message ' .$message.'.<br>Cordialement !</p>');
+
+$mailer->send($email);
+
+
+    return $this->redirectToRoute('contactvet', ['id' => $veterinaire->getIdvet()]);
+}
 }
