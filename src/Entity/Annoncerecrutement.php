@@ -4,8 +4,8 @@ namespace App\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\AnnoncerecrutementRepository;
-
 
 /**
  * Annoncerecrutement
@@ -13,8 +13,8 @@ use App\Repository\AnnoncerecrutementRepository;
  * @ORM\Table(name="annoncerecrutement")
  * @ORM\Entity
  */
-/**
- * @ORM\Entity(repositoryClass=AnnoncerecrutementRepository::class)
+/*
+@ORM\Entity(repositoryClass=AnnoncerecrutementRepository::class)
  */
 class Annoncerecrutement
 {
@@ -31,50 +31,71 @@ class Annoncerecrutement
      * @var string
      *
      * @ORM\Column(name="posteDemande", type="string", length=255, nullable=false)
-     */
+* @Assert\NotBlank(message="vueillez ajouter le poste demander")
+*/
     private $postedemande;
 
     /**
      * @var float
      *
      * @ORM\Column(name="salairePropose", type="float", precision=10, scale=0, nullable=false)
-     */
+    
+* @Assert\NotBlank(message="vueillez ajouter le salaire proposer ")
+*/
     private $salairepropose;
 
     /**
      * @var string
      *
      * @ORM\Column(name="typeContrat", type="string", length=0, nullable=false)
-     */
+ 
+* @Assert\NotBlank(message="vueillez ajouter le type de contrat")
+*/
     private $typecontrat;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="datePub", type="date", nullable=false)
-     */
+  
+* @Assert\NotBlank(message="vueillez ajouter date de publication ")
+*/
     private $datepub;
 
     /**
      * @var string
      *
      * @ORM\Column(name="localisation", type="string", length=255, nullable=false)
-     */
+    
+* @Assert\NotBlank(message="vueillez une localisation")
+*/
     private $localisation;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="dateEmbauche", type="date", nullable=false)
-     */
+   
+* @Assert\NotBlank(message="vueillez ajouter date de publication")
+*/
     private $dateembauche;
 
     /**
      * @var int
      *
      * @ORM\Column(name="nbPosteRecherche", type="integer", nullable=false)
-     */
+ 
+* @Assert\NotBlank(message="vueillez ajouter le nombre de poste recherché ")
+*/
     private $nbposterecherche;
+
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(name="idCandidature", type="integer", nullable=true)
+ 
+*/
+    private $idcandidature;
 
     public function getIdrecurt(): ?int
     {
@@ -161,6 +182,18 @@ class Annoncerecrutement
     public function setNbposterecherche(int $nbposterecherche): static
     {
         $this->nbposterecherche = $nbposterecherche;
+
+        return $this;
+    }
+
+    public function getIdcandidature(): ?int
+    {
+        return $this->idcandidature;
+    }
+
+    public function setIdcandidature(?int $idcandidature): static
+    {
+        $this->idcandidature = $idcandidature;
 
         return $this;
     }

@@ -3,17 +3,12 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\EntretienRepository;
-
 
 /**
  * Entretien
  *
  * @ORM\Table(name="entretien")
  * @ORM\Entity
- */
-/**
- * @ORM\Entity(repositoryClass=EntretienRepository::class)
  */
 class Entretien
 {
@@ -57,7 +52,7 @@ class Entretien
     /**
      * @var string
      *
-     * @ORM\Column(name="statusEntretien", type="string", length=0, nullable=false)
+     * @ORM\Column(name="statusEntretien", type="string", length=255, nullable=false)
      */
     private $statusentretien;
 

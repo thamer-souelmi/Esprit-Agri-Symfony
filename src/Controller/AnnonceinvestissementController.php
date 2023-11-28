@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 #[Route('/annonceinvestissement')]
 class AnnonceinvestissementController extends AbstractController
@@ -30,6 +31,22 @@ class AnnonceinvestissementController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Handle file upload
+            $file = $form->get('photo')->getData();
+            
+            if ($file instanceof UploadedFile) {
+                $fileName = uniqid().'.'.$file->guessExtension();
+
+                // Move the file to the desired directory
+                $file->move(
+                    'E:/Esprit-Agri-Symfony/public/img/',
+                    $fileName
+                );
+
+                // Save the image file name to the entity
+                $annonceinvestissement->setPhoto($fileName);
+            }
+
             $entityManager->persist($annonceinvestissement);
             $entityManager->flush();
 

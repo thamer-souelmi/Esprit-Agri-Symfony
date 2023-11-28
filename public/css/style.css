@@ -5,6 +5,16 @@
     --light: #F7F7F7;
     --dark: #404A3D;
 }
+.box.minimized {
+    display: none;
+}
+.candidature-row.details-visible {
+    background-color: lightgray; /* or any other styling for visible details */
+}
+.text-center {
+    text-align: center;
+}
+
 
 .back-to-top {
     position: fixed;
@@ -12,6 +22,17 @@
     right: 30px;
     bottom: 30px;
     z-index: 99;
+}
+.text-military-green {
+    color: #556B2F; /* Vert militaire */
+}
+
+.bg-light-orange {
+    background-color: #FFD700; /* Orange clair */
+}
+.box {
+    font-family: Arial;
+    font-size: 16px;
 }
 
 .fw-bold {

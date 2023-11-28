@@ -1,39 +1,46 @@
-{% extends 'base.html.twig' %}
+{% extends 'condi.html.twig' %}
 
-{% block title %}Candidature index{% endblock %}
 
 {% block body %}
-    <h1>Candidature index</h1>
+    <br>
+    <br>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Idcandidature</th>
-                <th>Messagemotivation</th>
-                <th>Statuscandidature</th>
-                <th>Datecandidature</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
+    <div class="row">
         {% for candidature in candidatures %}
-            <tr>
-                <td>{{ candidature.idcandidature }}</td>
-                <td>{{ candidature.messagemotivation }}</td>
-                <td>{{ candidature.statuscandidature }}</td>
-                <td>{{ candidature.datecandidature ? candidature.datecandidature|date('Y-m-d') : '' }}</td>
-                <td>
-                    <a href="{{ path('app_candidature_show', {'idcandidature': candidature.idcandidature}) }}">show</a>
-                    <a href="{{ path('app_candidature_edit', {'idcandidature': candidature.idcandidature}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="5">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Candidature {{ loop.index }}</h5>
+                        <ul class="list-group list-group-flush">
+                        <img class="img-fluid rounded" src="{{ asset('img/' ~ candidature.certifforma) }}" width ="500" height=500">
 
-    <a href="{{ path('app_candidature_new') }}">Create new</a>
+                            <li class="list-group-item"><strong>Date de Candidature:</strong> {{ candidature.datecandidature ? candidature.datecandidature|date('Y-m-d') : '' }}</li>
+                            <li class="list-group-item"><strong>Expérience Professionnelle:</strong> {{ candidature.experienceprofessionnelle }}</li>
+                            <li class="list-group-item"><strong>Formation:</strong> {{ candidature.formation }}</li>
+                            <li class="list-group-item"><strong>Compétences Techniques:</strong> {{ candidature.competencestechniques }}</li>
+                            <li class="list-group-item"><strong>Certifications et Formations:</strong> {{ candidature.certifforma }}</li>
+                            <li class="list-group-item"><strong>Message de motivation :</strong> {{ candidature.messagemotivation }}</li>
+
+                        </ul>
+                        <div class="d-flex justify-content-between">
+                             <li class="list-group-item"><strong>Etat négociation :</strong> 
+                             <a href="{{ path('app_candidature_decision', {'id': candidature.idcandidature, 'decision': 'accept'}) }}" class="btn btn-primary" data-decision="accept">Accepter</a>
+
+<a href="{{ path('app_candidature_decision', {'id': candidature.idcandidature, 'decision': 'refuse'}) }}" class="btn btn-primary" data-decision="refuse">Refuser</a>
+
+                          </li>
+
+                        </div>
+                     </div>
+                 </div>
+            </div>
+                 {% else %}
+                      <div class="col-md-12">
+                     <p>no records found</p>
+                     </div>
+
+
+        {% endfor %}
+        </div>
+        <a href="{{ path('app_annoncerecrutement_index') }}">Retour au annonces </a>
 {% endblock %}
