@@ -13,7 +13,7 @@ class ReclamationType extends AbstractType
     {
         $builder
             ->add('description')
-            ->add('dateajout')
+            // ->add('dateajout')
         ;
     }
 

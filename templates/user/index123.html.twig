@@ -26,9 +26,12 @@
                                     <h2 style="color: #000000;">{{ user.nom }} {{ user.prenom }}</h2>
                                     <i class="fa-solid fa-file-pen"></i>
                                     <h2 style="color: #000000;">{{ user.reclamationsCount }}</h2>
-                                    <a href="{{ path('set_banned', {'userId': user.id}) }}" class="btn btn-secondary">bani bani matar7mouch</a>
-
+                                   
                                     
+                                    <a href="{{ path('set_banned', {'userId': user.id}) }}" class="btn btn-secondary">bani bani matar7mouch</a>
+                                    <a href="{{ path('app_reclamation_indexb', {'id': user.id}) }}" class="btn btn-secondary">voir le reclamation</a>
+
+                                   
                                 </div>
                             
                     </div>

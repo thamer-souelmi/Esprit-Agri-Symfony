@@ -8,6 +8,7 @@ use App\Repository\UserRepository;
 use App\Form\ProduitType;
 use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,17 +28,23 @@ class UserController extends AbstractController
         return $this->render('base.html.twig',);
     }
     #[Route('/', name: 'app_user_index', methods: ['GET'])]
-    public function index(EntityManagerInterface $entityManager,UserRepository $userRepository): Response
+    public function index(EntityManagerInterface $entityManager,UserRepository $userRepository,PaginatorInterface $paginator,Request $request): Response
     {
         //$this->denyAccessUnlessGranted('admin', null, 'Access denied!');
         $usersRepository = $entityManager->getRepository(User::class);
         $users = $usersRepository->findByRoles('admin');
+        $pagination = $paginator->paginate(
+            $users, // Users query
+            $request->query->getInt('page', 1), // Current page
+            3// Items per page
+        );
       //  $count = $userRepository->getUsersWithMoreThanFiveReclamationsCount(); 
     
 
 
     return $this->render('user/index.html.twig', [
         'users' => $users,
+        'pagination' => $pagination,
         //'count' => $count,
     ]);
     }
@@ -47,13 +54,37 @@ class UserController extends AbstractController
         return $this->render('security/banned.html.twig',);
     }
     #[Route('/reclamation', name: 'app_user_indexrec', methods: ['GET'])]
-    public function index123(UserRepository $userRepository): Response
+    public function index123(UserRepository $userRepository,EntityManagerInterface $entityManager, Request $request): Response
 {
     $usersWithReclamations = $userRepository->findUsersWithMoreThanTwoReclamations();
+    $user = new User();
+    $form = $this->createForm(UserType::class, $user);
+    $form->handleRequest($request);
 
-    return $this->render('user/index123.html.twig', [
+    if ($form->isSubmitted() && $form->isValid()) {
+        // $produit = $reclamation->getProduit();
+        // $to = '+21650378582'; // Static phone number
+
+        // $message = 'New category created: '; // Modify the message as needed
+        // $twilioService->sendSMS($to, $message);
+        
+
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_reclamation_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    return $this->renderForm('user/index123.html.twig', [
         'usersWithReclamations' => $usersWithReclamations,
+        'user' => $user,
+        'form' => $form,
     ]);
+
+
+    // return $this->render('user/index123.html.twig', [
+    //     'usersWithReclamations' => $usersWithReclamations,
+    // ]);
 }
     #[Route("/user/set-banned/{userId}", name:"set_banned")]
 public function setBan(Request $request, UserRepository $userRepository, int $userId): Response
@@ -72,6 +103,7 @@ public function setBan(Request $request, UserRepository $userRepository, int $us
     // Redirect or display a message indicating success
     // ...
     return $this->redirectToRoute('app_user_indexrec');
+    
     // Return a response if needed
 }
     #[Route('/produit', name: 'app_produit_indexb', methods: ['GET'])]

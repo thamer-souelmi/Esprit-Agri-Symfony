@@ -34,25 +34,25 @@ class RegistrationController extends AbstractController
     }
     
 
-    // #[Route('/mail', name: 'mail')]
-    // public function sendEmail(MailerInterface $mailer)
-    // {
-    //     $email = (new Email())
-    //         ->from('espritagri1@gmail.com')
-    //         ->to('nasriamin300@gmail.com')
-    //         ->subject('amin')
-    //         ->text('amin');
-    //     // ->html('<p>Contenu du message en HTML</p>');
+    #[Route('/mail', name: 'mail')]
+    public function sendEmail(MailerInterface $mailer)
+    {
+        $email = (new Email())
+            ->from('espritagri1@gmail.com')
+            ->to('nasriamin300@gmail.com')
+            ->subject('amin')
+            ->text('amin');
+        // ->html('<p>Contenu du message en HTML</p>');
 
-    //     try {
-    //         $mailer->send($email);
-    //         // Envoyé avec succès, vous pouvez renvoyer une réponse de succès
-    //         return new Response('Email envoyé avec succès!');
-    //     } catch (\Exception $e) {
-    //         // En cas d'échec, renvoyez un message d'erreur ou utilisez un gestionnaire d'erreurs
-    //         return new Response('Erreur lors de l\'envoi de l\'email : ' . $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
-    //     }
-    // }
+        try {
+            $mailer->send($email);
+            // Envoyé avec succès, vous pouvez renvoyer une réponse de succès
+            return new Response('Email envoyé avec succès!');
+        } catch (\Exception $e) {
+            // En cas d'échec, renvoyez un message d'erreur ou utilisez un gestionnaire d'erreurs
+            return new Response('Erreur lors de l\'envoi de l\'email : ' . $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, UserAuthenticator $authenticator, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
@@ -60,8 +60,10 @@ class RegistrationController extends AbstractController
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
+        $mail=null;
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $mail='maillll';
              /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $imageFile */
              $imageFile = $form->get('image')->getData();
     
@@ -83,7 +85,7 @@ class RegistrationController extends AbstractController
              
              $hashedPassword = hash('sha1', $user->getPassword());
              $user->setMdp($hashedPassword);
- 
+             $mail='Confirmation de votre adresse e-mail';
 
             $entityManager->persist($user);
             $entityManager->flush();
@@ -93,7 +95,7 @@ class RegistrationController extends AbstractController
                 (new TemplatedEmail())
                     ->from(new Address('espritagri11@gmail.com', 'Esprit Agri'))
                     ->to($user->getMail())
-                    ->subject('Please Confirm your Email')
+                    ->subject('Confirmation de votre adresse e-mail')
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
             
@@ -109,6 +111,7 @@ class RegistrationController extends AbstractController
 
         return $this->render('registration/register.html.twig', [
             'form' => $form->createView(),
+            'mail'=>$mail,
         ]);
     }
 
@@ -123,12 +126,12 @@ class RegistrationController extends AbstractController
         } catch (VerifyEmailExceptionInterface $exception) {
             $this->addFlash('verify_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
 
-            return $this->redirectToRoute('app_login');
+            return $this->redirectToRoute('app_home');
         }
 
         // @TODO Change the redirect on success and handle or remove the flash message in your templates
         $this->addFlash('success', 'Your email address has been verified.');
 
-        return $this->redirectToRoute('app_login');
+        return $this->redirectToRoute('app_home');
     }
 }

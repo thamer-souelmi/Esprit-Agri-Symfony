@@ -36,17 +36,14 @@ class SecurityController extends AbstractController
     if ($user) {
         if ($user->isBanned()) {
             // User is banned, return a message or redirect accordingly
-            return $this->render('security/banned.html.twig');
+            // return $this->render('security/banned.html.twig');
+            
         }
         
         // User is not banned, proceed to render login template
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
-    // if ($user && $user->isBanned()) {
-    //     // User is banned, return a message or redirect accordingly
-    //     return $this->render('security/banned.html.twig');
-    // }
-
+    
     return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error,'user' =>$user]);
 }
 
