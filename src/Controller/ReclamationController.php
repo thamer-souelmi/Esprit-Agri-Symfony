@@ -72,12 +72,8 @@ class ReclamationController extends AbstractController
                 $errorMessage = 'Votre réclamation contient des termes inappropriés.';
             } else {
             $produit = $reclamation->getProduit();
-            // $to = '+21650378582'; // Static phone number
+
     
-            // $message = 'New category created: '; // Modify the message as needed
-            // $twilioService->sendSMS($to, $message);
-    
-            // #[Route('/mail', name: 'mail')]
             $email = (new TemplatedEmail())
                 ->from(new Address('espritagri11@gmail.com', 'Esprit Agri'))
                 ->to($user->getMail())

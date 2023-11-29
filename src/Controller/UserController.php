@@ -18,6 +18,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use App\Service\TwilioService;
 
 #[Route('/user')]
 class UserController extends AbstractController
@@ -54,7 +55,7 @@ class UserController extends AbstractController
         return $this->render('security/banned.html.twig',);
     }
     #[Route('/reclamation', name: 'app_user_indexrec', methods: ['GET'])]
-    public function index123(UserRepository $userRepository,EntityManagerInterface $entityManager, Request $request): Response
+    public function index123(UserRepository $userRepository,EntityManagerInterface $entityManager,Request $request): Response
 {
     $usersWithReclamations = $userRepository->findUsersWithMoreThanTwoReclamations();
     $user = new User();
@@ -62,11 +63,7 @@ class UserController extends AbstractController
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-        // $produit = $reclamation->getProduit();
-        // $to = '+21650378582'; // Static phone number
-
-        // $message = 'New category created: '; // Modify the message as needed
-        // $twilioService->sendSMS($to, $message);
+       
         
 
         $entityManager->persist($user);
@@ -82,9 +79,7 @@ class UserController extends AbstractController
     ]);
 
 
-    // return $this->render('user/index123.html.twig', [
-    //     'usersWithReclamations' => $usersWithReclamations,
-    // ]);
+
 }
 #[Route('/reclamations', name: 'app_user_indexreclamation', methods: ['GET'])]
 public function indexrec(UserRepository $userRepository,EntityManagerInterface $entityManager, Request $request): Response
@@ -95,11 +90,7 @@ $form = $this->createForm(UserType::class, $user);
 $form->handleRequest($request);
 
 if ($form->isSubmitted() && $form->isValid()) {
-    // $produit = $reclamation->getProduit();
-    // $to = '+21650378582'; // Static phone number
-
-    // $message = 'New category created: '; // Modify the message as needed
-    // $twilioService->sendSMS($to, $message);
+   
     
 
     $entityManager->persist($user);
@@ -115,18 +106,21 @@ return $this->renderForm('user/indexrec.html.twig', [
 ]);
 
 
-// return $this->render('user/index123.html.twig', [
-//     'usersWithReclamations' => $usersWithReclamations,
-// ]);
 }
     #[Route("/user/set-banned/{userId}", name:"set_banned")]
-public function setBan(Request $request, UserRepository $userRepository, int $userId): Response
+public function setBan(Request $request, UserRepository $userRepository, TwilioService $twilioService, int $userId): Response
 {
     $user = $userRepository->find($userId);
 
     if (!$user) {
         // Handle case where user is not found
     }
+    $produit = $user->getNom();
+    $to = '+21650378582'; 
+
+    $message = "Bonjour {$produit}, votre compte a été suspendu pour non-respect des conditions d'utilisation.";
+
+    $twilioService->sendSMS($to, $message);
 
     // Set the user as banned
     $user->setIsBanned(true);
