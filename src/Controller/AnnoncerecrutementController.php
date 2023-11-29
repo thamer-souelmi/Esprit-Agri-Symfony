@@ -126,24 +126,27 @@ public function show(Annoncerecrutement $annoncerecrutement): Response
             return $this->redirectToRoute('app_annoncerecrutement_index', [], Response::HTTP_SEE_OTHER);
         }
         #[Route('/search/annoncerecrut', name: 'annoncerecrut_search', methods: ['GET'])]
-public function search(Request $request, AnnoncerecrutementRepository $annoncerecrutementRepository, PaginatorInterface $paginator): Response
-{
-    $searchQuery = $request->query->get('search_query');
-    $filter1 = $request->query->get('filter1');
-    $pagination = $paginator->paginate(
-        $filter1,
-        $request->query->getInt('page', 1),
-        6 // Number of items per page
-    );
-    // Add more filters as needed
+        public function search(Request $request, AnnoncerecrutementRepository $annoncerecrutementRepository, PaginatorInterface $paginator): Response
+        {
+            $searchQuery = $request->query->get('search_query');
+            $filter1 = $request->query->get('filter1');
+        
+            // Use your custom repository method to get the query builder
+            $queryBuilder = $annoncerecrutementRepository->searchByPosteContratLoca($searchQuery, $filter1);
+        
+            $pagination = $paginator->paginate(
+                $queryBuilder->getQuery(),
+                $request->query->getInt('page', 1),
+                6 
+            );
+        
+            return $this->render('annoncerecrutement/index.html.twig', [
+                'pagination' => $pagination,
+            ]);
+        }
+        
 
-    $resultats = $annoncerecrutementRepository->searchByPosteContratLoca($searchQuery, $filter1);
-    // Update the method call based on your filtering logic in the repository
-
-    return $this->render('annoncerecrutement/index.html.twig', [
-        'pagination' => $pagination, // Assuming you are using pagination
-    ]);
-}
+    
 
         
 //work kinda good

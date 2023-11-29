@@ -1,89 +1,130 @@
 {% extends 'baseback.html.twig' %}
 
 {% block body %}
-    <h2>Candidatures Accepté</h2>
-    <table class="table">
-        <thead>
+<div class="card-body">
+    <h5 class="card-title"></h5>
+    <div class="row">
+        
+        <div class="col">
+            <input type="text" value="" class="form-control" placeholder="Formation" id="searchLibelle">
+        </div>
+        
+        <div class="col">
+            <input type="text" value="" class="form-control" placeholder="Compétences Techniques" id="searchRevenuesCultures">
+        </div>
+    </div>
+</div>
+
+<h2>Candidatures Accepté</h2>
+<table class="table" id="candidaturesAccepteesTable">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Date de Candidature</th>
+            <th>Expérience Professionnelle</th>
+            <th>Formation</th>
+            <th>Compétences Techniques</th>
+            <th>Certifications et Formations</th>
+            <th>Message de motivation</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for candidature in candidatures|filter(c => c.statusCandidature == 1) %}
             <tr>
-                <th>#</th>
-                <th>Date de Candidature</th>
-                <th>Expérience Professionnelle</th>
-                <th>Formation</th>
-                <th>Compétences Techniques</th>
-                <th>Certifications et Formations</th>
-                <th>Message de motivation</th>
+                <td>{{ loop.index }}</td>
+                <td>{{ candidature.datecandidature ? candidature.datecandidature|date('Y-m-d') : '' }}</td>
+                <td>{{ candidature.experienceprofessionnelle }}</td>
+                <td>{{ candidature.formation }}</td>
+                <td>{{ candidature.competencestechniques }}</td>
+                <td>
+                    {% if candidature.certifforma|lower ends with '.pdf' %}
+                        <a href="{{ asset('img/' ~ candidature.certifforma) }}" download="{{ candidature.certifforma }}">
+                            Télécharger le fichier PDF
+                        </a>
+                    {% else %}
+                        <a href="{{ asset('img/' ~ candidature.certifforma) }}" download="{{ candidature.certifforma }}">
+                            Télécharger la photo
+                        </a>
+                    {% endif %}
+                </td>
+                <td>{{ candidature.messagemotivation }}</td>
             </tr>
-        </thead>
-        <tbody>
-            {% for candidature in candidatures|filter(c => c.statusCandidature == 1) %}
-                <tr>
-                    <td>{{ loop.index }}</td>
-                    <td>{{ candidature.datecandidature ? candidature.datecandidature|date('Y-m-d') : '' }}</td>
-                    <td>{{ candidature.experienceprofessionnelle }}</td>
-                    <td>{{ candidature.formation }}</td>
-                    <td>{{ candidature.competencestechniques }}</td>
-                    <td>  {% if candidature.certifforma|lower ends with '.pdf' %}
-                                    <a href="{{ asset('img/' ~ candidature.certifforma) }}" download="{{ candidature.certifforma }}">
-                                        Télécharger le fichier PDF
-                                    </a>
-                                </li>
-                            {% else %}
-
-                                    <a href="{{ asset('img/' ~ candidature.certifforma) }}" download="{{ candidature.certifforma }}">
-                                        Télécharger la photo
-                                    </a>
-
-                            {% endif %}</td>
-                    <td>{{ candidature.messagemotivation }}</td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="8">Pas de candidatures en négociation</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-    <h2>Candidatures refuser</h2>
-    <table class="table">
-        <thead>
+        {% else %}
             <tr>
-                <th>#</th>
-                <th>Date de Candidature</th>
-                <th>Expérience Professionnelle</th>
-                <th>Formation</th>
-                <th>Compétences Techniques</th>
-                <th>Certifications et Formations</th>
-                <th>Message de motivation</th>
+                <td colspan="7">Pas de candidatures en négociation</td>
             </tr>
-        </thead>
-        <tbody>
-            {% for candidature in candidatures|filter(c => c.statusCandidature == 0) %}
-                <tr>
-                    <td>{{ loop.index }}</td>
-                    <td>{{ candidature.datecandidature ? candidature.datecandidature|date('Y-m-d') : '' }}</td>
-                    <td>{{ candidature.experienceprofessionnelle }}</td>
-                    <td>{{ candidature.formation }}</td>
-                    <td>{{ candidature.competencestechniques }}</td>
-                    <td>  {% if candidature.certifforma|lower ends with '.pdf' %}
-                                    <a href="{{ asset('img/' ~ candidature.certifforma) }}" download="{{ candidature.certifforma }}">
-                                        Télécharger le fichier PDF
-                                    </a>
-                                </li>
-                            {% else %}
+        {% endfor %}
+    </tbody>
+</table>
 
-                                    <a href="{{ asset('img/' ~ candidature.certifforma) }}" download="{{ candidature.certifforma }}">
-                                        Télécharger la photo
-                                    </a>
+<h2>Candidatures refuser</h2>
+<table class="table" id="candidaturesRefuseesTable">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Date de Candidature</th>
+            <th>Expérience Professionnelle</th>
+            <th>Formation</th>
+            <th>Compétences Techniques</th>
+            <th>Certifications et Formations</th>
+            <th>Message de motivation</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for candidature in candidatures|filter(c => c.statusCandidature == 0) %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ candidature.datecandidature ? candidature.datecandidature|date('Y-m-d') : '' }}</td>
+                <td>{{ candidature.experienceprofessionnelle }}</td>
+                <td>{{ candidature.formation }}</td>
+                <td>{{ candidature.competencestechniques }}</td>
+                <td>
+                    {% if candidature.certifforma|lower ends with '.pdf' %}
+                        <a href="{{ asset('img/' ~ candidature.certifforma) }}" download="{{ candidature.certifforma }}">
+                            Télécharger le fichier PDF
+                        </a>
+                    {% else %}
+                        <a href="{{ asset('img/' ~ candidature.certifforma) }}" download="{{ candidature.certifforma }}">
+                            Télécharger la photo
+                        </a>
+                    {% endif %}
+                </td>
+                <td>{{ candidature.messagemotivation }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">Pas de candidatures non négociées</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
-                            {% endif %}</td>                    <td>{{ candidature.messagemotivation }}</td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="8">Pas de candidatures non négociées</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        // Function to perform the search based on the specified column
+        function searchColumn(tableId, columnIndex, value) {
+            $(`#${tableId} tbody tr`).filter(function () {
+                var cellText = $(this).find("td").eq(columnIndex).text().toLowerCase();
+                var found = cellText.indexOf(value) > -1;
+                $(this).toggle(found);
+            });
+        }
+
+        // Event handlers for each input element
+       
+
+        $("#searchLibelle").on("keyup", function () {
+            searchColumn("candidaturesAccepteesTable", 3, $(this).val().toLowerCase());
+            searchColumn("candidaturesRefuseesTable", 3, $(this).val().toLowerCase());
+        });
+
+        $("#searchRevenuesCultures").on("keyup", function () {
+            searchColumn("candidaturesAccepteesTable", 4, $(this).val().toLowerCase());
+            searchColumn("candidaturesRefuseesTable", 4, $(this).val().toLowerCase());
+        });
+    });
+</script>
 
 {% endblock %}

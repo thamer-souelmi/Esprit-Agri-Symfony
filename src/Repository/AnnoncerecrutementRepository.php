@@ -27,23 +27,23 @@ class AnnoncerecrutementRepository extends ServiceEntityRepository
 
  
 
-    public function searchByPosteContratLoca(string $searchQuery, string $filter1 = null): QueryBuilder
+    public function searchByPosteContratLoca($searchQuery, $filter1): QueryBuilder
     {
         $queryBuilder = $this->createQueryBuilder('a')
             ->where('a.posteDemande LIKE :searchQuery')
             ->orWhere('a.typeContrat LIKE :searchQuery')
             ->orWhere('a.localisation LIKE :searchQuery')
             ->setParameter('searchQuery', '%' . $searchQuery . '%');
-    
+
         if ($filter1) {
+            // Assuming filter1 is a property of your entity, modify it accordingly
             $queryBuilder->andWhere('a.filter1 = :filter1')
                 ->setParameter('filter1', $filter1);
             // Add more conditions for additional filters as needed
         }
-    
-        return $queryBuilder; // Return the QueryBuilder directly
-    }          
-                       
+
+        return $queryBuilder;
+    }                       
 
     /*public function save(Annoncerecrutement $entity, bool $flush = false): void
     {

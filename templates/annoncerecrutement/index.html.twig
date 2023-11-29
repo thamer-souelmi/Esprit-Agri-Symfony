@@ -38,13 +38,13 @@
     <section class="py-5">
         <div class="container px-4 px-lg-5 my-5">
         <!-- Topbar Search -->
-        <form action="{{ path('annoncerecrut_search') }}" method="get" id="searchForm">
+<form action="{{ path('annoncerecrut_search') }}" method="get" id="searchForm">
         <input type="text" name="search_query" id="searchQuery" class="form-control bg-light border-0 small" placeholder="Rechercher..." aria-label="Search" aria-describedby="basic-addon2">
-        <input type="text" name="filter1" id="filter1" class="form-control" placeholder="filtrer ">
+        <input type="text" name="filter1" id="filter1" class="form-control bg-light border-0 small" placeholder="Rechercher..." aria-label="Search" aria-describedby="basic-addon2">
         <!-- Add more input fields for additional filters as needed -->
-        <button class="btn btn-primary" type="submit">
-            <i class="fas fa-search fa-sm"></i>
-        </button>
+<button class="btn btn-primary" type="submit" id="searchButton">
+    <i class="fas fa-search fa-sm"></i>
+</button>       
     </form>
         <br>
             {% for annoncerecrutement in pagination %}
@@ -109,31 +109,37 @@
         });
     </script>
     <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                var searchQueryInput = document.getElementById('searchQuery');
-                var searchForm = document.getElementById('searchForm');
+    document.addEventListener('DOMContentLoaded', function () {
+        var searchQueryInput = document.getElementById('searchQuery');
+        var filter1Input = document.getElementById('filter1');
+        var searchForm = document.getElementById('searchForm');
+        var searchButton = document.getElementById('searchButton');
 
-                // Intercepter les événements de saisie dans le champ de recherche
-                searchQueryInput.addEventListener('input', function () {
-                    searchForm.submit(); // Soumettre le formulaire en arrière-plan
-                });
+        // Event handler for search button click
+        searchButton.addEventListener('click', function () {
+            // Submit the form only if the searchQuery or filter1 is not empty
+            if (searchQueryInput.value.trim() !== '' || filter1Input.value.trim() !== '') {
+                searchForm.submit();
+            }
+        });
 
-                // Gérer la soumission du formulaire
-                searchForm.addEventListener('submit', function (event) {
-                    event.preventDefault(); // Empêcher la soumission du formulaire
+        // Handle form submission
+        searchForm.addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent form submission
 
-                    var searchQuery = searchQueryInput.value.trim();
+            var searchQuery = searchQueryInput.value.trim();
+            var filter1 = filter1Input.value.trim();
 
-                    // Si le champ de recherche est vide, réinitialiser le formulaire pour afficher tous les résultats
-                    if (searchQuery === '') {
-                        searchForm.reset();
-                    } else {
-                        // Sinon, soumettre le formulaire avec la requête de recherche actuelle
-                        searchForm.submit();
-                    }
-                });
-            });
-        </script>
+            // If both searchQuery and filter1 are empty, reset the form
+            if (searchQuery === '' && filter1 === '') {
+                searchForm.reset();
+            } else {
+                // Otherwise, submit the form with the current searchQuery and filter1
+                searchForm.submit();
+            }
+        });
+    });
+</script>
 
     {# Pagination #}
         <div class="container mt-5">

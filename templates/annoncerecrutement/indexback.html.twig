@@ -1,9 +1,23 @@
 {% extends 'baseback.html.twig' %}
 
 {% block body %}
+<div class="card-body">
+    <h5 class="card-title"></h5>
+    <div class="row">
+        <div class="col">
+            <input type="text" value="" class="form-control" placeholder="poste de travail" id="searchNom">
+        </div>
+        <div class="col">
+            <input type="text" value="" class="form-control" placeholder="salaire" id="searchLibelle">
+        </div>
+        
+        <div class="col">
+            <input type="text" value="" class="form-control" placeholder="type de contrat" id="searchRevenuesCultures">
+        </div>
+    </div>
+</div>
 <section>
-
-    <table class="table">
+    <table class="table" id="dataTable">
         <thead>
             <tr>
                 <th>Poste proposé</th>
@@ -40,5 +54,32 @@
         </tbody>
     </table>
 </section>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+<script>
+	$(document).ready(function () { // Function to perform the search based on the specified column
+function searchColumn(columnIndex, value) {
+$("#dataTable tbody tr").filter(function () {
+var cellText = $(this).find("td").eq(columnIndex).text().toLowerCase();
+var found = cellText.indexOf(value) > -1;
+$(this).toggle(found);
+});
+}
+
+// Event handlers for each input element
+$("#searchNom").on("keyup", function () {
+searchColumn(0, $(this).val().toLowerCase());
+});
+
+$("#searchLibelle").on("keyup", function () {
+searchColumn(1, $(this).val().toLowerCase());
+});
+
+
+
+$("#searchRevenuesCultures").on("keyup", function () {
+searchColumn(2, $(this).val().toLowerCase());
+});
+});
+</script>
 {% endblock %}

@@ -33,8 +33,8 @@ class AnnoncerecrutementType extends AbstractType
 
 
             ->add('dateembauche', DateType::class, [
-                'widget' => 'single_text', // Utiliser le widget single_text pour afficher un champ de texte simple
-                'attr' => ['class' => 'form-control'], // Ajouter des classes Bootstrap pour le style
+                'widget' => 'single_text', 
+                'attr' => ['class' => 'form-control'], 
                 'constraints' => [
                     new NotNull(),
                     new GreaterThan('today'),
