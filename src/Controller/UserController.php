@@ -36,7 +36,7 @@ class UserController extends AbstractController
         $pagination = $paginator->paginate(
             $users, // Users query
             $request->query->getInt('page', 1), // Current page
-            3// Items per page
+            5// Items per page
         );
       //  $count = $userRepository->getUsersWithMoreThanFiveReclamationsCount(); 
     
@@ -86,6 +86,39 @@ class UserController extends AbstractController
     //     'usersWithReclamations' => $usersWithReclamations,
     // ]);
 }
+#[Route('/reclamations', name: 'app_user_indexreclamation', methods: ['GET'])]
+public function indexrec(UserRepository $userRepository,EntityManagerInterface $entityManager, Request $request): Response
+{
+$usersWithReclamations = $userRepository->findUsersWithMoreThanTwoReclamations1();
+$user = new User();
+$form = $this->createForm(UserType::class, $user);
+$form->handleRequest($request);
+
+if ($form->isSubmitted() && $form->isValid()) {
+    // $produit = $reclamation->getProduit();
+    // $to = '+21650378582'; // Static phone number
+
+    // $message = 'New category created: '; // Modify the message as needed
+    // $twilioService->sendSMS($to, $message);
+    
+
+    $entityManager->persist($user);
+    $entityManager->flush();
+
+    return $this->redirectToRoute('app_reclamation_index', [], Response::HTTP_SEE_OTHER);
+}
+
+return $this->renderForm('user/indexrec.html.twig', [
+    'usersWithReclamations' => $usersWithReclamations,
+    'user' => $user,
+    'form' => $form,
+]);
+
+
+// return $this->render('user/index123.html.twig', [
+//     'usersWithReclamations' => $usersWithReclamations,
+// ]);
+}
     #[Route("/user/set-banned/{userId}", name:"set_banned")]
 public function setBan(Request $request, UserRepository $userRepository, int $userId): Response
 {
@@ -103,6 +136,26 @@ public function setBan(Request $request, UserRepository $userRepository, int $us
     // Redirect or display a message indicating success
     // ...
     return $this->redirectToRoute('app_user_indexrec');
+    
+    // Return a response if needed
+}
+#[Route("/user/set-banned1/{userId}", name:"set_banned1")]
+public function setBan1(Request $request, UserRepository $userRepository, int $userId): Response
+{
+    $user = $userRepository->find($userId);
+
+    if (!$user) {
+        // Handle case where user is not found
+    }
+
+    // Set the user as banned
+    $user->setIsBanned(false);
+    $entityManager = $this->getDoctrine()->getManager();
+    $entityManager->flush();
+
+    // Redirect or display a message indicating success
+    // ...
+    return $this->redirectToRoute('app_user_indexreclamation');
     
     // Return a response if needed
 }

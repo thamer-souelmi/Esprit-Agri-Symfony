@@ -1,10 +1,14 @@
 {% extends 'prod.html.twig' %}
+{% block banner_image %}
+{{ asset('img/still-life-black-background.jpg') }}
+{% endblock %}
+{% block product_heading %}
+    <h1 class="display-3 text-white mb-4 animated slideInDown">Reclamation</h1>
+{% endblock %}
 
 {% block title %}New Reclamation{% endblock %}
 
-{% block banner_image %}
-    {{ asset('img/1.jpeg') }}
-{% endblock %}
+
 
 {% block body %}
 {% if errorMessage is not null %}
@@ -16,7 +20,7 @@
         <div class="row justify-content-center">
             <div class="col-lg-7">
                 <div class="p-5">
-                    <h1>Créer une nouvelle réclamation</h1>
+                    <h1>Ajouter une nouvelle réclamation</h1>
                     {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 
                     <div class="form-group">
@@ -32,7 +36,7 @@
 
                     {{ form_end(form) }}
 
-                    <a href="{{ path('app_produit_index') }}">Retour à la liste</a>
+                    <a href="{{ path('app_produit_index') }}">Retour au Produit</a>
                 </div>
             </div>
         </div>

@@ -52,11 +52,7 @@
         <tr>
             <td colspan="2">
                 <a href="{{ path('app_user_index') }}" class="btn btn-secondary">Retour</a>
-                <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-success">Éditer</a>
-                <form method="post" action="{{ path('app_user_delete', {'id': user.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet élément ?');" style="display: inline-block;">
-                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
-                    <button type="submit" class="btn btn-danger">Supprimer</button>
-                </form>
+               
             </td>
         </tr>
     </tbody>

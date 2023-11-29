@@ -22,6 +22,7 @@ class UserType extends AbstractType
             ->add('prenom')
             ->add('mdp', RepeatedType::class, array(
                 'type' => PasswordType::class,
+                'invalid_message' => 'Les mots de passe ne correspondent pas.',
                 'first_options' => array('label' => 'Mot de passe'),
                 'second_options' => array('label' => 'Confirmation du mot de passe'),
             ))
@@ -44,20 +45,7 @@ class UserType extends AbstractType
                 'required' => false,
                 'attr' => ['accept' => 'image/*'],
             ])
-            ->add('isBanned', ChoiceType::class, [
-                'choices' => [
-                    'Banned' => true,
-                    'Not Banned' => false,
-                ],
-                'expanded' => true,
-                'label' => 'Ban User',
-                'required' => true,
-            ])
-            ->add('banExpiresAt', null, [
-                'label' => 'Ban Duration',
-                
-                'attr' => ['class' => 'js-datetimepicker'],
-            ])
+           
             ->add('save',SubmitType::class)
         ;
     }

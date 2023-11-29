@@ -8,14 +8,14 @@
 			<h5 class="card-title"></h5>
 			<div class="row">
 				<div class="col">
-					<input type="text" value="" class="form-control" placeholder="Search searchNom" id="searchNom">
+					<input type="text" value="" class="form-control" placeholder="Recherche de Nom" id="searchNom">
 				</div>
 				<div class="col">
-					<input type="text" value="" class="form-control" placeholder="Search libelle" id="searchLibelle">
+					<input type="text" value="" class="form-control" placeholder="Recherche de Prenom" id="searchLibelle">
 				</div>
 				
 				<div class="col">
-					<input type="text" value="" class="form-control" placeholder="Search revenuescultures" id="searchRevenuesCultures">
+					<input type="text" value="" class="form-control" placeholder="Recherche d'Email" id="searchRevenuesCultures">
 				</div>
 			</div>
 		</div>
@@ -29,12 +29,11 @@
                             
                             <th>Nom</th>
                             <th>Prenom</th>
-                            <th>Mail</th>
+                            <th>Email</th>
                             
                             <th>Role</th>
                             <th>Image</th>
                             <th>Actions</th>
-                            <th>Supprimer</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -48,9 +47,7 @@
                             <td>{{ user.role }}</td>
                             <td><img src="{{ asset('img/' ~ user.image) }}" alt="User Image" style="max-width:100px;max-height:100px;"></td>
                             <td>
-                            <a href="{{ path('app_user_edit', {'id': user.id}) }}"class="btn btn-secondary">Modifier</a>
                             <a href="{{ path('app_user_show', {'id': user.id}) }}"class="btn btn-success">Detail</a></td>
-                            <td>{{ include('user/_delete_form.html.twig') }}</td>
                            
                         </tr>
                         {% endfor %}

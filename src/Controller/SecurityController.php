@@ -69,13 +69,7 @@ class SecurityController extends AbstractController
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
     #[Route(path: '/oubli-pass', name: 'forgotten_password')]
-    public function forgottenPassword(Request $request,
-                                      UserRepository $usersRepository,
-                                      TokenGeneratorInterface $tokenGenerator,
-                                      EntityManagerInterface $entityManager,
-                                      SendMailService $mail
-
-    ): Response
+    public function forgottenPassword(Request $request,UserRepository $usersRepository,TokenGeneratorInterface $tokenGenerator,EntityManagerInterface $entityManager,SendMailService $mail): Response
     {
         $form = $this->createForm(ResetPasswordRequestFormType::class);
         $form -> handleRequest($request);

@@ -8,6 +8,7 @@ use App\Form\ReclamationType;
 use App\Repository\ReclamationRepository;
 use App\Service\TwilioService;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,11 +20,12 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mime\Address;
 
 
+
 #[Route('/reclamation')]
 class ReclamationController extends AbstractController
 {
     #[Route('/', name: 'app_reclamation_index', methods: ['GET'])]
-    public function index(EntityManagerInterface $entityManager,ReclamationRepository $reclamationRepository, Security $security): Response
+    public function index(EntityManagerInterface $entityManager,ReclamationRepository $reclamationRepository, Security $security,PaginatorInterface $paginator,Request $request): Response
     {
         $user = $security->getUser();
         
@@ -31,8 +33,14 @@ class ReclamationController extends AbstractController
             $reclamations = $entityManager
                 ->getRepository(Reclamation::class)
                 ->findByUserId($id);
+            $pagination = $paginator->paginate(
+                    $reclamations, // Users query
+                    $request->query->getInt('page', 1), // Current page
+                    5// Items per page
+                );
         return $this->render('reclamation/index.html.twig', [
             'reclamations' => $reclamations,
+            'pagination' => $pagination,
         ]);
     }
     #[Route('/back/{id}', name: 'app_reclamation_indexb', methods: ['GET'])]
@@ -61,7 +69,7 @@ class ReclamationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             if ($this->badWords($reclamation->getDescription())) {
                 // Mots inappropriés détectés, définir le message d'erreur
-                $errorMessage = 'Your reclamation contains inappropriate words.';
+                $errorMessage = 'Votre réclamation contient des termes inappropriés.';
             } else {
             $produit = $reclamation->getProduit();
             // $to = '+21650378582'; // Static phone number
@@ -143,7 +151,7 @@ class ReclamationController extends AbstractController
     }
     private function badWords(string $text): bool
     {
-        $badWords = ['raciste', 'pute', 'israil']; // Remplacez ces valeurs par votre liste de mots interdits
+        $badWords = ['pidev', 'projet', 'israil']; // Remplacez ces valeurs par votre liste de mots interdits
 
         foreach ($badWords as $badWord) {
             if (stripos($text, $badWord) !== false) {

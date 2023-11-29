@@ -106,8 +106,7 @@ class User implements UserInterface//, TwoFactorInterface
     private ?string $googleID = null;
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $resetToken ;
-    #[ORM\Column(nullable: true)]
-    private ?string $googleAuthenticatorSecret ;
+ 
 
     public function __construct()
     {

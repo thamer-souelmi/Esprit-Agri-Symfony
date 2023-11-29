@@ -10,6 +10,14 @@
 		<meta name="author" content="">
 
 		<title>Esprit-Agri</title>
+    <link href="{{ asset('img/favicon.png') }}" rel="icon">
+    <style>
+    .user-profile-img {
+        width: 40px; /* Adjust the width to your preference */
+        height: 40px; /* Adjust the height to your preference */
+        border-radius: 50%; /* Optional: Makes the image rounded */
+    }
+</style>    
 
 
 		{% block css%}
@@ -61,10 +69,12 @@
 				class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
 				<!-- Sidebar - Brand -->
-				<a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+			<div style="text-align: center;">
+    <a href="#" class="navbar-brand d-flex align-items-center">
+        <img src="{{ asset('img/logoespritAgri.png') }}" alt="Logo" height="70" class="mr-2">
+    </a>
+</div>
 
-					<div class="sidebar-brand-text mx-3">Esprit-Agri</div>
-				</a>
 
 				<!-- Divider -->
 				<hr
@@ -77,12 +87,18 @@
 						<span>Utilisateurs</span>
 					</a>
 				</li>
-                <li class="nav-item active">
-					<a class="nav-link" href="{{ path('app_user_indexrec') }}">
-
-						<span>Reclamations</span>
-					</a>
-				</li>
+                 <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <span>Reclamations</span>
+                </a>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="{{ path('app_user_indexrec') }}">Utilisateurs a banne</a>
+                        <a class="collapse-item" href="{{ path('app_user_indexreclamation') }}">Utilisateurs banne</a>
+                    </div>
+                </div>
+            </li>
 				<li class="nav-item active">
 					<a class="nav-link" href="{{ path('app_cultureback_index') }}">
 

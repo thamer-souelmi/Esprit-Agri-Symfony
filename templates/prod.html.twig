@@ -93,7 +93,7 @@
 
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top px-4 px-lg-5">
-        <a href="index.html" class="navbar-brand d-flex align-items-center">
+        <a href="#" class="navbar-brand d-flex align-items-center">
         <img src="{{ asset('img/logoespritAgri.png') }}" alt="Logo" height="70" class="mr-2">
         </a>
         <button type="button" class="navbar-toggler me-0" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
@@ -130,6 +130,9 @@
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
                                 </a>
+            <a class="dropdown-item" href="{{ path('app_reclamation_index') }}" ">
+                Reclamations
+            </a>
             <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">
                 <i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>
                 Logout
@@ -148,7 +151,7 @@
             <div class="row g-5">
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.3s">
                     <div class="container text-center py-5">
-                        <h1 class="display-3 text-white mb-4 animated slideInDown">Produit</h1>
+                       {% block product_heading %}{% endblock %}
                     </div>
                 </div>
             </div>
