@@ -6,6 +6,8 @@ use App\Entity\Annoncerecrutement;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Controller\AnnoncerecrutementController;
+use Doctrine\ORM\QueryBuilder;
+
 
 /**
  * @extends ServiceEntityRepository<Annoncerecrutement>
@@ -23,25 +25,37 @@ class AnnoncerecrutementRepository extends ServiceEntityRepository
     }
 
 
-    public function searchByPosteContratLoca($query)    { 
-        
-
-        return $this->createQueryBuilder('AR')        
-            ->where('AR.postedemande LIKE :query OR AR.typecontrat LIKE :query OR AR.localisation LIKE :query')   
-                     ->setParameter('query', "%{$query}%")        
-                         ->getQuery()         
-                            ->getResult();    }
-
+    public function filterByDateOrAlphabetical($sortBy = 'date', $sortOrder = 'asc'): array
+    {
+        $queryBuilder = $this->createQueryBuilder('a');
     
+        if ($sortBy === 'date') {
+            $queryBuilder->orderBy('a.datePub', $sortOrder);
+        } elseif ($sortBy === 'alphabetique') {
+            $queryBuilder->orderBy('a.posteDemande', $sortOrder);
+        } else {
+            $queryBuilder->orderBy('a.datePub', 'asc');
+        }
     
-                            
-                            public function isAnnReInUse(Annoncerecrutement $annoncerecrutement): bool
-                            {
-                                return $this->_em->getRepository(Annoncerecrutement::class)->findOneBy(['annoncerecrutement' => $annoncerecrutement]) !== null;
-                            }
-                     
-                        
-                       
+        return $queryBuilder->getQuery()->getResult();
+    }
+    
+
+    public function searchByPosteContratLoca($searchQuery, $filter1): QueryBuilder
+    {
+        $queryBuilder = $this->createQueryBuilder('a')
+            ->where('a.posteDemande LIKE :searchQuery')
+            ->orWhere('a.typeContrat LIKE :searchQuery')
+            ->orWhere('a.localisation LIKE :searchQuery')
+            ->setParameter('searchQuery', '%' . $searchQuery . '%');
+
+        if ($filter1) {
+            $queryBuilder->andWhere('a.filter1 = :filter1')
+                ->setParameter('filter1', $filter1);
+        }
+
+        return $queryBuilder;
+    }                       
 
     /*public function save(Annoncerecrutement $entity, bool $flush = false): void
     {
@@ -75,4 +89,15 @@ class AnnoncerecrutementRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+public function isUsedByCandidature(Annoncerecrutement $annoncerecrutement): bool
+{
+    $qb = $this->createQueryBuilder('a');
+    $qb->select('COUNT(c.idcandidature)');
+    $qb->leftJoin('a.candidatures', 'c');
+    $qb->where('a = :annoncerecrutement');
+    $qb->setParameter('annoncerecrutement', $annoncerecrutement);
+
+    return (int) $qb->getQuery()->getSingleScalarResult() > 0;
+}
 }

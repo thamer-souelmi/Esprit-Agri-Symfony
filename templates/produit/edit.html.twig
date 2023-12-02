@@ -3,6 +3,9 @@
 {% block banner_image %}
 {{ asset('img/1.jpeg') }}
 {% endblock %}
+{% block product_heading %}
+    <h1 class="display-3 text-white mb-4 animated slideInDown">Produit</h1>
+{% endblock %}
 
 
 
@@ -53,7 +56,7 @@
 
                     {{ form_end(form) }}
 
-                    <a href="{{ path('app_produit_index') }}">back to list</a>
+                    <a href="{{ path('app_produit_index') }}">Retour</a>
                 </div>
             </div>
         </div>

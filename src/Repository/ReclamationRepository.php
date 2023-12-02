@@ -54,4 +54,20 @@ public function findByUserId(int $id): array
 
     return $qb->getResult();
 }
+public function reclamation(int $id): array
+{
+    $entityManager = $this->getEntityManager();
+
+    $query = $entityManager->createQuery('
+            SELECT r.id, r.description, r.dateajout,r.datemodif
+            FROM App\Entity\User u
+            JOIN u.produits p
+            JOIN p.reclamations r
+            WHERE u.id = :id
+        ');
+
+    $query->setParameter('id', $id);
+
+    return $query->getResult();
+}
 }

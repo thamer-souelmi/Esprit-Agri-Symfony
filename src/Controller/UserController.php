@@ -8,6 +8,7 @@ use App\Repository\UserRepository;
 use App\Form\ProduitType;
 use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,6 +18,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use App\Service\TwilioService;
 
 #[Route('/user')]
 class UserController extends AbstractController
@@ -27,17 +29,23 @@ class UserController extends AbstractController
         return $this->render('base.html.twig',);
     }
     #[Route('/', name: 'app_user_index', methods: ['GET'])]
-    public function index(EntityManagerInterface $entityManager,UserRepository $userRepository): Response
+    public function index(EntityManagerInterface $entityManager,UserRepository $userRepository,PaginatorInterface $paginator,Request $request): Response
     {
         //$this->denyAccessUnlessGranted('admin', null, 'Access denied!');
         $usersRepository = $entityManager->getRepository(User::class);
         $users = $usersRepository->findByRoles('admin');
+        $pagination = $paginator->paginate(
+            $users, // Users query
+            $request->query->getInt('page', 1), // Current page
+            5// Items per page
+        );
       //  $count = $userRepository->getUsersWithMoreThanFiveReclamationsCount(); 
     
 
 
     return $this->render('user/index.html.twig', [
         'users' => $users,
+        'pagination' => $pagination,
         //'count' => $count,
     ]);
     }
@@ -47,22 +55,72 @@ class UserController extends AbstractController
         return $this->render('security/banned.html.twig',);
     }
     #[Route('/reclamation', name: 'app_user_indexrec', methods: ['GET'])]
-    public function index123(UserRepository $userRepository): Response
+    public function index123(UserRepository $userRepository,EntityManagerInterface $entityManager,Request $request): Response
 {
     $usersWithReclamations = $userRepository->findUsersWithMoreThanTwoReclamations();
+    $user = new User();
+    $form = $this->createForm(UserType::class, $user);
+    $form->handleRequest($request);
 
-    return $this->render('user/index123.html.twig', [
+    if ($form->isSubmitted() && $form->isValid()) {
+       
+        
+
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_reclamation_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    return $this->renderForm('user/index123.html.twig', [
         'usersWithReclamations' => $usersWithReclamations,
+        'user' => $user,
+        'form' => $form,
     ]);
+
+
+
+}
+#[Route('/reclamations', name: 'app_user_indexreclamation', methods: ['GET'])]
+public function indexrec(UserRepository $userRepository,EntityManagerInterface $entityManager, Request $request): Response
+{
+$usersWithReclamations = $userRepository->findUsersWithMoreThanTwoReclamations1();
+$user = new User();
+$form = $this->createForm(UserType::class, $user);
+$form->handleRequest($request);
+
+if ($form->isSubmitted() && $form->isValid()) {
+   
+    
+
+    $entityManager->persist($user);
+    $entityManager->flush();
+
+    return $this->redirectToRoute('app_reclamation_index', [], Response::HTTP_SEE_OTHER);
+}
+
+return $this->renderForm('user/indexrec.html.twig', [
+    'usersWithReclamations' => $usersWithReclamations,
+    'user' => $user,
+    'form' => $form,
+]);
+
+
 }
     #[Route("/user/set-banned/{userId}", name:"set_banned")]
-public function setBan(Request $request, UserRepository $userRepository, int $userId): Response
+public function setBan(Request $request, UserRepository $userRepository, TwilioService $twilioService, int $userId): Response
 {
     $user = $userRepository->find($userId);
 
     if (!$user) {
         // Handle case where user is not found
     }
+    $produit = $user->getNom();
+    $to = '+21650378582'; 
+
+    $message = "Bonjour {$produit}, votre compte a été suspendu pour non-respect des conditions d'utilisation.";
+
+   // $twilioService->sendSMS($to, $message);
 
     // Set the user as banned
     $user->setIsBanned(true);
@@ -72,6 +130,27 @@ public function setBan(Request $request, UserRepository $userRepository, int $us
     // Redirect or display a message indicating success
     // ...
     return $this->redirectToRoute('app_user_indexrec');
+    
+    // Return a response if needed
+}
+#[Route("/user/set-banned1/{userId}", name:"set_banned1")]
+public function setBan1(Request $request, UserRepository $userRepository, int $userId): Response
+{
+    $user = $userRepository->find($userId);
+
+    if (!$user) {
+        // Handle case where user is not found
+    }
+
+    // Set the user as banned
+    $user->setIsBanned(false);
+    $entityManager = $this->getDoctrine()->getManager();
+    $entityManager->flush();
+
+    // Redirect or display a message indicating success
+    // ...
+    return $this->redirectToRoute('app_user_indexreclamation');
+    
     // Return a response if needed
 }
     #[Route('/produit', name: 'app_produit_indexb', methods: ['GET'])]
