@@ -13,17 +13,28 @@
 
     <!-- Custom fonts for this template -->
     <link href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
-
+    
     <!-- Custom styles for this template -->
     <link href="{{asset('css/sb-admin-2.min.css')}}" rel="stylesheet">
     
-
     <!-- Custom styles for this page -->
     <link href="{{asset('vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-Qn2b8Rj/eKfxKxFZT5fg/Lj13h8vQ63lTgffvG5lyoje8YFwJ5/vAf1hRA57b8gM9fR5R1g2tX8JHz25yFvZjw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+ <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="{{asset("lib/animate/animate.min.css")}}" rel="stylesheet">
+    <link href="{{asset("lib/owlcarousel/assets/owl.carousel.min.css")}}" rel="stylesheet">
+    <link href="{{asset("lib/lightbox/css/lightbox.min.css")}}" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="{{asset("css/bootstrap.min.css")}}" rel="stylesheet">
 </head>
 
 <body id="page-top">
@@ -37,7 +48,7 @@
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
                 <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
+                
                 </div>
                 <div class="sidebar-brand-text mx-3">Esprit-Agri Admin </div>
             </a>
@@ -119,19 +130,7 @@
                         </button>
                     </form>
 
-                    <!-- Topbar Search -->
-                    <form
-                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                        <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small" placeholder="Rechercher..."
-                                aria-label="Search" aria-describedby="basic-addon2">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="button">
-                                    <i class="fas fa-search fa-sm"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                 
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
@@ -317,27 +316,44 @@
 
 <!-- Begin Page Content -->
 <div class="container-fluid">
-
-   
+<div class="card-body">
+    <h5 class="card-title"></h5>
+    <div class="row">
+        <div class="col">
+            <input type="text" value="" class="form-control" placeholder="Nom Véterinaire" id="searchNom">
+        </div>
+        <div class="col">
+            <input type="text" value="" class="form-control" placeholder="Prénom Véterinaire" id="searchLibelle">
+        </div>
+       
+        <div class="col">
+            <input type="text" value="" class="form-control" placeholder="Adresse" id="searchRevenuesCultures">
+        </div>
+    </div>
+</div>
 
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Liste des veterinaires</h6>
+                               {% include 'veterinaire/flash_messages.html.twig' %}
+            <h5 class="m-0 font-weight-bold text-primary">Liste des veterinaires</h5>
              
         </div>
        
         <div class="card-body">
-        <a href="{{ path('app_veterinaire_new') }}" class="btn btn-success">Ajouter</a>
+        <a href="{{ path('app_veterinaire_new') }}" class="btn btn-primary rounded-circle m-1" style="background-color: #1cc88a; color: #fff; border-color: #1cc88a;">
+    <i class="bi bi-plus"></i>
+</a>
         <br>
         <br>
+         
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                             <th>Idvet</th>
+                             <th>Id</th>
                              <th>Nom</th>
-                             <th>Prenom</th>
+                             <th>Prénom</th>
                              <th>Adress cabinet</th>
                              <th>Numéro</th>
                              <th>Adress mail</th>
@@ -361,10 +377,14 @@
                 <td>
 
                
-                 <a href="{{ path('app_veterinaire_edit', {'idvet': veterinaire.idvet}) }}" class="btn btn-success" ><i class="fas fa-camera"></i>Modifier</a>
-                 <br>
-                 <br>
-                  <a>  {{ include('veterinaire/_delete_form.html.twig') }}</a>  
+                <div class="btn-group">
+        <a class="btn btn-primary rounded-circle m-1" style="background-color: #1cc88a; color: #fff; border-color: #1cc88a;" href="{{ path('app_veterinaire_edit', {'idvet': veterinaire.idvet}) }}">
+            <i class="bi bi-pencil"></i>
+        </a>
+        <a class="btn btn-danger rounded-circle m-1" onclick="deleteVeterinaire('{{ path('app_veterinaire_delete', {'idvet': veterinaire.idvet}) }}', '{{ csrf_token('delete' ~ veterinaire.idvet) }}')">
+            <i class="bi bi-trash"></i>
+        </a>
+    </div> 
                             </td>
                 
                
@@ -446,3 +466,50 @@
     <script src="{{asset('js/demo/datatables-demo.js')}}"></script>
 
 </body>
+<script>
+    function deleteVeterinaire(deleteUrl, csrfToken) {
+        if (confirm('Are you sure you want to delete this item?')) {
+            var form = document.createElement('form');
+            form.method = 'post';
+            form.action = deleteUrl;
+
+            var csrfTokenInput = document.createElement('input');
+            csrfTokenInput.type = 'hidden';
+            csrfTokenInput.name = '_token';
+            csrfTokenInput.value = csrfToken;
+
+            form.appendChild(csrfTokenInput);
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+    }
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+$(document).ready(function () { // Function to perform the search based on the specified column
+function searchColumn(columnIndex, value) {
+$("#dataTable tbody tr").filter(function () {
+var cellText = $(this).find("td").eq(columnIndex).text().toLowerCase();
+var found = cellText.indexOf(value) > -1;
+$(this).toggle(found);
+});
+}
+
+// Event handlers for each input element
+$("#searchNom").on("keyup", function () {
+searchColumn(1, $(this).val().toLowerCase());
+});
+
+$("#searchLibelle").on("keyup", function () {
+searchColumn(2, $(this).val().toLowerCase());
+});
+
+
+
+$("#searchRevenuesCultures").on("keyup", function () {
+searchColumn(3, $(this).val().toLowerCase());
+});
+});
+</script>

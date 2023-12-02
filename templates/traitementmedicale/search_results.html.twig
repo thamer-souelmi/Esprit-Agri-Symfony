@@ -120,11 +120,6 @@
             </div>
 
 
-
-
-
-
-
 {% block search_results %}
  <div class="row">
         {% if traitementmedicales is not empty %}
@@ -137,7 +132,7 @@
                                 <li class="list-group-item"><strong>Numéro de bétail:</strong> {{ resultat.numero }}</li>
                                 <li class="list-group-item"><strong>Date de traitement:</strong> {{ resultat.dateintervmed ? resultat.dateintervmed|date('Y-m-d') : '' }}</li>
                                 <li class="list-group-item"><strong>Vétérinaire:</strong> {{ resultat.idvet.prenomvet }}</li>
-                                <!-- Ajoutez d'autres informations si nécessaire -->
+                                
 
                                 <li class="list-group-item d-flex justify-content-between">
                                     <a class="btn btn-square btn-secondary rounded-circle m-1" href="{{ path('app_traitementmedicale_show', {'id': resultat.id}) }}">

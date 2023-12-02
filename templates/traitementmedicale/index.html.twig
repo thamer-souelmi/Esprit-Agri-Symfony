@@ -41,7 +41,7 @@
     <script src="{{asset("lib/counterup/counterup.min.js")}}"></script>
     <script src="{{asset("lib/parallax/parallax.min.js")}}"></script>
     <script src="{{asset("lib/lightbox/js/lightbox.min.js")}}"></script>
-
+ 
     <!-- Template Javascript -->
     <script src="{{asset("js/main.js")}}"></script>
         {% endblock %}
@@ -118,19 +118,62 @@
                 <p class="section-title bg-white text-center text-primary px-3">Visite Médical</p>
                 <h1 class="mb-5">Les traitements médical</h1>
             </div>
-            <!-- Topbar Search -->
-                   <form action="{{ path('app_traitementmedicale_search') }}" method="get">
-    <div class="input-group">
-        <input type="text" name="search_query" class="form-control bg-light border-0 small" placeholder="Rechercher..." aria-label="Search" aria-describedby="basic-addon2">
-        <div class="input-group-append">
-            <button class="btn btn-primary" type="submit">
-                <i class="fas fa-search fa-sm"></i>
-            </button>
-        </div>
+   <div class="row">
+    <div class="col-md-6">
+        <!-- Topbar Search -->
+        <form action="{{ path('app_traitementmedicale_search') }}" method="get">
+            <div class="input-group">
+                <!-- Bouton pour afficher les options de recherche avancée -->
+                <div class="input-group-prepend">
+                    <button class="btn text-primary bg-transparent border-0" type="button" onclick="toggleAdvancedSearchForm()" role="button" data-tooltip="Afficher les options de recherche" aria-label="Options de recherche avancée">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                            <!-- ... Le contenu du SVG ... -->
+                            <path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <input type="text" name="search_query" class="form-control bg-light border-0 small" placeholder="Rechercher..." aria-label="Search" aria-describedby="basic-addon2">
+                
+                <!-- Nouvelle ligne pour le bouton de recherche -->
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit">
+                        <i class="fas fa-search fa-sm"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
     </div>
-    <br>
-    <br>
-</form>
+</div>
+
+<!-- Formulaire de recherche avancée (initialement caché) -->
+<div id="resultContainer" style="display: none;">
+    <form id="advancedSearchForm" action="{{ path('app_traitementmedicale_advanced_search') }}" method="GET">
+        <!-- Critères de recherche avancée -->
+        <div class="input-group mt-3">
+            <label for="start_date">Date début:</label>
+            <input type="date" id="start_date" class="form-control">
+        </div>
+
+        <div class="input-group mt-3">
+            <label for="end_date">Date fin:</label>
+            <input type="date" id="end_date" class="form-control">
+        </div>
+
+        <div class="input-group mt-3">
+            <label for="min_cost">Coût minimum:</label>
+            <input type="number" id="min_cost" class="form-control">
+        </div>
+
+        <div class="input-group mt-3">
+            <label for="max_cost">Coût maximum:</label>
+            <input type="number" id="max_cost" class="form-control">
+        </div>
+
+        <button type="submit" onclick="performAdvancedSearch()">Rechercher</button>
+    </form>
+</div>
+
 
 
                     <div class="d-flex justify-content-end">
@@ -143,7 +186,8 @@
   <br>
 {% block body %}
 <div class="row">
-    {% for traitementmedicale in traitementmedicales %}
+{% for traitementmedicale in pagination %}
+    
         <div class="col-md-4 mb-3">
             <div class="card">
                 <div class="card-body">
@@ -173,8 +217,65 @@
             <p>no records found</p>
         </div>
     {% endfor %}
+    <div class="container mt-5">
+				<div class="row justify-content-center">
+					<div class="text-center">
+						<div
+							class="pagination">
+							{# class="pagination" style for pagination #}
+							{{ knp_pagination_render(pagination) }}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		{# Pagination #}
+
+		<br>
+		<br>
+
+		<!-- Add links for other actions as needed -->
+	</div>
+
 </div>
- 
+ {# style of pagination #}
+<style>
+	.pagination {
+		display: flex;
+		justify-content: center;
+		list-style: none;
+		padding: 0;
+	}
+
+	.pagination li {
+		margin: 0 5px;
+	}
+
+	.button-container {
+		display: flex;
+		flex-direction: row;
+		overflow-x: auto;
+		white-space: nowrap;
+	}
+
+
+	.button-container button {
+		margin-right: 10px; /* Espacement entre les boutons */
+	}
+
+	.pagination a {
+		text-decoration: none;
+		padding: 5px 10px;
+		border: 1px solid #3498db; /* Bleu */
+		border-radius: 3px;
+		color: #3498db; /* Bleu */
+	}
+
+	.pagination a:hover {
+		background-color: #3498db; /* Bleu au survol */
+		color: #fff; /* Texte blanc au survol */
+	}
+</style>
 
  
 {% endblock %}
@@ -261,4 +362,55 @@
         }
     }
 </script>
+<!-- En bas de votre template Twig -->
 
+
+
+<script>
+function toggleAdvancedSearchForm() {
+    var resultContainer = document.getElementById('resultContainer');
+
+    if (resultContainer) {
+        if (resultContainer.style.display === 'none') {
+            resultContainer.style.display = 'block';
+        } else {
+            resultContainer.style.display = 'none';
+        }
+    } else {
+        console.error("Le conteneur de résultats n'a pas été trouvé.");
+    }
+    
+}
+    function performAdvancedSearch() {
+        var startDate = $("#start_date").val();
+        var endDate = $("#end_date").val();
+        var minCost = $("#min_cost").val();
+        var maxCost = $("#max_cost").val();
+
+    console.log("start_date:", startDate);
+    console.log("end_date:", endDate);
+    console.log("min_cost:", minCost);
+    console.log("max_cost:", maxCost);
+
+
+        
+
+        $.ajax({
+            type: "GET",
+            url: "{{ path('app_traitementmedicale_advanced_search') }}",
+            data: {
+                start_date: startDate,
+                end_date: endDate,
+                min_cost: minCost,
+                max_cost: maxCost
+            },
+            success: function (response) {
+               console.log("Réponse AJAX : ", response);
+                $("#resultContainer").html(response);
+            },
+            error: function (error) {
+                console.log("Erreur Ajax: ", error);
+            }
+        });
+    }
+</script>
