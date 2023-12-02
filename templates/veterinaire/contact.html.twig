@@ -128,30 +128,30 @@
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control" id="fname" placeholder="Your Name">
-                                    <label for="fname">Your Name</label>
+                                    <input type="text" class="form-control" id="fname" name="fname" placeholder="Your Name">
+                                    <label for="fname">Nom</label>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating">
-                                    <input type="email" class="form-control" id="email" placeholder="Your Email">
-                                    <label for="email">Your Email</label>
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="Your Email">
+                                    <label for="email">Email</label>
                                 </div>
                             </div>
                             <div class="col-12">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control" id="subject" placeholder="Subject">
-                                    <label for="subject">Subject</label>
+                                    <input type="text" class="form-control" id="subject" name="subject" placeholder="Subject">
+                                    <label for="subject">Sujet</label>
                                 </div>
                             </div>
                             <div class="col-12">
                                 <div class="form-floating">
-                                    <textarea class="form-control" placeholder="Leave a message here" id="message" style="height: 250px"></textarea>
+                                    <textarea class="form-control" placeholder="Leave a message here" id="message" name="message" style="height: 250px"></textarea>
                                     <label for="message">Message</label>
                                 </div>
                             </div>
                             <div class="col-12">
-                                <button class="btn btn-secondary rounded-pill py-3 px-5" type="submit">Send Message</button>
+                                <button class="btn btn-secondary rounded-pill py-3 px-5" type="submit">Envoyer Message</button>
                             </div>
                         </div>
                     </form>
@@ -191,7 +191,12 @@
                             <span>{{ veterinaire.adressmail }}</span>
                         </div>
                     </div>
-                   
+                    {# on recupere l'adresse qui se trouve dans interface et l'affiche dans la carte #}
+    <iframe class="w-100 rounded"
+        src="https://maps.google.com/maps?&q={{ addressParts[1]|replace({' ': '+'}) }}&output=embed"
+        frameborder="0" style="min-height: 300px; border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+
+
 
 
                 </div>

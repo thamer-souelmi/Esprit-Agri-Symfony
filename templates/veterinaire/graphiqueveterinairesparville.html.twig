@@ -1,0 +1,38 @@
+{% extends 'backbase.html.twig' %}
+
+{% block title %}Graphique des vétérinaires par ville{% endblock %}
+
+{% block body %}
+    <div style="width: 80%; margin: auto;">
+        <canvas id="veterinairesParVilleChart"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var data = {{ data | json_encode| raw }};
+
+            var ctx = document.getElementById('veterinairesParVilleChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: data.map(function (entry) { return entry.ville; }),
+                    datasets: [{
+                        label: 'Nombre de vétérinaires par ville',
+                        data: data.map(function (entry) { return entry.count; }),
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+{% endblock %}

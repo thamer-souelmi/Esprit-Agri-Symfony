@@ -126,7 +126,7 @@
         <div class="row justify-content-center">
           <div class="col-lg-7">
                         <div class="p-5">
-                             {{ form_start(form,{'attr': {'novalidate': 'novalidate'}} ) }}
+                            {{ form_start(form, {'action': path('app_traitementmedicale_edit', {'id': traitementmedicale.id}), 'attr': {'novalidate': 'novalidate'}}) }}
 
 {{ form_row(form.numero, {'label' : 'Numéro de bétail','attr': {'class': 'form-control form-control-user', 'placeholder': 'Entrez le numéro du betail'}}) }}
 <br>
@@ -147,11 +147,6 @@
 
    {{ include('traitementmedicale/_form.html.twig', {'button_label': 'Modifier'}) }}        
 {{ form_end(form) }}
-
-
-
-
-    
    
 </div>
       </div>

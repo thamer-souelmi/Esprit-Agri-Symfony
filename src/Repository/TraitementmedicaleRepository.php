@@ -64,6 +64,85 @@ public function compterTraitementsParNumero($numeroTraitement)
 
         return $queryBuilder->getQuery()->getSingleScalarResult();
     }
+    
+    public function advancedSearch($startDate, $endDate, $minCost, $maxCost)
+    {
+        $queryBuilder = $this->createQueryBuilder('t');
+
+        
+        if ($startDate) {
+            $queryBuilder->andWhere('t.dateintervmed >= :startDate')->setParameter('startDate', $startDate);
+        }
+
+        if ($endDate) {
+            $queryBuilder->andWhere('t.dateintervmed <= :endDate')->setParameter('endDate', $endDate);
+        }
+
+        if ($minCost) {
+            $queryBuilder->andWhere('t.coutinterv >= :minCost')->setParameter('minCost', $minCost);
+        }
+
+        if ($maxCost) {
+            $queryBuilder->andWhere('t.coutinterv <= :maxCost')->setParameter('maxCost', $maxCost);
+        }
+
+        $query = $queryBuilder->getQuery();
+
+        dump($query->getSQL());
+    dump($query->getParameters());
+
+        return $query->getResult();
+    }
+
+    // statistique back: le nombre de traitement medicale realise pour chaque betail a chaque mois
+
+   
+/*
+ $results = $this->createQueryBuilder('t')
+            ->select('t.dateintervmed as date', 'COUNT(t.id) as count')
+            ->groupBy('date')
+            ->getQuery()
+            ->getResult();
+
+        $formattedResults = [];
+        foreach ($results as $result) {
+            $year = $result['date']->format('Y');
+            $formattedResults[$year] = $result['count'];
+        }
+
+        return $formattedResults;
 
 
+        ///////
+        SELECT YEAR(t.dateintervmed) as year, COUNT(t.id) as count
+FROM App\Entity\Traitementmedicale t
+GROUP BY year
+*/
+
+
+
+    public function countTraitementsParAnnee()
+    {
+        $query = $this->_em->createQuery('
+        SELECT t.dateintervmed as date, COUNT(t.id) as count
+        FROM App\Entity\Traitementmedicale t
+        GROUP BY t.dateintervmed
+    ');
+
+    return $query->getResult();
+    }
+
+
+    public function countTraitementsParVeterinaire()
+    {
+        $query = $this->_em->createQuery('
+            SELECT v.idvet, COUNT(t.id) as count
+            FROM App\Entity\Traitementmedicale t
+            JOIN t.idvet v
+            GROUP BY v.idvet
+        ');
+    
+        return $query->getResult();
+    }
 }
+
