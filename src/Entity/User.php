@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 //namespace App\Entity\User;
+
+
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -9,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
-
+use Doctrine\DBAL\Types\Types;
 
 
 
@@ -18,7 +20,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[UniqueEntity(fields: ['mail'], message: 'There is already an account with this mail')]
 
 class User implements UserInterface
-
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -83,10 +84,8 @@ class User implements UserInterface
 
     #[ORM\Column(length: 255)]
     private ?string $image = null;
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Produit", mappedBy="user")
-     */
-    private $products;
+    
+ 
 
     #[ORM\Column(nullable: true)]
     private ?bool $isBanned = false; // Indicates if the user is banned
@@ -98,6 +97,17 @@ class User implements UserInterface
     private $isVerified = false;
     #[ORM\OneToMany(mappedBy: "user", targetEntity: Annoncerecrutement::class)]
     private Collection $annonces;
+    #[ORM\OneToMany(targetEntity:"App\Entity\Produit", mappedBy:"user")]
+     
+    private $products;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Reclamation::class)]
+    private Collection $reclamations;
+
+    public function __construct()
+    {
+        $this->reclamations = new ArrayCollection();
+    }
 
     
     public function isBanned(): ?bool
@@ -245,10 +255,7 @@ class User implements UserInterface
 
 
 
-    public function eraseCredentials()
-    {
-        // If you store any temporary, sensitive data on the user, clear it here
-    }
+    
 
 
     public function isVerified(): bool
@@ -264,27 +271,28 @@ class User implements UserInterface
     }
     public function getRoles()
     {
-        return ['ROLE_USER']; // Adjust roles as needed
+        return [$this->role]; // You might need to adjust this depending on your use case
     }
 
     public function getPassword()
     {
         return $this->mdp;
     }
+
     public function getSalt()
     {
-        // you might need to return null unless you use bcrypt for passwords
-        return null;
+        // not needed when using the "bcrypt" algorithm in security.yaml
     }
-
-    
 
     public function getUsername()
     {
         return $this->mail;
     }
 
-    
+    public function eraseCredentials()
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+    }
 
     public function getAnnonces(): Collection
     {

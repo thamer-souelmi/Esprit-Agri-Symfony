@@ -34,7 +34,6 @@ class UserController extends AbstractController
         $users = $usersRepository->findByRoles('admin');
       //  $count = $userRepository->getUsersWithMoreThanFiveReclamationsCount(); 
     
-        
 
 
     return $this->render('user/index.html.twig', [
@@ -42,6 +41,39 @@ class UserController extends AbstractController
         //'count' => $count,
     ]);
     }
+    #[Route('/ban', name: 'app_ban')]
+    public function index12(): Response
+    {
+        return $this->render('security/banned.html.twig',);
+    }
+    #[Route('/reclamation', name: 'app_user_indexrec', methods: ['GET'])]
+    public function index123(UserRepository $userRepository): Response
+{
+    $usersWithReclamations = $userRepository->findUsersWithMoreThanTwoReclamations();
+
+    return $this->render('user/index123.html.twig', [
+        'usersWithReclamations' => $usersWithReclamations,
+    ]);
+}
+    #[Route("/user/set-banned/{userId}", name:"set_banned")]
+public function setBan(Request $request, UserRepository $userRepository, int $userId): Response
+{
+    $user = $userRepository->find($userId);
+
+    if (!$user) {
+        // Handle case where user is not found
+    }
+
+    // Set the user as banned
+    $user->setIsBanned(true);
+    $entityManager = $this->getDoctrine()->getManager();
+    $entityManager->flush();
+
+    // Redirect or display a message indicating success
+    // ...
+    return $this->redirectToRoute('app_user_indexrec');
+    // Return a response if needed
+}
     #[Route('/produit', name: 'app_produit_indexb', methods: ['GET'])]
     public function indexb(EntityManagerInterface $entityManager): Response
     {
