@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Visite Médicale{% endblock %}</title>
+         <meta content="width=device-width, initial-scale=1.0" name="viewport">
+         <meta content="" name="keywords">
+         <meta content="" name="description">
+          <!-- Favicon -->
+    <link href="{{asset("img/favicon.ico")}}" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">   
+
+        {% block stylesheets %}
+            <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="{{asset("lib/animate/animate.min.css")}}" rel="stylesheet">
+    <link href="{{asset("lib/owlcarousel/assets/owl.carousel.min.css")}}" rel="stylesheet">
+    <link href="{{asset("lib/lightbox/css/lightbox.min.css")}}" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="{{asset("css/bootstrap.min.css")}}" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="{{asset("css/style.css")}}" rel="stylesheet">
+        {% endblock %}
+
+        {% block javascripts %}
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{asset("lib/wow/wow.min.js")}}"></script>
+    <script src="{{asset("lib/easing/easing.min.js")}}"></script>
+    <script src="{{asset("lib/waypoints/waypoints.min.js")}}"></script>
+    <script src="{{asset("lib/owlcarousel/owl.carousel.min.js")}}"></script>
+    <script src="{{asset("lib/counterup/counterup.min.js")}}"></script>
+    <script src="{{asset("lib/parallax/parallax.min.js")}}"></script>
+    <script src="{{asset("lib/lightbox/js/lightbox.min.js")}}"></script>
+
+    <!-- Template Javascript -->
+    <script src="{{asset("js/main.js")}}"></script>
+        {% endblock %}
+    </head>
+         <!-- Topbar Start -->
+    <div class="container-fluid bg-dark px-0">
+        <div class="row g-0 d-none d-lg-flex">
+            <div class="col-lg-6 ps-5 text-start">
+                <div class="h-100 d-inline-flex align-items-center text-light">
+                    <span>Suivez-nous:</span>
+                    <a class="btn btn-link text-light" href=""><i class="fab fa-facebook-f"></i></a>
+                    <a class="btn btn-link text-light" href=""><i class="fab fa-twitter"></i></a>
+                    <a class="btn btn-link text-light" href=""><i class="fab fa-linkedin-in"></i></a>
+                    <a class="btn btn-link text-light" href=""><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-end">
+                <div class="h-100 bg-secondary d-inline-flex align-items-center text-dark py-2 px-4">
+                    <span class="me-2 fw-semi-bold"><i class="fa fa-phone-alt me-2"></i>Appelez:</span>
+                    <span>+012 345 6789</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Topbar End -->
+    <body>
+    <!-- Navbar Start -->
+    <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top px-4 px-lg-5">
+        <a href="index.html" class="navbar-brand d-flex align-items-center">
+            <h1 class="m-0">Esprit-Agri</h1>
+        </a>
+        <button type="button" class="navbar-toggler me-0" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto p-4 p-lg-0">
+                <a href="index.html" class="nav-item nav-link active">Acceuil</a>
+                <a href="about.html" class="nav-item nav-link">A Propos</a>
+                <a href="service.html" class="nav-item nav-link">Recrutement</a>
+                <a href="product.html" class="nav-item nav-link">Investissement</a>
+                <a href="vet.html" class="nav-item nav-link">marché</a>
+                
+
+
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Visite médical</a>
+                    <div class="dropdown-menu bg-light m-0">
+                        <a href="{{ path('app_traitementmedicale_index') }}" class="dropdown-item">Traitement médical</a>
+                        <a href="{{ path('frontaffich')}}" class="dropdown-item">Véterinaire</a>
+                        
+                    </div>
+                </div>
+                <a href="contact.html" class="nav-item nav-link">Contact</a>
+            </div>
+            <div class="border-start ps-4 d-none d-lg-block">
+                <button type="button" class="btn btn-sm p-0"><i class="fa fa-search"></i></button>
+            </div>
+        </div>
+    </nav>
+    <!-- Navbar End -->
+<!-- Page Header Start -->
+      <div class="container-fluid banner my-5 py-5" data-parallax="scroll" data-image-src="{{ asset('img/phott.jpg') }}">
+
+        <div class="container text-center py-5">
+            <h1 class="display-3 text-white mb-4 animated slideInDown">Alliance Santé</h1>
+            
+        </div>
+    </div>
+    <!-- Page Header End -->
+    <!-- Team Start -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
+                <p class="section-title bg-white text-center text-primary px-3">Visite Médical</p>
+                <h1 class="mb-5">Les traitements médical</h1>
+            </div>
+{% block body %}
+
+    {% if results is not empty %}
+        <div class="row">
+            <div id="resultContainer" class="row">
+                {% for result in results %}
+                    <div class="col-md-4 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Résultat de recherche {{ loop.index }}</h5>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item"><strong>Numéro de bétail:</strong> {{ result.numero }}</li>
+                                    <li class="list-group-item"><strong>Date de traitement:</strong> {{ result.dateintervmed ? result.dateintervmed|date('Y-m-d') : '' }}</li>
+                                    <li class="list-group-item"><strong>Vétérinaire:</strong> {{ result.idvet.prenomvet }}</li>
+
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        <a class="btn btn-square btn-secondary rounded-circle m-1" href="{{ path('app_traitementmedicale_show', {'id': result.id}) }}">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                        <a class="btn btn-square btn-secondary rounded-circle m-1" href="{{ path('app_traitementmedicale_edit', {'id': result.id}) }}">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <a class="btn btn-square btn-secondary rounded-circle m-1" onclick="deleteTraitement('{{ path('app_traitementmedicale_delete', {'id': result.id}) }}', '{{ csrf_token('delete' ~ result.id) }}')">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% else %}
+        <p>Aucun résultat trouvé</p>
+    {% endif %}
+
+{% endblock %}

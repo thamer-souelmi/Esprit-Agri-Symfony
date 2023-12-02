@@ -156,12 +156,25 @@ class ProduitController extends AbstractController
 
     #[Route('/{id}', name: 'app_produit_delete', methods: ['POST'])]
     public function delete(Request $request, Produit $produit, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$produit->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($produit);
-            $entityManager->flush();
+{
+    if ($this->isCsrfTokenValid('delete' . $produit->getId(), $request->request->get('_token'))) {
+        // Get associated reclamations
+        // Get associated reclamations
+        $reclamations = $produit->getReclamations();
+
+        // Loop through reclamations and use the removeReclamation method
+        foreach ($reclamations as $reclamation) {
+            $produit->removeReclamation($reclamation);
+            $entityManager->persist($reclamation);
         }
 
-        return $this->redirectToRoute('app_produit_index', [], Response::HTTP_SEE_OTHER);
+       
+
+        // Now remove the Produit
+        $entityManager->remove($produit);
+        $entityManager->flush();
     }
+
+    return $this->redirectToRoute('app_produit_index', [], Response::HTTP_SEE_OTHER);
+}
 }

@@ -12,6 +12,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\DBAL\Types\Types;
+use Scheb\TwoFactorBundle\Model\Google\TwoFactorInterface;
 
 
 
@@ -19,7 +20,7 @@ use Doctrine\DBAL\Types\Types;
 #[ORM\Table(name: '`user`')]
 #[UniqueEntity(fields: ['mail'], message: 'There is already an account with this mail')]
 
-class User implements UserInterface
+class User implements UserInterface//, TwoFactorInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -83,9 +84,11 @@ class User implements UserInterface
     private $role;
 
     #[ORM\Column(length: 255)]
+    
     private ?string $image = null;
     
- 
+    // #[ORM\Column(nullable: true)]
+    // private ?string $googleAuthenticatorSecret ;
 
     #[ORM\Column(nullable: true)]
     private ?bool $isBanned = false; // Indicates if the user is banned
@@ -95,19 +98,32 @@ class User implements UserInterface
 
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
+
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Produit::class)]
+    private Collection $produits;
+
     #[ORM\OneToMany(mappedBy: "user", targetEntity: Annoncerecrutement::class)]
     private Collection $annonces;
-    #[ORM\OneToMany(targetEntity:"App\Entity\Produit", mappedBy:"user")]
-     
-    private $products;
+
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Reclamation::class)]
     private Collection $reclamations;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $googleID = null;
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $resetToken ;
+ 
 
     public function __construct()
     {
+        $this->produits = new ArrayCollection();
         $this->reclamations = new ArrayCollection();
     }
+    
+   
+
+   
 
     #[ORM\OneToMany(mappedBy: "user", targetEntity: Annoncerecrutement::class)]
     private Collection $annonces;
@@ -297,6 +313,83 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
     }
+    // public function isGoogleAuthenticatorEnabled(): bool
+    // {
+    //     // return null !== $this->googleAuthenticatorSecret;
+    // }
+
+    public function getGoogleAuthenticatorUsername(): string
+    {
+        return $this->mail;
+    }
+
+    public function getGoogleAuthenticatorSecret(): ?string
+    {
+        // return $this->googleAuthenticatorSecret;
+    }
+
+    public function setGoogleAuthenticatorSecret(?string $googleAuthenticatorSecret): void
+    {
+        $this->googleAuthenticatorSecret = $googleAuthenticatorSecret;
+    }
+
+    /**
+     * @return Collection<int, Produit>
+     */
+    public function getProduits(): Collection
+    {
+        return $this->produits;
+    }
+
+    public function addProduit(Produit $produit): static
+    {
+        if (!$this->produits->contains($produit)) {
+            $this->produits->add($produit);
+            $produit->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProduit(Produit $produit): static
+    {
+        if ($this->produits->removeElement($produit)) {
+            // set the owning side to null (unless already changed)
+            if ($produit->getUser() === $this) {
+                $produit->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reclamation>
+     */
+    public function getReclamations(): Collection
+    {
+        return $this->reclamations;
+    }
+
+    public function addReclamation(Reclamation $reclamation): static
+    {
+        if (!$this->reclamations->contains($reclamation)) {
+            $this->reclamations->add($reclamation);
+            $reclamation->setUser($this);
+        }
+
+        return $this;
+    }
+
+
+    public function removeReclamation(Reclamation $reclamation): static
+    {
+        if ($this->reclamations->removeElement($reclamation)) {
+            // set the owning side to null (unless already changed)
+            if ($reclamation->getUser() === $this) {
+                $reclamation->setUser(null);
+            }
+        }
 
     public function getAnnonces(): Collection
     {
@@ -304,6 +397,31 @@ class User implements UserInterface
     }
 
 
+
+        return $this;
+    }
+    public function getGoogleID(): ?string
+    {
+        return $this->googleID;
+    }
+
+    public function setGoogleID(?string $googleID): self
+    {
+        $this->googleID = $googleID;
+
+        return $this;
+    }
+    public function getResetToken(): ?string
+    {
+        return $this->resetToken;
+    }
+
+    public function setResetToken(?string $resetToken): self
+    {
+        $this->resetToken = $resetToken;
+
+        return $this;
+    }
     
 
     

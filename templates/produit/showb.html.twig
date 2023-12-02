@@ -44,15 +44,9 @@
         <tr>
             <td colspan="2">
                 <a href="{{ path('app_produit_indexb') }}" class="btn btn-secondary">Retour</a>
-                
-                <form method="post" action="{{ path('app_produit_delete', {'id': produit.getId()}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet élément ?');" style="display: inline-block;">
-                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ produit.getId()) }}">
-                    <button type="submit" class="btn btn-danger">Supprimer</button>
-                </form>
             </td>
         </tr>
     </tbody>
 </table>
 
-{{ include('produit/_delete_form.html.twig') }}
 {% endblock %}
