@@ -45,10 +45,6 @@
                                         {% if error %}
                                             <div class="alert alert-danger">Verifier votre E-mail ou Mot de Passe</div>
                                         {% endif %}
-                                        {% if app.user and not user.isbanned %}
-                                            <div class="alert alert-danger">da5louni aman rani itim</div>
-                                        {% endif %}
-
                                         {% if app.user %}
                                             <div class="mb-3">
                                                 You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
@@ -75,16 +71,14 @@
                                             Login
                                         </button>
                                         <hr>
-                                        <a href="#" class="btn btn-google btn-user btn-block">
+                                        <a href="{{path('connect_google')}}" class="btn btn-google btn-user btn-block">
                                             <i class="fab fa-google fa-fw"></i> Login avec Google
                                         </a>
-                                        <a href="#" class="btn btn-facebook btn-user btn-block">
-                                            <i class="fab fa-facebook-f fa-fw"></i> Login avec Facebook
-                                        </a>
+                                       
                                     </form>
                                     <hr>
                                     <div class="text-center">
-                                        <a class="small" href="forgot-password.html">Mot de passe oublie ?</a>
+                                        <a class="small" href="{{ path('forgotten_password') }}">Mot de passe oublie ?</a>
                                     </div>
                                     <div class="text-center">
                                         <a class="small" href="{{ path('app_register') }}">Créer un compte !</a>

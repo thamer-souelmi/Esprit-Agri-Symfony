@@ -1,4 +1,10 @@
-{% extends 'base.html.twig' %}
+{% extends 'prod.html.twig' %}
+{% block banner_image %}
+{{ asset('img/still-life-black-background.jpg') }}
+{% endblock %}
+{% block product_heading %}
+    <h1 class="display-3 text-white mb-4 animated slideInDown">Reclamation</h1>
+{% endblock %}
 
 {% block title %}Reclamation{% endblock %}
 

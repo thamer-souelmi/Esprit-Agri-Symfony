@@ -63,6 +63,7 @@ private ?bool $archivedA ;
     {
         $this->candidatures = new ArrayCollection();
     }
+>>>>>>> 7268abaacaabe26ee5281d6e4f216470f1d6abab
 
         public function getIdRecrut(): ?int
         {

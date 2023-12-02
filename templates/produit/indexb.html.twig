@@ -22,7 +22,7 @@
                             <th>Prenom </th>
                             <th>Image</th>
                             <th>Actions</th>
-                            <th>Supprimer</th>
+                            
                         </tr>
                     </thead>
                     <tbody>
@@ -39,11 +39,9 @@
                             <td>{{ produit.user.getPrenom() }}</td>
                              <td><img src="{{ asset('img/' ~ produit.getImage()) }}" alt="Product Image" style="max-width:100px;max-height:100px;"></td>
                             <td>
-                                <a href="{{ path('app_produit_editb', {'id': produit.getId()}) }}" class="btn btn-secondary">Modifier</a>
                                 <a href="{{ path('app_produit_showb', {'id': produit.getId()}) }}" class="btn btn-success">Detail</a>
                             </td>
                             
-                            <td>{{ include('produit/_delete_form.html.twig') }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>

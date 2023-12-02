@@ -63,9 +63,16 @@ class Candidature
     private ?bool $archived = false;
 
    
+
     #[ORM\ManyToOne(targetEntity: "App\Entity\Annoncerecrutement", inversedBy: "candidatures")]
     #[ORM\JoinColumn(name: "idannrecru_id", referencedColumnName: "idRecrut")]
     private ?Annoncerecrutement $idannrecru;
+
+
+    // #[ORM\ManyToOne(targetEntity: "App\Entity\Annoncerecrutement", inversedBy: "candidatures")]
+    // #[ORM\JoinColumn(nullable: true)]
+    // private ?Annoncerecrutement $idannrecru;
+    
 
 
     #[ORM\ManyToOne(targetEntity: User::class)]

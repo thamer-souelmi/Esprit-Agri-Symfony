@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -21,9 +22,21 @@ class RegistrationFormType extends AbstractType
     {
         $builder
             ->add('cin')
-            ->add('nom')
+            ->add('nom', null, [
+                'label' => 'Nom ',
+                'attr' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'Nom du produit',
+                ],
+            ])
             ->add('prenom')
-            ->add('mail')
+            ->add('mail', null, [
+                'label' => 'Email',
+                'attr' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'Email',
+                ],
+            ])
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [
@@ -32,9 +45,21 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('mdp')
+            ->add('mdp', RepeatedType::class, array(
+                'type' => PasswordType::class,
+                
+                'invalid_message' => 'Les mots de passe ne correspondent pas.',
+                'first_options' => array('label' => 'Mot de passe'),
+                'second_options' => array('label' => 'Confirmation du mot de passe'),
+            ))
             ->add('adresse')
-            ->add('numtel')
+            ->add('numtel', null, [
+                'label' => 'Numéro de téléphone',
+                'attr' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'Numéro de téléphone',
+                ],
+            ])
             ->add('role', ChoiceType::class, [
                 'choices' => [
                     

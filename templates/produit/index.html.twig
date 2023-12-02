@@ -4,6 +4,10 @@
 {% block banner_image %}
     {{ asset('img/pngtree-fruits-and-vegetables-picture-image_3712726.jpg') }}
 {% endblock %}
+{% block product_heading %}
+    <h1 class="display-3 text-white mb-4 animated slideInDown">Produit</h1>
+{% endblock %}
+
 
 {% block body %}
     <a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_produit_new') }}">Ajouter Produit</a>
@@ -44,9 +48,9 @@
                                     <h2 style="color: #000000;">{{ produit.nomprod }}</h2>
 
                                     {% if produit.status == 1 %}
-                                        <span class="text-primary me-1">Prix:{{ produit.prix }}$</span>
+                                        <span class="text-primary me-1">Prix:{{ produit.prix }}TND</span>
                                     {% else %}
-                                        <span class="text-decoration-line-through">Prix:{{ produit.prix }}$</span>
+                                        <span class="text-decoration-line-through">Prix:{{ produit.prix }}TND</span>
                                     {% endif %}
                                     <span class="text-primary me-1">Quantité:{{ produit.qte }}Kg</span>
                                 </div>
