@@ -22,9 +22,21 @@ class RegistrationFormType extends AbstractType
     {
         $builder
             ->add('cin')
-            ->add('nom')
+            ->add('nom', null, [
+                'label' => 'Nom ',
+                'attr' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'Nom du produit',
+                ],
+            ])
             ->add('prenom')
-            ->add('mail')
+            ->add('mail', null, [
+                'label' => 'Email',
+                'attr' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'Email',
+                ],
+            ])
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [
@@ -41,7 +53,13 @@ class RegistrationFormType extends AbstractType
                 'second_options' => array('label' => 'Confirmation du mot de passe'),
             ))
             ->add('adresse')
-            ->add('numtel')
+            ->add('numtel', null, [
+                'label' => 'Numéro de téléphone',
+                'attr' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'Numéro de téléphone',
+                ],
+            ])
             ->add('role', ChoiceType::class, [
                 'choices' => [
                     

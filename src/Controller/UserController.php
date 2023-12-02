@@ -120,7 +120,7 @@ public function setBan(Request $request, UserRepository $userRepository, TwilioS
 
     $message = "Bonjour {$produit}, votre compte a été suspendu pour non-respect des conditions d'utilisation.";
 
-    $twilioService->sendSMS($to, $message);
+   // $twilioService->sendSMS($to, $message);
 
     // Set the user as banned
     $user->setIsBanned(true);
