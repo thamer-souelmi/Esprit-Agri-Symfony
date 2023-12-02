@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Entity;
+//namespace App\Entity\User;
+
 
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -97,8 +99,13 @@ class User implements UserInterface//, TwoFactorInterface
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
 
+
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Produit::class)]
     private Collection $produits;
+
+    #[ORM\OneToMany(mappedBy: "user", targetEntity: Annoncerecrutement::class)]
+    private Collection $annonces;
+
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Reclamation::class)]
     private Collection $reclamations;
@@ -117,6 +124,10 @@ class User implements UserInterface//, TwoFactorInterface
    
 
    
+
+    #[ORM\OneToMany(mappedBy: "user", targetEntity: Annoncerecrutement::class)]
+    private Collection $annonces;
+
 
     
     public function isBanned(): ?bool
@@ -370,6 +381,7 @@ class User implements UserInterface//, TwoFactorInterface
         return $this;
     }
 
+
     public function removeReclamation(Reclamation $reclamation): static
     {
         if ($this->reclamations->removeElement($reclamation)) {
@@ -378,6 +390,13 @@ class User implements UserInterface//, TwoFactorInterface
                 $reclamation->setUser(null);
             }
         }
+
+    public function getAnnonces(): Collection
+    {
+        return $this->annonces;
+    }
+
+
 
         return $this;
     }

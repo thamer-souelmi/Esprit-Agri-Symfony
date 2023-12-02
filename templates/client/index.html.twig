@@ -1,7 +1,13 @@
-{% extends 'marchefront.html.twig' %}
+{% extends 'prod.html.twig' %}
 
+{# {% block title %}Marche
+{% endblock %} #}
 {% block title %}Marche
 {% endblock %}
+{% block banner_image %}
+	{{ asset('img/pngtree-fruits-and-vegetables-picture-image_3712726.jpg') }}
+{% endblock %}
+
 
 {% block body %}
 	<div class="card" style="background-color: white;">
@@ -26,18 +32,23 @@
 											<a class="btn btn-square btn-secondary rounded-circle m-1" href="{{ path('cart_addinmarche', {'id': client.id}) }}">
 												<i class="bi bi-cart"></i>
 											</a>
+
+
 											<!-- Add this button to add the product to the cart -->
 											{# <a href="{{ path('cart_addinmarche', {'id': client.id}) }}" class="btn btn-success">
-																																																																														<i class="bi bi-cart-plus"></i>
-																																																																														Ajouter au panier
-																																																																													</a> #}
+																																																																																																																																					<i class="bi bi-cart-plus"></i>
+																																																																																																																																					Ajouter au panier
+																																																																																																																																				</a> #}
 											<!-- Add button/link for generating QR code -->
-												<a class="btn btn-square btn-secondary rounded-circle m-1" href="{{ path('app_client_generate_qr', {'id': client.id}) }}"> <i class="bi bi-upc-scan"></i>
+												<a class="btn btn-square btn-secondary rounded-circle m-1" href="{{ path('app_client_generate_qr', {'id': client.id}) }}"> QR<i class="bi bi-upc-scan"></i>
+											</a>
+											<a class="btn btn-square btn-secondary rounded-circle m-1" href="{{ path('app_client_generate_barcode', {'id': client.id}) }}">
+												<i class="bi bi-upc-scan"></i>
 											</a>
 											{# <a href="{{ path('app_client_generate_qr', {'id': client.id}) }}" class="btn btn-primary">
-																																													<i class="bi bi-qrcode"></i>
-																																													Générer QR Code
-																																												</a> #}
+																																																																																																				<i class="bi bi-qrcode"></i>
+																																																																																																				Générer QR Code
+																																																																																																			</a> #}
 
 										</div>
 									</div>
