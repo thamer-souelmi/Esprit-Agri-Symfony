@@ -22,32 +22,34 @@ class AnnoncerecrutementController extends AbstractController
     #[Route('/', name: 'app_annoncerecrutement_index', methods: ['GET'])]
     public function index(AnnoncerecrutementRepository $annoncerecrutementRepository, PaginatorInterface $paginator, Request $request, EntityManagerInterface $entityManager): Response
     {
-        $annoncerecrutements = $annoncerecrutementRepository->findBy(['nbPosteRecherche' => 0]);
-      //  if($annoncerecrutements->getIdannrecru()!=0){
+        $sortBy = $request->query->get('sort_by', 'date'); // Default to sorting by date
+        $sortOrder = $request->query->get('sort_order', 'asc'); // Default to ascending order
 
-foreach ($annoncerecrutements as $annonce) {
-    $annonce->setArchivedA(true);
-    $entityManager->persist($annonce);
-}
+        // Utilisez votre fonction filterByDateOrAlphabetical
+        $annoncerecrutements = $annoncerecrutementRepository->filterByDateOrAlphabetical($sortBy, $sortOrder);
 
-$entityManager->flush();
+        // Archivez les annonces non archivées
+        foreach ($annoncerecrutements as $annonce) {
+            $annonce->setArchivedA(false);
+            $entityManager->persist($annonce);
+        }
 
-$nonArchivedAnnonces = $annoncerecrutementRepository->findBy(['archivedA' => false]);
-     //   $annoncerecrutements = $annoncerecrutementRepository->findAll();
+        $entityManager->flush();
 
+        // Récupérez les annonces non archivées après l'archivage
+        $nonArchivedAnnonces = $annoncerecrutementRepository->findBy(['archivedA' => false]);
+
+        // Paginez les résultats
         $pagination = $paginator->paginate(
             $nonArchivedAnnonces,
             $request->query->getInt('page', 1),
             6 // Number of items per page
         );
-  //  }else {
-   //     $this->addFlash('danger', 'vous ne pouvez pas supprimer cette candidature car elle cantient des candidature  ');
-   // }
+
         return $this->render('annoncerecrutement/index.html.twig', [
             'pagination' => $pagination,
         ]);
     }
-
     #[Route('/back', name: 'app_annoncerecrutementback_index', methods: ['GET'])]
     public function indexba(AnnoncerecrutementRepository $annoncerecrutementRepository): Response
     {

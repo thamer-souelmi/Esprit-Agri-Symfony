@@ -25,7 +25,21 @@ class AnnoncerecrutementRepository extends ServiceEntityRepository
     }
 
 
- 
+    public function filterByDateOrAlphabetical($sortBy = 'date', $sortOrder = 'asc'): array
+    {
+        $queryBuilder = $this->createQueryBuilder('a');
+    
+        if ($sortBy === 'date') {
+            $queryBuilder->orderBy('a.datePub', $sortOrder);
+        } elseif ($sortBy === 'alphabetique') {
+            $queryBuilder->orderBy('a.posteDemande', $sortOrder);
+        } else {
+            $queryBuilder->orderBy('a.datePub', 'asc');
+        }
+    
+        return $queryBuilder->getQuery()->getResult();
+    }
+    
 
     public function searchByPosteContratLoca($searchQuery, $filter1): QueryBuilder
     {
@@ -36,10 +50,8 @@ class AnnoncerecrutementRepository extends ServiceEntityRepository
             ->setParameter('searchQuery', '%' . $searchQuery . '%');
 
         if ($filter1) {
-            // Assuming filter1 is a property of your entity, modify it accordingly
             $queryBuilder->andWhere('a.filter1 = :filter1')
                 ->setParameter('filter1', $filter1);
-            // Add more conditions for additional filters as needed
         }
 
         return $queryBuilder;

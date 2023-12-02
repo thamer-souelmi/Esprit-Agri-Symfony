@@ -198,49 +198,61 @@ public function showRelatedCandidatures(int $idRecrut, CandidatureRepository $ca
     }
 
 
-#[Route('/candidature/{id}/{decision}', name: 'confirm_candidature', methods: ['GET'])]
-
-public function handleCandidatureDecision(SessionInterface $session,int $id, string $decision, EntityManagerInterface $entityManager, TwilioService $twilioService): RedirectResponse
-
-{
-    $candidature = $entityManager->getRepository(Candidature::class)->find($id);
-
-    if (!$candidature) {
-        return new Response($this->json(['error' => 'Confirmation not found']), Response::HTTP_NOT_FOUND);
-    }
-if($candidature->getIdannrecru()->getNbPosteRecherche()!=0){
-    if ($decision === 'accept') {
-        if (!$candidature->isArchived() && !$candidature->isStatuscandidature()) {
-            $twilioService ->sendSMS("+21628181314"," felicitation vous ete accepter  ");
-            $candidature->setStatuscandidature(true);
-            $candidature->setArchived(true);
-
-            $annoncerecrutement = $candidature->getIdannrecru();
-
-            // Reduce the number of available positions
-            $newAvailableSeats = max(0, $annoncerecrutement->getNbPosteRecherche() - 1);
-            $annoncerecrutement->setNbPosteRecherche($newAvailableSeats);
-
-            $entityManager->persist($annoncerecrutement);
-            $entityManager->persist($candidature);
-            $entityManager->flush();
+    #[Route('/candidature/{id}/{decision}', name: 'confirm_candidature', methods: ['GET'])]
+    public function handleCandidatureDecision(
+        SessionInterface $session,
+        int $id,
+        string $decision,
+        EntityManagerInterface $entityManager,
+        TwilioService $twilioService , CandidatureRepository $candidatureRepository
+    ): RedirectResponse {
+        $candidature = $entityManager->getRepository(Candidature::class)->find($id);
+      //  $findRepository = $candidatureRepository->filterByDateOrAlphabetical();
+        if (!$candidature) {
+            return new Response($this->json(['error' => 'Confirmation not found']), Response::HTTP_NOT_FOUND);
         }
-    } elseif ($decision === 'refuse') {
 
-        $candidature->setStatuscandidature(false);
-        $candidature->setArchived(true);
-        $entityManager->persist($candidature);
-        $entityManager->flush();
-        $twilioService ->sendSMS("+21628181314"," Je suis désolé, mais votre demande a été rejetée.  ");
+        $idannrecru = $candidature->getIdannrecru();
 
-    } else {
-        // Handle invalid decision, throw an exception, or return an appropriate response.
-        throw new \InvalidArgumentException('Invalid decision');
+        if ($idannrecru && $idannrecru->getNbPosteRecherche() != 0) {
+            if ($decision === 'accept') {
+                if (!$candidature->isArchived() && !$candidature->isStatuscandidature()) {
+                    $twilioService->sendSMS("+21628181314", "Félicitations, vous êtes accepté !");
+                    $candidature->setStatuscandidature(true);
+                    $candidature->setArchived(true);
+
+                    $annoncerecrutement = $candidature->getIdannrecru();
+
+                    // Réduire le nombre de postes disponibles
+                    $newAvailableSeats = max(0, $annoncerecrutement->getNbPosteRecherche() - 1);
+                    $annoncerecrutement->setNbPosteRecherche($newAvailableSeats);
+
+                    $entityManager->persist($annoncerecrutement);
+                    $entityManager->persist($candidature);
+                    $entityManager->flush();
+                }
+            } elseif ($decision === 'refuse') {
+                $candidature->setStatuscandidature(false);
+                $candidature->setArchived(true);
+                $entityManager->persist($candidature);
+                $entityManager->flush();
+                $twilioService->sendSMS("+21628181314", "Je suis désolé, mais votre demande a été rejetée.");
+            } else {
+                // Gérer une décision invalide, lancer une exception ou renvoyer une réponse appropriée.
+                throw new \InvalidArgumentException('Invalid decision');
+            }
+
+            // Filtrer les annonces par date ascendant
+           // $annoncesDateAsc = $this->getDoctrine()->getRepository(Annoncerecrutement::class)->filterByDateOrAlphabetical('date', 'asc');
+
+            // Filtrer les annonces par ordre alphabétique descendant
+          //  $annoncesAlphabeticalDesc = $this->getDoctrine()->getRepository(Annoncerecrutement::class)->filterByDateOrAlphabetical('alphabetique', 'desc');
+        } else {
+            $this->addFlash('danger', 'Vous avez atteint le nombre maximum d\'acceptations pour cette annonce.');
+        }
+
+        return $this->redirectToRoute('app_candidature_index');
     }
-}else {
-    $this->addFlash('danger', 'vous avez ateint le nombre maximum de l\'acceptation de cette annonces ');
-}
-    return $this->redirectToRoute('app_candidature_index');
 }
 // #[Route('/confirm_candidature/{id}', name: 'confirm_candidature', methods: ['GET', 'POST'])]
 // public function confirmCandidature($id, Request $request, ?string $decision, EntityManagerInterface $entityManager, AnnoncerecrutementRepository $annoncerecrutementRepository): Response
@@ -279,4 +291,4 @@ if($candidature->getIdannrecru()->getNbPosteRecherche()!=0){
 
 
 
-}
+
