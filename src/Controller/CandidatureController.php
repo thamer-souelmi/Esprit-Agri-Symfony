@@ -217,7 +217,7 @@ public function showRelatedCandidatures(int $idRecrut, CandidatureRepository $ca
         if ($idannrecru && $idannrecru->getNbPosteRecherche() != 0) {
             if ($decision === 'accept') {
                 if (!$candidature->isArchived() && !$candidature->isStatuscandidature()) {
-                    $twilioService->sendSMS("+21628181314", "Félicitations, vous êtes accepté !");
+                 //   $twilioService->sendSMS("+21628181314", "Félicitations, vous êtes accepté !");
                     $candidature->setStatuscandidature(true);
                     $candidature->setArchived(true);
 
@@ -226,7 +226,7 @@ public function showRelatedCandidatures(int $idRecrut, CandidatureRepository $ca
                     // Réduire le nombre de postes disponibles
                     $newAvailableSeats = max(0, $annoncerecrutement->getNbPosteRecherche() - 1);
                     $annoncerecrutement->setNbPosteRecherche($newAvailableSeats);
-
+                   
                     $entityManager->persist($annoncerecrutement);
                     $entityManager->persist($candidature);
                     $entityManager->flush();
@@ -236,7 +236,7 @@ public function showRelatedCandidatures(int $idRecrut, CandidatureRepository $ca
                 $candidature->setArchived(true);
                 $entityManager->persist($candidature);
                 $entityManager->flush();
-                $twilioService->sendSMS("+21628181314", "Je suis désolé, mais votre demande a été rejetée.");
+             //   $twilioService->sendSMS("+21628181314", "Je suis désolé, mais votre demande a été rejetée.");
             } else {
                 // Gérer une décision invalide, lancer une exception ou renvoyer une réponse appropriée.
                 throw new \InvalidArgumentException('Invalid decision');

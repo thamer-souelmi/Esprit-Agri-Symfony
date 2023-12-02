@@ -175,17 +175,17 @@ class Candidature
         return $this;
     }
 
-    // public function getIdannrecru(): ?Annoncerecrutement
-    // {
-    //     return $this->idannrecru;
-    // }
+    public function getIdannrecru(): ?Annoncerecrutement
+{
+         return $this->idannrecru;
+    }
 
-    // public function setIdannrecru(?Annoncerecrutement $idannrecru): static
-    // {
-    //     $this->idannrecru = $idannrecru;
+    public function setIdannrecru(?Annoncerecrutement $idannrecru): static
+    {
+        $this->idannrecru = $idannrecru;
 
-    //     return $this;
-    // }
+        return $this;
+    }
 
 
     public function getUser(): ?User

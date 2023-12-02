@@ -125,8 +125,8 @@ class User implements UserInterface//, TwoFactorInterface
 
    
 
-    #[ORM\OneToMany(mappedBy: "user", targetEntity: Annoncerecrutement::class)]
-    private Collection $annonces;
+    // #[ORM\OneToMany(mappedBy: "user", targetEntity: Annoncerecrutement::class)]
+    // private Collection $annonces;
 
 
     
@@ -390,6 +390,7 @@ class User implements UserInterface//, TwoFactorInterface
                 $reclamation->setUser(null);
             }
         }
+    }
 
     public function getAnnonces(): Collection
     {
@@ -398,8 +399,8 @@ class User implements UserInterface//, TwoFactorInterface
 
 
 
-        return $this;
-    }
+     //   return $this;
+   // }
     public function getGoogleID(): ?string
     {
         return $this->googleID;

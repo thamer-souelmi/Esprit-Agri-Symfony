@@ -31,6 +31,12 @@ class AnnoncerecrutementController extends AbstractController
         // Archivez les annonces non archivées
         foreach ($annoncerecrutements as $annonce) {
             $annonce->setArchivedA(false);
+            
+            // Vérifier si le nombre de postes disponibles est égal à zéro
+            if ($annonce->getNbPosteRecherche() === 0) {
+                $annonce->setArchivedA(true);
+            }
+        
             $entityManager->persist($annonce);
         }
 

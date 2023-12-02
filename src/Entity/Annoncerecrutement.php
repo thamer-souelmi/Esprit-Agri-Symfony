@@ -47,9 +47,10 @@
         private ?int $nbPosteRecherche;
 
         #[ORM\Column(name: "filter1", length: 255)]
-private ?string $filter1 ;
-#[ORM\Column(name: "archivedA")]
-private ?bool $archivedA ;
+        private ?string $filter1 ;
+            
+        #[ORM\Column(name: "archivedA")]
+        private ?bool $archivedA ;
 
         #[ORM\OneToMany(mappedBy: "idannrecru", targetEntity: Candidature::class)]
         private Collection $candidatures;
@@ -63,7 +64,7 @@ private ?bool $archivedA ;
     {
         $this->candidatures = new ArrayCollection();
     }
->>>>>>> 7268abaacaabe26ee5281d6e4f216470f1d6abab
+
 
         public function getIdRecrut(): ?int
         {
@@ -160,9 +161,12 @@ private ?bool $archivedA ;
             return $this->nbPosteRecherche;
         }
 
-        public function setNbPosteRecherche(int $nbPosteRecherche): static
+        public function setNbPosteRecherche(int $nbPosteRecherche): self
         {
             $this->nbPosteRecherche = $nbPosteRecherche;
+            if ($this->nbPosteRecherche <= 0) {
+                $this->archivedA = true;
+            }
 
             return $this;
         }
@@ -188,7 +192,10 @@ private ?bool $archivedA ;
             $this->archivedA = $archived;
             return $this;
         }
-
+        public function getArchivedA(): ?bool
+        {
+            return $this->archivedA;
+        }
         /**
          * @return Collection|Candidature[]
          */
@@ -196,6 +203,7 @@ private ?bool $archivedA ;
         {
             return $this->candidatures;
         }
+      
 
         public function getCandidaturesCount(): int
     {
