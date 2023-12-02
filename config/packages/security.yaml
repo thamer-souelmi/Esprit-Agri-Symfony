@@ -7,6 +7,10 @@ security:
             algorithm: plaintext
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: mail
         users_in_database:
             entity:
                 class: App\Entity\User
@@ -17,8 +21,11 @@ security:
             security: false
         main:
             lazy: true
-            provider: users_in_database
-            custom_authenticator: App\Security\UserAuthenticator
+            provider: app_user_provider
+            entry_point: App\Security\UserAuthenticator
+            custom_authenticators:
+                        - App\Security\UserAuthenticator
+                        - App\Security\GoogleAuthenticator
             logout:
                 path: app_logout
                 target: app_login
@@ -30,7 +37,11 @@ security:
                 lifetime: 604800
                 path: /
                 always_remember_me: true
-            
+            two_factor:
+                auth_form_path: 2fa_login    # The route name you have used in the routes.yaml
+                check_path: 2fa_login_check  # The route name you have used in the routes.yaml
+           
+        
             
         
 
@@ -51,7 +62,7 @@ security:
         - { path: ^/admin, roles: 'admin' }
         - { path: ^/agriculteur, roles: 'agriculteur' }
         - { path: ^/user, roles: 'IS_AUTHENTICATED_FULLY' }
-            
+        - { path: ^/2fa, role: IS_AUTHENTICATED_2FA_IN_PROGRESS }    
     
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }

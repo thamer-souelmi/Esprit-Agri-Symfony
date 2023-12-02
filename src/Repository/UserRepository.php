@@ -97,12 +97,31 @@ public function findUsersWithMoreThanTwoReclamations(): array
     $entityManager = $this->getEntityManager();
 
     $query = $entityManager->createQuery('
-            SELECT u.id, u.nom, u.prenom,u.image, COUNT(r.id) AS reclamationsCount
+            SELECT u.id, u.nom, u.prenom,u.image,u.isBanned ,COUNT(r.id) AS reclamationsCount
             FROM App\Entity\User u
-            JOIN u.products p
+            JOIN u.produits p
             JOIN p.reclamations r
+            where u.isBanned = 0
             GROUP BY u.id, u.nom, u.prenom
             HAVING COUNT(r.id) > 2
+            
+        ');
+
+    return $query->getResult();
+}
+public function findUsersWithMoreThanTwoReclamations1(): array
+{
+    $entityManager = $this->getEntityManager();
+
+    $query = $entityManager->createQuery('
+            SELECT u.id, u.nom, u.prenom,u.image,u.isBanned ,COUNT(r.id) AS reclamationsCount
+            FROM App\Entity\User u
+            JOIN u.produits p
+            JOIN p.reclamations r
+            where u.isBanned = 1
+            GROUP BY u.id, u.nom, u.prenom
+            HAVING COUNT(r.id) > 2
+            
         ');
 
     return $query->getResult();

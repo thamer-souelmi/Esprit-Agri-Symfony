@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo ;
+
 use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
 #[ORM\Table(name: '`produit`')]
@@ -46,15 +48,23 @@ class Produit
 
     #[ORM\Column]
     private ?string $image = null;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Gedmo\Timestampable(on: "create")]
+    private ?\DateTimeInterface $dateajout = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Gedmo\Timestampable(on: "update")]
+    private ?\DateTimeInterface $datemodif = null;
+
+    #[ORM\ManyToOne(inversedBy: 'produits')]
+    private ?User $user = null;
+
+    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Reclamation::class)]
+    private Collection $reclamations;
 
 
     
-#[ORM\ManyToOne(targetEntity: "App\Entity\User", inversedBy: "produits")]
-#[ORM\JoinColumn(nullable: false)]
-private ?User $user = null;
 
-#[ORM\OneToMany(mappedBy: 'produit', targetEntity: Reclamation::class)]
-private Collection $reclamations;
 
 public function __construct()
 {
@@ -160,17 +170,7 @@ public function __construct()
     }
 
    
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
-
-        return $this;
-    }
+  
 
     // /**
     //  * @return Collection<int, Reclamation>
@@ -201,43 +201,57 @@ public function __construct()
 
     //     return $this;
     // }
-    public function getUserId(): ?int
-{
-    return $this->user ? $this->user->getId() : null;
-}
-
-    /**
-     * @return Collection<int, Reclamation>
-     */
-    public function getReclamations(): Collection
+   
+    public function getDateajout(): ?\DateTimeInterface
     {
-        return $this->reclamations;
+        return $this->dateajout;
+    }
+  public function getDatemodif(): ?\DateTimeInterface
+    {
+        return $this->datemodif;
     }
 
-    public function addReclamation(Reclamation $reclamation): static
-    {
-        if (!$this->reclamations->contains($reclamation)) {
-            $this->reclamations->add($reclamation);
-            $reclamation->setProduit($this);
-        }
+  public function getUser(): ?User
+  {
+      return $this->user;
+  }
 
-        return $this;
-    }
+  public function setUser(?User $user): static
+  {
+      $this->user = $user;
 
-    public function removeReclamation(Reclamation $reclamation): static
-    {
-        if ($this->reclamations->removeElement($reclamation)) {
-            // set the owning side to null (unless already changed)
-            if ($reclamation->getProduit() === $this) {
-                $reclamation->setProduit(null);
-            }
-        }
+      return $this;
+  }
 
-        return $this;
-    }
+  /**
+   * @return Collection<int, Reclamation>
+   */
+  public function getReclamations(): Collection
+  {
+      return $this->reclamations;
+  }
 
-  
+  public function addReclamation(Reclamation $reclamation): static
+  {
+      if (!$this->reclamations->contains($reclamation)) {
+          $this->reclamations->add($reclamation);
+          $reclamation->setProduit($this);
+      }
 
+      return $this;
+  }
+
+  public function removeReclamation(Reclamation $reclamation): static
+  {
+      if ($this->reclamations->removeElement($reclamation)) {
+          // set the owning side to null (unless already changed)
+          if ($reclamation->getProduit() === $this) {
+              $reclamation->setProduit(null);
+          }
+      }
+
+      return $this;
+  }
 
 
 
