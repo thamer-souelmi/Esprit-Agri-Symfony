@@ -14,47 +14,61 @@
 		<div class="row mb-3">
 			<label for="inputDate" class="col-sm-4 col-form-label">Catégorie</label>
 			<div class="col-sm-10">
-				{{ form_widget(form.category, {'attr': {'class': 'form-control'}}) }}
+				{{ form_widget(form.category, {'attr': {'class': 'form-control ' ~ (form.category.vars.errors|length > 0 ? 'is-invalid' : '')}}) }}
+				{{ form_errors(form.category, {'attr': {'class': 'text-danger'}}) }}
 			</div>
-			{{ form_errors(form.category, {'attr': {'class': 'text-danger'}}) }}
 		</div>
 
 		<div class="row mb-3">
 			<label for="inputEmail" class="col-sm-4 col-form-label">Libellé</label>
 			<div class="col-sm-10">
-				{{ form_widget(form.libelle, {'attr': {'class': 'form-control'}}) }}
+				{{ form_widget(form.libelle, {'attr': {'class': 'form-control ' ~ (form.libelle.vars.errors|length > 0 ? 'is-invalid' : '')}}) }}
+				{{ form_errors(form.libelle, {'attr': {'class': 'text-danger'}}) }}
 			</div>
-			{{ form_errors(form.libelle, {'attr': {'class': 'text-danger'}}) }}
 		</div>
-		<div class="row mb-3">
-			<label for="inputPassword" class="col-sm-4 col-form-label">Date Plantation</label>
-			<div class="col-sm-10">
-				{{ form_widget(form.dateplantation, {'attr': {'class': 'form-control'}}) }}
+
+
+		{# <div class="row mb-3">
+							<label for="inputPassword" class="col-sm-4 col-form-label">Date Plantation</label>
+							<div class="col-sm-10">
+								{{ form_widget(form.dateplantation, {'attr': {'class': 'form-control ' ~ (form.dateplantation.vars.errors|length > 0 ? 'is-invalid' : '')}}) }}
+								{{ form_errors(form.dateplantation, {'attr': {'class': 'text-danger'}}) }}
+							</div>
+						</div> #}
+
+
+		<div class="col-sm-10">
+			<div class="row mb-3">
+				<label for="inputDate" class="col-sm-4 col-form-label">Date Plantation</label>
+				{{ form_widget(form.dateplantation,{'attr':{'class':'form-control'}}) }}
 			</div>
-			{{ form_errors(form.dateplantation, {'attr': {'class': 'text-danger'}}) }}
+			{{ form_errors(form.dateplantation,{'attr':{'class':'text-danger'}}) }}
 		</div>
-		<div class="row mb-3">
-			<label for="inputEmail" class="col-sm-4 col-form-label">Date Récolte</label>
-			<div class="col-sm-10">
-				{{ form_widget(form.daterecolte, {'attr': {'class': 'form-control'}}) }}
+
+
+		<div class="col-sm-10">
+			<div class="row mb-3">
+				<label for="inputDate" class="col-sm-4 col-form-label">Date Récolte</label>
+				{{ form_widget(form.daterecolte,{'attr':{'class':'form-control'}}) }}
 			</div>
-			{{ form_errors(form.daterecolte, {'attr': {'class': 'text-danger'}}) }}
+			{{ form_errors(form.daterecolte,{'attr':{'class':'text-danger'}}) }}
 		</div>
+
 
 		<div class="col-sm-10">
 			<div class="row mb-3">
 				<label for="inputDate" class="col-sm-4 col-form-label">Revenues Cultures</label>
-				{{ form_widget(form.revenuescultures, {'attr': {'class': 'form-control'}}) }}
+				{{ form_widget(form.revenuescultures, {'attr': {'class': 'form-control ' ~ (form.revenuescultures.vars.errors|length > 0 ? 'is-invalid' : '')}}) }}
+				{{ form_errors(form.revenuescultures, {'attr': {'class': 'text-danger'}}) }}
 			</div>
-			{{ form_errors(form.revenuescultures, {'attr': {'class': 'text-danger'}}) }}
 		</div>
 
 		<div class="row mb-3">
 			<label for="inputDate" class="col-sm-4 col-form-label">Couts Plantations</label>
 			<div class="col-sm-10">
-				{{ form_widget(form.coutsplantations, {'attr': {'class': 'form-control'}}) }}
+				{{ form_widget(form.coutsplantations, {'attr': {'class': 'form-control ' ~ (form.coutsplantations.vars.errors|length > 0 ? 'is-invalid' : '')}}) }}
+				{{ form_errors(form.coutsplantations, {'attr': {'class': 'text-danger'}}) }}
 			</div>
-			{{ form_errors(form.coutsplantations, {'attr': {'class': 'text-danger'}}) }}
 		</div>
 
 		<br/>

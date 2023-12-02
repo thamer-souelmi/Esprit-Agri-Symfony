@@ -30,13 +30,10 @@ class CultureRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(Culture $entity, bool $flush = false): void
+    public function remove(Culture $culture): void
     {
-        $this->getEntityManager()->remove($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+        $this->_em->remove($culture);
+        $this->_em->flush();
     }
 
     // Example of a custom query method to find entities by string

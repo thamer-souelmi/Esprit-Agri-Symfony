@@ -1,0 +1,94 @@
+{% extends 'prod.html.twig' %}
+{% block banner_image %}
+{{ asset('img/still-life-black-background.jpg') }}
+{% endblock %}
+{% block product_heading %}
+    <h1 class="display-3 text-white mb-4 animated slideInDown">Reclamation</h1>
+{% endblock %}
+
+{% block title %}Reclamations{% endblock %}
+
+{% block body %}
+    <h1>Reclamations</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Description</th>
+                <th>Dateajout</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for reclamation in pagination %}
+            <tr>
+                <td>{{ reclamation.id }}</td>
+                <td>{{ reclamation.description }}</td>
+                <td>{{ reclamation.dateajout ? reclamation.dateajout|date('Y-m-d') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_reclamation_edit', {'id': reclamation.id}) }}">Modifier</a>
+                    {{ include('reclamation/_delete_form.html.twig') }}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">0 Reclamation</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <a class="nav-link" href="{{ path('app_reclamation_index') }}">
+
+						<span>retour</span>
+					</a>
+       {# Pagination #}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="text-center">
+                {{ knp_pagination_render(pagination) }}
+            </div>
+        </div>
+    </div>
+
+    {# style of pagination #}
+<style>
+	.pagination {
+		display: flex;
+		justify-content: center;
+		list-style: none;
+		padding: 0;
+	}
+
+	.pagination li {
+		margin: 0 5px;
+	}
+
+	.button-container {
+		display: flex;
+		flex-direction: row;
+		overflow-x: auto;
+		white-space: nowrap;
+	}
+
+
+	.button-container button {
+		margin-right: 10px; /* Espacement entre les boutons */
+	}
+
+	.pagination a {
+		text-decoration: none;
+		padding: 5px 10px;
+		border: 1px solid #404a3d; /* Bleu */
+		border-radius: 3px;
+		color: #404a3d; /* Bleu */
+	}
+
+	.pagination a:hover {
+		background-color: #404a3d; /* Bleu au survol */
+		color: #fff; /* Texte blanc au survol */
+	}
+</style>
+
+    
+{% endblock %}

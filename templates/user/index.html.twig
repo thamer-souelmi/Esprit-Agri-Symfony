@@ -3,9 +3,24 @@
 {% block body %}
    <!-- Page Heading -->
     <h1 class="h3 mb-2 text-gray-800">Tables Des Utilisateurs</h1>
+    	<div class="card">
+		<div class="card-body">
+			<h5 class="card-title"></h5>
+			<div class="row">
+				<div class="col">
+					<input type="text" value="" class="form-control" placeholder="Recherche de Nom" id="searchNom">
+				</div>
+				<div class="col">
+					<input type="text" value="" class="form-control" placeholder="Recherche de Prenom" id="searchLibelle">
+				</div>
+				
+				<div class="col">
+					<input type="text" value="" class="form-control" placeholder="Recherche d'Email" id="searchRevenuesCultures">
+				</div>
+			</div>
+		</div>
     
     <!-- DataTales Example -->
-    
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -14,16 +29,16 @@
                             
                             <th>Nom</th>
                             <th>Prenom</th>
-                            <th>Mail</th>
+                            <th>Email</th>
                             
                             <th>Role</th>
                             <th>Image</th>
                             <th>Actions</th>
-                            <th>Modif</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for user in users %}
+                        {% for user in pagination %}
+                        
                         <tr>
                             
                             <td>{{ user.nom }}</td>
@@ -31,13 +46,89 @@
                             <td>{{ user.mail }}</td>
                             <td>{{ user.role }}</td>
                             <td><img src="{{ asset('img/' ~ user.image) }}" alt="User Image" style="max-width:100px;max-height:100px;"></td>
-                            <td>{{ include('user/_delete_form.html.twig') }}</td>
-                            <td><<a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a></td>
+                            <td>
+                            <a href="{{ path('app_user_show', {'id': user.id}) }}"class="btn btn-success">Detail</a></td>
+                           
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
             </div>
         </div>
-    
+   {# Pagination #}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="text-center">
+                {{ knp_pagination_render(pagination) }}
+            </div>
+        </div>
+    </div>
+
+    {# style of pagination #}
+<style>
+	.pagination {
+		display: flex;
+		justify-content: center;
+		list-style: none;
+		padding: 0;
+	}
+
+	.pagination li {
+		margin: 0 5px;
+	}
+
+	.button-container {
+		display: flex;
+		flex-direction: row;
+		overflow-x: auto;
+		white-space: nowrap;
+	}
+
+
+	.button-container button {
+		margin-right: 10px; /* Espacement entre les boutons */
+	}
+
+	.pagination a {
+		text-decoration: none;
+		padding: 5px 10px;
+		border: 1px solid #404a3d; /* Bleu */
+		border-radius: 3px;
+		color: #404a3d; /* Bleu */
+	}
+
+	.pagination a:hover {
+		background-color: #404a3d; /* Bleu au survol */
+		color: #fff; /* Texte blanc au survol */
+	}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+	$(document).ready(function () { // Function to perform the search based on the specified column
+function searchColumn(columnIndex, value) {
+$("#dataTable tbody tr").filter(function () {
+var cellText = $(this).find("td").eq(columnIndex).text().toLowerCase();
+var found = cellText.indexOf(value) > -1;
+$(this).toggle(found);
+});
+}
+
+// Event handlers for each input element
+$("#searchNom").on("keyup", function () {
+searchColumn(0, $(this).val().toLowerCase());
+});
+
+$("#searchLibelle").on("keyup", function () {
+searchColumn(1, $(this).val().toLowerCase());
+});
+
+
+
+$("#searchRevenuesCultures").on("keyup", function () {
+searchColumn(2, $(this).val().toLowerCase());
+});
+});
+</script>
+
 {% endblock %}

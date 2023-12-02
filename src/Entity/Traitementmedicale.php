@@ -6,12 +6,8 @@ use Doctrine\DBAL\Types\Types;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Traitementmedicale
- *
- * @ORM\Table(name="traitementmedicale")
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: TraitementmedicaleRepository::class)]
+
 class Traitementmedicale
 {
     #[ORM\Id]

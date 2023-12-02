@@ -1,0 +1,13 @@
+{% extends 'baseback.html.twig' %}
+
+
+{% block title %}Edit Categorie
+{% endblock %}
+
+{% block body %}
+	<h1>Edit Category</h1>
+
+	{{ include('category/_form.html.twig', {'button_label': 'Update'}) }}
+
+	<a href="{{ path('app_categoryback_index') }}" class="btn btn-primary">back to list</a>
+{% endblock %}
