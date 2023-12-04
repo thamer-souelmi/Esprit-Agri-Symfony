@@ -2,141 +2,124 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use App\Repository\AnnoncerecrutementRepository;
-
-use Doctrine\Common\Collections\ArrayCollection;
-
-use Doctrine\Common\Collections\Collection;
-<<<<<<< HEAD
-=======
-
-use Doctrine\Common\Collections\ArrayCollection;
-
-
 use Doctrine\DBAL\Types\Types;
->>>>>>> 7268abaacaabe26ee5281d6e4f216470f1d6abab
+use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: AnnoncerecrutementRepository::class)]
-#[ORM\Table(name: "annoncerecrutement")]
+/**
+ * Annoncerecrutement
+ *
+ * @ORM\Table(name="annoncerecrutement")
+ * @ORM\Entity
+ */
 class Annoncerecrutement
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(name: "idRecrut")]
-    private ?int $idRecrut = null;
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="idRecurt", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idrecurt;
 
-<<<<<<< HEAD
-    #[ORM\Column( length: 255)]
-    private ?String $posteDemande = null;
-=======
-    #[ORM\Column(length: 255)]
-    private ?string $posteDemande = null;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="posteDemande", type="string", length=255, nullable=false)
+     */
+    private $postedemande;
 
->>>>>>> 7268abaacaabe26ee5281d6e4f216470f1d6abab
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="salairePropose", type="float", precision=10, scale=0, nullable=false)
+     */
+    private $salairepropose;
 
-    #[ORM\Column(precision: 10, scale: 0)]
-    private ?float $salairePropose = null;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="typeContrat", type="string", length=0, nullable=false)
+     */
+    private $typecontrat;
 
-<<<<<<< HEAD
-    #[ORM\Column( length:0)]
-    private ?String $typeContrat = null;
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="datePub", type="date", nullable=false)
+     */
+    private $datepub;
 
-    #[ORM\Column( type: Types::DATE_MUTABLE)]
-=======
-    #[ORM\Column(length: 0)]
-    private ?string $typeContrat = null;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="localisation", type="string", length=255, nullable=false)
+     */
+    private $localisation;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
->>>>>>> 7268abaacaabe26ee5281d6e4f216470f1d6abab
-    private ?\DateTimeInterface $datePub = null;
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dateEmbauche", type="date", nullable=false)
+     */
+    private $dateembauche;
 
-    #[ORM\Column(length: 25)]
-    private ?string $localisation = null;
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="nbPosteRecherche", type="integer", nullable=false)
+     */
+    private $nbposterecherche;
 
-
-
-     #[ORM\Column(nullable: true)]
-    private ?\DateTimeInterface $dateEmbauche;
-
-
-    #[ORM\Column()]
-    private ?int $nbPosteRecherche;
-
-<<<<<<< HEAD
-   
-
-    #[ORM\OneToMany(mappedBy:"Annoncerecrutement",targetEntity:Candidature::class)]
-    private Collection $candidatures;
-=======
-    #[ORM\Column]
-
-    private  ?bool $archived = false;
-
-    #[ORM\OneToMany(mappedBy: "idannrecru", targetEntity: Candidature::class)]
-    private Collection $candidatures;
-
-
-    #[ORM\ManyToOne(targetEntity: User::class)]
-#[ORM\JoinColumn(name: "user_id", referencedColumnName: "id")]
-private ?User $user;
-
-
-    public function __construct()
+    public function getIdrecurt(): ?int
     {
-        $this->candidatures = new ArrayCollection();
-    }
->>>>>>> 7268abaacaabe26ee5281d6e4f216470f1d6abab
-
-    public function getIdRecrut(): ?int
-    {
-        return $this->idRecrut;
+        return $this->idrecurt;
     }
 
-    public function getPosteDemande(): ?string
+    public function getPostedemande(): ?string
     {
-        return $this->posteDemande;
+        return $this->postedemande;
     }
 
-    public function setPosteDemande(string $posteDemande): static
+    public function setPostedemande(string $postedemande): static
     {
-        $this->posteDemande = $posteDemande;
+        $this->postedemande = $postedemande;
 
         return $this;
     }
 
-    public function getSalairePropose(): ?float
+    public function getSalairepropose(): ?float
     {
-        return $this->salairePropose;
+        return $this->salairepropose;
     }
 
-    public function setSalairePropose(float $salairePropose): static
+    public function setSalairepropose(float $salairepropose): static
     {
-        $this->salairePropose = $salairePropose;
+        $this->salairepropose = $salairepropose;
 
         return $this;
     }
 
-    public function getTypeContrat(): ?string
+    public function getTypecontrat(): ?string
     {
-        return $this->typeContrat;
+        return $this->typecontrat;
     }
 
-    public function setTypeContrat(string $typeContrat): static
+    public function setTypecontrat(string $typecontrat): static
     {
-        $this->typeContrat = $typeContrat;
+        $this->typecontrat = $typecontrat;
 
         return $this;
     }
 
-    public function getDatePub(): ?\DateTimeInterface
+    public function getDatepub(): ?\DateTimeInterface
     {
-        return $this->datePub;
+        return $this->datepub;
     }
 
-    public function setDatePub(\DateTimeInterface $datePub): static
+    public function setDatepub(\DateTimeInterface $datepub): static
     {
-        $this->datePub = $datePub;
+        $this->datepub = $datepub;
 
         return $this;
     }
@@ -153,97 +136,29 @@ private ?User $user;
         return $this;
     }
 
-    public function getDateEmbauche(): ?\DateTimeInterface
+    public function getDateembauche(): ?\DateTimeInterface
     {
-        return $this->dateEmbauche;
+        return $this->dateembauche;
     }
 
-    public function setDateEmbauche(\DateTimeInterface $dateEmbauche): static
+    public function setDateembauche(\DateTimeInterface $dateembauche): static
     {
-        $this->dateEmbauche = $dateEmbauche;
+        $this->dateembauche = $dateembauche;
 
         return $this;
     }
 
-    public function getNbPosteRecherche(): ?int
+    public function getNbposterecherche(): ?int
     {
-        return $this->nbPosteRecherche;
+        return $this->nbposterecherche;
     }
 
-    public function setNbPosteRecherche(int $nbPosteRecherche): static
+    public function setNbposterecherche(int $nbposterecherche): static
     {
-        $this->nbPosteRecherche = $nbPosteRecherche;
+        $this->nbposterecherche = $nbposterecherche;
 
         return $this;
     }
 
-<<<<<<< HEAD
 
-    public function getIdUser(): ?User
-    {
-        return $this->idUser;
-    }
-
-    public function setIdUser(?User $idUser): static
-    {
-        $this->idUser = $idUser;
-
-    //     return $this;
-    // }
-}
-=======
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): static
-    {
-        $this->user = $user;
-        return $this;
-    }
-
-    public function isArchived(): bool
-    {
-        return $this->archived;
-    }
-
-    public function setArchived(bool $archived): self
-    {
-        $this->archived = $archived;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Candidature[]
-     */
-    public function getCandidatures(): Collection
-    {
-        return $this->candidatures;
-    }
-
-    public function addCandidature(Candidature $candidature): self
-    {
-        if (!$this->candidatures->contains($candidature)) {
-            $this->candidatures[] = $candidature;
-            $candidature->setIdannrecru($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCandidature(Candidature $candidature): self
-    {
-        if ($this->candidatures->removeElement($candidature)) {
-            // set the owning side to null (unless already changed)
-            if ($candidature->getIdannrecru() === $this) {
-                $candidature->setIdannrecru(null);
-            }
-        }
-
-        return $this;
-    }
-
->>>>>>> 7268abaacaabe26ee5281d6e4f216470f1d6abab
 }

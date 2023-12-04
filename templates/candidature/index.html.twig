@@ -1,106 +1,39 @@
-{% extends 'condi.html.twig' %}
+{% extends 'base.html.twig' %}
+
+{% block title %}Candidature index{% endblock %}
 
 {% block body %}
-    <br>
-    <br>
+    <h1>Candidature index</h1>
 
-    <div class="row">
-        {% for candidature in pagination %}
-            <div class="col-md-4 mb-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Candidature {{ loop.index }}</h5>
-                        <ul class="list-group list-group-flush">
-                          
-                            <li class="list-group-item"><strong>Date de Candidature:</strong> {{ candidature.datecandidature ? candidature.datecandidature|date('Y-m-d') : '' }}</li>
-                            <li class="list-group-item"><strong>Expérience Professionnelle:</strong> {{ candidature.experienceprofessionnelle }}</li>
-                            <li class="list-group-item"><strong>Formation:</strong> {{ candidature.formation }}</li>
-                            <li class="list-group-item"><strong>Compétences Techniques:</strong> {{ candidature.competencestechniques }}</li>
-                            <li class="list-group-item"><strong>Message de motivation :</strong> {{ candidature.messagemotivation }}</li>
-                              {% if candidature.certifforma|lower ends with '.pdf' %}
-                                <li class="list-group-item"><strong>Certifications et Formations:</strong>
-                                    <a href="{{ asset('img/' ~ candidature.certifforma) }}" download="{{ candidature.certifforma }}">
-                                        Télécharger le fichier PDF
-                                    </a>
-                                </li>
-                            {% else %}
-                            <li class="list-group-item"><strong>Certifications et Formations:</strong>
-
-                                <div>
-                                    <a href="{{ asset('img/' ~ candidature.certifforma) }}" download="{{ candidature.certifforma }}">
-                                        Télécharger la photo
-                                    </a>
-                                </div>
-                            {% endif %}
-
-                        </ul>
-                        <div class="d-flex justify-content-between">
-                            <li class="list-group-item"><strong>Etat négociation :</strong>
-                           <a href="{{ path('confirm_candidature', {'id': candidature.idcandidature, 'decision': 'accept'}) }}" class="btn btn-primary" data-decision="accept">Accepter</a>
-
-<a href="{{ path('confirm_candidature', {'id': candidature.idcandidature, 'decision': 'refuse'}) }}" class="btn btn-primary" data-decision="refuse">Refuser</a>
-
-                            </li>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Idcandidature</th>
+                <th>Message motivation</th>
+                <th>Statuscandidature</th>
+                <th>Datecandidature</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for candidature in candidatures %}
+            <tr>
+                <td>{{ candidature.idcandidature }}</td>
+                <td>{{ candidature.messagemotivation }}</td>
+                <td>{{ candidature.statuscandidature }}</td>
+                <td>{{ candidature.datecandidature ? candidature.datecandidature|date('Y-m-d') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_candidature_show', {'idcandidature': candidature.idcandidature}) }}">show</a>
+                    <a href="{{ path('app_candidature_edit', {'idcandidature': candidature.idcandidature}) }}">edit</a>
+                </td>
+            </tr>
         {% else %}
-            <div class="col-md-12">
-                <p>no records found</p>
-            </div>
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
         {% endfor %}
-    </div>
-    <a href="{{ path('app_annoncerecrutement_index') }}">Retour au annonces </a>
+        </tbody>
+    </table>
 
-
-
-
-    {# Pagination #}
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="text-center">
-                {{ knp_pagination_render(pagination) }}
-            </div>
-        </div>
-    </div>
-
-    {# style of pagination #}
-<style>
-	.pagination {
-		display: flex;
-		justify-content: center;
-		list-style: none;
-		padding: 0;
-	}
-
-	.pagination li {
-		margin: 0 5px;
-	}
-
-	.button-container {
-		display: flex;
-		flex-direction: row;
-		overflow-x: auto;
-		white-space: nowrap;
-	}
-
-
-	.button-container button {
-		margin-right: 10px; /* Espacement entre les boutons */
-	}
-
-	.pagination a {
-		text-decoration: none;
-		padding: 5px 10px;
-		border: 1px solid #404a3d; /* Bleu */
-		border-radius: 3px;
-		color: #404a3d; /* Bleu */
-	}
-
-	.pagination a:hover {
-		background-color: #404a3d; /* Bleu au survol */
-		color: #fff; /* Texte blanc au survol */
-	}
-</style>
+    <a href="{{ path('app_candidature_new') }}">Create new</a>
 {% endblock %}

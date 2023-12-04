@@ -6,12 +6,12 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Produit
+ * Marche
  *
- * @ORM\Table(name="produit")
+ * @ORM\Table(name="marche")
  * @ORM\Entity
  */
-class Produit
+class Marche
 {
     /**
      * @var int
@@ -32,7 +32,7 @@ class Produit
     /**
      * @var string
      *
-     * @ORM\Column(name="cat", type="string", length=30, nullable=false)
+     * @ORM\Column(name="cat", type="string", length=255, nullable=false)
      */
     private $cat;
 
@@ -51,16 +51,23 @@ class Produit
     private $qte;
 
     /**
-     * @var \DateTime
+     * @var string
      *
-     * @ORM\Column(name="desc", type="date", nullable=false)
+     * @ORM\Column(name="desc", type="string", length=200, nullable=false)
      */
     private $desc;
 
     /**
-     * @var bool
+     * @var \DateTime
      *
-     * @ORM\Column(name="status", type="boolean", nullable=false)
+     * @ORM\Column(name="dateajout", type="date", nullable=false)
+     */
+    private $dateajout;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="status", type="string", length=255, nullable=false)
      */
     private $status;
 
@@ -131,24 +138,36 @@ class Produit
         return $this;
     }
 
-    public function getDesc(): ?\DateTimeInterface
+    public function getDesc(): ?string
     {
         return $this->desc;
     }
 
-    public function setDesc(\DateTimeInterface $desc): static
+    public function setDesc(string $desc): static
     {
         $this->desc = $desc;
 
         return $this;
     }
 
-    public function isStatus(): ?bool
+    public function getDateajout(): ?\DateTimeInterface
+    {
+        return $this->dateajout;
+    }
+
+    public function setDateajout(\DateTimeInterface $dateajout): static
+    {
+        $this->dateajout = $dateajout;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
     {
         return $this->status;
     }
 
-    public function setStatus(bool $status): static
+    public function setStatus(string $status): static
     {
         $this->status = $status;
 

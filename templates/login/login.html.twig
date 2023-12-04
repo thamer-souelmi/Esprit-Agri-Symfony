@@ -21,7 +21,7 @@
 
 </head>
 
-<body style="background-color: #EDDD5E ; background-image: linear-gradient(180deg, #EDDD5E  10%, #404A3D 100%); background-size: cover;">
+<body class="bg-gradient-primary">
 
     <div class="container">
 
@@ -40,27 +40,16 @@
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                                     </div>
-                                    <form method="post">
-                                        {% if error %}
-                                            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-                                        {% endif %}
-
-                                        {% if app.user %}
-                                            <div class="mb-3">
-                                                You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
-
-                                            </div>
-                                        {% endif %}
-
-                                        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-                                        <label for="inputMail">Mail</label>
-                                        <input type="text" value="{{ last_username }}" name="mail" id="inputMail" class="form-control" autocomplete="username" required autofocus>
-                                        <label for="inputPassword">Password</label>
-                                        <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
-
-                                        <input type="hidden" name="_csrf_token"
-                                            value="{{ csrf_token('authenticate') }}"
-                                        >
+                                    <form method="post" action="{{ path('app_login') }}" class="user">
+                                        <div class="form-group">
+                                            <input type="email" class="form-control form-control-user" name="email"
+                                                id="exampleInputEmail" aria-describedby="emailHelp"
+                                                placeholder="Enter Email Address...">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="password" class="form-control form-control-user" name="password"
+                                                id="exampleInputPassword" placeholder="Password">
+                                        </div>
                                         <div class="form-group">
                                             <div class="custom-control custom-checkbox small">
                                                 <input type="checkbox" class="custom-control-input" id="customCheck">
@@ -72,7 +61,7 @@
                                             Login
                                         </button>
                                         <hr>
-                                        <a href="connect_google" class="btn btn-google btn-user btn-block">
+                                        <a href="#" class="btn btn-google btn-user btn-block">
                                             <i class="fab fa-google fa-fw"></i> Login with Google
                                         </a>
                                         <a href="#" class="btn btn-facebook btn-user btn-block">
@@ -81,7 +70,7 @@
                                     </form>
                                     <hr>
                                     <div class="text-center">
-                                        <a class="small" href="forgot-password.html">Mot de passe oublie?</a>
+                                        <a class="small" href="forgot-password.html">Forgot Password?</a>
                                     </div>
                                     <div class="text-center">
                                         <a class="small" href="register.html">Create an Account!</a>

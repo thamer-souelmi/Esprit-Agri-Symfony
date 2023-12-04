@@ -32,21 +32,21 @@ class Betail
     /**
      * @var string
      *
-     * @ORM\Column(name="categbetail", type="string", length=255, nullable=false)
+     * @ORM\Column(name="categbetail", type="string", length=0, nullable=false)
      */
     private $categbetail;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="race", type="string", length=255, nullable=false)
+     * @ORM\Column(name="race", type="string", length=0, nullable=false)
      */
     private $race;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="genre", type="string", length=255, nullable=false)
+     * @ORM\Column(name="genre", type="string", length=0, nullable=false)
      */
     private $genre;
 

@@ -5,7 +5,6 @@ namespace App\Repository;
 use App\Entity\Annoncerecrutement;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use App\Controller\AnnoncerecrutementController;
 
 /**
  * @extends ServiceEntityRepository<Annoncerecrutement>
@@ -22,35 +21,6 @@ class AnnoncerecrutementRepository extends ServiceEntityRepository
         parent::__construct($registry, Annoncerecrutement::class);
     }
 
-
-    public function searchByPosteContratLoca($query)    { 
-        
-
-        return $this->createQueryBuilder('AR')        
-            ->where('AR.postedemande LIKE :query OR AR.typecontrat LIKE :query OR AR.localisation LIKE :query')   
-                     ->setParameter('query', "%{$query}%")        
-                         ->getQuery()         
-                            ->getResult();    }
-
-    
-    
-                            
-                            public function isAnnReInUse(Annoncerecrutement $annoncerecrutement): bool
-                            {
-                                return $this->_em->getRepository(Annoncerecrutement::class)->findOneBy(['annoncerecrutement' => $annoncerecrutement]) !== null;
-                            }
-                     
-                        
-                       
-
-    /*public function save(Annoncerecrutement $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->persist($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }*/
 //    /**
 //     * @return Annoncerecrutement[] Returns an array of Annoncerecrutement objects
 //     */
