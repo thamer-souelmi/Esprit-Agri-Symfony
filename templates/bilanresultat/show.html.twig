@@ -86,6 +86,18 @@
                 <th style="text-align: center; font-weight: bold; text-decoration: none; color: black;">Total Coûts et Charges</th>
                 <td style="text-align: center; font-weight: bold; color: black;">{{ productionCosts+totalOperatingExpenses }}</td>
             </tr>
+            <tr>
+                <th style="text-align: center; font-weight: bold; text-decoration: none; color: black;">BÉNÉFICE AVANT IMPÔTS</th>
+                <td style="text-align: center; font-weight: bold; color: black;">{{ totalRevenus-(productionCosts+totalOperatingExpenses) }}</td>
+            </tr>
+            <tr>
+                <th style="text-align: center; font-weight: bold; text-decoration: none; color: black;">Impôts sur le revenu</th>
+                <td style="text-align: center; font-weight: bold; color: black;">{{ (totalRevenus-(productionCosts+totalOperatingExpenses))*0.1 }}</td>
+            </tr>
+            <tr>
+                <th style="text-align: center; font-weight: bold; text-decoration: none; color: black;">RESULTAT NET DE L’EXERCICE</th>
+                <td style="text-align: center; font-weight: bold; color: black;">{{ (totalRevenus-(productionCosts+totalOperatingExpenses))-((totalRevenus-(productionCosts+totalOperatingExpenses))*0.1) }}</td>
+            </tr>
         </tbody>
    </table>
 
@@ -96,9 +108,19 @@
 						<i class="fas fa-arrow-left"></i>
 					</span>
 				</a>
-                <a href="{{ path('app_bilanresultat_show', {'idbilanr': bilanresultat.idbilanr}) }}" class="btn btn-outline-warning ">
+                <a href="{{ path('generate_pdf_R', {'idbilanr': bilanresultat.idbilanr}) }}" class="btn btn-outline-warning ">
                     <span class="icon text-primary-600">
                         <i class="fas fa-print"></i> 
+                    </span>
+                </a>
+                <a href="{{ path('app_bilanresultat_show_euro', {'idbilanr': bilanresultat.idbilanr}) }}" class="btn btn-outline-warning ">
+                    <span class="icon text-primary-600">
+                        <i class="fas fa-arrow-repeat">EURO 
+                    </span>
+                </a>
+                <a href="{{ path('app_bilanresultat_show_usd', {'idbilanr': bilanresultat.idbilanr}) }}" class="btn btn-outline-warning ">
+                    <span class="icon text-primary-600">
+                        <i class="fas fa-arrow-repeat">USD 
                     </span>
                 </a>
 			</div>

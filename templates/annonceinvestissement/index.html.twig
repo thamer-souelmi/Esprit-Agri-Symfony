@@ -17,6 +17,75 @@
     {% endfor %}
     
 {% include 'annonceinvestissement/flash_messages.html.twig' %}
+<!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container">
+  <div class="tradingview-widget-container__widget"></div>
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+  {
+  "symbols": [
+    {
+      "proName": "FOREXCOM:SPXUSD",
+      "title": "S&P 500"
+    },
+    {
+      "proName": "FOREXCOM:NSXUSD",
+      "title": "US 100"
+    },
+    {
+      "proName": "FX_IDC:EURUSD",
+      "title": "EUR to USD"
+    },
+    {
+      "proName": "BITSTAMP:BTCUSD",
+      "title": "Bitcoin"
+    },
+    {
+      "proName": "BITSTAMP:ETHUSD",
+      "title": "Ethereum"
+    },
+    {
+      "description": "TND",
+      "proName": "ECONOMICS:TNCORR"
+    },
+    {
+      "description": "EXPORT",
+      "proName": "ECONOMICS:TNEP"
+    },
+    {
+      "description": "AGRI",
+      "proName": "ECONOMICS:TNGDPA"
+    },
+    {
+      "description": "EMPLOYE",
+      "proName": "ECONOMICS:TNEMP"
+    },
+    {
+      "description": "IMPORT",
+      "proName": "ECONOMICS:TNIPRI"
+    },
+    {
+      "description": "TAX",
+      "proName": "ECONOMICS:TNCTR"
+    },
+    {
+      "description": "INVEST",
+      "proName": "ECONOMICS:TNFDI"
+    },
+    {
+      "description": "INFLATION",
+      "proName": "ECONOMICS:TNIRYY"
+    }
+  ],
+  "showSymbolLogo": true,
+  "colorTheme": "light",
+  "isTransparent": false,
+  "displayMode": "adaptive",
+  "locale": "fr"
+}
+  </script>
+</div>
+<!-- TradingView Widget END -->
+<br>
 
     {# Bouton #}
     <div class="d-flex justify-content-end">
@@ -66,10 +135,13 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{ annonceinvestissement.titre }}</h5>
                                 <p class="card-text">
-                                    <strong style="color: #ffcc00;"><i class="fas fa-dollar-sign"></i>Montant:</strong>
-                                    {{ annonceinvestissement.montant }}<br>
-                                    <strong style="color: #ffcc00;"><i class="bi bi-calendar"></i>Date de
-                                        publication:</strong>
+                                    <strong style="color: #ffcc00;"></i>Montant:</strong>
+                                        {{ annonceinvestissement.montant }} TND<br>
+                                <span class="converted-amount" data-original-amount="{{ annonceinvestissement.montant }}">
+                                    <i class="bi bi-arrow-repeat"></i> EUR: <span class="converted-amount-eur"></span><br>
+                                    <i class="bi bi-arrow-repeat"></i> USD: <span class="converted-amount-usd"></span><br>
+                                </span>
+                                    <strong style="color: #ffcc00;"><i class="bi bi-calendar"></i>Date de publication:</strong>
                                     {{ annonceinvestissement.datepublication ? annonceinvestissement.datepublication|date('Y-m-d') : '' }}<br>
                                     <strong style="color: #ffcc00;"><i class="bi bi-file-text"></i>Description:</strong>
                                     {{ annonceinvestissement.description }}<br>
@@ -86,7 +158,124 @@
         </div>
     </div>
     <!-- Banner End -->
+    <!-- Script for currency conversion -->
+<script>
+    const apiUrl = 'http://apilayer.net/api/live?access_key=62cd0b67e64af4cd8c54f819bcdef722&currencies=EUR,USD&source=TND&format=1';
 
+    // Fetch data from the API
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+            // Get the exchange rates
+            const eurToSource = data.quotes['TNDEUR'];
+            const usdToSource = data.quotes['TNDUSD'];
+
+            // Loop through each announcement
+            document.querySelectorAll('.converted-amount').forEach(element => {
+                // Get the original amount for the current iteration
+                const originalAmount = parseFloat(element.dataset.originalAmount);
+
+                // Calculate and set converted amounts for the current iteration
+                const convertedAmountEur = element.querySelector('.converted-amount-eur');
+                const convertedAmountUsd = element.querySelector('.converted-amount-usd');
+
+                convertedAmountEur.innerHTML = (originalAmount * eurToSource).toFixed(2);
+                convertedAmountUsd.innerHTML = (originalAmount * usdToSource).toFixed(2);
+            });
+
+            console.log("Exchange rates:", data.quotes);
+        })
+        .catch(error => console.error('Error fetching exchange rates:', error));
+</script>
+{# Trading #}
+<div class="center-container">
+  <!-- TradingView Widget BEGIN -->
+  <div class="tradingview-widget-container">
+    <div class="tradingview-widget-container__widget"></div>
+    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
+      {
+        "symbols": [
+          [
+            "ECONOMICS:TNEXP|1D"
+          ],
+          [
+            "ECONOMICS:TNTOT|1D"
+          ],
+          [
+            "ECONOMICS:TNINTR|1D"
+          ],
+          [
+            "ECONOMICS:TNBOT|1D"
+          ],
+          [
+            "ECONOMICS:TNCA|1D"
+          ],
+          [
+            "ECONOMICS:TNCORR|1D"
+          ],
+          [
+            "ECONOMICS:TNCPI|1D"
+          ],
+          [
+            "ECONOMICS:TNIMP|1D"
+          ],
+          [
+            "ECONOMICS:TNPOP|1D"
+          ],
+          [
+            "ECONOMICS:TNUR|1D"
+          ],
+          [
+            "ECONOMICS:TNSSR|1D"
+          ],
+          [
+            "ECONOMICS:TNED|1D"
+          ],
+          [
+            "ECONOMICS:TNGDPA|1D"
+          ]
+        ],
+        "chartOnly": false,
+        "width": 1000,
+        "height": 500,
+        "locale": "fr",
+        "colorTheme": "light",
+        "autosize": false,
+        "showVolume": false,
+        "showMA": false,
+        "hideDateRanges": false,
+        "hideMarketStatus": false,
+        "hideSymbolLogo": false,
+        "scalePosition": "right",
+        "scaleMode": "Normal",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+        "fontSize": "10",
+        "noTimeScale": false,
+        "valuesTracking": "1",
+        "changeMode": "price-and-percent",
+        "chartType": "area",
+        "maLineColor": "#2962FF",
+        "maLineWidth": 1,
+        "maLength": 9,
+        "lineWidth": 2,
+        "lineType": 0,
+        "dateRanges": [
+          "1d|1",
+          "1m|30",
+          "3m|60",
+          "12m|1D",
+          "60m|1W",
+          "all|1M"
+        ]
+      }
+    </script>
+  </div>
+  <!-- TradingView Widget END -->
+</div>
+
+{# Trading #}
+
+<br>
     {# Pagination #}
     <div class="container mt-5">
         <div class="row justify-content-center">
@@ -133,8 +322,14 @@
 		background-color: #404a3d; /* Bleu au survol */
 		color: #fff; /* Texte blanc au survol */
 	}
+    .center-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Adjust the height based on your needs */
+  }
 </style>
-    
+
     
     
     <!-- Inclusion de la bibliothèque QRCode.js -->

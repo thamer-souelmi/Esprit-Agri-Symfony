@@ -11,6 +11,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Mpdf\Mpdf;
+use Dompdf\Dompdf;
 
 #[Route('/bilanresultat')]
 class BilanresultatController extends AbstractController
@@ -101,5 +103,104 @@ class BilanresultatController extends AbstractController
         }
 
         return $this->redirectToRoute('app_bilanresultat_index', [], Response::HTTP_SEE_OTHER);
+    }
+    #[Route('/generate-pdf/{idbilanr}', name: 'generate_pdf_R', methods: ['GET'])]
+    public function index_pdf(BilanresultatRepository $bilanresultatRepository,Bilanresultat $bilanresultat, Request $request,$idbilanr): Response
+    {
+        // Création d'une nouvelle instance de la classe Dompdf
+        $dompdf = new Dompdf();
+
+        // Récupération de la liste des événements à partir du repository
+        // Calculate the sum of revenuescultures, subvention, and autrerevenus
+        $totalRevenus = $bilanresultatRepository->sumOfTotalRevenus($bilanresultat->getIdBilanR());
+
+        // Calculate the sum of production costs
+        $productionCosts = $bilanresultatRepository->sumOfProductionCosts($bilanresultat->getIdBilanR());
+
+        // Calculate the sum of operating expenses
+        $totalOperatingExpenses = $bilanresultatRepository->sumOfOperatingExpenses($bilanresultat->getIdBilanR());
+        $imagePath = $this->getParameter('kernel.project_dir') . '/public/img/logoespritAgri.png';
+        // Encode the image to base64
+        $imageData = base64_encode(file_get_contents($imagePath));
+        $imageSrc = 'data:image/png;base64,' . $imageData;
+        // Génération du HTML à partir du template Twig 'evenement/pdf_file.html.twig' en passant la liste des événements
+        $html = $this->renderView('bilanresultat/pdf_file.html.twig', [
+            'bilanresultat' => $bilanresultat,
+            'totalRevenus' => $totalRevenus,
+            'productionCosts' => $productionCosts,
+            'totalOperatingExpenses' => $totalOperatingExpenses,
+            'imagePath' => $imageSrc,
+
+        ]);
+
+        // Récupération des options de Dompdf et activation du chargement des ressources à distance
+        $options = $dompdf->getOptions();
+        $options->set([
+            'isHtml5ParserEnabled' => true,
+            'isPhpEnabled' => true,  // Enable PHP rendering
+        ]);
+
+        $dompdf->setOptions($options);
+
+        // Chargement du HTML généré dans Dompdf
+        $dompdf->loadHtml($html);
+
+        // Configuration du format de la page en A4 en mode portrait
+        $dompdf->setPaper('A4', 'portrait');
+
+        // Génération du PDF
+        $dompdf->render();
+
+        // Récupération du contenu du PDF généré
+        $output = $dompdf->output();
+
+        // Set headers for PDF download
+        $response = new Response($output, 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="list.pdf"',
+        ]);
+
+        return $response;
+    }
+
+    /////////////////////////////////////EURO///////////////////////////////////////
+    #[Route('/{idbilanr}/euro', name: 'app_bilanresultat_show_euro', methods: ['GET'])]
+    public function showEURO(Bilanresultat $bilanresultat, BilanresultatRepository $bilanresultatRepository): Response
+    {
+        // Calculate the sum of revenuescultures, subvention, and autrerevenus
+        $totalRevenus = $bilanresultatRepository->sumOfTotalRevenus($bilanresultat->getIdBilanR());
+
+        // Calculate the sum of production costs
+        $productionCosts = $bilanresultatRepository->sumOfProductionCosts($bilanresultat->getIdBilanR());
+
+        // Calculate the sum of operating expenses
+        $totalOperatingExpenses = $bilanresultatRepository->sumOfOperatingExpenses($bilanresultat->getIdBilanR());
+
+        return $this->render('bilanresultat/showEURO.html.twig', [
+            'bilanresultat' => $bilanresultat,
+            'totalRevenus' => $totalRevenus,
+            'productionCosts' => $productionCosts,
+            'totalOperatingExpenses' => $totalOperatingExpenses,
+        ]);
+    }
+    /////////////////////////////////////DOLLAR///////////////////////////////////////
+    #[Route('/{idbilanr}/usd', name: 'app_bilanresultat_show_usd', methods: ['GET'])]
+    public function showUSD(Bilanresultat $bilanresultat, BilanresultatRepository $bilanresultatRepository): Response
+    {
+        // Calculate the sum of revenuescultures, subvention, and autrerevenus
+        $totalRevenus = $bilanresultatRepository->sumOfTotalRevenus($bilanresultat->getIdBilanR());
+
+        // Calculate the sum of production costs
+        $productionCosts = $bilanresultatRepository->sumOfProductionCosts($bilanresultat->getIdBilanR());
+
+        // Calculate the sum of operating expenses
+        $totalOperatingExpenses = $bilanresultatRepository->sumOfOperatingExpenses($bilanresultat->getIdBilanR());
+
+        return $this->render('bilanresultat/showUSD.html.twig', [
+            'bilanresultat' => $bilanresultat,
+            'totalRevenus' => $totalRevenus,
+            'productionCosts' => $productionCosts,
+            'totalOperatingExpenses' => $totalOperatingExpenses,
+        ]);
     }
 }

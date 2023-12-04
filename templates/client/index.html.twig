@@ -1,0 +1,82 @@
+{% extends 'prod.html.twig' %}
+
+{# {% block title %}Marche
+{% endblock %} #}
+{% block title %}Marche
+{% endblock %}
+{% block banner_image %}
+	{{ asset('img/pngtree-fruits-and-vegetables-picture-image_3712726.jpg') }}
+{% endblock %}
+
+
+{% block body %}
+	<div class="card" style="background-color: white;">
+		<div class="card-body">
+			<h5 class="card-title"></h5>
+
+			<!-- Product Start -->
+			<div class="container-xxl py-5">
+				<div class="container">
+					<h1>Marche</h1>
+
+					<div class="row gx-4">
+						{% for client in clients %}
+							<div class="col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.2s">
+								<div class="product-item">
+									<div class="position-relative">
+										<img class="img-fluid rounded" src="{{ asset('img/' ~ client.image) }}" style="width: 336px; height: 336px; object-fit: cover;">
+										<div class="product-overlay">
+											<a class="btn btn-square btn-secondary rounded-circle m-1" href="{{ path('app_client_show', {'id': client.id}) }}">
+												<i class="bi bi-eye"></i>
+											</a>
+											<a class="btn btn-square btn-secondary rounded-circle m-1" href="{{ path('cart_addinmarche', {'id': client.id}) }}">
+												<i class="bi bi-cart"></i>
+											</a>
+
+
+											<!-- Add this button to add the product to the cart -->
+											{# <a href="{{ path('cart_addinmarche', {'id': client.id}) }}" class="btn btn-success">
+																																																																																																																																					<i class="bi bi-cart-plus"></i>
+																																																																																																																																					Ajouter au panier
+																																																																																																																																				</a> #}
+											<!-- Add button/link for generating QR code -->
+												<a class="btn btn-square btn-secondary rounded-circle m-1" href="{{ path('app_client_generate_qr', {'id': client.id}) }}"> QR<i class="bi bi-upc-scan"></i>
+											</a>
+											<a class="btn btn-square btn-secondary rounded-circle m-1" href="{{ path('app_client_generate_barcode', {'id': client.id}) }}">
+												<i class="bi bi-upc-scan"></i>
+											</a>
+											{# <a href="{{ path('app_client_generate_qr', {'id': client.id}) }}" class="btn btn-primary">
+																																																																																																				<i class="bi bi-qrcode"></i>
+																																																																																																				Générer QR Code
+																																																																																																			</a> #}
+
+										</div>
+									</div>
+									<div class="text-center p-4">
+										<a class="d-block h5" href="{{ path('app_client_show', {'id': client.id}) }}">
+											<strong>Nomprod:</strong>
+											{{ client.nomprod }}<br></a>
+										<span class="text-primary me-1">
+											<strong>Prix:</strong>
+											{{ client.prix }}<br></span>
+										<span class="text-decoration">
+											<strong>Qte:</strong>
+											{{ client.qte }}<br></span>
+									</div>
+								</div>
+							</div>
+						{% else %}
+							<p>No records found</p>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+			<!-- Product End -->
+
+			<a href="{{ path('app_client_new') }}" class="btn btn-primary">Ajouter</a>
+			<a href="{{ path('cart_index') }}" class="btn btn-primary">consulter pannier</a>
+
+			<!-- Add links for other actions as needed -->
+		</div>
+	</div>
+{% endblock %}

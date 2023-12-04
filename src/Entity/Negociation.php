@@ -6,14 +6,15 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\NegociationRepository;
+use App\Entity\Annonceinvestissement;
 
 #[ORM\Entity(repositoryClass: NegociationRepository::class)]
 class Negociation
 {
-    #[ORM\Column(name: "id", type: "integer", nullable: false)]
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: "IDENTITY")]
-    private $id;
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
     #[ORM\Column(name: "montantPropose", type: "float", precision: 10, scale: 0, nullable: false)]
     #[Assert\NotBlank(message: "Veuillez ajouter le montant proposé !")]
@@ -32,7 +33,15 @@ class Negociation
 
     
     #[ORM\ManyToOne(inversedBy: 'negociations')]
+    #[ORM\JoinColumn(name:'idAnnonce',referencedColumnName:'idAnnonce')]
      private ?Annonceinvestissement $idannonce = null;
+
+    #[ORM\Column]
+    private ?bool $isArchived = null;
+
+    #[ORM\ManyToOne(inversedBy: 'negociations')]
+    private ?User $users = null;
+ 
     
     
 
@@ -98,6 +107,30 @@ class Negociation
     public function setIdannonce(?Annonceinvestissement $idannonce): static
     {
         $this->idannonce = $idannonce;
+
+        return $this;
+    }
+
+    public function isIsArchived(): ?bool
+    {
+        return $this->isArchived;
+    }
+
+    public function setIsArchived(bool $isArchived): static
+    {
+        $this->isArchived = $isArchived;
+
+        return $this;
+    }
+
+    public function getUsers(): ?User
+    {
+        return $this->users;
+    }
+
+    public function setUsers(?User $users): static
+    {
+        $this->users = $users;
 
         return $this;
     }

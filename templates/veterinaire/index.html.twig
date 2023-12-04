@@ -1,45 +1,266 @@
-{% extends 'base.html.twig' %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Véterinaire{% endblock %}</title>
+         <meta content="width=device-width, initial-scale=1.0" name="viewport">
+         <meta content="" name="keywords">
+         <meta content="" name="description">
+          <!-- Favicon -->
+    <link href="{{asset("img/favicon.ico")}}" rel="icon">
 
-{% block title %}List Veterinaires{% endblock %}
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">   
 
-{% block body %}
-    <h1>List Veterinaires</h1>
+        {% block stylesheets %}
+            <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Idvet</th>
-                <th>Nomvet</th>
-                <th>Prenomvet</th>
-                <th>Adresscabinet</th>
-                <th>Numtel</th>
-                <th>Adressmail</th>
-                <th>Specialite</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for veterinaire in veterinaires %}
-            <tr>
-                <td>{{ veterinaire.idvet }}</td>
-                <td>{{ veterinaire.nomvet }}</td>
-                <td>{{ veterinaire.prenomvet }}</td>
-                <td>{{ veterinaire.adresscabinet }}</td>
-                <td>{{ veterinaire.numtel }}</td>
-                <td>{{ veterinaire.adressmail }}</td>
-                <td>{{ veterinaire.specialite }}</td>
-                <td>
-                    <a href="{{ path('app_veterinaire_show', {'idvet': veterinaire.idvet}) }}">show</a>
-                    <a href="{{ path('app_veterinaire_edit', {'idvet': veterinaire.idvet}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="8">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <!-- Libraries Stylesheet -->
+    <link href="{{asset("lib/animate/animate.min.css")}}" rel="stylesheet">
+    <link href="{{asset("lib/owlcarousel/assets/owl.carousel.min.css")}}" rel="stylesheet">
+    <link href="{{asset("lib/lightbox/css/lightbox.min.css")}}" rel="stylesheet">
 
-    <a href="{{ path('app_veterinaire_new') }}">Create new</a>
-{% endblock %}
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="{{asset("css/bootstrap.min.css")}}" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="{{asset("css/style.css")}}" rel="stylesheet">
+        {% endblock %}
+
+        {% block javascripts %}
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{asset("lib/wow/wow.min.js")}}"></script>
+    <script src="{{asset("lib/easing/easing.min.js")}}"></script>
+    <script src="{{asset("lib/waypoints/waypoints.min.js")}}"></script>
+    <script src="{{asset("lib/owlcarousel/owl.carousel.min.js")}}"></script>
+    <script src="{{asset("lib/counterup/counterup.min.js")}}"></script>
+    <script src="{{asset("lib/parallax/parallax.min.js")}}"></script>
+    <script src="{{asset("lib/lightbox/js/lightbox.min.js")}}"></script>
+
+    <!-- Template Javascript -->
+    <script src="{{asset("js/main.js")}}"></script>
+        {% endblock %}
+         <style>
+        .star {
+    cursor: pointer;
+    font-size: 24px;
+    color: #ffd700; /* Couleur jaune pour les étoiles */
+}
+
+.note {
+    font-weight: bold;
+    margin-left: 10px;
+}
+    </style>
+    </head>
+     <!-- Topbar Start -->
+    <div class="container-fluid bg-dark px-0">
+        <div class="row g-0 d-none d-lg-flex">
+            <div class="col-lg-6 ps-5 text-start">
+                <div class="h-100 d-inline-flex align-items-center text-light">
+                    <span>Suivez-nous:</span>
+                    <a class="btn btn-link text-light" href=""><i class="fab fa-facebook-f"></i></a>
+                    <a class="btn btn-link text-light" href=""><i class="fab fa-twitter"></i></a>
+                    <a class="btn btn-link text-light" href=""><i class="fab fa-linkedin-in"></i></a>
+                    <a class="btn btn-link text-light" href=""><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-end">
+                <div class="h-100 bg-secondary d-inline-flex align-items-center text-dark py-2 px-4">
+                    <span class="me-2 fw-semi-bold"><i class="fa fa-phone-alt me-2"></i>Appelez:</span>
+                    <span>+012 345 6789</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Topbar End -->
+
+    <body>
+    <!-- Navbar Start -->
+    <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top px-4 px-lg-5">
+        <a href="index.html" class="navbar-brand d-flex align-items-center">
+            <h1 class="m-0">Esprit-Agri</h1>
+        </a>
+        <button type="button" class="navbar-toggler me-0" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto p-4 p-lg-0">
+                <a href="index.html" class="nav-item nav-link active">Acceuil</a>
+                <a href="about.html" class="nav-item nav-link">A Propos</a>
+                <a href="service.html" class="nav-item nav-link">Recrutement</a>
+                <a href="product.html" class="nav-item nav-link">Investissement</a>
+                <a href="vet.html" class="nav-item nav-link">marché</a>
+                
+
+
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Visite médical</a>
+                    <div class="dropdown-menu bg-light m-0">
+                        <a href="{{ path('app_traitementmedicale_index') }}" class="dropdown-item">Traitement médical</a>
+                        <a href="{{ path('frontaffich')}}" class="dropdown-item">Véterinaire</a>
+                        
+                        
+                    </div>
+                </div>
+                <a href="contact.html" class="nav-item nav-link">Contact</a>
+            </div>
+            <div class="border-start ps-4 d-none d-lg-block">
+                <button type="button" class="btn btn-sm p-0"><i class="fa fa-search"></i></button>
+            </div>
+        </div>
+    </nav>
+    <!-- Navbar End -->
+<!-- Page Header Start -->
+      <div class="container-fluid banner my-5 py-5" data-parallax="scroll" data-image-src="{{ asset('img/phott.jpg') }}">
+
+        <div class="container text-center py-5">
+            <h1 class="display-3 text-white mb-4 animated slideInDown">Alliance Santé</h1>
+        </div>
+    </div>
+    <!-- Page Header End -->
+    <!-- Team Start -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
+                <p class="section-title bg-white text-center text-primary px-3">Nos partenaires</p>
+                <h1 class="mb-5">Vétérinaires Expérimentés</h1>
+            </div>
+
+ <!-- Topbar Search -->
+                   <form action="{{ path('veterinaire_search') }}" method="get">
+    <div class="input-group">
+        <input type="text" name="search_query" class="form-control bg-light border-0 small" placeholder="Rechercher..." aria-label="Search" aria-describedby="basic-addon2">
+        <div class="input-group-append">
+            <button class="btn btn-primary" type="submit">
+                <i class="fas fa-search fa-sm"></i>
+            </button>
+        </div>
+    </div>
+    <br>
+    <br>
+</form>            
+            <div class="row g-4">
+    {% for veterinaire in veterinaires %}
+        <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="{{ loop.index * 0.2 }}s">
+            <div class="team-item rounded p-4">
+                <img class="img-fluid rounded mb-4" src="{{ asset('img/' ~ veterinaire.specialite) }}" alt="" width="300" height="400" onerror="console.error('Image not found:', '{{ veterinaire.specialite }}')">
+
+                <h5>{{ veterinaire.prenomvet }}  {{ veterinaire.nomvet }} </h5>
+                <p class="text-primary">{{ veterinaire.adresscabinet|split(':')[0]|trim }}</p>
+
+                  <div class="rating">
+                    {% for note in 1..5 %}
+                        <i class="star" data-note="{{ note }}" onclick="rate('{{ veterinaire.idvet }}', {{ note }})">&#9733;</i>
+                    {% endfor %}
+                </div>
+
+                <span id="noteText_{{ veterinaire.idvet }}" class="note">Note: </span>
+
+
+
+
+                <div class="d-flex justify-content-center">
+                    <a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('contactvet', {'id': veterinaire.idvet}) }}"> Contacter  </a>
+                    
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+        </div>
+    </div>
+
+<script>
+    function rate(veterinaireId, note) {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', `/rate/${veterinaireId}/${note}`, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                document.getElementById(`noteText_${veterinaireId}`).innerText = `Note: ${note}`;
+            } else {
+                console.error('Erreur lors de la requête Ajax');
+            }
+        };
+        
+        xhr.send();
+    }
+</script>
+
+
+    <!-- Team End -->
+        {% block body %}
+       
+        {% endblock %}
+    </body>
+            <!-- Footer Start -->
+    <div class="container-fluid bg-dark footer mt-5 py-5 wow fadeIn" data-wow-delay="0.1s" style="width: 100%; padding-right: 15px; padding-left: 15px; margin-right: auto; margin-left: auto;">
+            <div class="row g-5">
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-white mb-4">Notre Office</h5>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>123 Ariana Soghra, Tunis, Tunisie</p>
+                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+216 95 392 119</p>
+                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@AgriEsprit.com</p>
+                    <div class="d-flex pt-3">
+                        <a class="btn btn-square btn-secondary rounded-circle me-2" href=""><i class="fab fa-twitter"></i></a>
+                        <a class="btn btn-square btn-secondary rounded-circle me-2" href=""><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-square btn-secondary rounded-circle me-2" href=""><i class="fab fa-youtube"></i></a>
+                        <a class="btn btn-square btn-secondary rounded-circle me-2" href=""><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-white mb-4">Liens</h5>
+                    <a class="btn btn-link" href="">A Propos</a>
+                    <a class="btn btn-link" href="">Contactez nous</a>
+                    <a class="btn btn-link" href="">Nos services</a>
+                    <a class="btn btn-link" href="">Terms & Condition</a>
+                    <a class="btn btn-link" href="">Support</a>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-white mb-4">Nos Horaires</h5>
+                    <p class="mb-1">Lundi - Vendredi</p>
+                    <h6 class="text-light">09:00  - 07:00 </h6>
+                    <p class="mb-1">Samedi</p>
+                    <h6 class="text-light">09:00  - 12:00 </h6>
+                    <p class="mb-1">Dimanche</p>
+                    <h6 class="text-light">Fermé</h6>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-white mb-4">lettre</h5>
+
+                    <div class="position-relative w-100">
+                        <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder=" email">
+                        <button type="button" class="btn btn-secondary py-2 position-absolute top-0 end-0 mt-2 me-2">Connecter</button>
+                    </div>
+                </div>
+            </div>
+        
+    </div>
+    <!-- Footer End -->
+     <!-- Copyright Start -->
+    <div class="container-fluid bg-secondary text-body copyright py-5" style="width: 100%; padding-right: 15px; padding-left: 15px; margin-right: auto; margin-left: auto;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                    &copy; <a class="fw-semi-bold" href="#">Agri_Esprit</a>, Droits réservés.
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                    Designed By <a class="fw-semi-bold" href="https://htmlcodex.com">DevElite</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Copyright End -->
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
+</html>

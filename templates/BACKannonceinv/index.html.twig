@@ -1,53 +1,114 @@
 {% extends 'baseback.html.twig' %}
 
-
 {% block body %}
-    <h1 class="text-center">Annonces Investissements </h1>
+    <h1 class="text-center">Annonces Investissements</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Titre</th>
-                <th>Montant</th>
-                <th>Date publication</th>
-                <th>Localisation</th>
-                <th>Description</th>
-                <th>Photo</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for annonceinvestissement in pagination %}
-            <tr>
-                <td>{{ annonceinvestissement.titre }}</td>
-                <td>{{ annonceinvestissement.montant }}</td>
-                <td>{{ annonceinvestissement.datepublication ? annonceinvestissement.datepublication|date('Y-m-d') : '' }}</td>
-                <td>{{ annonceinvestissement.localisation }}</td>
-                <td>{{ annonceinvestissement.description }}</td>
-                <td><img src="{{ asset('img/' ~ annonceinvestissement.photo) }}" alt=" Image" style="max-width:100px;max-height:100px;"></td>
-                <td style="display: flex; align-items: center;">
-                    <a href="{{ path('app_annonceinvestissement_show_back', {'idannonce': annonceinvestissement.idannonce}) }}" class="btn btn-success rounded-pill py-2 px-4">
-                     <i class="fas fa-eye"></i>
-                    </a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="9">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    {# Pagination #}
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="text-center">
-                {{ knp_pagination_render(pagination) }}
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title"></h5>
+            <div class="row">
+                <div class="col">
+                    <input type="text" value="" class="form-control" placeholder="Rechercher Titre" id="searchTitre">
+                </div>
+                <div class="col">
+                    <input type="text" value="" class="form-control" placeholder="Rechercher Montant" id="searchMontant">
+                </div>
+                <div class="col">
+                    <input type="date" value="" class="form-control" placeholder="Rechercher Date publication" id="searchDatePublication">
+                </div>
+                <div class="col">
+                    <input type="text" value="" class="form-control" placeholder="Rechercher Localisation" id="searchLocalisation">
+                </div>
+                <div class="col">
+                    <input type="text" value="" class="form-control" placeholder="Rechercher Description" id="searchDescription">
+                </div>
+            </div>
+        </div>
+
+        <!-- Table with stripped rows -->
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Titre</th>
+                    <th>Montant</th>
+                    <th>Date publication</th>
+                    <th>Localisation</th>
+                    <th>Description</th>
+                    <th>Photo</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="myTable">
+                {% for annonceinvestissement in pagination %}
+                    <tr>
+                        <td>{{ annonceinvestissement.titre }}</td>
+                        <td>{{ annonceinvestissement.montant }}</td>
+                        <td>{{ annonceinvestissement.datepublication ? annonceinvestissement.datepublication|date('Y-m-d') : '' }}</td>
+                        <td>{{ annonceinvestissement.localisation }}</td>
+                        <td>{{ annonceinvestissement.description }}</td>
+                        <td><img src="{{ asset('img/' ~ annonceinvestissement.photo) }}" alt="Image" style="max-width:100px;max-height:100px;"></td>
+                        <td style="display: flex; align-items: center;">
+                            <a href="{{ path('app_annonceinvestissement_show_back', {'idannonce': annonceinvestissement.idannonce}) }}" class="btn btn-success rounded-pill py-2 px-4">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="7">no records found</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {# Pagination #}
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="text-center">
+                    {{ knp_pagination_render(pagination) }}
+                </div>
             </div>
         </div>
     </div>
-            {# style of pagination #}
-<style>
+
+    <!-- Include jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    {# Script for Search Functionality #}
+    <script>
+        $(document).ready(function () {
+            function searchColumn(columnIndex, value) {
+                $("#myTable tr").filter(function () {
+                    var cellText = $(this).find("td").eq(columnIndex).text().toLowerCase();
+                    var found = cellText.indexOf(value) > -1;
+                    $(this).toggle(found);
+                });
+            }
+
+            $("#searchTitre").on("keyup", function () {
+                searchColumn(0, $(this).val().toLowerCase());
+            });
+
+            $("#searchMontant").on("keyup", function () {
+                searchColumn(1, $(this).val().toLowerCase());
+            });
+
+            $("#searchDatePublication").on("change", function () {
+                searchColumn(2, $(this).val());
+            });
+
+            $("#searchLocalisation").on("keyup", function () {
+                searchColumn(3, $(this).val().toLowerCase());
+            });
+
+            $("#searchDescription").on("keyup", function () {
+                searchColumn(4, $(this).val().toLowerCase());
+            });
+        });
+    </script>
+
+    {# Style of pagination #}
+    <style>
 	.pagination {
 		display: flex;
 		justify-content: center;
@@ -84,5 +145,5 @@
 		color: #fff; /* Texte blanc au survol */
 	}
 </style>
-<br>
+
 {% endblock %}

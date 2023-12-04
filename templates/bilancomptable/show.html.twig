@@ -8,8 +8,8 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-6">
-                <table class="table">
-                    <tbody>
+            <table class="table">
+            <tbody>
             
             <tr>
                 <th class="text-right">Annee:</th>
@@ -138,6 +138,16 @@
                 <a href="{{ path('generate_pdf', {'idbilanc': bilancomptable.idbilanc}) }}" class="btn btn-outline-warning ">
                     <span class="icon text-primary-600">
                         <i class="fas fa-print"></i> 
+                    </span>
+                </a>
+                <a href="{{ path('app_bilancomptable_show_euro', {'idbilanc': bilancomptable.idbilanc}) }}" class="btn btn-outline-warning ">
+                    <span class="icon text-primary-600">
+                        <i class="fas fa-arrow-repeat">EURO 
+                    </span>
+                </a>
+                <a href="{{ path('app_bilancomptable_show_usd', {'idbilanc': bilancomptable.idbilanc}) }}" class="btn btn-outline-warning ">
+                    <span class="icon text-primary-600">
+                        <i class="fas fa-arrow-repeat">USD 
                     </span>
                 </a>
 			</div>

@@ -2,74 +2,68 @@
 
 namespace App\Entity;
 
+
+use App\Repository\CultureRepository;
+use App\Entity\Category;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Culture
- *
- * @ORM\Table(name="culture")
- * @ORM\Entity
- */
+
+
+#[ORM\Entity(repositoryClass: CultureRepository::class)]
+
+
 class Culture
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
+    //
+    #[Assert\NotBlank(message: 'veuillez remplir ce champ')]
+    #[Assert\Length(min: 3, minMessage: 'Le libelle doit comporter au moins {{ limit }} caractères')]
+    #[ORM\Column(length: 200)]
+    private ?string $libelle = null;
+    //
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="libelle", type="string", length=200, nullable=false)
-     */
-    private $libelle;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="datePlantation", type="date", nullable=false)
-     */
-    private $dateplantation;
+    #[Assert\NotBlank(message: 'veuillez remplir tous les champs obligatoires')]
+    #[Assert\LessThan(propertyPath: "daterecolte", message: "La date de plantation doit être inférieure à la date de recolte.")]
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $dateplantation = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateRecolte", type="date", nullable=false)
-     */
-    private $daterecolte;
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $daterecolte = null;
+    //
+    #[ORM\Column(length: 150)]
+    private ?string $categorytype = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="categoryType", type="string", length=40, nullable=false)
-     */
-    private $categorytype;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="revenuesCultures", type="float", precision=10, scale=0, nullable=false)
-     */
-    private $revenuescultures;
+    #[Assert\NotBlank(message: 'Les revenus des cultures ne peuvent pas être vides.')]
+    #[Assert\GreaterThanOrEqual(value: 0, message: 'Les revenus des cultures ne peuvent pas être négatifs.')]
+    #[ORM\Column]
+    private ?float $revenuescultures = null;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="coutsPlantations", type="float", precision=10, scale=0, nullable=false)
-     */
-    private $coutsplantations;
 
-    /**
-     * @var int|null
-     *
-     * @ORM\Column(name="user_id", type="integer", nullable=true)
-     */
-    private $userId;
+
+    #[Assert\NotBlank(message: 'Les couts des cultures ne peuvent pas être vides.')]
+    #[Assert\GreaterThanOrEqual(value: 0, message: 'Les couts des cultures ne peuvent pas être négatifs.')]
+    #[ORM\Column]
+    private ?float $coutsplantations = null;
+
+
+    // #[ORM\ManyToOne(targetEntity: "App\Entity\Category", inversedBy: "cultures")]
+    // #[ORM\JoinColumn(nullable: false)]
+    // private ?Category $categorys = null;
+
+    #[ORM\ManyToOne(inversedBy: 'cultures')]
+    #[ORM\JoinColumn(name: 'categorys_id', referencedColumnName: 'id')]
+    private ?Category $category = null;
+
+
+
+
 
     public function getId(): ?int
     {
@@ -84,7 +78,6 @@ class Culture
     public function setLibelle(string $libelle): static
     {
         $this->libelle = $libelle;
-
         return $this;
     }
 
@@ -96,7 +89,6 @@ class Culture
     public function setDateplantation(\DateTimeInterface $dateplantation): static
     {
         $this->dateplantation = $dateplantation;
-
         return $this;
     }
 
@@ -108,7 +100,6 @@ class Culture
     public function setDaterecolte(\DateTimeInterface $daterecolte): static
     {
         $this->daterecolte = $daterecolte;
-
         return $this;
     }
 
@@ -120,7 +111,6 @@ class Culture
     public function setCategorytype(string $categorytype): static
     {
         $this->categorytype = $categorytype;
-
         return $this;
     }
 
@@ -132,7 +122,6 @@ class Culture
     public function setRevenuescultures(float $revenuescultures): static
     {
         $this->revenuescultures = $revenuescultures;
-
         return $this;
     }
 
@@ -144,21 +133,18 @@ class Culture
     public function setCoutsplantations(float $coutsplantations): static
     {
         $this->coutsplantations = $coutsplantations;
-
         return $this;
     }
 
-    public function getUserId(): ?int
+    public function getCategory(): ?Category
     {
-        return $this->userId;
+        return $this->category;
     }
 
-    public function setUserId(?int $userId): static
+    public function setCategory(?Category $category): static
     {
-        $this->userId = $userId;
+        $this->category = $category;
 
         return $this;
     }
-
-
 }

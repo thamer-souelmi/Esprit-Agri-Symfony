@@ -1,0 +1,39 @@
+{# templates/bilancomptable/statistique.html.twig #}
+
+<canvas id="barChart" width="200" height="65"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var ctx = document.getElementById('barChart').getContext('2d');
+        var data = {{ data|json_encode|raw }};
+
+        var chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(data),
+                datasets: [{
+                    label: 'Number of Ratings',
+                    data: Object.values(data),
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: 'white' // Couleur du texte de légende
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>

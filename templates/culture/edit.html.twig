@@ -1,13 +1,14 @@
-{% extends 'base.html.twig' %}
+{% extends 'culturefront.html.twig'%}
 
-{% block title %}Edit Culture{% endblock %}
+{% block title %}Modifier Culture
+{% endblock %}
 
 {% block body %}
-    <h1>Edit Culture</h1>
+	<h1>Modifier Culture</h1>
 
-    {{ include('culture/_form.html.twig', {'button_label': 'Update'}) }}
+	{{ include('culture/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('app_culture_index') }}">back to list</a>
+	<a href="{{ path('app_culture_index') }}" class="btn btn-primary">Retourner au list</a>
 
-    {{ include('culture/_delete_form.html.twig') }}
+	{{ include('culture/_delete_form.html.twig') }}
 {% endblock %}

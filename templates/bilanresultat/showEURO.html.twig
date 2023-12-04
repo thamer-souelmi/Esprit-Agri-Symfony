@@ -1,0 +1,134 @@
+{% extends 'baseback.html.twig' %}
+
+{% block title %}Bilanresultat{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">Bilan Résultat</h1>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th class="text-right">Annee:</th>
+                            <td>{{ bilanresultat.anneer ? bilanresultat.anneer|date('Y-m-d') : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: center; font-weight: bold; text-decoration: underline;">REVENUS</th>
+                            <td style="text-align: center;"></td>
+                        </tr>
+                        <tr>
+                            <th>Revenus Cultures</th>
+                            <td><span class="converted-amount-eur" data-original="{{ bilanresultat.revenuescultures }}">{{ bilanresultat.revenuescultures }}</span><i class="fas fa-euro-sign"></i></td>
+                        </tr>
+                        <tr>
+                            <th>Subvention</th>
+                            <td><span class="converted-amount-eur" data-original="{{ bilanresultat.subvention }}">{{ bilanresultat.subvention }}</span><i class="fas fa-euro-sign"></i></td>
+                        </tr>
+                        <tr>
+                            <th>Autres Revenus</th>
+                            <td><span class="converted-amount-eur" data-original="{{ bilanresultat.autrerevenus }}">{{ bilanresultat.autrerevenus }}</span><i class="fas fa-euro-sign"></i></td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: center; font-weight: bold; text-decoration: none; color: black;">Total Revenus</th>
+                            <td style="text-align: center; font-weight: bold; color: black;"><span class="converted-amount-eur" data-original="{{ totalRevenus }}">{{ totalRevenus }}</span><i class="fas fa-euro-sign"></i></td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: center; font-weight: bold; text-decoration: underline;">COÛTS ET CHARGES</th>
+                            <td style="text-align: center;"></td>
+                        </tr>
+                        <tr>
+                            <th>Coûts de production :</th>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>Semences</th>
+                            <td><span class="converted-amount-eur" data-original="{{ bilanresultat.semences }}">{{ bilanresultat.semences }}</span><i class="fas fa-euro-sign"></i></td>
+                        </tr>
+                        <tr>
+                            <th>Coût Main d'Œuvre</th>
+                            <td><span class="converted-amount-eur" data-original="{{ bilanresultat.coutmainoeuvre }}">{{ bilanresultat.coutmainoeuvre }}</span><i class="fas fa-euro-sign"></i></td>
+                        </tr>
+                        <tr>
+                            <th>Coûts Plantations</th>
+                            <td><span class="converted-amount-eur" data-original="{{ bilanresultat.coutsplantations }}">{{ bilanresultat.coutsplantations }}</span><i class="fas fa-euro-sign"></i></td>
+                        </tr>
+                        <tr>
+                            <th>Coût Interventions Médicales</th>
+                            <td><span class="converted-amount-eur" data-original="{{ bilanresultat.coutinterventionmedicale }}">{{ bilanresultat.coutinterventionmedicale }}</span><i class="fas fa-euro-sign"></i></td>
+                        </tr>
+                        <tr>
+                            <th>Total Cout de production</th>
+                            <td><span class="converted-amount-eur" data-original="{{ productionCosts }}">{{ productionCosts }}</span><i class="fas fa-euro-sign"></i></td>
+                        </tr>
+                        <tr>
+                            <th>Charges d'exploitation :</th>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>Charges Électricité et eau</th>
+                            <td><span class="converted-amount-eur" data-original="{{ bilanresultat.chargeselectricite }}">{{ bilanresultat.chargeselectricite }}</span><i class="fas fa-euro-sign"></i></td>
+                        </tr>
+                        <tr>
+                            <th>Charges Entretiens</th>
+                            <td><span class="converted-amount-eur" data-original="{{ bilanresultat.chargeentretien }}">{{ bilanresultat.chargeentretien }}</span><i class="fas fa-euro-sign"></i></td>
+                        </tr>
+                        <tr>
+                            <th>Charges Administratives</th>
+                            <td><span class="converted-amount-eur" data-original="{{ bilanresultat.chargeadministratives }}">{{ bilanresultat.chargeadministratives }}</span><i class="fas fa-euro-sign"></i></td>
+                        </tr>
+                        <tr>
+                            <th>Total Charges d'exploitation</th>
+                            <td><span class="converted-amount-eur" data-original="{{ totalOperatingExpenses }}">{{ totalOperatingExpenses }}</span><i class="fas fa-euro-sign"></i></td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: center; font-weight: bold; text-decoration: none; color: black;">Total Coûts et Charges</th>
+                            <td style="text-align: center; font-weight: bold; color: black;"><span class="converted-amount-eur" data-original="{{ productionCosts+totalOperatingExpenses }}">{{ productionCosts+totalOperatingExpenses }}</span><i class="fas fa-euro-sign"></i></td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: center; font-weight: bold; text-decoration: none; color: black;">BÉNÉFICE AVANT IMPÔTS</th>
+                            <td style="text-align: center; font-weight: bold; color: black;"><span class="converted-amount-eur" data-original="{{ totalRevenus-(productionCosts+totalOperatingExpenses) }}">{{ totalRevenus-(productionCosts+totalOperatingExpenses) }}</span><i class="fas fa-euro-sign"></i></td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: center; font-weight: bold; text-decoration: none; color: black;">Impôts sur le revenu</th>
+                            <td style="text-align: center; font-weight: bold; color: black;"><span class="converted-amount-eur" data-original="{{ (totalRevenus-(productionCosts+totalOperatingExpenses))*0.1 }}">{{ (totalRevenus-(productionCosts+totalOperatingExpenses))*0.1 }}</span><i class="fas fa-euro-sign"></i></td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: center; font-weight: bold; text-decoration: none; color: black;">RESULTAT NET DE L’EXERCICE</th>
+                            <td style="text-align: center; font-weight: bold; color: black;"><span class="converted-amount-eur" data-original="{{ (totalRevenus-(productionCosts+totalOperatingExpenses))-((totalRevenus-(productionCosts+totalOperatingExpenses))*0.1) }}">{{ (totalRevenus-(productionCosts+totalOperatingExpenses))-((totalRevenus-(productionCosts+totalOperatingExpenses))*0.1) }}</span><i class="fas fa-euro-sign"></i></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+
+    <!-- Add this script for conversion -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            function convertCurrencyToEuro(amount, element) {
+                const apiUrl = 'http://apilayer.net/api/live?access_key=62cd0b67e64af4cd8c54f819bcdef722&currencies=EUR&source=TND&format=1';
+
+                fetch(apiUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                        const euroRate = data.quotes['TNDEUR'];
+                        const convertedAmount = (amount * euroRate).toFixed(2);
+                        element.textContent = convertedAmount;
+                    })
+                    .catch(error => console.error('Error fetching exchange rates:', error));
+            }
+
+            const elements = document.querySelectorAll('.converted-amount-eur');
+            elements.forEach(element => {
+                const originalAmount = parseFloat(element.getAttribute('data-original'));
+                convertCurrencyToEuro(originalAmount, element);
+            });
+        });
+    </script>
+{% endblock %}

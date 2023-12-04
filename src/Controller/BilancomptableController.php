@@ -146,20 +146,29 @@ class BilancomptableController extends AbstractController
         ]);
     }*/
     #[Route('/generate-pdf/{idbilanc}', name: 'generate_pdf', methods: ['GET'])]
-    public function index_pdf(BilancomptableRepository $bilancRepository, Request $request,$idbilanc): Response
+    public function index_pdf(BilancomptableRepository $bilancomptableRepository, Request $request,$idbilanc,Bilancomptable $bilancomptable): Response
     {
         // Création d'une nouvelle instance de la classe Dompdf
         $dompdf = new Dompdf();
 
         // Récupération de la liste des événements à partir du repository
-        $bilansC = $bilancRepository->findByIdbilanc($idbilanc);
-        $imagePath = $this->getParameter('kernel.project_dir') . '/public/img/1.jpeg';
+        $totalActifImmobilise = $bilancomptableRepository->sumOfValues($bilancomptable->getIdbilanc());
+        $totalActifCirculant = $bilancomptableRepository->sumOfTotalActifCirculant($bilancomptable->getIdbilanc());
+        $totalCapitauxPropres = $bilancomptableRepository->sumOfTotalCapitauxPropres($bilancomptable->getIdbilanc());
+        $totalDettesLongTerme = $bilancomptableRepository->sumOfTotalDettesLongTerme($bilancomptable->getIdbilanc());
+        $totalDettesCourtTerme = $bilancomptableRepository->sumOfTotalDettesCourtTerme($bilancomptable->getIdbilanc());
+        $imagePath = $this->getParameter('kernel.project_dir') . '/public/img/logoespritAgri.png';
         // Encode the image to base64
         $imageData = base64_encode(file_get_contents($imagePath));
-        $imageSrc = 'data:image/jpeg;base64,' . $imageData;
+        $imageSrc = 'data:image/png;base64,' . $imageData;
         // Génération du HTML à partir du template Twig 'evenement/pdf_file.html.twig' en passant la liste des événements
         $html = $this->renderView('bilancomptable/pdf_file.html.twig', [
-            'bilansC' => $bilansC,
+            'bilancomptable' => $bilancomptable,
+            'totalActifImmobilise' => $totalActifImmobilise,
+            'totalActifCirculant' => $totalActifCirculant,
+            'totalCapitauxPropres' => $totalCapitauxPropres,
+            'totalDettesLongTerme' => $totalDettesLongTerme,
+            'totalDettesCourtTerme' => $totalDettesCourtTerme,
             'imagePath' => $imageSrc,
 
         ]);
@@ -193,4 +202,45 @@ class BilancomptableController extends AbstractController
 
         return $response;
     }
+    ///////////////////////////////////EURO///////////////////////////////////////////
+    #[Route('/{idbilanc}/euro', name: 'app_bilancomptable_show_euro', methods: ['GET'])]
+    public function showEURO(Bilancomptable $bilancomptable, BilancomptableRepository $bilancomptableRepository): Response
+    {
+        $totalActifImmobilise = $bilancomptableRepository->sumOfValues($bilancomptable->getIdbilanc());
+        $totalActifCirculant = $bilancomptableRepository->sumOfTotalActifCirculant($bilancomptable->getIdbilanc());
+        $totalCapitauxPropres = $bilancomptableRepository->sumOfTotalCapitauxPropres($bilancomptable->getIdbilanc());
+        $totalDettesLongTerme = $bilancomptableRepository->sumOfTotalDettesLongTerme($bilancomptable->getIdbilanc());
+        $totalDettesCourtTerme = $bilancomptableRepository->sumOfTotalDettesCourtTerme($bilancomptable->getIdbilanc());
+
+        return $this->render('bilancomptable/showEURO.html.twig', [
+            'bilancomptable' => $bilancomptable,
+            'totalActifImmobilise' => $totalActifImmobilise,
+            'totalActifCirculant' => $totalActifCirculant,
+            'totalCapitauxPropres' => $totalCapitauxPropres,
+            'totalDettesLongTerme' => $totalDettesLongTerme,
+            'totalDettesCourtTerme' => $totalDettesCourtTerme,
+        ]);
+    }
+    //////////////////////////////////DOLLAR///////////////////////////////////////////////////
+    #[Route('/{idbilanc}/dollar', name: 'app_bilancomptable_show_usd', methods: ['GET'])]
+    public function showUSD(Bilancomptable $bilancomptable, BilancomptableRepository $bilancomptableRepository): Response
+    {
+        $totalActifImmobilise = $bilancomptableRepository->sumOfValues($bilancomptable->getIdbilanc());
+        $totalActifCirculant = $bilancomptableRepository->sumOfTotalActifCirculant($bilancomptable->getIdbilanc());
+        $totalCapitauxPropres = $bilancomptableRepository->sumOfTotalCapitauxPropres($bilancomptable->getIdbilanc());
+        $totalDettesLongTerme = $bilancomptableRepository->sumOfTotalDettesLongTerme($bilancomptable->getIdbilanc());
+        $totalDettesCourtTerme = $bilancomptableRepository->sumOfTotalDettesCourtTerme($bilancomptable->getIdbilanc());
+
+        return $this->render('bilancomptable/showUSD.html.twig', [
+            'bilancomptable' => $bilancomptable,
+            'totalActifImmobilise' => $totalActifImmobilise,
+            'totalActifCirculant' => $totalActifCirculant,
+            'totalCapitauxPropres' => $totalCapitauxPropres,
+            'totalDettesLongTerme' => $totalDettesLongTerme,
+            'totalDettesCourtTerme' => $totalDettesCourtTerme,
+        ]);
+    }
+    
 }
+
+

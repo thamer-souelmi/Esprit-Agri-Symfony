@@ -27,10 +27,13 @@ class UserType extends AbstractType
                     
                     'Agriculteur' => 'agriculteur',
                     'User' => 'user',
+                    'Investisseur'=>'investisseur',
+                    'Veterinaire'=>'veterinaire',
+                    'Ouvrier'=>'ouvrier'
                 ],
             ])
             ->add('image', FileType::class, [
-                'label' => 'User Image (JPG, JPEG, PNG file)',
+                'label' => 'Votre Image (JPG, JPEG, PNG file)',
                 'mapped' => false,
                 'required' => false,
                 'attr' => ['accept' => 'image/*'],

@@ -10,9 +10,11 @@ use App\Repository\AnnonceinvestissementRepository;
 #[ORM\Entity(repositoryClass: AnnonceinvestissementRepository::class)]
 class Annonceinvestissement
 {
+    
+    
     #[ORM\Column(name: "idAnnonce", type: "integer", nullable: false)]
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: "IDENTITY")]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
     private int $idannonce;
 
     #[ORM\Column(name: "titre", type: "string", length: 200, nullable: false)]
@@ -38,6 +40,11 @@ class Annonceinvestissement
 
     #[ORM\Column(name: "photo", type: "string", length: 500, nullable: false)]
     private string $photo;
+
+    #[ORM\ManyToOne(inversedBy: 'annonceinvestissements')]
+    private ?User $user = null;
+
+    
 
     public function getIdannonce(): ?int
     {
@@ -112,6 +119,18 @@ class Annonceinvestissement
     public function setPhoto(string $photo): self
     {
         $this->photo = $photo;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

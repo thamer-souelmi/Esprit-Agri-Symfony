@@ -1,45 +1,136 @@
-{% extends 'base.html.twig' %}
+{% extends 'culturefront.html.twig' %}
 
-{% block title %}Culture index{% endblock %}
+{%block body%}
+<div class="card">
+	<div class="d-flex justify-content-end">
+		<a href="{{ path('app_culture_new') }}" class="btn btn-primary">
+			<i class="bi bi-plus"></i>
+			Ajouter
+		</a>
+	</div>
+	<div class="card-body">
+		<h5 class="card-title"></h5>
 
-{% block body %}
-    <h1>Culture index</h1>
+		<!-- Cards -->
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Libelle</th>
-                <th>Dateplantation</th>
-                <th>Daterecolte</th>
-                <th>Categorytype</th>
-                <th>Revenuescultures</th>
-                <th>Coutsplantations</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for culture in cultures %}
-            <tr>
-                <td>{{ culture.id }}</td>
-                <td>{{ culture.libelle }}</td>
-                <td>{{ culture.dateplantation ? culture.dateplantation|date('Y-m-d') : '' }}</td>
-                <td>{{ culture.daterecolte ? culture.daterecolte|date('Y-m-d') : '' }}</td>
-                <td>{{ culture.categorytype }}</td>
-                <td>{{ culture.revenuescultures }}</td>
-                <td>{{ culture.coutsplantations }}</td>
-                <td>
-                    <a href="{{ path('app_culture_show', {'id': culture.id}) }}">show</a>
-                    <a href="{{ path('app_culture_edit', {'id': culture.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="8">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
 
-    <a href="{{ path('app_culture_new') }}">Create new</a>
-{% endblock %}
+		<div class="row">
+
+
+			{% for culture in pagination %}
+				<div class="col-md-4 mb-4">
+					<div class="card">
+						<div>
+							<div class="card-body">
+								<h5 class="card-title">Culture
+									{{ loop.index }}</h5>
+								<ul class="list-group list-group-flush">
+									<li class="list-group-item">
+										<strong>Libelle:</strong>
+										{{ culture.libelle }}</li>
+									<li class="list-group-item">
+										<strong>Type Category:</strong>
+										{{ culture.category.type }}</li>
+									<li class="list-group-item">
+										<strong>Date Plantation:</strong>
+										{{ culture.dateplantation ? culture.dateplantation|date('Y-m-d') : '' }}</li>
+									<li class="list-group-item">
+										<strong>Date Recolte:</strong>
+										{{ culture.daterecolte ? culture.daterecolte|date('Y-m-d') : '' }}</li>
+									<li class="list-group-item">
+										<strong>Revenues Cultures:</strong>
+										{{ culture.revenuescultures }}</li>
+									<li class="list-group-item">
+										<strong>Couts Plantations:</strong>
+										{{ culture.coutsplantations }}</li>
+									<li class="list-group-item d-flex justify-content-between">
+										<a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_culture_show', {'id': culture.id}) }}">
+											<i class="bi bi-eye"></i>
+										</a>
+										{# Afficher #}
+										<a class="btn btn-success rounded-pill py-2 px-4" href="{{ path('app_culture_edit', {'id': culture.id}) }}">
+											<i class="bi bi-pencil"></i>
+										</a>
+										{# Modifier #}
+										<form method="post" action="{{ path('app_culture_delete', {'id': culture.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet élément ?');" style="display: inline-block;">
+											<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ culture.id) }}">
+											<button class="btn btn-danger rounded-pill py-2 px-4">
+												<i class="bi bi-trash"></i>
+											</button>
+											{# Supprimer #}
+
+										</form>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			{% else %}
+				<div class="col-md-12">
+					<p>No records found</p>
+				</div>
+			{% endfor %}
+			<a href="{{ path('pdf') }}" class="btn btn-primary">pdf</a>
+
+			<div class="container mt-5">
+				<div class="row justify-content-center">
+					<div class="text-center">
+						<div
+							class="pagination">
+							{# class="pagination" style for pagination #}
+							{{ knp_pagination_render(pagination) }}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		{# Pagination #}
+
+		<br>
+		<br>
+
+		<!-- Add links for other actions as needed -->
+	</div>
+
+</div>
+{# style of pagination #}
+<style>
+	.pagination {
+		display: flex;
+		justify-content: center;
+		list-style: none;
+		padding: 0;
+	}
+
+	.pagination li {
+		margin: 0 5px;
+	}
+
+	.button-container {
+		display: flex;
+		flex-direction: row;
+		overflow-x: auto;
+		white-space: nowrap;
+	}
+
+
+	.button-container button {
+		margin-right: 10px; /* Espacement entre les boutons */
+	}
+
+	.pagination a {
+		text-decoration: none;
+		padding: 5px 10px;
+		border: 1px solid #3498db; /* Bleu */
+		border-radius: 3px;
+		color: #3498db; /* Bleu */
+	}
+
+	.pagination a:hover {
+		background-color: #3498db; /* Bleu au survol */
+		color: #fff; /* Texte blanc au survol */
+	}
+</style>
+
+{%endblock%}

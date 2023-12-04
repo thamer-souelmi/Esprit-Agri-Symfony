@@ -59,6 +59,9 @@ class Bilancomptable
     #[ORM\Column(name: "fournisseurs", type: "float", precision: 10, scale: 0, nullable: false)]
     private $fournisseurs;
 
+    #[ORM\ManyToOne(inversedBy: 'bilancomptables')]
+    private ?User $user = null;
+
     public function getIdbilanc(): ?int
     {
         return $this->idbilanc;
@@ -240,6 +243,18 @@ class Bilancomptable
     public function setFournisseurs(float $fournisseurs): static
     {
         $this->fournisseurs = $fournisseurs;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

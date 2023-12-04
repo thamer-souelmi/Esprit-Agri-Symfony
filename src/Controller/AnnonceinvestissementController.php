@@ -19,12 +19,13 @@ use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
 use Endroid\QrCodeBundle\Response\QrCodeResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/annonceinvestissement')]
 class AnnonceinvestissementController extends AbstractController
 {
 #[Route('/', name: 'app_annonceinvestissement_index', methods: ['GET'])]
-public function index(AnnonceinvestissementRepository $annonceinvestissementRepository, PaginatorInterface $paginator, Request $request): Response
+public function index(AnnonceinvestissementRepository $annonceinvestissementRepository, PaginatorInterface $paginator, Request $request,TranslatorInterface $translator): Response
 {
     $annonceinvestissements = $annonceinvestissementRepository->findAll();
 
@@ -33,9 +34,12 @@ public function index(AnnonceinvestissementRepository $annonceinvestissementRepo
         $request->query->getInt('page', 1),
         4 // Number of items per page
     );
+    // Example of using $translator to translate a message
+    $translatedMessage = $translator->trans('hello world.');
 
     return $this->render('annonceinvestissement/index.html.twig', [
         'pagination' => $pagination,
+        'translatedMessage' => $translatedMessage, // Pass the translated message to your Twig template
     ]);
 }
     /////////////////////////////BACK//////////////////////////////////////////
@@ -227,17 +231,28 @@ public function delete(
 
     //******************************************QR CODE**************************************************//
     #[Route('/{idannonce}/qrcode', name: 'app_annonceinvestissement_qrcode', methods: ['GET'])]
-    public function generateQrCode(Annonceinvestissement $annonceinvestissement)
+    public function generateQrCode(Annonceinvestissement $annonceinvestissement,$id,AnnonceinvestissementRepository $repo)
     {
-        
+        $annonceinvestissement = $repo->find($id);
         // Créer un nouvel objet QRCode
-        $qrCode = new QrCode($annonceinvestissement->getIdannonce());
+        $qrContent = sprintf(
+            "Titre de l'annonce: %s\nMontant: %s\nLocalisation:\nDate de publication: %s",
+            $annonceinvestissement->getTitre(),
+            $annonceinvestissement->getMontant(),
+            $annonceinvestissement->getLocalisation(),
+            $annonceinvestissement->getDatepublication()
+
+        );
+
+        // Créer une instance de QrCode
+        $qrCode = new QrCode($qrContent);
 
         // Modifier les options du QRCode
         $qrCode->setSize(250); // Définir la taille du QRCode en pixels
 
         // Générer l'image du QRCode
         $qrCodeImage = $qrCode->writeString();
+        
 
         // Créer une réponse HTTP avec l'image du QRCode
         $response = new Response($qrCodeImage, Response::HTTP_OK, [

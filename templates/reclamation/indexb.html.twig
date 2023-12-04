@@ -1,0 +1,38 @@
+{% extends 'baseback.html.twig' %}
+
+{% block title %}Liste Des Reclamations {% endblock %}
+
+{% block body %}
+    <h1>Reclamation index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                
+                <th>Description</th>
+                <th>Datea d'ajout</th>
+                <th>Date de modification</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for reclamation in reclamations %}
+            <tr>
+                
+                <td>{{ reclamation.description }}</td>
+                <td>{{ reclamation.dateajout ? reclamation.dateajout|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ reclamation.datemodif ? reclamation.dateajout|date('Y-m-d H:i:s') : '' }}</td>
+                
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">0 0 Reclamation</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <a class="nav-link" href="{{ path('app_user_indexrec') }}">
+
+						<span>retour</span>
+					</a>
+    
+{% endblock %}

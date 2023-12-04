@@ -1,0 +1,29 @@
+{% extends 'categoryfront.html.twig' %}
+
+{% block title %}Categorie
+{% endblock %}
+
+{% block body %}
+	<h1>Categorie</h1>
+	<a href="{{ path('app_category_index') }}">
+		<i class="ri-arrow-left-circle-fill" style="font-size: 50px;"></i>
+	</a>
+	<table class="table">
+		<tbody>
+			<tr>
+				<th>Type</th>
+				<td>{{ category.type }}</td>
+			</tr>
+		</tbody>
+	</table>
+
+
+	<form method="post" action="{{ path('app_category_delete', {'id': category.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');" style="display: inline-block;">
+		<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ category.id) }}">
+		<button class="btn btn-danger">Supprimer</button>
+		<a href="{{ path('app_category_index') }}" class="btn btn-primary">back to list</a>
+
+	</form>
+
+
+{% endblock %}

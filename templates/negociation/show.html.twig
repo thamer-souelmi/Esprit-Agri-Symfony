@@ -9,11 +9,22 @@
                         <h5 class="card-title">Négociation {{ loop.index }}</h5>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item"><strong>Montant Proposé:</strong> {{ negociation.montantpropose }}</li>
-                            <li class="list-group-item"><strong>Message:</strong> {{ negociation.message }}</li>
+                            <li class="list-group-item">
+                                <strong>Message:</strong>
+                                {% if not negociation.contentHidden %}
+                                    {{ negociation.message }}
+                                {% else %}
+                                    <em>Content hidden</em>
+                                {% endif %}
+                            </li>
                             <li class="list-group-item"><strong>Date Négociation:</strong> {{ negociation.datenegociation ? negociation.datenegociation|date('Y-m-d') : '' }}</li>
                             <li class="list-group-item"><strong>Etat Négociation:</strong>
-                                <a href="{{ path('app_nego_decision', {'id': negociation.id, 'decision': 'accept'}) }}" class="btn btn-primary" data-decision="accept">Accepter</a>
-                                <a href="{{ path('app_nego_decision', {'id': negociation.id, 'decision': 'refuse'}) }}" class="btn btn-primary" data-decision="refuse">Refuser</a>
+                                {% if negociation.isArchived %}
+                                    Archivé
+                                {% else %}
+                                    <a href="{{ path('app_negociation_decision', {'id': negociation.id, 'decision': 'accept'}) }}" class="btn btn-primary" data-decision="accept">Accepter</a>
+                                    <a href="{{ path('app_negociation_decision', {'id': negociation.id, 'decision': 'refuse'}) }}" class="btn btn-primary" data-decision="refuse">Refuser</a>
+                                {% endif %}
                             </li>
                         </ul>
                     </div>

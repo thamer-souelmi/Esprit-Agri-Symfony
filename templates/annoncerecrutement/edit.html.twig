@@ -1,13 +1,39 @@
+{% extends 'anncandimod.html.twig' %}
 
 
-{% block title %}Edit Annoncerecrutement{% endblock %}
 
 {% block body %}
-    <h1>Edit Annoncerecrutement</h1>
+    <div class="container mt-5">
+            {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+        {{ form_row(form.postedemande, {'label': 'Poste Demandé', 'attr': {'class': 'form-control', 'placeholder': 'Poste Demandé'}}) }}
+       <br>
+        {{ form_row(form.salairepropose, {'label': 'Salaire Proposé', 'attr': {'class': 'form-control', 'placeholder': 'Salaire Proposé'}}) }}
+        <br>
+        {{ form_row(form.typecontrat, {'label': 'Type de Contrat', 'attr': {'class': 'form-control', 'placeholder': 'Type de Contrat'}}) }}
+        <br>
+        {{ form_row(form.localisation, {'label': 'Localisation', 'attr': {'class': 'form-control', 'placeholder': 'Localisation'}}) }}
+        <br>
+        {{ form_row(form.dateembauche, {'label': 'Date d\'Embauche', 'attr': {'class': 'form-control', 'placeholder': 'Date d\'Embauche'}}) }}
+        <br>
+        {{ form_row(form.nbposterecherche, {'label': 'Nombre de Postes Recherchés', 'attr': {'class': 'form-control', 'placeholder': 'Nombre de Postes Recherchés'}}) }}
+        
+        <br>
+<div style="display: flex; justify-content: space-between : 5px;">
+    <div>
+        {% include 'annoncerecrutement/_form.html.twig' with {'submit_button': 'Modifier'} %}
+    </div>
+    <div style="margin-left: 5px;">
+        {% include 'annoncerecrutement/_delete_form.html.twig' with {'submit_button': 'Supprimer'} %}
+    </div>
 
-    {{ include('annoncerecrutement/_form.html.twig', {'button_label': 'Update'}) }}
+</div>
+ 
+       <br> <a href="{{ path('app_annoncerecrutement_index') }}">back to list</a>
 
-    <a href="{{ path('app_annoncerecrutement_index') }}">back to list</a>
+</div>
 
-    {{ include('annoncerecrutement/_delete_form.html.twig') }}
+
+
+{{ form_end(form) }}
+
 {% endblock %}

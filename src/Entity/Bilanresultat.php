@@ -50,6 +50,9 @@ class Bilanresultat
     #[ORM\Column(name: "chargeAdministratives", type: "float", precision: 10, scale: 0, nullable: false)]
     private $chargeadministratives;
 
+    #[ORM\ManyToOne(inversedBy: 'bilanresultats')]
+    private ?User $user = null;
+
     public function getIdbilanr(): ?int
     {
         return $this->idbilanr;
@@ -195,6 +198,18 @@ class Bilanresultat
     public function setChargeadministratives(float $chargeadministratives): static
     {
         $this->chargeadministratives = $chargeadministratives;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }
