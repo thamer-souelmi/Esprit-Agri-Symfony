@@ -3,10 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Produit;
-use App\Entity\Produit;
 use App\Entity\User;
-use App\Repository\UserRepository;
-use App\Form\ProduitType;
 use App\Repository\UserRepository;
 use App\Form\ProduitType;
 use App\Form\UserType;
@@ -31,11 +28,7 @@ class UserController extends AbstractController
     {
         return $this->render('base.html.twig',);
     }
-    #[Route('/home', name: 'app_home')]
-    public function index1(): Response
-    {
-        return $this->render('base.html.twig',);
-    }
+    
     #[Route('/', name: 'app_user_index', methods: ['GET'])]
     public function index(EntityManagerInterface $entityManager,UserRepository $userRepository,PaginatorInterface $paginator,Request $request): Response
     {
