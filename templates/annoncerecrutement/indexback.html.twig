@@ -1,0 +1,42 @@
+{% extends 'baseback.html.twig' %}
+
+
+{% block body %}
+
+          
+
+ 
+        <table class="table">
+    <thead>
+        <tr>
+            <th>Poste proposé</th>
+            <th>Salaire</th>
+            <th>Contrat proposé</th>
+            <th>Date de publication de l'annonce</th>
+            <th>Date prévue d'embauche</th>
+            <th>Localisation</th>
+            <th>Nombre de postes recherchés</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for annoncerecrutement in annoncerecrutements %}
+            <tr>
+                <td>{{ annoncerecrutement.postedemande }}</td>
+                <td>{{ annoncerecrutement.salairepropose }} <i class="bi bi-cash-stack"></i></td>
+                <td>{{ annoncerecrutement.typecontrat }}</td>
+                <td>{{ annoncerecrutement.datepub ? annoncerecrutement.datepub|date('d-m-Y') : '' }}</td>
+                <td>{{ annoncerecrutement.dateembauche ? annoncerecrutement.dateembauche|date('d-m-Y') : '' }}</td>
+                <td>{{ annoncerecrutement.localisation }} <i class="bi bi-geo-fill"></i></td>
+                <td>{{ annoncerecrutement.nbposterecherche }} <i class="bi bi-people-fill"></i></td>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+</section>
+
+
+
+
+{% endblock %}

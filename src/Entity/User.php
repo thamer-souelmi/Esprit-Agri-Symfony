@@ -1,25 +1,31 @@
 <?php
 namespace App\Entity;
-
 //namespace App\Entity\User;
+
+
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\DBAL\Types\Types;
+use Scheb\TwoFactorBundle\Model\Google\TwoFactorInterface;
 
 
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
+#[UniqueEntity(fields: ['mail'], message: 'There is already an account with this mail')]
 
-class User implements UserInterface
+class User implements UserInterface//, TwoFactorInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'Le CIN ne doit pas être vide.')]
@@ -60,7 +66,7 @@ class User implements UserInterface
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'L\'adresse ne peut pas être vide.')]
     #[Assert\Length(max: 50, maxMessage: 'L\'adresse ne peut pas dépasser {{ limit }} caractères.')]
-    private ?int $adresse = null;
+    private ?string $adresse = null;
 
     #[ORM\Column]
     #[Assert\NotBlank(message: 'Le numéro de téléphone ne peut pas être vide.')]
@@ -72,37 +78,80 @@ class User implements UserInterface
     )]
     private ?int $numtel = null;
 
-    #[ORM\Column(type: 'json')]
-    private array $role = [];
 
     #[ORM\Column(length: 255)]
+    private $role;
+
+    #[ORM\Column(length: 255)]
+    
     private ?string $image = null;
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Produit", mappedBy="user")
-     */
-    private $products;
+    
+    // #[ORM\Column(nullable: true)]
+    // private ?string $googleAuthenticatorSecret ;
 
-    #[ORM\OneToMany(mappedBy: 'users', targetEntity: Negociation::class)]
-    private Collection $negociations;
+    #[ORM\Column(nullable: true)]
+    private ?bool $isBanned = false; // Indicates if the user is banned
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Annonceinvestissement::class)]
-    private Collection $annonceinvestissements;
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeInterface  $banExpiresAt = null;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Bilancomptable::class)]
-    private Collection $bilancomptables;
+    #[ORM\Column(type: 'boolean')]
+    private $isVerified = false;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Bilanresultat::class)]
-    private Collection $bilanresultats;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Produit::class)]
+    private Collection $produits;
+
+    #[ORM\OneToMany(mappedBy: "user", targetEntity: Annoncerecrutement::class)]
+    private Collection $annonces;
+
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Reclamation::class)]
+    private Collection $reclamations;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $googleID = null;
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $resetToken ;
+ 
 
     public function __construct()
     {
-        $this->negociations = new ArrayCollection();
-        $this->annonceinvestissements = new ArrayCollection();
-        $this->bilancomptables = new ArrayCollection();
-        $this->bilanresultats = new ArrayCollection();
+        $this->produits = new ArrayCollection();
+        $this->reclamations = new ArrayCollection();
     }
+    
+   
+
+   
+
+    #[ORM\OneToMany(mappedBy: "user", targetEntity: Annoncerecrutement::class)]
+    private Collection $annonces;
+
 
     
+    public function isBanned(): ?bool
+    {
+        return $this->isBanned;
+    }
+
+    public function setIsBanned(?bool $isBanned): static
+    {
+        $this->isBanned = $isBanned;
+
+        return $this;
+    }
+
+    public function getBanExpiresAt(): ?\DateTimeInterface
+    {
+        return $this->banExpiresAt;
+    }
+
+    public function setBanExpiresAt(?\DateTimeInterface $banExpiresAt): static
+    {
+        $this->banExpiresAt = $banExpiresAt;
+
+        return $this;
+    }
 
     
 
@@ -226,6 +275,23 @@ class User implements UserInterface
 
         return $this;
     }
+
+
+
+    
+
+
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): static
+    {
+        $this->isVerified = $isVerified;
+
+        return $this;
+    }
     public function getRoles()
     {
         return [$this->role]; // You might need to adjust this depending on your use case
@@ -250,31 +316,50 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
     }
+    // public function isGoogleAuthenticatorEnabled(): bool
+    // {
+    //     // return null !== $this->googleAuthenticatorSecret;
+    // }
 
-    /**
-     * @return Collection<int, Negociation>
-     */
-    public function getNegociations(): Collection
+    public function getGoogleAuthenticatorUsername(): string
     {
-        return $this->negociations;
+        return $this->mail;
     }
 
-    public function addNegociation(Negociation $negociation): static
+    public function getGoogleAuthenticatorSecret(): ?string
     {
-        if (!$this->negociations->contains($negociation)) {
-            $this->negociations->add($negociation);
-            $negociation->setUsers($this);
+        // return $this->googleAuthenticatorSecret;
+    }
+
+    public function setGoogleAuthenticatorSecret(?string $googleAuthenticatorSecret): void
+    {
+        $this->googleAuthenticatorSecret = $googleAuthenticatorSecret;
+    }
+
+    /**
+     * @return Collection<int, Produit>
+     */
+    public function getProduits(): Collection
+    {
+        return $this->produits;
+    }
+
+    public function addProduit(Produit $produit): static
+    {
+        if (!$this->produits->contains($produit)) {
+            $this->produits->add($produit);
+            $produit->setUser($this);
         }
 
         return $this;
     }
 
-    public function removeNegociation(Negociation $negociation): static
+    public function removeProduit(Produit $produit): static
     {
-        if ($this->negociations->removeElement($negociation)) {
+        if ($this->produits->removeElement($produit)) {
             // set the owning side to null (unless already changed)
-            if ($negociation->getUsers() === $this) {
-                $negociation->setUsers(null);
+            if ($produit->getUser() === $this) {
+                $produit->setUser(null);
             }
         }
 
@@ -282,95 +367,64 @@ class User implements UserInterface
     }
 
     /**
-     * @return Collection<int, Annonceinvestissement>
+     * @return Collection<int, Reclamation>
      */
-    public function getAnnonceinvestissements(): Collection
+    public function getReclamations(): Collection
     {
-        return $this->annonceinvestissements;
+        return $this->reclamations;
     }
 
-    public function addAnnonceinvestissement(Annonceinvestissement $annonceinvestissement): static
+    public function addReclamation(Reclamation $reclamation): static
     {
-        if (!$this->annonceinvestissements->contains($annonceinvestissement)) {
-            $this->annonceinvestissements->add($annonceinvestissement);
-            $annonceinvestissement->setUser($this);
+        if (!$this->reclamations->contains($reclamation)) {
+            $this->reclamations->add($reclamation);
+            $reclamation->setUser($this);
         }
 
         return $this;
     }
 
-    public function removeAnnonceinvestissement(Annonceinvestissement $annonceinvestissement): static
+
+    public function removeReclamation(Reclamation $reclamation): static
     {
-        if ($this->annonceinvestissements->removeElement($annonceinvestissement)) {
+        if ($this->reclamations->removeElement($reclamation)) {
             // set the owning side to null (unless already changed)
-            if ($annonceinvestissement->getUser() === $this) {
-                $annonceinvestissement->setUser(null);
+            if ($reclamation->getUser() === $this) {
+                $reclamation->setUser(null);
             }
         }
 
-        return $this;
+    public function getAnnonces(): Collection
+    {
+        return $this->annonces;
     }
 
-    /**
-     * @return Collection<int, Bilancomptable>
-     */
-    public function getBilancomptables(): Collection
-    {
-        return $this->bilancomptables;
-    }
 
-    public function addBilancomptable(Bilancomptable $bilancomptable): static
-    {
-        if (!$this->bilancomptables->contains($bilancomptable)) {
-            $this->bilancomptables->add($bilancomptable);
-            $bilancomptable->setUser($this);
-        }
 
         return $this;
     }
-
-    public function removeBilancomptable(Bilancomptable $bilancomptable): static
+    public function getGoogleID(): ?string
     {
-        if ($this->bilancomptables->removeElement($bilancomptable)) {
-            // set the owning side to null (unless already changed)
-            if ($bilancomptable->getUser() === $this) {
-                $bilancomptable->setUser(null);
-            }
-        }
+        return $this->googleID;
+    }
+
+    public function setGoogleID(?string $googleID): self
+    {
+        $this->googleID = $googleID;
 
         return $this;
     }
-
-    /**
-     * @return Collection<int, Bilanresultat>
-     */
-    public function getBilanresultats(): Collection
+    public function getResetToken(): ?string
     {
-        return $this->bilanresultats;
+        return $this->resetToken;
     }
 
-    public function addBilanresultat(Bilanresultat $bilanresultat): static
+    public function setResetToken(?string $resetToken): self
     {
-        if (!$this->bilanresultats->contains($bilanresultat)) {
-            $this->bilanresultats->add($bilanresultat);
-            $bilanresultat->setUser($this);
-        }
+        $this->resetToken = $resetToken;
 
         return $this;
     }
-
-    public function removeBilanresultat(Bilanresultat $bilanresultat): static
-    {
-        if ($this->bilanresultats->removeElement($bilanresultat)) {
-            // set the owning side to null (unless already changed)
-            if ($bilanresultat->getUser() === $this) {
-                $bilanresultat->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
     
 
     
@@ -378,3 +432,4 @@ class User implements UserInterface
     
 
 }
+
