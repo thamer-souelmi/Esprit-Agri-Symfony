@@ -1,4 +1,11 @@
-{% extends 'inv.html.twig' %}
+{% extends 'prod.html.twig' %}
+{% block title %}Investissement{% endblock %}
+{% block banner_image %}
+    {{ asset('img/investissement.jpg') }}
+{% endblock %}
+{% block product_heading %}
+    <h1 class="display-3 text-white mb-4 animated slideInDown">Investissement</h1>
+{% endblock %}
 
 
 
@@ -33,7 +40,9 @@
             </tr>
             <tr>
                 <th><i class="bi bi-camera-fill">CODE QR</th>
-                <td><button onclick="generateQR()" type="button" class="btn btn-warning m-2">Générer le code QR</button></td>
+                <td><button onclick="{{ path('app_annonceinvestissement_qrcode', {'idannonce': annonceinvestissement.idannonce}) }}" type="button" class="btn btn-warning m-2">Générer le code QR</button></td>
+                				<a class="btn btn-square btn-secondary rounded-circle m-1" href="{{ path('app_annonceinvestissement_qrcode', {'idannonce': annonceinvestissement.idannonce}) }}"> QR<i class="bi bi-upc-scan"></i>
+											</a>
             </tr><!-- Bouton pour générer le code QR -->
     
             

@@ -617,11 +617,29 @@
                         <a class="btn btn-square btn-secondary rounded-circle me-2" href=""><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
-                
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-white mb-4">Liens Rapides</h5>
+                    <a href="{{ path('app_home') }}" class="btn btn-link">Accueil</a>
+                <a href="{{ path('app_annoncerecrutement_index') }}" class="btn btn-link">Recrutement</a>
+                <a href="{{ path('app_annonceinvestissement_index') }}" class="btn btn-link">Investissement</a>
+                <div class="nav-item dropdown">
+                    <a href="#" class="btn btn-link" data-bs-toggle="dropdown">Visite médicale</a>
+                    <div class="dropdown-menu bg-light m-0">
+                        <a href="{{ path('app_traitementmedicale_index') }}" class="dropdown-item">Traitement médical</a>
+                        <a href="{{ path('frontaffich')}}" class="dropdown-item">Véterinaire</a>
+                        
+                        
+                    </div>
+                </div>
+                <a href="{{ path('app_produit_index') }}" class="btn btn-link">Produit</a>
+                <a href="{{ path('app_culture_index') }}" class="btn btn-link">Culture</a>
+				<a href="{{ path('app_client_index') }}" class="btn btn-link">Marche</a>
+                </div>
                
                
             </div>
         </div>
+        
     </div>
     <!-- Footer End -->
 
@@ -635,7 +653,7 @@
                 </div>
                 <div class="col-md-6 text-center text-md-end">
                     <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                    Designed By <a class="fw-semi-bold" href="{{ asset('https://htmlcodex.com') }}">DevElites</a>
+                    Designed By DevElites<a class="fw-semi-bold" href="{{ asset('https://htmlcodex.com') }}"></a>
                 </div>
             </div>
         </div>

@@ -1,4 +1,12 @@
-{% extends 'nego.html.twig' %}
+{% extends 'prod.html.twig' %}
+
+{% block title %}Negociation{% endblock %}
+{% block banner_image %}
+    {{ asset('img/nego3.jpg') }}
+{% endblock %}
+{% block product_heading %}
+    <h1 class="display-3 text-white mb-4 animated slideInDown">Négociation</h1>
+{% endblock %}
 
 {% block body %}
     <!-- Flash Messages -->
