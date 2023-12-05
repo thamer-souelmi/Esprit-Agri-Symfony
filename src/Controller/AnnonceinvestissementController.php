@@ -82,7 +82,7 @@ public function index(AnnonceinvestissementRepository $annonceinvestissementRepo
 
                 // Move the file to the desired directory
                 $file->move(
-                    'E:/Esprit-Agri-Symfony/public/img/',
+                    'C:\Users\thame\OneDrive\Bureau\ya 7lili 3a rou7i\Esprit-Agri-Symfony\public\img',
                     $fileName
                 );
 
@@ -119,7 +119,7 @@ public function index(AnnonceinvestissementRepository $annonceinvestissementRepo
 
                 // Move the file to the desired directory
                 $file->move(
-                    'E:/Esprit-Agri-Symfony/public/img/',
+                    'C:\Users\thame\OneDrive\Bureau\ya 7lili 3a rou7i\Esprit-Agri-Symfony\public\img',
                     $fileName
                 );
 
@@ -166,6 +166,21 @@ public function index(AnnonceinvestissementRepository $annonceinvestissementRepo
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $file = $form->get('photo')->getData();
+            
+            if ($file instanceof UploadedFile) {
+                $fileName = uniqid().'.'.$file->guessExtension();
+
+                // Move the file to the desired directory
+                $file->move(
+                    'C:\Users\thame\OneDrive\Bureau\ya 7lili 3a rou7i\Esprit-Agri-Symfony\public\img',
+                    $fileName
+                );
+
+                // Save the image file name to the entity
+                $annonceinvestissement->setPhoto($fileName);
+            }
+
             $entityManager->flush();
 
             return $this->redirectToRoute('app_annonceinvestissement_index', [], Response::HTTP_SEE_OTHER);
@@ -252,17 +267,17 @@ public function delete(
         // Créer une instance de QrCode
         $qrCode = new QrCode($qrContent);
 
-        // Modifier les options du QRCode
-        $qrCode->setSize(250); // Définir la taille du QRCode en pixels
+        // Créer une instance de PngWriter pour générer le résultat sous forme d'image PNG
+        $writer = new PngWriter();
+        $result = $writer->write($qrCode);
 
-        // Générer l'image du QRCode
-        $qrCodeImage = $qrCode->writeString();
-        
-
-        // Créer une réponse HTTP avec l'image du QRCode
-        $response = new Response($qrCodeImage, Response::HTTP_OK, [
-            'Content-Type' => 'image/png',
+        // Créer une réponse avec le résultat du QR Code
+        $response = new Response($result->getString(), Response::HTTP_OK, [
+            'Content-Type' => $result->getMimeType(),
         ]);
+
+
+        
 
         return $response;
     }
