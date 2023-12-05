@@ -45,7 +45,7 @@ class RegistrationController extends AbstractController
         $mail=null;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $mail='maillll';
+            $mail='mail';
              /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $imageFile */
              $imageFile = $form->get('image')->getData();
     

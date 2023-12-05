@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\AnnonceinvestissementRepository;
@@ -46,6 +47,7 @@ class Annonceinvestissement
 
     
 
+
     public function getIdannonce(): ?int
     {
         return $this->idannonce;
@@ -56,7 +58,9 @@ class Annonceinvestissement
         return $this->titre;
     }
 
+
     public function setTitre(string $titre): self
+
     {
         $this->titre = $titre;
 
@@ -69,6 +73,7 @@ class Annonceinvestissement
     }
 
     public function setMontant(float $montant): self
+
     {
         $this->montant = $montant;
 
@@ -80,7 +85,9 @@ class Annonceinvestissement
         return $this->datepublication;
     }
 
+
     public function setDatepublication(\DateTimeInterface $datepublication): self
+
     {
         $this->datepublication = $datepublication;
 
@@ -92,7 +99,9 @@ class Annonceinvestissement
         return $this->localisation;
     }
 
+
     public function setLocalisation(string $localisation): self
+
     {
         $this->localisation = $localisation;
 
@@ -104,7 +113,9 @@ class Annonceinvestissement
         return $this->description;
     }
 
+
     public function setDescription(string $description): self
+
     {
         $this->description = $description;
 
@@ -116,12 +127,15 @@ class Annonceinvestissement
         return $this->photo;
     }
 
+
     public function setPhoto(string $photo): self
+
     {
         $this->photo = $photo;
 
         return $this;
     }
+
 
     public function getUser(): ?User
     {
@@ -135,3 +149,4 @@ class Annonceinvestissement
         return $this;
     }
 }
+

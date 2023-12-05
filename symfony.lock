@@ -325,6 +325,8 @@
             "./config/packages/swiftmailer.yaml",
             "./config/packages/test/swiftmailer.yaml"
 
+        ]
+
     },
     "symfony/sendgrid-mailer": {
         "version": "5.4",
