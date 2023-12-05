@@ -1,24 +1,78 @@
 {% extends 'nego.html.twig' %}
 
-
-
 {% block body %}
-<div class="container mt-5">
-        
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-7">
+                <div class="p-5">
+                    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+                    
+                    <div class="row mb-3">
+                        <label for="inputEmail" class="col-sm-4 col-form-label">Montant Proposé</label>
+                        <div class="col-sm-10">
+                            {{ form_widget(form.montantpropose, {'attr': {'class': 'form-control ' ~ (form.montantpropose.vars.errors|length > 0 ? 'is-invalid' : '')}}) }}
+                            {{ form_errors(form.montantpropose, {'attr': {'class': 'text-danger'}}) }}
+                        </div>
+                    </div>
 
-        {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+                    <div class="row mb-3">
+                        <label for="inputEmail" class="col-sm-4 col-form-label">Message</label>
+                        <div class="col-sm-10">
+                            {{ form_widget(form.message, {'attr': {'class': 'form-control ' ~ (form.message.vars.errors|length > 0 ? 'is-invalid' : '')}}) }}
+                            {{ form_errors(form.message, {'attr': {'class': 'text-danger'}}) }}
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <label for="inputEmail" class="col-sm-4 col-form-label">Date Négociation</label>
+                        <div class="col-sm-10">
+                            {{ form_widget(form.datenegociation, {'attr': {'class': 'form-control ' ~ (form.datenegociation.vars.errors|length > 0 ? 'is-invalid' : '')}}) }}
+                            {{ form_errors(form.datenegociation, {'attr': {'class': 'text-danger'}}) }}
+                        </div>
+                    </div>
 
-        {{ form_row(form.montantpropose, {'attr': {'class': 'form-control', 'placeholder': 'Montant Propose'}}) }}
-        {{ form_row(form.message, {'attr': {'class': 'form-control', 'placeholder': 'Message'}}) }}
-        {{ form_row(form.datenegociation, {'attr': {'class': 'form-control', 'placeholder': 'Date de Négociation'}}) }}
-        
+                    <button type="submit" class="btn btn-primary">Ajouter</button>
 
-        <button type="submit" class="btn btn-primary">Ajouter</button>
-
-        {{ form_end(form) }}
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
     </div>
-    
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Sélectionnez l'élément du champ de formulaire message
+            var messageInput = document.querySelector("#{{ form.message.vars.id }}");
 
-    
+            // Vérifiez si l'élément du champ de formulaire existe
+            if (messageInput) {
+                // Ajoutez un écouteur d'événements pour détecter les changements dans le champ de formulaire
+                messageInput.addEventListener("input", function() {
+                    // Mettez à jour la variable raw avec la valeur du champ de formulaire
+                    var raw = messageInput.value;
+
+                    // Exécutez l'analyse de sentiment avec la nouvelle valeur de raw
+                    performSentimentAnalysis(raw);
+                });
+            }
+
+            function performSentimentAnalysis(raw) {
+                var myHeaders = new Headers();
+                myHeaders.append("apikey", "VuiZeq6j3Tmu3t5qzVSLlnIISHuaWWTJ");
+
+                var requestOptions = {
+                    method: 'POST',
+                    redirect: 'follow',
+                    headers: myHeaders,
+                    body: raw
+                };
+
+                fetch("https://api.apilayer.com/sentiment/analysis", requestOptions)
+                    .then(response => response.text())
+                    .then(result => console.log(result))
+                    .catch(error => console.log('error', error));
+            }
+        });
+    </script>
+
 {% endblock %}

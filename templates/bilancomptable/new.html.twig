@@ -1,0 +1,11 @@
+{% extends 'baseback.html.twig' %}
+
+{% block title %}New Bilancomptable{% endblock %}
+
+{% block body %}
+    <h1>Create new Bilancomptable</h1>
+
+    {{ include('bilancomptable/_form.html.twig') }}
+
+    <a href="{{ path('app_bilancomptable_index') }}">back to list</a>
+{% endblock %}

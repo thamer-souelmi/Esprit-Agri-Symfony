@@ -28,6 +28,7 @@ class UserController extends AbstractController
     {
         return $this->render('base.html.twig',);
     }
+    
     #[Route('/', name: 'app_user_index', methods: ['GET'])]
     public function index(EntityManagerInterface $entityManager,UserRepository $userRepository,PaginatorInterface $paginator,Request $request): Response
     {

@@ -1,42 +1,177 @@
 {% extends 'nego.html.twig' %}
 
-
-
 {% block body %}
-    
-
-    <div class="row">
-    {% for negociation in negociations %}
-        <div class="col-md-4 mb-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Négociation {{ loop.index }}</h5>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item"><strong>Montant Proposé:</strong> {{ negociation.montantpropose }}</li>
-                        <li class="list-group-item"><strong>Message:</strong> {{ negociation.message }}</li>
-                        <li class="list-group-item"><strong>Etat Négociation:</strong> {{ negociation.etatnego }}</li>
-                        <li class="list-group-item"><strong>Date Négociation:</strong> {{ negociation.datenegociation ? negociation.datenegociation|date('Y-m-d') : '' }}</li>
-                        <li class="list-group-item d-flex justify-content-between">
-                            <a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_negociation_edit', {'id': negociation.id}) }}">Modifier</a>
-                            {% include 'negociation/_delete_form.html.twig' with {'submit_button': 'Supprimer'} %}
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    {% else %}
-        <div class="col-md-12">
-            <p>no records found</p>
+    <!-- Flash Messages -->
+    {% for flash_message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ flash_message }}
         </div>
     {% endfor %}
-</div>
 
+    <div class="container mt-3">
+        <h2 style="color: #1cc88a;">Négociations Acceptées</h2>
+        <div class="row">
+            {% for negociation in pagination %}
+                {% if negociation.isArchived or negociation.etatnego == 1 %}
+                    <div class="col-md-4 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Négociation {{ loop.index }}</h5>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item"><strong>Montant Proposé:</strong> {{ negociation.montantpropose }}</li>
+                                    <li class="list-group-item">
+                                        <strong>Message:</strong>
+                                        {% if not negociation.contentHidden %}
+                                            {{ negociation.message }}
+                                            <!-- Ajoutez un élément pour afficher le sentiment -->
+                                            <div class="sentiment-result" id="sentimentResult{{ loop.index }}"></div>
+                                        {% else %}
+                                            <em>Content hidden</em>
+                                        {% endif %}
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Etat Négociation:</strong> Acceptée
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% else %}
+                <div class="col-md-12">
+                    <p>Aucune négociation acceptée trouvée.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 
+    <div class="container mt-3">
+        <h2 style="color: #b67532;">Négociations En cours</h2>
+        <div class="row">
+            {% for negociation in pagination %}
+                {% if not negociation.isArchived and negociation.etatnego != 1 %}
+                    <div class="col-md-4 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Négociation {{ loop.index }}</h5>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item"><strong>Montant Proposé:</strong> {{ negociation.montantpropose }}</li>
+                                    <li class="list-group-item">
+                                        <strong>Message:</strong>
+                                        {% if not negociation.contentHidden %}
+                                            {{ negociation.message }}
+                                            <!-- Ajoutez un élément pour afficher le sentiment -->
+                                            <div class="sentiment-result" id="sentimentResult{{ loop.index }}"></div>
+                                        {% else %}
+                                            <em>Content hidden</em>
+                                        {% endif %}
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Etat Négociation:</strong> 
+                                        <a href="{{ path('app_negociation_decision', {'id': negociation.id, 'decision': 'accept'}) }}" class="btn btn-primary" data-decision="accept">Accepter</a>
+                                        <a href="{{ path('app_negociation_decision', {'id': negociation.id, 'decision': 'refuse'}) }}" class="btn btn-primary" data-decision="refuse">Refuser</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% else %}
+                <div class="col-md-12">
+                    <p>Aucune négociation en cours trouvée.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 
-<a href="{{ path('app_annonceinvestissement_index') }}" class="btn btn-light btn-icon-split btn-lg">
-                            <span class="icon text-gray-600">
-                                <i class="fas fa-arrow-left"></i>
-                            </span>
-                            <span class="text">Retour Annonce</span>
-</a>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            {% for negociation in pagination %}
+                {% if not negociation.isArchived and negociation.etatnego != 1 %}
+                    // Sélectionnez l'élément du message
+                    var messageElement{{ loop.index }} = document.getElementById("sentimentResult{{ loop.index }}");
+
+                    // Vérifiez si l'élément du message existe
+                    if (messageElement{{ loop.index }}) {
+                        // Obtenez le message
+                        var message{{ loop.index }} = "{{ negociation.message|escape('js') }}";
+
+                        // Exécutez l'analyse de sentiment
+                        performSentimentAnalysis(message{{ loop.index }}, messageElement{{ loop.index }});
+                    }
+                {% endif %}
+            {% endfor %}
+
+            function performSentimentAnalysis(raw, resultElement) {
+                var myHeaders = new Headers();
+                myHeaders.append("apikey", "VuiZeq6j3Tmu3t5qzVSLlnIISHuaWWTJ");
+
+                var requestOptions = {
+                    method: 'POST',
+                    redirect: 'follow',
+                    headers: myHeaders,
+                    body: raw
+                };
+
+                fetch("https://api.apilayer.com/sentiment/analysis", requestOptions)
+                    .then(response => response.json())
+                    .then(result => {
+                        // Mettez à jour l'élément du résultat avec le sentiment
+                        resultElement.innerHTML = "<strong>Sentiment:</strong> " + result.sentiment;
+                    })
+                    .catch(error => console.log('error', error));
+            }
+        });
+    </script>
+
+    <!-- Pagination -->
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="text-center">
+                {{ knp_pagination_render(pagination) }}
+            </div>
+        </div>
+    </div>
+
+    <!-- Style of pagination -->
+    <style>
+        .pagination {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0;
+        }
+
+        .pagination li {
+            margin: 0 5px;
+        }
+
+        .button-container {
+            display: flex;
+            flex-direction: row;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .button-container button {
+            margin-right: 10px; /* Espacement entre les boutons */
+        }
+
+        .pagination a {
+            text-decoration: none;
+            padding: 5px 10px;
+            border: 1px solid #404a3d; /* Bleu */
+            border-radius: 3px;
+            color: #404a3d; /* Bleu */
+        }
+
+        .pagination a:hover {
+            background-color: #404a3d; /* Bleu au survol */
+            color: #fff; /* Texte blanc au survol */
+        }
+    </style>
+
+    <br>
+    <br>
+
 {% endblock %}

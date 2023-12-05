@@ -1,0 +1,103 @@
+{% extends 'baseback.html.twig' %}
+
+{% block title %}Bilancomptable index{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">Bilan comptable</h1>
+
+    <div class="row">
+        {% for bilancomptable in pagination %}
+            <div class="col-md-3 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-text text-right">Année: {{ bilancomptable.annee ? bilancomptable.annee|date('Y-m-d') : '' }}</p>
+                        <p class="card-text font-weight-bold">ACTIF</p>
+                        <p class="card-text">-------------------------------------</p>
+                        <p class="card-text">Actif immobilisé :</p>
+                        <p class="card-text text-center">Terrains et bâtiments: {{ bilancomptable.valeurterrain }}</p>
+                        <p class="card-text text-center">Autres Immobilisations: {{ bilancomptable.autresimmobilisations }}</p>
+                        <p class="card-text text-center">Matériels: {{ bilancomptable.materiels }}</p>
+                        <br>
+                        <p class="card-text">Actif circulant :</p> 
+                        <p class="card-text text-center">Stocks de produits: {{ bilancomptable.stocksproduits }}</p>
+                        <p class="card-text text-center">Créance Client: {{ bilancomptable.creanceclient }}</p>
+                        <p class="card-text text-center">Trésorerie: {{ bilancomptable.tresorie }}</p>
+                        <br>
+                        <br>
+                        <p class="card-text font-weight-bold">PASSIF</p>
+                        <p class="card-text">-------------------------------------</p>
+                        <p class="card-text">Capitaux propres :</p>
+                        <p class="card-text text-center">Capital Social: {{ bilancomptable.capitalsocial }}</p>
+                        <p class="card-text text-center">Réserves: {{ bilancomptable.reserves }}</p>
+                        <p class="card-text text-center">Resultat Net: {{ bilancomptable.resultatnet }}</p>
+                        <p class="card-text">Dettes à long terme :</p>
+                        <p class="card-text text-center">Emprunts bancaires: {{ bilancomptable.emprunts }}</p>
+                        <p class="card-text text-center">Dettes Long terme: {{ bilancomptable.dettesit }}</p>
+                        <p class="card-text">Dettes à court terme :</p>
+                        <p class="card-text text-center">Fournisseurs: {{ bilancomptable.fournisseurs }}</p>
+                        <p class="card-text text-center">Dettes Court terme: {{ bilancomptable.dettesct }}</p>
+                        <br>
+                        <td style="display: flex; align-items: center;">
+                        <div class="d-flex justify-content-center mt-3">
+                            <a href="{{ path('app_bilancomptable_show', {'idbilanc': bilancomptable.idbilanc}) }}" class="btn btn-success rounded-pill py-2 px-4">
+                                <i class="bi bi-eye">Générer</i> 
+                            </a>
+                        </div>
+                        </td>  
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-md-12">
+                <p>No records found</p>
+            </div>
+        {% endfor %}
+    </div>
+{# Pagination #}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="text-center">
+                {{ knp_pagination_render(pagination) }}
+            </div>
+        </div>
+    </div>
+            {# style of pagination #}
+<style>
+	.pagination {
+		display: flex;
+		justify-content: center;
+		list-style: none;
+		padding: 0;
+	}
+
+	.pagination li {
+		margin: 0 5px;
+	}
+
+	.button-container {
+		display: flex;
+		flex-direction: row;
+		overflow-x: auto;
+		white-space: nowrap;
+	}
+
+
+	.button-container button {
+		margin-right: 10px; /* Espacement entre les boutons */
+	}
+
+	.pagination a {
+		text-decoration: none;
+		padding: 5px 10px;
+		border: 1px solid #1cc88a; /* Bleu */
+		border-radius: 3px;
+		color: #1cc88a; /* Bleu */
+	}
+
+	.pagination a:hover {
+		background-color: #1cc88a; /* Bleu au survol */
+		color: #fff; /* Texte blanc au survol */
+	}
+</style>
+<br>
+{% endblock %}

@@ -1,0 +1,157 @@
+{% extends 'baseback.html.twig' %}
+
+{% block title %}Bilancomptable{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">Bilan comptable</h1>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th class="text-right">Annee:</th>
+                            <td>{{ bilancomptable.annee ? bilancomptable.annee|date('Y-m-d') : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: center; font-weight: bold; text-decoration: underline;">ACTIF</th>
+                            <td style="text-align: center;"></td>
+                        </tr>
+                        <tr>
+                            <th>Actif immobilisé:</th>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>Terrains et bâtiments</th>
+                            <td><span class="converted-amount-eur" data-original="{{ bilancomptable.valeurterrain }}">{{ bilancomptable.valeurterrain }}</span><i class="fas fa-euro-sign"></i></td>
+                        </tr>
+                        <tr>
+                            <th>Autres Immobilisations</th>
+                            <td><span class="converted-amount-eur" data-original="{{ bilancomptable.autresimmobilisations }}">{{ bilancomptable.autresimmobilisations }}<i class="fas fa-euro-sign"></i></span></td>
+                        </tr>
+                        <tr>
+                            <th>Matériels</th>
+                            <td><span class="converted-amount-eur" data-original="{{ bilancomptable.materiels }}">{{ bilancomptable.materiels }}</span><i class="fas fa-euro-sign"></i></td>
+                        </tr>
+                        <tr>
+                            <th>Total Actif immobilisé</th>
+                            <td><span class="converted-amount-eur" data-original="{{ totalActifImmobilise }}">{{ totalActifImmobilise }}</span><i class="fas fa-euro-sign"></i></td>
+                        </tr>
+                        <tr>
+                            <th>Actif circulant:</th>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>Stocks de produits</th>
+                            <td><span class="converted-amount-eur" data-original="{{ bilancomptable.stocksproduits }}">{{ bilancomptable.stocksproduits }}</span><i class="fas fa-euro-sign"></i></td>
+                        </tr>
+                        <tr>
+                            <th>Créance Client</th>
+                            <td><span class="converted-amount-eur" data-original="{{ bilancomptable.creanceclient }}">{{ bilancomptable.creanceclient }}</span><i class="fas fa-euro-sign"></i></td>
+                        </tr>
+                        <tr>
+                            <th>Trésorerie</th>
+                            <td><span class="converted-amount-eur" data-original="{{ bilancomptable.tresorie }}">{{ bilancomptable.tresorie }}</span><i class="fas fa-euro-sign"></i></td>
+                        </tr>
+                        <tr>
+                            <th>Total Actif circulant</th>
+                            <td><span class="converted-amount-eur" data-original="{{ totalActifCirculant }}">{{ totalActifCirculant }}</span><i class="fas fa-euro-sign"></i></td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: center; font-weight: bold; text-decoration: none; color: black;">Total Actif</th>
+                            <td style="text-align: center; font-weight: bold; color: black;"><span class="converted-amount-eur" data-original="{{ totalActifImmobilise+totalActifCirculant }}">{{ totalActifImmobilise+totalActifCirculant }}</span><i class="fas fa-euro-sign"></i></td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: center; font-weight: bold; text-decoration: underline;">PASSIF</th>
+                            <td style="text-align: center;"></td>
+                        </tr>
+                        <tr>
+                            <th>Capitaux propres :</th>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>Capital Social</th>
+                            <td><span class="converted-amount-eur" data-original="{{ bilancomptable.capitalsocial }}">{{ bilancomptable.capitalsocial }}</span><i class="fas fa-euro-sign"></i></td>
+                        </tr>
+                        <tr>
+                            <th>Réserves</th>
+                            <td><span class="converted-amount-eur" data-original="{{ bilancomptable.reserves }}">{{ bilancomptable.reserves }}</span><i class="fas fa-euro-sign"></i></td>
+                        </tr>
+                        <tr>
+                            <th>Resultat Net</th>
+                            <td><span class="converted-amount-eur" data-original="{{ bilancomptable.resultatnet }}">{{ bilancomptable.resultatnet }}</span><i class="fas fa-euro-sign"></i></td>
+                        </tr>
+                        <tr>
+                            <th>Total Capitaux propres</th>
+                            <td><span class="converted-amount-eur" data-original="{{ totalCapitauxPropres }}">{{ totalCapitauxPropres }}</span><i class="fas fa-euro-sign"></i></td>
+                        </tr>
+                        <tr>
+                            <th>Dettes à long terme :</th>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>Emprunts bancaires</th>
+                            <td><span class="converted-amount-eur" data-original="{{ bilancomptable.emprunts }}">{{ bilancomptable.emprunts }}</span><i class="fas fa-euro-sign"></i></td>
+                        </tr>
+                        <tr>
+                            <th>Dettes Long terme</th>
+                            <td><span class="converted-amount-eur" data-original="{{ bilancomptable.dettesit }}">{{ bilancomptable.dettesit }}</span><i class="fas fa-euro-sign"></i></td>
+                        </tr>
+                        <tr>
+                            <th>Total Dettes à long terme </th>
+                            <td><span class="converted-amount-eur" data-original="{{ totalDettesLongTerme }}">{{ totalDettesLongTerme }}</span><i class="fas fa-euro-sign"></i></td>
+                        </tr>
+                        <tr>
+                            <th>Dettes à court terme :</th>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>Fournisseurs</th>
+                            <td><span class="converted-amount-eur" data-original="{{ bilancomptable.fournisseurs }}">{{ bilancomptable.fournisseurs }}</span><i class="fas fa-euro-sign"></i></td>
+                        </tr>
+                        <tr>
+                            <th>Dettes Court terme</th>
+                            <td><span class="converted-amount-eur" data-original="{{ bilancomptable.dettesct }}">{{ bilancomptable.dettesct }}</span><i class="fas fa-euro-sign"></i></td>
+                        </tr>
+                        <tr>
+                            <th>Total Dettes à court terme </th>
+                            <td><span class="converted-amount-eur" data-original="{{ totalDettesCourtTerme }}">{{ totalDettesCourtTerme }}</span><i class="fas fa-euro-sign"></i></td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: center; font-weight: bold; text-decoration: none; color: black;">Total Passif</th>
+                            <td style="text-align: center; font-weight: bold; color: black;"><span class="converted-amount-eur" data-original="{{ totalCapitauxPropres+totalDettesLongTerme+totalDettesCourtTerme }}">{{ totalCapitauxPropres+totalDettesLongTerme+totalDettesCourtTerme }}</span><i class="fas fa-euro-sign"></i></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <br>
+
+    <!-- Add this script for conversion -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            function convertCurrencyToEuro(amount, element) {
+                const apiUrl = 'http://apilayer.net/api/live?access_key=62cd0b67e64af4cd8c54f819bcdef722&currencies=EUR&source=TND&format=1';
+
+                fetch(apiUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                        const euroRate = data.quotes['TNDEUR'];
+                        const convertedAmount = (amount * euroRate).toFixed(2);
+                        element.textContent = convertedAmount;
+                    })
+                    .catch(error => console.error('Error fetching exchange rates:', error));
+            }
+
+            const elements = document.querySelectorAll('.converted-amount-eur');
+            elements.forEach(element => {
+                const originalAmount = parseFloat(element.getAttribute('data-original'));
+                convertCurrencyToEuro(originalAmount, element);
+            });
+        });
+    </script>
+{% endblock %}

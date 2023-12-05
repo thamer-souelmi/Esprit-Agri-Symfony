@@ -1,0 +1,50 @@
+{% extends 'baseback.html.twig' %}
+
+
+
+{% block body %}
+    <h1>Annonce Investissement</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Titre</th>
+                <td>{{ annonceinvestissement.titre }}</td>
+            </tr>
+            <tr>
+                <th>Montant</th>
+                <td>{{ annonceinvestissement.montant }}</td>
+            </tr>
+            <tr>
+                <th>Date publication</th>
+                <td>{{ annonceinvestissement.datepublication ? annonceinvestissement.datepublication|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Localisation</th>
+                <td>{{ annonceinvestissement.localisation }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ annonceinvestissement.description }}</td>
+            </tr>
+            <tr>
+                <th>Photo</th>
+                <td><img src="{{ asset('img/' ~ annonceinvestissement.photo) }}" alt="User Image" style="max-width:100px;max-height:100px;"></td>
+            </tr>
+        </tbody>
+    </table>
+
+
+
+    <div class="d-flex ">
+			<div class="col-sm-20 mb-3 mb-sm-0">
+				<a href="{{ path('app_annonceinvestissement_index_back') }}" class="btn btn-outline-warning ">
+					<span class="icon text-primary-600">
+						<i class="fas fa-arrow-left"></i>
+					</span>
+				</a>
+			</div>
+		</div>
+
+
+{% endblock %}
