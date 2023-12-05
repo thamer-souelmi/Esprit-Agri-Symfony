@@ -99,8 +99,8 @@ class CategoryController extends AbstractController
             $categoryRepository->save($category, true);
             $to = '+21652474552'; // Static phone number
 
-            // $message = 'New category created: ' . $category->getType(); // Modify the message as needed
-            // $twilioService->sendSMS($to, $message);
+            $message = 'New category created: ' . $category->getType(); // Modify the message as needed
+            $twilioService->sendSMS($to, $message);
             return $this->redirectToRoute('app_categoryback_index', [], Response::HTTP_SEE_OTHER);
         }
 

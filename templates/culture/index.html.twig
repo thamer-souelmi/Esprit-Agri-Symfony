@@ -1,6 +1,7 @@
 {% extends 'prod.html.twig' %}
 {% block title %}Culture
 {% endblock %}
+{% block what %}Culture{% endblock %}
 {% block banner_image %}
 	{{ asset('img/1.jpeg') }}
 {% endblock %}
@@ -26,8 +27,7 @@
 					<div class="card">
 						<div>
 							<div class="card-body">
-								<h5 class="card-title">Culture
-									{{ loop.index }}</h5>
+								<h5 class="card-title">Culture</h5>
 								<ul class="list-group list-group-flush">
 									<li class="list-group-item">
 										<strong>Libelle:</strong>

@@ -249,7 +249,7 @@ class ClientController extends AbstractController
 
         return $response;
     }
-    
+
     #[Route('/{id}', name: 'app_client_show', methods: ['GET'])]
     public function show(Client $client): Response
     {

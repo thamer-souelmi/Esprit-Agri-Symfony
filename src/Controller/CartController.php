@@ -20,6 +20,11 @@ use UltraMsg\WhatsAppApi;
 class CartController extends AbstractController
 {
 
+
+
+
+
+
     /**
      * @Route("/valid", name="mail")
      */
@@ -59,34 +64,16 @@ class CartController extends AbstractController
 
         try {
             $mailer->send($email);
-            // Envoyé avec succès, vous pouvez renvoyer une réponse de succès
-            return new Response('Email envoyé avec succès!');
+
+            // flash success message
+            $this->addFlash('success', 'Commend validé! Verifier votre adresse mail');
         } catch (\Exception $e) {
-            // En cas d'échec, renvoyez un message d'erreur ou utilisez un gestionnaire d'erreurs
-            return new Response('Erreur lors de l\'envoi de l\'email : ' . $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+            // flash error message
+            $this->addFlash('danger', 'Echec d\'envoi! ' . $e->getMessage());
         }
+
+        return $this->redirectToRoute('cart_index');
     }
-
-
-    // #[Route('/what', name: 'envoyer_message_whatsapp')]
-    // public function envoyerMessageWhatsApp(): Response
-    // {
-    //     require_once __DIR__ . '/../../vendor/autoload.php';
-    //     $ultramsg_token = "xlvw4dz9wcdxk5pi"; // Votre token Ultramsg.com
-    //     $instance_id = "instance69768"; // Votre ID d'instance Ultramsg.com
-
-    //     $client = new WhatsAppApi($ultramsg_token, $instance_id);
-
-    //     $to = "+216 52474552"; // Numéro de téléphone du destinataire
-    //     $body = "Hello world"; // Corps du message à envoyer
-
-    //     $api = $client->sendChatMessage($to, $body);
-    //     print_r($api);
-
-    //     // Vous pouvez gérer la réponse comme vous le souhaitez, par exemple, l'afficher
-    //     return new Response('Message WhatsApp envoyé avec succès!');
-    // }
-
 
     /**
      * @Route("/", name="index")
@@ -159,7 +146,7 @@ class CartController extends AbstractController
         // You can add additional logic here if needed, but no need to redirect or render
 
         // If you want to return a response (e.g., JSON response), you can do so:
-        return new JsonResponse(['success' => true]);
+        return $this->redirectToRoute("cart_index");
     }
     // /**
     //  * @Route("/add/{id}", name="add")

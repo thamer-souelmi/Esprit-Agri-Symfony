@@ -19,7 +19,7 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-
+use UltraMsg\WhatsAppApi;
 #[Route('/culture')]
 class CultureController extends AbstractController
 {
@@ -75,6 +75,8 @@ class CultureController extends AbstractController
 
         return $response;
     }
+
+
 
     #[Route('/searchculture', name: 'searchculture', methods: ['GET', 'POST'])]
     public function searchCulture(Request $request, CultureRepository $cultureRepository): JsonResponse
@@ -146,6 +148,36 @@ class CultureController extends AbstractController
         ]);
     }
 
+    #[Route('/what', name: 'whatsapp')]
+    public function envoyerMessageWhatsApp($user, $Type): Response
+    {
+        require_once __DIR__ . '/../../vendor/autoload.php'; // Make sure the path is correct
+        $ultramsg_token = "xlvw4dz9wcdxk5pi"; // Your Ultramsg token
+        $instance_id = "instance69768"; // Your Ultramsg instance ID
+    
+        $client = new WhatsAppApi($ultramsg_token, $instance_id);
+    
+        $to = "+21652474552"; // Recipient's phone number
+        $body = "Nous avons le plaisir de vous informer qu'un agriculteur $user a ajouté une nouvelle culture:$Type dans notre système.";
+    
+        // Send a text message
+        $api = $client->sendChatMessage($to, $body);
+    
+        // Send an image message
+        $image = "https://st2.depositphotos.com/6330084/9169/i/950/depositphotos_91694566-stock-photo-flooded-rice-paddy.jpg";
+        $caption = "Image Caption";
+        $priority = 10;
+        $referenceId = "SDK";
+        $nocache = false;
+        $imageApi = $client->sendImageMessage($to, $image, $caption, $priority, $referenceId, $nocache);
+    
+        print_r($api); // Handle the response as needed for the text message
+        print_r($imageApi); // Handle the response for the image message
+    
+        // You can manage the responses as desired, for example, display them
+        return new Response('WhatsApp messages sent successfully!');
+    }
+
     #[Route('/new', name: 'app_culture_new', methods: ['GET', 'POST'])]
     public function new(Request $request, CultureRepository $cultureRepository, SluggerInterface $slugger): Response
     {
@@ -180,6 +212,12 @@ class CultureController extends AbstractController
             //}
 
             $cultureRepository->save($culture, true);
+
+            $user ="Hamza"; // Remplacez par la méthode réelle pour obtenir le nom de l'utilisateur
+            $Type = $culture->getCategorytype();
+        
+            // Appel à la fonction pour envoyer le message WhatsApp avec les données
+            $this->envoyerMessageWhatsApp($user,$Type);
 
             return $this->redirectToRoute('app_culture_index', [], Response::HTTP_SEE_OTHER);
         }
