@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Culture Report</title>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+		<style>
+
+      .card-container {
+    display: flex;
+    flex-wrap: wrap;
+	            justify-content: center; /* Centrer horizontalement */
+
+    margin: auto; /* Ajoutez une marge automatique pour centrer horizontalement */
+    text-align: center; /* Centre le texte à l'intérieur des cartes */
+    padding: 20px;
+}
+.custom-card {
+    width: 48%; /* 48% width pour laisser un espace entre les cartes */
+    box-sizing: border-box;
+    border: 2px solid #1E681D;
+    border-radius: 10px;
+    margin: 0 auto; /* Ajout de cette ligne pour centrer horizontalement */
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    page-break-inside: avoid; /* Éviter la coupure de la carte entre les pages */
+}
+
+
+
+        h3 {
+            margin: 0;
+        }
+    
+
+    .event-image {
+        float: left;
+        margin-right: 20px; /* Add margin for spacing */
+        max-width: 70px;
+    }
+   
+        
+            
+</style>
+
+	</head>
+	<body>
+		<img class="event-image" src="{{ imagePath }}" alt="Event Image">
+    <p style="color: #214216; font-style: italic; font-family: 'Elegant Font', sans-serif; text-align: right;">"Esprit-Agri Votre allié en agriculture"</p>
+    <h1 style="text-align: center; margin: 30; padding: 0; border-top: 2px solid #214216; border-bottom: 2px solid #214216; padding: 20px; color: #214216;">Les Candidatures</h1>
+
+	
+
+ <div class="card-container">
+        {% for candidature in candidature %}
+            <div class="col-md-4 mb-3">
+                <div class="card custom-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Candidature {{ loop.index }}</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><strong>Date de Candidature:</strong> {{ candidature.datecandidature ? candidature.datecandidature|date('Y-m-d') : '' }}</li>
+                            <li class="list-group-item"><strong>Expérience Professionnelle:</strong> {{ candidature.experienceprofessionnelle }}</li>
+                            <li class="list-group-item"><strong>Formation:</strong> {{ candidature.formation }}</li>
+                            <li class="list-group-item"><strong>Compétences Techniques:</strong> {{ candidature.competencestechniques }}</li>
+                            <li class="list-group-item"><strong>Message de motivation :</strong> {{ candidature.messagemotivation }}</li>
+						 <li class="list-group-item"><strong>status candidature  :</strong> 
+						   {% if candidature.statuscandidature == 0 and candidature.archived == 0 %}
+                                    En cours
+                                {% elseif candidature.statuscandidature == 0 and candidature.archived == 1 %}
+                                    Refusée
+                                {% elseif candidature.statuscandidature == 1 and candidature.archived == 1 %}
+                                    Acceptée
+                                {% endif %}</li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+	</body>
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f8f9fa; /* Light background color */
+        color: #495057; /* Text color */
+    }
+
+    header {
+        background-color: #214216;
+        color: white;
+        text-align: center;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+    .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        padding: 20px;
+    }
+
+    .custom-card {
+        width: 48%; /* 48% width to leave some gap between cards */
+        box-sizing: border-box;
+        border: 2px solid #1E681D;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        page-break-inside: avoid; /* Eviter la coupure de la carte entre les pages */
+    }
+
+    .custom-card .card-body {
+        background-color: #ecf0f1;
+        padding: 20px;
+    }
+
+    .custom-card .card-title {
+        color: #1E681D;
+        font-size: 1.2em;
+        margin-bottom: 10px;
+    }
+
+    .list-group-item {
+        list-style: none;
+        margin: 10px 0;
+        padding: 8px;
+        border-radius: 5px;
+        background-color: #dee2e6; /* Light gray background for list items */
+    }
+
+    .list-group-item strong {
+        margin-right: 10px;
+    }
+</style>
+
+
+</html>

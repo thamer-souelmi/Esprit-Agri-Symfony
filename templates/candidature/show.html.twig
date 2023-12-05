@@ -1,34 +1,108 @@
-{% extends 'base.html.twig' %}
+{% extends 'condi.html.twig' %}
 
 {% block title %}Candidature{% endblock %}
 
 {% block body %}
-    <h1>Candidature</h1>
+    <div class="row">
+        {% for candidature in pagination %}
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><strong>Expérience Professionnelle:</strong> {{ candidature.getExperienceprofessionnelle() }}</li>
+                            <li class="list-group-item"><strong>Formation:</strong> {{ candidature.getFormation() }}</li>
+                            <li class="list-group-item"><strong>Compétences Techniques:</strong> {{ candidature.getCompetencestechniques() }}</li>
+ {% if candidature.certifforma|lower ends with '.pdf' %}
+                                <li class="list-group-item"><strong>Certifications et Formations:</strong>
+                                    <a href="{{ asset('img/' ~ candidature.certifforma) }}" download="{{ candidature.certifforma }}">
+                                        Télécharger le fichier PDF
+                                    </a>
+                                </li>
+                            {% else %}
+                            <li class="list-group-item"><strong>Certifications et Formations:</strong>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Idcandidature</th>
-                <td>{{ candidature.idcandidature }}</td>
-            </tr>
-            <tr>
-                <th>Message motivation</th>
-                <td>{{ candidature.messagemotivation }}</td>
-            </tr>
-            <tr>
-                <th>Statuscandidature</th>
-                <td>{{ candidature.statuscandidature }}</td>
-            </tr>
-            <tr>
-                <th>Datecandidature</th>
-                <td>{{ candidature.datecandidature ? candidature.datecandidature|date('Y-m-d') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
+                                <div>
+                                    <a href="{{ asset('img/' ~ candidature.certifforma) }}" download="{{ candidature.certifforma }}">
+                                        Télécharger la photo
+                                    </a>
+                                </div>
+                            {% endif %}                            <li class="list-group-item"><strong>Message de Motivation:</strong> {{ candidature.getMessagemotivation() }}</li>
+                            <li class="list-group-item"><strong>Date de Candidature:</strong> {{ candidature.getDatecandidature() ? candidature.getDatecandidature()|date('Y-m-d') : '' }}</li>
+                            <li class="list-group-item"><strong>Statut:</strong>
+                                {% if candidature.isStatuscandidature() %}
+                                    Acceptée
+                                {% elseif candidature.isArchived() %}
+                                    Refusée
+                                {% else %}
+                                    En attente
+                                {% endif %}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-md-12">
+                <p>Aucune candidature trouvée.</p>
+            </div>
+        {% endfor %}
+    </div>
 
-    <a href="{{ path('app_candidature_index') }}">back to list</a>
+    {# Pagination #}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="text-center">
+                {{ knp_pagination_render(pagination) }}
+            </div>
+        </div>
+    </div>
 
-    <a href="{{ path('app_candidature_edit', {'idcandidature': candidature.idcandidature}) }}">edit</a>
+    {# Style of pagination #}
+    <style>
+        .pagination {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0;
+        }
 
-    {{ include('candidature/_delete_form.html.twig') }}
+        .pagination li {
+            margin: 0 5px;
+        }
+
+        .button-container {
+            display: flex;
+            flex-direction: row;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .button-container button {
+            margin-right: 10px; /* Espacement entre les boutons */
+        }
+
+        .pagination a {
+            text-decoration: none;
+            padding: 5px 10px;
+            border: 1px solid #404a3d; /* Bleu */
+            border-radius: 3px;
+            color: #404a3d; /* Bleu */
+        }
+
+        .pagination a:hover {
+            background-color: #404a3d; /* Bleu au survol */
+            color: #fff; /* Texte blanc au survol */
+        }
+    </style>
+
+    <br>
+    <br>
+
+    <a href="{{ path('app_annoncerecrutement_index') }}" class="btn btn-light btn-icon-split btn-lg">
+        <span class="icon text-gray-600">
+            <i class="fas fa-arrow-left"></i>
+        </span>
+        <span class="text">Retour aux annonces </span>
+    </a>
 {% endblock %}
