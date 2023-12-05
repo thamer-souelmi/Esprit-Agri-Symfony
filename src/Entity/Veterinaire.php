@@ -194,5 +194,23 @@ class Veterinaire
         return $this;
     }
 
+  /**
+     * @return float|null
+     */
+    public function getAverageRating(): ?float
+    {
+        $total = 0;
+        $count = 0;
 
+        /** @var Note $note */
+        foreach ($this->notes as $note) {
+            $total += $note->getValeur();
+            $count++;
+        }
+
+        $average = $count > 0 ? $total / $count : null;
+
+        // Formate la moyenne avec deux chiffres après la virgule
+        return $average !== null ? (float)number_format($average, 2, '.', '') : null;
+    }
 }

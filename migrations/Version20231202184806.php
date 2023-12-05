@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20231125225938 extends AbstractMigration
+final class Version20231202184806 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,16 +20,8 @@ final class Version20231125225938 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE culture (id INT AUTO_INCREMENT NOT NULL, category_id INT DEFAULT NULL, libelle VARCHAR(200) NOT NULL, dateplantation DATE NOT NULL, daterecolte DATE NOT NULL, categorytype VARCHAR(150) NOT NULL, revenuescultures DOUBLE PRECISION NOT NULL, coutsplantations DOUBLE PRECISION NOT NULL, INDEX IDX_B6A99CEB12469DE2 (category_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE note (id INT AUTO_INCREMENT NOT NULL, idvet INT DEFAULT NULL, valeur INT NOT NULL, INDEX IDX_CFBDFA14F9DABC50 (idvet), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE reclamation (id INT AUTO_INCREMENT NOT NULL, user_id INT DEFAULT NULL, produit_id INT DEFAULT NULL, description VARCHAR(255) NOT NULL, dateajout DATE NOT NULL, INDEX IDX_CE606404A76ED395 (user_id), INDEX IDX_CE606404F347EFB (produit_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE traitementmedicale (id INT AUTO_INCREMENT NOT NULL, idvet INT DEFAULT NULL, numero VARCHAR(11) NOT NULL, typeintervmed VARCHAR(200) NOT NULL, dateintervmed DATE NOT NULL, coutinterv DOUBLE PRECISION NOT NULL, medicament VARCHAR(200) NOT NULL, dureetraitement VARCHAR(200) NOT NULL, description VARCHAR(200) NOT NULL, INDEX IDX_A207FE66F9DABC50 (idvet), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE veterinaire (idvet INT AUTO_INCREMENT NOT NULL, nomvet VARCHAR(200) NOT NULL, prenomvet VARCHAR(200) NOT NULL, adresscabinet VARCHAR(200) NOT NULL, numtel INT NOT NULL, adressmail VARCHAR(200) NOT NULL, specialite VARCHAR(200) NOT NULL, PRIMARY KEY(idvet)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('ALTER TABLE culture ADD CONSTRAINT FK_B6A99CEB12469DE2 FOREIGN KEY (category_id) REFERENCES category (id)');
-        $this->addSql('ALTER TABLE note ADD CONSTRAINT FK_CFBDFA14F9DABC50 FOREIGN KEY (idvet) REFERENCES veterinaire (idvet)');
-        $this->addSql('ALTER TABLE reclamation ADD CONSTRAINT FK_CE606404A76ED395 FOREIGN KEY (user_id) REFERENCES `user` (id)');
-        $this->addSql('ALTER TABLE reclamation ADD CONSTRAINT FK_CE606404F347EFB FOREIGN KEY (produit_id) REFERENCES `produit` (id)');
-        $this->addSql('ALTER TABLE traitementmedicale ADD CONSTRAINT FK_A207FE66F9DABC50 FOREIGN KEY (idvet) REFERENCES veterinaire (idvet)');
+        $this->addSql('CREATE TABLE culture (id INT AUTO_INCREMENT NOT NULL, categorys_id INT DEFAULT NULL, libelle VARCHAR(200) NOT NULL, dateplantation DATE NOT NULL, daterecolte DATE NOT NULL, categorytype VARCHAR(150) NOT NULL, revenuescultures DOUBLE PRECISION NOT NULL, coutsplantations DOUBLE PRECISION NOT NULL, INDEX IDX_B6A99CEBA96778EC (categorys_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('ALTER TABLE culture ADD CONSTRAINT FK_B6A99CEBA96778EC FOREIGN KEY (categorys_id) REFERENCES category (id)');
         $this->addSql('DROP TABLE annonceinvestissement');
         $this->addSql('DROP TABLE betail');
         $this->addSql('DROP TABLE bilancomptable');
@@ -39,16 +31,24 @@ final class Version20231125225938 extends AbstractMigration
         $this->addSql('DROP TABLE marche');
         $this->addSql('DROP TABLE negociation');
         $this->addSql('DROP TABLE terrain');
-        $this->addSql('ALTER TABLE annoncerecrutement MODIFY idRecurt INT NOT NULL');
-        $this->addSql('DROP INDEX `primary` ON annoncerecrutement');
-        $this->addSql('ALTER TABLE annoncerecrutement ADD poste_demande VARCHAR(255) NOT NULL, ADD type_contrat VARCHAR(255) NOT NULL, ADD date_pub DATE NOT NULL, ADD date_embauche DATE NOT NULL, DROP posteDemande, DROP typeContrat, DROP datePub, DROP dateEmbauche, DROP idCandidature, CHANGE localisation localisation VARCHAR(25) NOT NULL, CHANGE idRecurt idRecrut INT AUTO_INCREMENT NOT NULL, CHANGE salairePropose salaire_propose DOUBLE PRECISION NOT NULL, CHANGE nbPosteRecherche nb_poste_recherche INT NOT NULL');
-        $this->addSql('ALTER TABLE annoncerecrutement ADD PRIMARY KEY (idRecrut)');
-        $this->addSql('ALTER TABLE candidature CHANGE ExperienceProfessionnelle experienceprofessionnelle VARCHAR(5000) NOT NULL, CHANGE Formation formation VARCHAR(5000) NOT NULL, CHANGE CompetencesTechniques competencestechniques VARCHAR(5000) NOT NULL, CHANGE CertifForma certifforma VARCHAR(200) NOT NULL, CHANGE statusCandidature statuscandidature TINYINT(1) NOT NULL');
+        $this->addSql('ALTER TABLE annoncerecrutement ADD user_id INT DEFAULT NULL, ADD archived TINYINT(1) NOT NULL, CHANGE date_pub date_pub DATE NOT NULL');
+        $this->addSql('ALTER TABLE annoncerecrutement ADD CONSTRAINT FK_58D406E2A76ED395 FOREIGN KEY (user_id) REFERENCES `user` (id)');
+        $this->addSql('CREATE INDEX IDX_58D406E2A76ED395 ON annoncerecrutement (user_id)');
+        $this->addSql('ALTER TABLE candidature ADD idannrecru_id INT DEFAULT NULL, ADD user_id INT DEFAULT NULL, ADD archived TINYINT(1) NOT NULL, CHANGE ExperienceProfessionnelle experienceprofessionnelle VARCHAR(5000) NOT NULL, CHANGE Formation formation VARCHAR(5000) NOT NULL, CHANGE CompetencesTechniques competencestechniques VARCHAR(5000) NOT NULL, CHANGE CertifForma certifforma VARCHAR(200) NOT NULL, CHANGE statusCandidature statuscandidature TINYINT(1) NOT NULL');
+        $this->addSql('ALTER TABLE candidature ADD CONSTRAINT FK_E33BD3B898FB9136 FOREIGN KEY (idannrecru_id) REFERENCES annoncerecrutement (idRecrut)');
+        $this->addSql('ALTER TABLE candidature ADD CONSTRAINT FK_E33BD3B8A76ED395 FOREIGN KEY (user_id) REFERENCES `user` (id)');
+        $this->addSql('CREATE INDEX IDX_E33BD3B898FB9136 ON candidature (idannrecru_id)');
+        $this->addSql('CREATE INDEX IDX_E33BD3B8A76ED395 ON candidature (user_id)');
         $this->addSql('ALTER TABLE category CHANGE type type VARCHAR(150) NOT NULL');
         $this->addSql('ALTER TABLE client ADD image VARCHAR(150) NOT NULL, CHANGE Nomprod nomprod VARCHAR(150) NOT NULL');
         $this->addSql('ALTER TABLE ouvrier DROP cinOuvrier, DROP nomOuvrier, DROP prenomOuvrier, DROP dateNaissance, DROP genre, DROP email, DROP adresse, DROP phone, DROP userId, DROP photo');
+        $this->addSql('ALTER TABLE produit ADD descr VARCHAR(255) NOT NULL, ADD dateajout DATETIME NOT NULL, ADD datemodif DATETIME NOT NULL, DROP `desc`, CHANGE Nomprod nomprod VARCHAR(255) NOT NULL, CHANGE cat cat VARCHAR(255) NOT NULL, CHANGE image image VARCHAR(255) NOT NULL');
         $this->addSql('ALTER TABLE produit ADD CONSTRAINT FK_29A5EC27A76ED395 FOREIGN KEY (user_id) REFERENCES `user` (id)');
         $this->addSql('CREATE INDEX IDX_29A5EC27A76ED395 ON produit (user_id)');
+        $this->addSql('ALTER TABLE reclamation ADD user_id INT DEFAULT NULL, ADD datemodif DATETIME NOT NULL, CHANGE dateajout dateajout DATETIME NOT NULL');
+        $this->addSql('ALTER TABLE reclamation ADD CONSTRAINT FK_CE606404A76ED395 FOREIGN KEY (user_id) REFERENCES `user` (id)');
+        $this->addSql('CREATE INDEX IDX_CE606404A76ED395 ON reclamation (user_id)');
+        $this->addSql('ALTER TABLE user ADD google_authenticator_secret VARCHAR(255) DEFAULT NULL, ADD is_banned TINYINT(1) DEFAULT NULL, ADD ban_expires_at VARCHAR(255) DEFAULT NULL, ADD is_verified TINYINT(1) NOT NULL, ADD google_id VARCHAR(255) DEFAULT NULL, ADD reset_token VARCHAR(100) DEFAULT NULL, CHANGE nom nom VARCHAR(255) NOT NULL, CHANGE prenom prenom VARCHAR(255) NOT NULL, CHANGE mdp mdp VARCHAR(255) NOT NULL, CHANGE mail mail VARCHAR(255) NOT NULL, CHANGE adresse adresse VARCHAR(255) NOT NULL, CHANGE image image VARCHAR(255) NOT NULL');
     }
 
     public function down(Schema $schema): void
@@ -63,25 +63,25 @@ final class Version20231125225938 extends AbstractMigration
         $this->addSql('CREATE TABLE marche (id INT AUTO_INCREMENT NOT NULL, Nomprod VARCHAR(30) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, cat VARCHAR(255) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, prix DOUBLE PRECISION NOT NULL, qte DOUBLE PRECISION NOT NULL, `desc` VARCHAR(200) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, dateajout DATE NOT NULL, status VARCHAR(255) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, image VARCHAR(255) CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_unicode_ci`, user_id INT DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB COMMENT = \'\' ');
         $this->addSql('CREATE TABLE negociation (id INT AUTO_INCREMENT NOT NULL, montantPropose DOUBLE PRECISION NOT NULL, message VARCHAR(255) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, etatNego VARCHAR(255) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, dateNegociation DATE NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB COMMENT = \'\' ');
         $this->addSql('CREATE TABLE terrain (id INT AUTO_INCREMENT NOT NULL, userId INT NOT NULL, libelleTerrain INT NOT NULL, superficie DOUBLE PRECISION NOT NULL, etatSol VARCHAR(255) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, idCategory INT NOT NULL, localisation VARCHAR(200) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, photo VARCHAR(500) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, descriptionTerrain VARCHAR(200) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, valeurTerrain DOUBLE PRECISION NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB COMMENT = \'\' ');
-        $this->addSql('ALTER TABLE culture DROP FOREIGN KEY FK_B6A99CEB12469DE2');
-        $this->addSql('ALTER TABLE note DROP FOREIGN KEY FK_CFBDFA14F9DABC50');
-        $this->addSql('ALTER TABLE reclamation DROP FOREIGN KEY FK_CE606404A76ED395');
-        $this->addSql('ALTER TABLE reclamation DROP FOREIGN KEY FK_CE606404F347EFB');
-        $this->addSql('ALTER TABLE traitementmedicale DROP FOREIGN KEY FK_A207FE66F9DABC50');
+        $this->addSql('ALTER TABLE culture DROP FOREIGN KEY FK_B6A99CEBA96778EC');
         $this->addSql('DROP TABLE culture');
-        $this->addSql('DROP TABLE note');
-        $this->addSql('DROP TABLE reclamation');
-        $this->addSql('DROP TABLE traitementmedicale');
-        $this->addSql('DROP TABLE veterinaire');
-        $this->addSql('ALTER TABLE annoncerecrutement MODIFY idRecrut INT NOT NULL');
-        $this->addSql('DROP INDEX `PRIMARY` ON annoncerecrutement');
-        $this->addSql('ALTER TABLE annoncerecrutement ADD posteDemande VARCHAR(255) NOT NULL, ADD typeContrat VARCHAR(255) NOT NULL, ADD datePub DATE NOT NULL, ADD dateEmbauche DATE NOT NULL, ADD idCandidature INT DEFAULT NULL, DROP poste_demande, DROP type_contrat, DROP date_pub, DROP date_embauche, CHANGE localisation localisation VARCHAR(255) NOT NULL, CHANGE idRecrut idRecurt INT AUTO_INCREMENT NOT NULL, CHANGE salaire_propose salairePropose DOUBLE PRECISION NOT NULL, CHANGE nb_poste_recherche nbPosteRecherche INT NOT NULL');
-        $this->addSql('ALTER TABLE annoncerecrutement ADD PRIMARY KEY (idRecurt)');
-        $this->addSql('ALTER TABLE candidature CHANGE experienceprofessionnelle ExperienceProfessionnelle VARCHAR(5000) DEFAULT NULL, CHANGE formation Formation VARCHAR(5000) DEFAULT NULL, CHANGE competencestechniques CompetencesTechniques VARCHAR(5000) DEFAULT NULL, CHANGE certifforma CertifForma VARCHAR(200) DEFAULT NULL, CHANGE statuscandidature statusCandidature TINYINT(1) DEFAULT NULL');
+        $this->addSql('ALTER TABLE annoncerecrutement DROP FOREIGN KEY FK_58D406E2A76ED395');
+        $this->addSql('DROP INDEX IDX_58D406E2A76ED395 ON annoncerecrutement');
+        $this->addSql('ALTER TABLE annoncerecrutement DROP user_id, DROP archived, CHANGE date_pub date_pub VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE candidature DROP FOREIGN KEY FK_E33BD3B898FB9136');
+        $this->addSql('ALTER TABLE candidature DROP FOREIGN KEY FK_E33BD3B8A76ED395');
+        $this->addSql('DROP INDEX IDX_E33BD3B898FB9136 ON candidature');
+        $this->addSql('DROP INDEX IDX_E33BD3B8A76ED395 ON candidature');
+        $this->addSql('ALTER TABLE candidature DROP idannrecru_id, DROP user_id, DROP archived, CHANGE experienceprofessionnelle ExperienceProfessionnelle VARCHAR(5000) DEFAULT NULL, CHANGE formation Formation VARCHAR(5000) DEFAULT NULL, CHANGE competencestechniques CompetencesTechniques VARCHAR(5000) DEFAULT NULL, CHANGE certifforma CertifForma VARCHAR(200) DEFAULT NULL, CHANGE statuscandidature statusCandidature TINYINT(1) DEFAULT NULL');
         $this->addSql('ALTER TABLE category CHANGE type type VARCHAR(200) NOT NULL');
         $this->addSql('ALTER TABLE client DROP image, CHANGE nomprod Nomprod VARCHAR(20) NOT NULL');
         $this->addSql('ALTER TABLE ouvrier ADD cinOuvrier VARCHAR(200) NOT NULL, ADD nomOuvrier VARCHAR(200) NOT NULL, ADD prenomOuvrier VARCHAR(200) NOT NULL, ADD dateNaissance DATE NOT NULL, ADD genre VARCHAR(255) NOT NULL, ADD email VARCHAR(200) NOT NULL, ADD adresse VARCHAR(200) NOT NULL, ADD phone VARCHAR(200) NOT NULL, ADD userId INT DEFAULT NULL, ADD photo VARCHAR(200) NOT NULL');
         $this->addSql('ALTER TABLE `produit` DROP FOREIGN KEY FK_29A5EC27A76ED395');
         $this->addSql('DROP INDEX IDX_29A5EC27A76ED395 ON `produit`');
+        $this->addSql('ALTER TABLE `produit` ADD `desc` DATE NOT NULL, DROP descr, DROP dateajout, DROP datemodif, CHANGE nomprod Nomprod VARCHAR(30) NOT NULL, CHANGE cat cat VARCHAR(30) NOT NULL, CHANGE image image VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE reclamation DROP FOREIGN KEY FK_CE606404A76ED395');
+        $this->addSql('DROP INDEX IDX_CE606404A76ED395 ON reclamation');
+        $this->addSql('ALTER TABLE reclamation DROP user_id, DROP datemodif, CHANGE dateajout dateajout DATE NOT NULL');
+        $this->addSql('ALTER TABLE `user` DROP google_authenticator_secret, DROP is_banned, DROP ban_expires_at, DROP is_verified, DROP google_id, DROP reset_token, CHANGE nom nom VARCHAR(20) NOT NULL, CHANGE prenom prenom VARCHAR(20) NOT NULL, CHANGE mdp mdp VARCHAR(200) NOT NULL, CHANGE mail mail VARCHAR(30) NOT NULL, CHANGE adresse adresse VARCHAR(50) NOT NULL, CHANGE image image VARCHAR(255) DEFAULT NULL');
     }
 }

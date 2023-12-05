@@ -38,7 +38,7 @@
 
         "symfony/framework-bundle": "^5.0|5.4.*",
 
-        "symfony/framework-bundle": "5.4.*",
+    
         "symfony/google-mailer": "5.4.*",
 
         "symfony/http-client": "5.4.*",
