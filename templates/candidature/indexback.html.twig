@@ -166,7 +166,8 @@
                 $(`#${tableId} tbody tr`).filter(function () {
                     var cellText = $(this).find("td").eq(columnIndex).text().toLowerCase();
                     var found = cellText.indexOf(value) > -1;
-                    $(this).toggle(found);
+                    $(this).toggle(found);   
+                    
                 });
             }
 
