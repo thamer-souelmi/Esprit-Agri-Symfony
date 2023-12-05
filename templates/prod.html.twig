@@ -104,7 +104,9 @@
             <div class="navbar-nav ms-auto p-4 p-lg-0">
                 <a href="{{ path('app_home') }}" class="nav-item nav-link active">Accueil</a>
                 <a href="" class="nav-item nav-link">Recrutement</a>
+
                 <a href="{{ path('app_annonceinvestissement_index') }}" class="nav-item nav-link">Investissement</a>
+
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Visite médicale</a>
                     <div class="dropdown-menu bg-light m-0">
@@ -175,6 +177,7 @@
     <script src="{{ asset('js/main.js') }}"></script>
         </body>
 </html>
+
 </nav><!-- Navbar End --><!-- Page Header Start --><div class="container-fluid banner my-5 py-5" data-parallax="scroll" data-image-src="{% block banner_image %}{% endblock %}">
 <div class="container py-5">
 	<div class="row g-5">
@@ -210,6 +213,7 @@
 			</div>
 		</div>
 	</div>
+
 </div></div><!-- Footer End --><!-- Copyright Start --><div class="container-fluid bg-secondary text-body copyright py-4">
 <div class="container">
 	<div class="row">

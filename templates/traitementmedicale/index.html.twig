@@ -1,150 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Visite Médicale{% endblock %}</title>
-        
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
 
-    <!-- Favicon -->
-    <link href="{{ asset('img/favicon.png') }}" rel="icon">
-   
-    <style>
-    .user-profile-img {
-        width: 40px; /* Adjust the width to your preference */
-        height: 40px; /* Adjust the height to your preference */
-        border-radius: 50%; /* Optional: Makes the image rounded */
-    }
-</style>
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">   
+{% extends 'prod.html.twig' %}
 
-        {% block stylesheets %}
-            <!-- Icon Font Stylesheet -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+{% block title %}Visite medicale{% endblock %}
+{% block banner_image %}
+    {{ asset('img/phott.jpg') }}
+{% endblock %}
+{% block product_heading %}
+    <h1 class="display-3 text-white mb-4 animated slideInDown">Alliance Santé</h1>
+{% endblock %}
 
-    <!-- Libraries Stylesheet -->
-    <link href="{{asset("lib/animate/animate.min.css")}}" rel="stylesheet">
-    <link href="{{asset("lib/owlcarousel/assets/owl.carousel.min.css")}}" rel="stylesheet">
-    <link href="{{asset("lib/lightbox/css/lightbox.min.css")}}" rel="stylesheet">
 
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="{{asset("css/bootstrap.min.css")}}" rel="stylesheet">
-
-    <!-- Template Stylesheet -->
-    <link href="{{asset("css/style.css")}}" rel="stylesheet">
-        {% endblock %}
-
-        {% block javascripts %}
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{asset("lib/wow/wow.min.js")}}"></script>
-    <script src="{{asset("lib/easing/easing.min.js")}}"></script>
-    <script src="{{asset("lib/waypoints/waypoints.min.js")}}"></script>
-    <script src="{{asset("lib/owlcarousel/owl.carousel.min.js")}}"></script>
-    <script src="{{asset("lib/counterup/counterup.min.js")}}"></script>
-    <script src="{{asset("lib/parallax/parallax.min.js")}}"></script>
-    <script src="{{asset("lib/lightbox/js/lightbox.min.js")}}"></script>
+{% block body %}
  
-    <!-- Template Javascript -->
-    <script src="{{asset("js/main.js")}}"></script>
-        {% endblock %}
-    </head>
-         <body id="page-top">
-        {% if app.user is null %}
-            {# Redirect non-authenticated users to the logout page #}
-            {% set targetPath = path('app_logout') %}
-            <script>
-                window.location.href = "{{ targetPath }}";
-            </script>
-        {% elseif not is_granted('IS_AUTHENTICATED_FULLY') %}
-            {# Redirect users without full authentication to the logout page #}
-            {% set targetPath = path('app_logout') %}
-            <script>
-                window.location.href = "{{ targetPath }}";
-            </script>
-        {% endif %}
-        {% if app.user.isBanned != 0 %}
-                <script>
-                    window.location.href = "{{ path('app_ban') }}";
-                </script>
-            {% endif %}
-
-
-    <!-- Spinner Start -->
-    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
-    </div>
-    <!-- Spinner End -->
-
-
-    <!-- Topbar Start -->
-    <div class="container-fluid bg-dark px-0">
-        <div class="row g-0 d-none d-lg-flex">
-            <div class="col-lg-6 ps-5 text-start">
-                <div class="h-100 d-inline-flex align-items-center text-light">
-                    <span>Suivez-nous:</span>
-                    <a class="btn btn-link text-light" href=""><i class="fab fa-facebook-f"></i></a>
-                    <a class="btn btn-link text-light" href=""><i class="fab fa-twitter"></i></a>
-                    <a class="btn btn-link text-light" href=""><i class="fab fa-linkedin-in"></i></a>
-                    <a class="btn btn-link text-light" href=""><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
-            <div class="col-lg-6 text-end">
-                <div class="h-100 bg-secondary d-inline-flex align-items-center text-dark py-2 px-4">
-                    <span class="me-2 fw-semi-bold"><i class="fa fa-phone-alt me-2"></i> Contact :</span>
-                    <span>+216 22 55 88 99</span>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Topbar End -->
-
-    <body>
-    <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top px-4 px-lg-5">
-        <a href="index.html" class="navbar-brand d-flex align-items-center">
-            <h1 class="m-0">Esprit-Agri</h1>
-        </a>
-        <button type="button" class="navbar-toggler me-0" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <a href="index.html" class="nav-item nav-link active">Acceuil</a>
-               <a href="{{ path('app_annoncerecrutement_index') }}" class="nav-item nav-link">Recrutement</a>
-					<a href="{{ path('app_annonceinvestissement_index') }}" class="nav-item nav-link">Investissement</a>
-               <a href="{{ path('app_culture_index') }}" class="nav-item nav-link">Culture</a>
-                    <a href="{{ path('app_client_index') }}" class="nav-item nav-link">Marche</a>
-					<a href="{{ path('app_category_index') }}" class="nav-item nav-link">Category</a>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Visite médical</a>
-                    <div class="dropdown-menu bg-light m-0">
-                        <a href="{{ path('app_traitementmedicale_index') }}" class="dropdown-item">Traitement médical</a>
-                        <a href="{{ path('frontaffich')}}" class="dropdown-item">Véterinaire</a>
-                        
-                    </div>
-                </div>
-                <a href="contact.html" class="nav-item nav-link">Contact</a>
-            </div>
-            <div class="border-start ps-4 d-none d-lg-block">
-                <button type="button" class="btn btn-sm p-0"><i class="fa fa-search"></i></button>
-            </div>
-        </div>
-    </nav>
-    <!-- Navbar End -->
-<!-- Page Header Start -->
-      <div class="container-fluid banner my-5 py-5" data-parallax="scroll" data-image-src="{{ asset('img/phott.jpg') }}">
-
-        <div class="container text-center py-5">
-            <h1 class="display-3 text-white mb-4 animated slideInDown">Alliance Santé</h1>
-            
-        </div>
+  
     </div>
     <!-- Page Header End -->
     <!-- Team Start -->
@@ -152,7 +20,7 @@
         <div class="container">
             <div class="text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
                 <p class="section-title bg-white text-center text-primary px-3">Visite Médical</p>
-                <h1 class="mb-5">Les traitements médical</h1>
+                <h1 class="mb-5">Les traitements médicaux</h1>
             </div>
    <div class="row">
     <div class="col-md-6">
@@ -220,15 +88,14 @@
 </div>
 
   <br>
-{% block body %}
 <div class="row">
 {% for traitementmedicale in pagination %}
     
         <div class="col-md-4 mb-3">
             <div class="card">
-                <div class="card-body">
+                <div  class="card-body">
                     <h5 class="card-title">Traitement médical {{ loop.index }}</h5>
-                    <ul class="list-group list-group-flush">
+                    <ul  class="list-group list-group-flush">
                         <li class="list-group-item"><strong>Numéro de bétail:</strong> {{ traitementmedicale.numero }}</li>
                         <li class="list-group-item"><strong>Date de traitement:</strong> {{ traitementmedicale.dateintervmed ? traitementmedicale.dateintervmed|date('Y-m-d') : '' }}</li>
                         <li class="list-group-item"><strong>Véterinaire:</strong> {{ traitementmedicale.idvet.prenomvet }}</li>
@@ -253,7 +120,10 @@
             <p>no records found</p>
         </div>
     {% endfor %}
-			<a href="{{ path('pdf') }}" class="btn btn-primary">pdf</a>
+			<div class="text-center">
+  <a href="{{ path('pdf') }}" class="btn btn-primary btn-sm">pdf</a>
+</div>
+
 
     <div class="container mt-5">
 				<div class="row justify-content-center">
@@ -314,70 +184,6 @@
 		color: #fff; /* Texte blanc au survol */
 	}
 </style>
-
- 
-{% endblock %}
- 
-  
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
-<!-- Footer Start -->
-    <div class="container-fluid bg-dark footer mt-5 py-5 wow fadeIn" data-wow-delay="0.1s">
-        <div class="container py-5">
-            <div class="row g-5">
-                <div class="col-lg-3 col-md-6">
-                    <h5 class="text-white mb-4">Nos Informations  </h5>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>123 Ariana soghra, Ariana nord , Ariana , Tunisie </p>
-                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>espritagri@gmail.com</p>
-                    <div class="d-flex pt-3">
-                        <a class="btn btn-square btn-secondary rounded-circle me-2" href=""><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-square btn-secondary rounded-circle me-2" href=""><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-square btn-secondary rounded-circle me-2" href=""><i class="fab fa-youtube"></i></a>
-                        <a class="btn btn-square btn-secondary rounded-circle me-2" href=""><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Footer End -->
-
-
-    <!-- Copyright Start -->
-    <div class="container-fluid bg-secondary text-body copyright py-4">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                    &copy; <a class="fw-semi-bold" href="#">Esprit-Agri</a>, Tous droits réservés.
-                </div>
-                <div class="col-md-6 text-center text-md-end">
-                    <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                    Designed By <a class="fw-semi-bold" href="{{ asset('https://htmlcodex.com') }}">DevElites</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Copyright End -->
-      <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Prêt à partir ?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Sélectionnez "Déconnexion" ci-dessous si vous êtes prêt à mettre fin à votre session actuelle.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Annuler</button>
-                    <a class="btn btn-primary" href="{{ path('app_logout') }}">Déconnexion</a>
-
-                </div>
-            </div>
-        </div>
-    </div>
-
-
 
     <script>
     function deleteTraitement(deleteUrl, csrfToken) {
@@ -450,3 +256,7 @@ function toggleAdvancedSearchForm() {
         });
     }
 </script>
+{% endblock %}
+
+
+
