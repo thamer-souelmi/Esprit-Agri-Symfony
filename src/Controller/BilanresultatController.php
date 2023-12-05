@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 use Mpdf\Mpdf;
 use Dompdf\Dompdf;
 
@@ -37,9 +38,11 @@ class BilanresultatController extends AbstractController
     }
 
     #[Route('/new', name: 'app_bilanresultat_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager,Security $security): Response
     {
         $bilanresultat = new Bilanresultat();
+        $user = $security->getUser();
+        $bilanresultat->setUser($user);
         $form = $this->createForm(BilanresultatType::class, $bilanresultat);
         $form->handleRequest($request);
 
