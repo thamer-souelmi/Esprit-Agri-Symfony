@@ -105,7 +105,15 @@
                 <a href="{{ path('app_home') }}" class="nav-item nav-link active">Accueil</a>
                 <a href="" class="nav-item nav-link">Recrutement</a>
                 <a href="" class="nav-item nav-link">Investissement</a>
-                <a href="product.html" class="nav-item nav-link">Visite Vétérinaire</a>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Visite médicale</a>
+                    <div class="dropdown-menu bg-light m-0">
+                        <a href="{{ path('app_traitementmedicale_index') }}" class="dropdown-item">Traitement médical</a>
+                        <a href="{{ path('frontaffich')}}" class="dropdown-item">Véterinaire</a>
+                        
+                        
+                    </div>
+                </div>
                 <a href="{{ path('app_produit_index') }}" class="nav-item nav-link">Produit</a>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Marché</a>
@@ -238,42 +246,7 @@
     <script src="{{ asset('js/main.js') }}"></script>
         </body>
 </html>
-</nav><!-- Navbar End --><!-- Page Header Start --><div class="container-fluid banner my-5 py-5" data-parallax="scroll" data-image-src="{% block banner_image %}{% endblock %}">
-<div class="container py-5">
-	<div class="row g-5">
-		<div class="col-lg-6 wow fadeIn" data-wow-delay="0.3s">
-			<div class="container text-center py-5">
-				<h1 class="display-3 text-white mb-4 animated slideInDown">Produit</h1>
-			</div>
-		</div>
-	</div>
-</div></div><!-- Page Header End -->{% block body %}{% endblock %}<!-- Footer Start --><div class="container-fluid bg-dark footer mt-5 py-5 wow fadeIn" data-wow-delay="0.1s">
-<div class="container py-5">
-	<div class="row g-5">
-		<div class="col-lg-3 col-md-6">
-			<h5 class="text-white mb-4">Nos Informations
-			</h5>
-			<p class="mb-2">
-				<i class="fa fa-map-marker-alt me-3"></i>123 Ariana soghra, Ariana nord , Ariana , Tunisie
-			</p>
-			<p class="mb-2">
-				<i class="fa fa-phone-alt me-3"></i>espritagri@gmail.com</p>
-			<div class="d-flex pt-3">
-				<a class="btn btn-square btn-secondary rounded-circle me-2" href="">
-					<i class="fab fa-twitter"></i>
-				</a>
-				<a class="btn btn-square btn-secondary rounded-circle me-2" href="">
-					<i class="fab fa-facebook-f"></i>
-				</a>
-				<a class="btn btn-square btn-secondary rounded-circle me-2" href="">
-					<i class="fab fa-youtube"></i>
-				</a>
-				<a class="btn btn-square btn-secondary rounded-circle me-2" href="">
-					<i class="fab fa-linkedin-in"></i>
-				</a>
-			</div>
-		</div>
-	</div>
+
 </div></div><!-- Footer End --><!-- Copyright Start --><div class="container-fluid bg-secondary text-body copyright py-4">
 <div class="container">
 	<div class="row">
