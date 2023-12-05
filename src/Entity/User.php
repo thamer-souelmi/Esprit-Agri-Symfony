@@ -103,8 +103,8 @@ class User implements UserInterface//, TwoFactorInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Produit::class)]
     private Collection $produits;
 
-    #[ORM\OneToMany(mappedBy: "user", targetEntity: Annoncerecrutement::class)]
-    private Collection $annonces;
+    // #[ORM\OneToMany(mappedBy: "user", targetEntity: Annoncerecrutement::class)]
+    // private Collection $annonces;
 
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Reclamation::class)]
@@ -391,10 +391,10 @@ class User implements UserInterface//, TwoFactorInterface
             }
         }
 
-    public function getAnnonces(): Collection
-    {
-        return $this->annonces;
-    }
+    // public function getAnnonces(): Collection
+    // {
+    //     return $this->annonces;
+    // }
 
 
 
