@@ -1,42 +1,85 @@
 {% extends 'baseback.html.twig' %}
 
-
 {% block body %}
-
-          
-
- 
-        <table class="table">
-    <thead>
-        <tr>
-            <th>Poste proposé</th>
-            <th>Salaire</th>
-            <th>Contrat proposé</th>
-            <th>Date de publication de l'annonce</th>
-            <th>Date prévue d'embauche</th>
-            <th>Localisation</th>
-            <th>Nombre de postes recherchés</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for annoncerecrutement in annoncerecrutements %}
+<div class="card-body">
+    <h5 class="card-title"></h5>
+    <div class="row">
+        <div class="col">
+            <input type="text" value="" class="form-control" placeholder="poste de travail" id="searchNom">
+        </div>
+        <div class="col">
+            <input type="text" value="" class="form-control" placeholder="salaire" id="searchLibelle">
+        </div>
+        
+        <div class="col">
+            <input type="text" value="" class="form-control" placeholder="type de contrat" id="searchRevenuesCultures">
+        </div>
+    </div>
+</div>
+<section>
+    <table class="table" id="dataTable">
+        <thead>
             <tr>
-                <td>{{ annoncerecrutement.postedemande }}</td>
-                <td>{{ annoncerecrutement.salairepropose }} <i class="bi bi-cash-stack"></i></td>
-                <td>{{ annoncerecrutement.typecontrat }}</td>
-                <td>{{ annoncerecrutement.datepub ? annoncerecrutement.datepub|date('d-m-Y') : '' }}</td>
-                <td>{{ annoncerecrutement.dateembauche ? annoncerecrutement.dateembauche|date('d-m-Y') : '' }}</td>
-                <td>{{ annoncerecrutement.localisation }} <i class="bi bi-geo-fill"></i></td>
-                <td>{{ annoncerecrutement.nbposterecherche }} <i class="bi bi-people-fill"></i></td>
-                </td>
+                <th>Poste proposé</th>
+                <th>Salaire</th>
+                <th>Contrat proposé</th>
+                <th>Date de publication de l'annonce</th>
+                <th>Date prévue d'embauche</th>
+                <th>Localisation</th>
+                <th>Nombre de postes recherchés</th>
+                <th>Nombre de postes acceptés</th>
+                <th>Nombre de postes restants</th>
             </tr>
-        {% endfor %}
-    </tbody>
-</table>
-
+        </thead>
+        <tbody>
+            {% for annoncerecrutement in annoncerecrutements %}
+                <tr>
+                    <td>{{ annoncerecrutement.postedemande }}</td>
+                    <td>{{ annoncerecrutement.salairepropose }} <i class="bi bi-cash-stack"></i></td>
+                    <td>{{ annoncerecrutement.typecontrat }}</td>
+                    <td>{{ annoncerecrutement.datepub ? annoncerecrutement.datepub|date('d-m-Y') : '' }}</td>
+                    <td>{{ annoncerecrutement.dateembauche ? annoncerecrutement.dateembauche|date('d-m-Y') : '' }}</td>
+                    <td>{{ annoncerecrutement.localisation }} <i class="bi bi-geo-fill"></i></td>
+                    <td>{{ annoncerecrutement.nbposterecherche }} <i class="bi bi-people-fill"></i></td>
+                    <td>{{ annoncerecrutement.getCandidaturesCount() }}</td>
+                    <td>
+                        {% if (annoncerecrutement.nbposterecherche - annoncerecrutement.getCandidaturesCount()) > 0 %}
+                            {{ annoncerecrutement.nbposterecherche - annoncerecrutement.getCandidaturesCount() }}
+                        {% else %}
+                            Plus de postes restants
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </section>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+	$(document).ready(function () { // Function to perform the search based on the specified column
+function searchColumn(columnIndex, value) {
+$("#dataTable tbody tr").filter(function () {
+var cellText = $(this).find("td").eq(columnIndex).text().toLowerCase();
+var found = cellText.indexOf(value) > -1;
+$(this).toggle(found);
+});
+}
+
+// Event handlers for each input element
+$("#searchNom").on("keyup", function () {
+searchColumn(0, $(this).val().toLowerCase());
+});
+
+$("#searchLibelle").on("keyup", function () {
+searchColumn(1, $(this).val().toLowerCase());
+});
 
 
 
-
+$("#searchRevenuesCultures").on("keyup", function () {
+searchColumn(2, $(this).val().toLowerCase());
+});
+});
+</script>
 {% endblock %}
