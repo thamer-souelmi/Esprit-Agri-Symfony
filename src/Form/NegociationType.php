@@ -15,7 +15,7 @@ class NegociationType extends AbstractType
         $builder
             ->add('montantpropose')
             ->add('message')
-            ->add('datenegociation')
+            // ->add('datenegociation')
             /*->add('etatnego',ChoiceType::class,[
                 'choices'=>[
                     'ACCEPTEE'=>'ACCEPTEE',
