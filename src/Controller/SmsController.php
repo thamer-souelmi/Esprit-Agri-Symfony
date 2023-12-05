@@ -13,7 +13,7 @@ class SmsController extends AbstractController
     public function sendSms(TwilioService $twilioService): Response
     {
         $to = '+21650378582'; // Le numéro de téléphone destinataire
-        $message = 'test 123 '; // Le message que vous souhaitez envoyer
+        $message = 'yongob wahdou   '; // Le message que vous souhaitez envoyer
 
         // $twilioService->sendSMS($to, $message);
 

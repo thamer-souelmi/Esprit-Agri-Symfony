@@ -17,8 +17,8 @@
 <br>
          <label for="inputEmail" class="col-sm-4 col-form-label ">Poste Demandé</label>
     <div class="col-sm-10">
-        {{ form_widget(form.postedemande, {'attr': {'class': 'form-control ' ~ (form.postedemande.vars.errors|length > 0 ? 'is-invalid' : '')}}) }}
-        {{ form_errors(form.postedemande, {'attr': {'class': 'text-danger' ,'placeholder': 'Poste Demandé'}}) }}
+        {{ form_widget(form.posteDemande, {'attr': {'class': 'form-control ' ~ (form.posteDemande.vars.errors|length > 0 ? 'is-invalid' : '')}}) }}
+        {{ form_errors(form.posteDemande, {'attr': {'class': 'text-danger' ,'placeholder': 'Poste Demandé'}}) }}
     </div>
     <br>
          <label for="inputEmail" class="col-sm-4 col-form-label">Salaire Proposé</label>
@@ -40,6 +40,8 @@
     </div>
         <br>
         <label for="inputEmail" class="col-sm-4 col-form-label">Date d'Embauche</label>
+            <div ></div>
+
     <div class="col-sm-10">
         {{ form_widget(form.dateembauche, {'attr': {'class': 'form-control ' ~ (form.dateembauche.vars.errors|length > 0 ? 'is-invalid' : '')}}) }}
         {{ form_errors(form.dateembauche, {'attr': {'class': 'text-danger' }}) }}

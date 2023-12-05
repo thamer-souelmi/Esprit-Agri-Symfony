@@ -5,7 +5,7 @@
 {% block body %}
     <div class="container mt-5">
             {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
-        {{ form_row(form.postedemande, {'label': 'Poste Demandé', 'attr': {'class': 'form-control', 'placeholder': 'Poste Demandé'}}) }}
+        {{ form_row(form.posteDemande, {'label': 'Poste Demandé', 'attr': {'class': 'form-control', 'placeholder': 'Poste Demandé'}}) }}
        <br>
         {{ form_row(form.salairepropose, {'label': 'Salaire Proposé', 'attr': {'class': 'form-control', 'placeholder': 'Salaire Proposé'}}) }}
         <br>
@@ -27,9 +27,13 @@
     </div>
 
 </div>
- 
-       <br> <a href="{{ path('app_annoncerecrutement_index') }}">back to list</a>
-
+ <br>
+ <a href="{{ path('app_annoncerecrutement_index') }}" class="btn btn-light btn-icon-split btn-lg">
+        <span class="icon text-gray-600">
+            <i class="fas fa-arrow-left"></i>
+        </span>
+        <span class="text">Retour aux annonces </span>
+    </a>
 </div>
 
 

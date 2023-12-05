@@ -1,46 +1,185 @@
 {% extends 'baseback.html.twig' %}
 
-
 {% block body %}
-<table class="table">
-    <thead>
-        <tr>
-            <th>#</th>
-            <th>Date de Candidature</th>
-            <th>Expérience Professionnelle</th>
-            <th>Formation</th>
-            <th>Compétences Techniques</th>
-            <th>Certifications et Formations</th>
-            <th>Message de motivation</th>
-            <th>Etat négociation</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for candidature in candidatures %}
+    <div class="card-body">
+        <h5 class="card-title"></h5>
+        <div class="row">
+            <div class="col">
+                <input type="text" value="" class="form-control" placeholder="Formation" id="searchLibelle">
+            </div>
+            <div class="col">
+                <input type="text" value="" class="form-control" placeholder="Compétences Techniques" id="searchRevenuesCultures">
+            </div>
+        </div>
+    </div>
+
+    <h2>Candidatures Acceptées</h2>
+    <table class="table" id="candidaturesAccepteesTable">
+        {# Table Header #}
+        <thead>
             <tr>
-                <td>{{ loop.index }}</td>
-                <td>{{ candidature.datecandidature ? candidature.datecandidature|date('Y-m-d') : '' }}</td>
-                <td>{{ candidature.experienceprofessionnelle }}</td>
-                <td>{{ candidature.formation }}</td>
-                <td>{{ candidature.competencestechniques }}</td>
-                
-
-                <td><img src="{{ asset('img/' ~ candidature.certifforma) }}" alt="User Image" style="max-width:100px;max-height:100px;"></td>
-                            
-
-                <td>{{ candidature.messagemotivation }}</td>
-                <td>{{candidature.statusCandidature}}</td>
+                <th>#</th>
+                <th>Date de Candidature</th>
+                <th>Expérience Professionnelle</th>
+                <th>Formation</th>
+                <th>Compétences Techniques</th>
+                <th>Certifications et Formations</th>
+                <th>Message de motivation</th>
             </tr>
-        {% else %}
+        </thead>
+        {# Table Body #}
+        <tbody>
+            {% for candidature in paginationAccepted.items|filter(c => c.statusCandidature == 1) %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ candidature.datecandidature ? candidature.datecandidature|date('Y-m-d') : '' }}</td>
+                    <td>{{ candidature.experienceprofessionnelle }}</td>
+                    <td>{{ candidature.formation }}</td>
+                    <td>{{ candidature.competencestechniques }}</td>
+                    <td>
+                        {% if candidature.certifforma|lower ends with '.pdf' %}
+                            <a href="{{ asset('img/' ~ candidature.certifforma) }}" download="{{ candidature.certifforma }}">
+                                Télécharger le fichier PDF
+                            </a>
+                        {% else %}
+                            <a href="{{ asset('img/' ~ candidature.certifforma) }}" download="{{ candidature.certifforma }}">
+                                Télécharger la photo
+                            </a>
+                        {% endif %}
+                    </td>
+                    <td>{{ candidature.messagemotivation }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7">Pas de candidatures en négociation</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {# Pagination for Accepted Candidatures #}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="text-center">
+                {{ knp_pagination_render(paginationAccepted) }}
+            </div>
+        </div>
+    </div>
+
+    <h2>Candidatures refusées</h2>
+    <table class="table" id="candidaturesRefuseesTable">
+        {# Table Header #}
+        <thead>
             <tr>
-                <td colspan="8">No records found</td>
+                <th>#</th>
+                <th>Date de Candidature</th>
+                <th>Expérience Professionnelle</th>
+                <th>Formation</th>
+                <th>Compétences Techniques</th>
+                <th>Certifications et Formations</th>
+                <th>Message de motivation</th>
             </tr>
-        {% endfor %}
+        </thead>
+        {# Table Body #}
+        <tbody>
+            {% for candidature in paginationRefused.items|filter(c => c.statusCandidature == 0) %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ candidature.datecandidature ? candidature.datecandidature|date('Y-m-d') : '' }}</td>
+                    <td>{{ candidature.experienceprofessionnelle }}</td>
+                    <td>{{ candidature.formation }}</td>
+                    <td>{{ candidature.competencestechniques }}</td>
+                    <td>
+                        {% if candidature.certifforma|lower ends with '.pdf' %}
+                            <a href="{{ asset('img/' ~ candidature.certifforma) }}" download="{{ candidature.certifforma }}">
+                                Télécharger le fichier PDF
+                            </a>
+                        {% else %}
+                            <a href="{{ asset('img/' ~ candidature.certifforma) }}" download="{{ candidature.certifforma }}">
+                                Télécharger la photo
+                            </a>
+                        {% endif %}
+                    </td>
+                    <td>{{ candidature.messagemotivation }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7">Pas de candidatures non négociées</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
-        <br> 
+    {# Pagination for Refused Candidatures #}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="text-center">
+                {{ knp_pagination_render(paginationRefused) }}
+            </div>
+        </div>
+    </div>
 
-        
-    </tbody>
-</table>
+    {# Style for pagination #}
+    <style>
+        .pagination {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0;
+        }
 
+        .pagination li {
+            margin: 0 5px;
+        }
+
+        .button-container {
+            display: flex;
+            flex-direction: row;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .button-container button {
+            margin-right: 10px; /* Espacement entre les boutons */
+        }
+
+        .pagination a {
+            text-decoration: none;
+            padding: 5px 10px;
+            border: 1px solid #404a3d; /* Bleu */
+            border-radius: 3px;
+            color: #404a3d; /* Bleu */
+        }
+
+        .pagination a:hover {
+            background-color: #404a3d; /* Bleu au survol */
+            color: #fff; /* Texte blanc au survol */
+        }
+    </style>
+
+    {# jQuery for Search #}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Function to perform the search based on the specified column
+            function searchColumn(tableId, columnIndex, value) {
+                $(`#${tableId} tbody tr`).filter(function () {
+                    var cellText = $(this).find("td").eq(columnIndex).text().toLowerCase();
+                    var found = cellText.indexOf(value) > -1;
+                    $(this).toggle(found);
+                });
+            }
+
+            // Event handlers for each input element
+            $("#searchLibelle").on("keyup", function () {
+                searchColumn("candidaturesAccepteesTable", 3, $(this).val().toLowerCase());
+                searchColumn("candidaturesRefuseesTable", 3, $(this).val().toLowerCase());
+            });
+
+            $("#searchRevenuesCultures").on("keyup", function () {
+                searchColumn("candidaturesAccepteesTable", 4, $(this).val().toLowerCase());
+                searchColumn("candidaturesRefuseesTable", 4, $(this).val().toLowerCase());
+            });
+        });
+    </script>
 {% endblock %}
