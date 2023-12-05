@@ -36,6 +36,7 @@
 	{{ form_errors(form.dateajout, {'attr': {'class': 'text-danger'}}) }}
 </div>
 
+
 <div class="mb-3">
 	{{ form_label(form.qte) }}
 	{{ form_widget(form.qte, {'attr': {'class': 'form-control ' ~ (form.qte.vars.errors|length > 0 ? 'is-invalid' : '')}}) }}
