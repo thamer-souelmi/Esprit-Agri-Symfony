@@ -1,0 +1,94 @@
+{% extends 'baseback.html.twig' %}
+
+{% block title %}Bilanresultat index{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">Bilan Résultat</h1>
+
+    <div class="row">
+        {% for bilanresultat in pagination %}
+            <div class="col-md-3 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-text text-right">Année: {{ bilanresultat.anneer ? bilanresultat.anneer|date('Y-m-d') : '' }}</p>
+                        <p class="card-text font-weight-bold">REVENUS</p>
+                        <p class="card-text">-------------------------------------</p>
+                        <p class="card-text text-center">Revenus Cultures: {{ bilanresultat.revenuescultures }}</p>
+                        <p class="card-text text-center">Subvention: {{ bilanresultat.subvention }}</p>
+                        <p class="card-text text-center">Autres Revenus: {{ bilanresultat.autrerevenus }}</p>
+                        <br>
+                        <br>
+                        <p class="card-text font-weight-bold">COÛTS ET CHARGES</p>
+                        <p class="card-text">-------------------------------------</p>
+                        <p class="card-text text-center">Semences: {{ bilanresultat.semences }}</p>
+                        <p class="card-text text-center">Coût Main d'Œuvre: {{ bilanresultat.coutmainoeuvre }}</p>
+                        <p class="card-text text-center">Coûts Plantations: {{ bilanresultat.coutsplantations }}</p>
+                        <p class="card-text text-center">Coût Interventions Médicales: {{ bilanresultat.coutinterventionmedicale }}</p>
+                        <p class="card-text text-center">Charges Électricité et eau: {{ bilanresultat.chargeselectricite }}</p>
+                        <p class="card-text text-center">Charges Entretiens: {{ bilanresultat.chargeentretien }}</p>
+                        <p class="card-text text-center">Charges Administratives: {{ bilanresultat.chargeadministratives }}</p>
+                        <td style="display: flex; align-items: center;">
+                        <div class="d-flex justify-content-center mt-3">
+                            <a href="{{ path('app_bilanresultat_show', {'idbilanr': bilanresultat.idbilanr}) }}" class="btn btn-success rounded-pill py-2 px-4">
+                                <i class="bi bi-eye">Générer</i> 
+                            </a>
+                        </div>
+                        </td>  
+                    </div>
+                </div>
+            </div>
+            {% if loop.index % 4 == 0 %}</div><div class="row">{% endif %}
+        {% else %}
+            <div class="col-md-12">
+                <p>No records found</p>
+            </div>
+        {% endfor %}
+    </div>
+    {# Pagination #}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="text-center">
+                {{ knp_pagination_render(pagination) }}
+            </div>
+        </div>
+    </div>
+            {# style of pagination #}
+<style>
+	.pagination {
+		display: flex;
+		justify-content: center;
+		list-style: none;
+		padding: 0;
+	}
+
+	.pagination li {
+		margin: 0 5px;
+	}
+
+	.button-container {
+		display: flex;
+		flex-direction: row;
+		overflow-x: auto;
+		white-space: nowrap;
+	}
+
+
+	.button-container button {
+		margin-right: 10px; /* Espacement entre les boutons */
+	}
+
+	.pagination a {
+		text-decoration: none;
+		padding: 5px 10px;
+		border: 1px solid #1cc88a; /* Bleu */
+		border-radius: 3px;
+		color: #1cc88a; /* Bleu */
+	}
+
+	.pagination a:hover {
+		background-color: #1cc88a; /* Bleu au survol */
+		color: #fff; /* Texte blanc au survol */
+	}
+</style>
+<br>
+{% endblock %}

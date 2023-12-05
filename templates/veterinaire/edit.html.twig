@@ -1,10 +1,10 @@
-{% extends 'backbase.html.twig' %}
+{% extends 'baseback.html.twig' %}
 
 {% block body %}
-    <div class="col-lg-7">
+    <div class="col-lg-7 mx-auto">
         <div class="p-5">
             <div class="text-center">
-                <h1 class="h4 text-gray-900 mb-4">Modifier!</h1>
+                <h1 class="h4 text-gray-900 mb-4">Modifier les informations du véterinaire</h1>
                 
         </div>
         {{ form_start(form)}}
@@ -17,7 +17,7 @@
 <br>
 {{ form_row(form.adressmail, {'label' : 'Adresse mail','attr': {'class': 'form-control form-control-user', 'placeholder': 'Entrez votre adresse mail'}}) }}
 <br>
-{{ form_row(form.specialite, {'label' : 'Photo','attr': {'class': 'form-control','placeholder': 'Upload an image'}}) }}
+{{ form_row(form.specialite, {'label' : 'Photo','attr': {'class': 'form-control form-control-user','placeholder': 'Upload an image'}}) }}
 
 
 

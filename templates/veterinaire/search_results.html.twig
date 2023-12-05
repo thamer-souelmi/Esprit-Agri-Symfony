@@ -47,13 +47,15 @@
         {% endblock %}
          <style>
         .star {
-            font-size: 1.5rem;
-             
-        }
-        
-        .hover {
-            color: rgb(255, 196, 0);
-        }
+    cursor: pointer;
+    font-size: 24px;
+    color: #ffd700; /* Couleur jaune pour les étoiles */
+}
+
+.note {
+    font-weight: bold;
+    margin-left: 10px;
+}
     </style>
     </head>
          <!-- Topbar Start -->
@@ -128,7 +130,19 @@
                 <p class="section-title bg-white text-center text-primary px-3">Nos partenaires</p>
                 <h1 class="mb-5">Vétérinaires Expérimentés</h1>
             </div>
-
+<!-- Topbar Search -->
+                   <form action="{{ path('veterinaire_search') }}" method="get">
+    <div class="input-group">
+        <input type="text" name="search_query" class="form-control bg-light border-0 small" placeholder="Rechercher..." aria-label="Search" aria-describedby="basic-addon2">
+        <div class="input-group-append">
+            <button class="btn btn-primary" type="submit">
+                <i class="fas fa-search fa-sm"></i>
+            </button>
+        </div>
+    </div>
+    <br>
+    <br>
+</form>
 
 
 
@@ -143,16 +157,18 @@
             {% for veterinaire in veterinaires %}
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="{{ loop.index * 0.2 }}s">
                     <div class="team-item rounded p-4">
-                        <img class="img-fluid rounded mb-4" src="{{ asset('img/team-' ~ loop.index ~ '.jpg') }}" alt="">
+                       <img class="img-fluid rounded mb-4" src="{{ asset('img/' ~ veterinaire.specialite) }}" alt="" width="300" height="400" onerror="console.error('Image not found:', '{{ veterinaire.specialite }}')">
+
                         <h5>{{ veterinaire.prenomvet }}  {{ veterinaire.nomvet }} </h5>
                         <p class="text-primary">{{ veterinaire.adresscabinet|split(':')[0]|trim }}</p>
 
-                        <i class="star" data-note="1">&#9733;</i>
-                        <i class="star" data-note="2">&#9733;</i>
-                        <i class="star" data-note="3">&#9733;</i>
-                        <i class="star" data-note="4">&#9733;</i>
-                        <i class="star" data-note="5">&#9733;</i>
-                        <i class="note">Note:</i>
+                        <div class="rating">
+                    {% for note in 1..5 %}
+                        <i class="star" data-note="{{ note }}" onclick="rate('{{ veterinaire.idvet }}', {{ note }})">&#9733;</i>
+                    {% endfor %}
+                </div>
+
+                <span id="noteText_{{ veterinaire.idvet }}" class="note">Note: </span>
 
                         <div class="d-flex justify-content-center">
                             <a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('contactvet', {'id': veterinaire.idvet}) }}"> Contacter  </a>
@@ -165,3 +181,21 @@
         <p>Aucun résultat trouvé.</p>
     {% endif %}
 {% endblock %}
+<script>
+    function rate(veterinaireId, note) {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', `/rate/${veterinaireId}/${note}`, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                document.getElementById(`noteText_${veterinaireId}`).innerText = `Note: ${note}`;
+            } else {
+                console.error('Erreur lors de la requête Ajax');
+            }
+        };
+        
+        xhr.send();
+    }
+</script>
+

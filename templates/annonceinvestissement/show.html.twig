@@ -5,44 +5,68 @@
 {% block body %}
     
 
-    <table class="table">
+    <table class="table mx-5 w-75">
         <tbody>
             <tr>
-                <th>Titre</th>
+                <th><i class="bi bi-eye">Titre</th>
                 <td>{{ annonceinvestissement.titre }}</td>
             </tr>
             <tr>
-                <th>Montant</th>
+                <th><i class="fas fa-dollar-sign">Montant</th>
                 <td>{{ annonceinvestissement.montant }}</td>
             </tr>
             <tr>
-                <th>Datepublication</th>
+                <th><i class="bi bi-calendar"> Date publication</th>
                 <td>{{ annonceinvestissement.datepublication ? annonceinvestissement.datepublication|date('Y-m-d') : '' }}</td>
             </tr>
             <tr>
-                <th>Localisation</th>
+                <th><i class="bi bi-geo-alt"> Localisation</th>
                 <td>{{ annonceinvestissement.localisation }}</td>
             </tr>
             <tr>
-                <th>Description</th>
+                <th><i class="bi bi-file-text"> Description</th>
                 <td>{{ annonceinvestissement.description }}</td>
             </tr>
             <tr>
-                <th>Photo</th>
-                <td>{{ annonceinvestissement.photo }}</td>
+                <th><i class="bi bi-image"> Photo</th>
+                <td><img src="{{ asset('img/' ~ annonceinvestissement.photo) }}" alt="User Image" style="max-width:100px;max-height:100px;"></td>
             </tr>
+            <tr>
+                <th><i class="bi bi-camera-fill">CODE QR</th>
+                <td><button onclick="generateQR()" type="button" class="btn btn-warning m-2">Générer le code QR</button></td>
+            </tr><!-- Bouton pour générer le code QR -->
+    
             
         </tbody>
     </table>
-    {{ include('annonceinvestissement/_delete_form.html.twig') }}
 
-    <a href="{{ path('app_annonceinvestissement_index') }}" class="btn btn-light btn-icon-split btn-lg">
-                            <span class="icon text-gray-600">
-                                <i class="fas fa-arrow-left"></i>
-                            </span>
-                            <span class="text">Retour Annonce</span>
-                        </a>
+<!-- Inclusion de la bibliothèque QRCode.js -->
+    <script type="text/javascript" src="{{ asset('js/qrcodejs-master/qrcode.min.js') }}"></script>
+    
+    <!-- Élément pour afficher le code QR -->
+    <div id="mon_qr_code" class="d-flex justify-content-center align-items-center"></div>
 
+    <!-- Inclusion de la bibliothèque QRCode.js -->
+    <script type="text/javascript" src="{{ asset('public/js/qrcodejs-master/qrcode.min.js') }}"></script>
 
+    <!-- Script pour générer le code QR -->
+    <script type="text/javascript">
+        var qrcode; 
+
+        function generateQR() {
+            var url = "{{ path('app_annonceinvestissement_show', {'idannonce': annonceinvestissement.idannonce}) }}";
+            qrcode.clear();
+            qrcode.makeCode(url);
+        }
+
+        window.onload = function() {
+            qrcode = new QRCode("mon_qr_code", {
+                width: 128,
+                height: 128
+            });
+        }
+    </script>
+
+    
     
 {% endblock %}
