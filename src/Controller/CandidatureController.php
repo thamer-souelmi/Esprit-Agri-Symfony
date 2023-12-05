@@ -86,12 +86,26 @@ class CandidatureController extends AbstractController
     }
     
     #[Route('/back', name: 'app_candidatureback_index', methods: ['GET'])]
-    public function indexb(CandidatureRepository $candidatureRepository): Response
+    public function indexb(CandidatureRepository $candidatureRepository, PaginatorInterface $paginator, Request $request): Response
     {
+        $paginationAccepted = $paginator->paginate(
+            $candidatureRepository->findBy(['statuscandidature' => 1]), // Filter accepted candidatures
+            $request->query->getInt('page', 1),
+            4
+        );
+    
+        $paginationRefused = $paginator->paginate(
+            $candidatureRepository->findBy(['statuscandidature' => 0]), // Filter refused candidatures
+            $request->query->getInt('page', 1),
+            5
+        );
+    
         return $this->render('candidature/indexback.html.twig', [
-            'candidatures' => $candidatureRepository->findAll(),
+            'paginationAccepted' => $paginationAccepted,
+            'paginationRefused' => $paginationRefused,
         ]);
     }
+    
     #[Route('/new/{idRecurt}', name: 'app_candidature_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager ,Security $security, $idRecurt, MailerInterface $mailer): Response
     {        //$idRecurt = $request->get('idRecurt');
