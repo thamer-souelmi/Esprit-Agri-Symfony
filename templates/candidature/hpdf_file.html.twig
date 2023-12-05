@@ -64,6 +64,15 @@
                             <li class="list-group-item"><strong>Formation:</strong> {{ candidature.formation }}</li>
                             <li class="list-group-item"><strong>Compétences Techniques:</strong> {{ candidature.competencestechniques }}</li>
                             <li class="list-group-item"><strong>Message de motivation :</strong> {{ candidature.messagemotivation }}</li>
+						 <li class="list-group-item"><strong>status candidature  :</strong> 
+						   {% if candidature.statuscandidature == 0 and candidature.archived == 0 %}
+                                    En cours
+                                {% elseif candidature.statuscandidature == 0 and candidature.archived == 1 %}
+                                    Refusée
+                                {% elseif candidature.statuscandidature == 1 and candidature.archived == 1 %}
+                                    Acceptée
+                                {% endif %}</li>
+
                         </ul>
                     </div>
                 </div>
