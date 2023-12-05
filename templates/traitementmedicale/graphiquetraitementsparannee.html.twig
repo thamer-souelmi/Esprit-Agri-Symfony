@@ -1,0 +1,46 @@
+{% extends 'backbase.html.twig' %}
+
+{% block title %}Graphique des traitements médicaux par année{% endblock %}
+
+{% block body %}
+   
+    <div style="width: 80%; margin: auto;">
+
+    <!-- ca pour dessiner les graphes -->
+        <canvas id="traitementsParAnneeChart"></canvas>
+    </div>
+
+<!-- importation du chartjs -->
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+    <!-- pour exécuter du code JavaScript  -->
+        document.addEventListener('DOMContentLoaded', function () {
+          
+            var data = {{ data is defined ? data | json_encode | raw : '{}' }};
+
+            var ctx = document.getElementById('traitementsParAnneeChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: data.map(function (entry) { return entry.date; }),
+                    datasets: [{
+                        label: 'Nombre de traitements médicaux par année',
+                        data: data.map(function (entry) { return entry.count; }),
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+{% endblock %}
+

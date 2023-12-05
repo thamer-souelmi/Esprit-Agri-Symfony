@@ -184,26 +184,26 @@ private ?User $user;
         return $this->candidatures;
     }
 
-    public function addCandidature(Candidature $candidature): self
-    {
-        if (!$this->candidatures->contains($candidature)) {
-            $this->candidatures[] = $candidature;
-            $candidature->setIdannrecru($this);
-        }
+    // public function addCandidature(Candidature $candidature): self
+    // {
+    //     if (!$this->candidatures->contains($candidature)) {
+    //         $this->candidatures[] = $candidature;
+    //         $candidature->setIdannrecru($this);
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    public function removeCandidature(Candidature $candidature): self
-    {
-        if ($this->candidatures->removeElement($candidature)) {
-            // set the owning side to null (unless already changed)
-            if ($candidature->getIdannrecru() === $this) {
-                $candidature->setIdannrecru(null);
-            }
-        }
+    // public function removeCandidature(Candidature $candidature): self
+    // {
+    //     if ($this->candidatures->removeElement($candidature)) {
+    //         // set the owning side to null (unless already changed)
+    //         if ($candidature->getIdannrecru() === $this) {
+    //             $candidature->setIdannrecru(null);
+    //         }
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
 }

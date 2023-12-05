@@ -20,6 +20,16 @@ class NegociationRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Negociation::class);
     }
+    // Add this custom method to count by etatnego
+    public function countByEtat(int $etat): int
+    {
+        return $this->createQueryBuilder('n')
+            ->select('COUNT(n.id)')
+            ->where('n.etatnego = :etat')
+            ->setParameter('etat', $etat)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 
 //    /**
 //     * @return Negociation[] Returns an array of Negociation objects

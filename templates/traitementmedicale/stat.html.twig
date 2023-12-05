@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <!-- En-tête HTML (à personnaliser selon vos besoins) -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graphique de Statistiques</title>
+
+    <!-- Inclure la bibliothèque Chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha512-s+xg36jbIujB2S2VKfpGmlC3T5V2TF3lY48DX7u2r9XzGzgPsa6wTpOQA7J9iffvdeBN0q9tKzRxVxw1JviZPg==" crossorigin="anonymous"></script>
+</head>
+<body>
+<a href="{{ path('statistiques') }}">Statistiques</a>
+
+
+    <!-- Canvas pour le graphique -->
+    <canvas id="monGraph" width="400" height="300"></canvas>
+
+    <script>
+       
+        let ctx = document.querySelector("#monGraph").getContext('2d');
+        
+       
+        let donneesTraitementMedical = JSON.parse('{{ donneesTraitementMedical|raw }}');
+
+        let data = {
+            labels: [], 
+            datasets: [{
+                label: 'Nombre de traitements médicaux par mois',
+                data: [], 
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        };
+
+    
+        donneesTraitementMedical.forEach(function(item) {
+            data.labels.push(item.mois); 
+            data.datasets[0].data.push(item.nombreTraitements); 
+        });
+
+       
+        let options = {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        };
+
+      
+        let graph = new Chart(ctx, {
+            type: 'bar',
+            data: data,
+            options: options
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,132 @@
+{% extends 'baseback.html.twig' %}
+
+{% block title %}Bilanresultat{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">Bilan Résultat</h1>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th class="text-right">Annee:</th>
+                            <td>{{ bilanresultat.anneer ? bilanresultat.anneer|date('Y-m-d') : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: center; font-weight: bold; text-decoration: underline;">REVENUS</th>
+                            <td style="text-align: center;"></td>
+                        </tr>
+                        <tr>
+                            <th>Revenus Cultures</th>
+                            <td><i class="fas fa-dollar-sign"><span class="converted-amount-usd" data-original="{{ bilanresultat.revenuescultures }}">{{ bilanresultat.revenuescultures }}</span></i></td>
+                        </tr>
+                        <tr>
+                            <th>Subvention</th>
+                            <td><i class="fas fa-dollar-sign"><span class="converted-amount-usd" data-original="{{ bilanresultat.subvention }}">{{ bilanresultat.subvention }}</span></i></td>
+                        </tr>
+                        <tr>
+                            <th>Autres Revenus</th>
+                            <td><i class="fas fa-dollar-sign"><span class="converted-amount-usd" data-original="{{ bilanresultat.autrerevenus }}">{{ bilanresultat.autrerevenus }}</span></i></td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: center; font-weight: bold; text-decoration: none; color: black;">Total Revenus</th>
+                            <td style="text-align: center; font-weight: bold; color: black;"><i class="fas fa-dollar-sign"><span class="converted-amount-usd" data-original="{{ totalRevenus }}">{{ totalRevenus }}</span></i></td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: center; font-weight: bold; text-decoration: underline;">COÛTS ET CHARGES</th>
+                            <td style="text-align: center;"></td>
+                        </tr>
+                        <tr>
+                            <th>Coûts de production :</th>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>Semences</th>
+                            <td><i class="fas fa-dollar-sign"><span class="converted-amount-usd" data-original="{{ bilanresultat.semences }}">{{ bilanresultat.semences }}</span></i></td>
+                        </tr>
+                        <tr>
+                            <th>Coût Main d'Œuvre</th>
+                            <td><i class="fas fa-dollar-sign"><span class="converted-amount-usd" data-original="{{ bilanresultat.coutmainoeuvre }}">{{ bilanresultat.coutmainoeuvre }}</span></i></td>
+                        </tr>
+                        <tr>
+                            <th>Coûts Plantations</th>
+                            <td><i class="fas fa-dollar-sign"><span class="converted-amount-usd" data-original="{{ bilanresultat.coutsplantations }}">{{ bilanresultat.coutsplantations }}</span></i></td>
+                        </tr>
+                        <tr>
+                            <th>Coût Interventions Médicales</th>
+                            <td><i class="fas fa-dollar-sign"><span class="converted-amount-usd" data-original="{{ bilanresultat.coutinterventionmedicale }}">{{ bilanresultat.coutinterventionmedicale }}</span></i></td>
+                        </tr>
+                        <tr>
+                            <th>Total Cout de production</th>
+                            <td><i class="fas fa-dollar-sign"><span class="converted-amount-usd" data-original="{{ productionCosts }}">{{ productionCosts }}</span></i></td>
+                        </tr>
+                        <tr>
+                            <th>Charges d'exploitation :</th>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>Charges Électricité et eau</th>
+                                <td><i class="fas fa-dollar-sign"><span class="converted-amount-usd" data-original="{{ bilanresultat.chargeselectricite }}">{{ bilanresultat.chargeselectricite }}</span></i></td>
+                        </tr>
+                        <tr>
+                            <th>Charges Entretiens</th>
+                            <td><i class="fas fa-dollar-sign"><span class="converted-amount-usd" data-original="{{ bilanresultat.chargeentretien }}">{{ bilanresultat.chargeentretien }}</span></i></td>
+                        </tr>
+                        <tr>
+                            <th>Charges Administratives</th>
+                            <td><i class="fas fa-dollar-sign"><span class="converted-amount-usd" data-original="{{ bilanresultat.chargeadministratives }}">{{ bilanresultat.chargeadministratives }}</span></i></td>
+                        </tr>
+                        <tr>
+                            <th>Total Charges d'exploitation</th>
+                            <td><i class="fas fa-dollar-sign"><span class="converted-amount-usd" data-original="{{ totalOperatingExpenses }}">{{ totalOperatingExpenses }}</span></i></td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: center; font-weight: bold; text-decoration: none; color: black;">Total Coûts et Charges</th>
+                            <td style="text-align: center; font-weight: bold; color: black;"><i class="fas fa-dollar-sign"><span class="converted-amount-usd" data-original="{{ productionCosts+totalOperatingExpenses }}">{{ productionCosts+totalOperatingExpenses }}</span></i></td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: center; font-weight: bold; text-decoration: none; color: black;">BÉNÉFICE AVANT IMPÔTS</th>
+                            <td style="text-align: center; font-weight: bold; color: black;"><i class="fas fa-dollar-sign"><span class="converted-amount-usd" data-original="{{ totalRevenus-(productionCosts+totalOperatingExpenses) }}">{{ totalRevenus-(productionCosts+totalOperatingExpenses) }}</span></i></td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: center; font-weight: bold; text-decoration: none; color: black;">Impôts sur le revenu</th>
+                            <td style="text-align: center; font-weight: bold; color: black;"><i class="fas fa-dollar-sign"><span class="converted-amount-usd" data-original="{{ (totalRevenus-(productionCosts+totalOperatingExpenses))*0.1 }}">{{ (totalRevenus-(productionCosts+totalOperatingExpenses))*0.1 }}</span></i></td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: center; font-weight: bold; text-decoration: none; color: black;">RESULTAT NET DE L’EXERCICE</th>
+                            <td style="text-align: center; font-weight: bold; color: black;"><i class="fas fa-dollar-sign"><span class="converted-amount-usd" data-original="{{ (totalRevenus-(productionCosts+totalOperatingExpenses))-((totalRevenus-(productionCosts+totalOperatingExpenses))*0.1) }}">{{ (totalRevenus-(productionCosts+totalOperatingExpenses))-((totalRevenus-(productionCosts+totalOperatingExpenses))*0.1) }}</span></i></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+
+    <!-- Add this script for conversion -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            function convertCurrencyToUSD(amount, element) {
+                const apiUrl = 'http://apilayer.net/api/live?access_key=62cd0b67e64af4cd8c54f819bcdef722&currencies=USD&source=TND&format=1';
+
+                fetch(apiUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                        const usdRate = data.quotes['TNDUSD'];
+                        const convertedAmount = (amount * usdRate).toFixed(2);
+                        element.textContent = convertedAmount;
+                    })
+                    .catch(error => console.error('Error fetching exchange rates:', error));
+            }
+
+            const elementsUSD = document.querySelectorAll('.converted-amount-usd');
+            elementsUSD.forEach(element => {
+                const originalAmount = parseFloat(element.getAttribute('data-original'));
+                convertCurrencyToUSD(originalAmount, element);
+            });
+        });
+    </script>
+{% endblock %}
