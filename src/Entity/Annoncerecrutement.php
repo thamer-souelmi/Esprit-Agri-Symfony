@@ -39,7 +39,7 @@ class Annoncerecrutement
 
 
 
-     #[ORM\Column(nullable: true)]
+     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $dateEmbauche;
 
 
