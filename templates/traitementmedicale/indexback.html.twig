@@ -1,10 +1,25 @@
-{% extends 'backbase.html.twig' %}
+{% extends 'baseback.html.twig' %}
 
 {% block body %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+<div class="card-body">
+    <h5 class="card-title"></h5>
+    <div class="row">
+        <div class="col">
+            <input type="text" value="" class="form-control" placeholder="Numéro de bétail" id="searchNom">
+        </div>
+        <div class="col">
+            <input type="text" value="" class="form-control" placeholder="Date de traitement" id="searchLibelle">
+        </div>
+        </div>
+        </div>
+
  <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Liste des traitements médical</h6>
+          <h6 class="m-0 font-weight-bold text-primary" style="color: #1cc88a;">Liste des traitements médical</h6>
+
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -29,7 +44,6 @@
             <tr>
                 <td>{{ traitementmedicale.id }}</td>
                 <td>{{ traitementmedicale.numero }}</td>
-                
                  <td>{{ traitementmedicale.dateintervmed ? traitementmedicale.dateintervmed|date('Y-m-d') : '' }}</td>
                 <td>{{ traitementmedicale.coutinterv }}</td>
                 <td>{{ traitementmedicale.medicament }}</td>
@@ -47,11 +61,37 @@
                     </tbody>
                 </table>
               
-            </div>
+            
         </div>
     </div>
 
-</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+<script>
+$(document).ready(function () { // Function to perform the search based on the specified column
+function searchColumn(columnIndex, value) {
+$("#dataTable tbody tr").filter(function () {
+var cellText = $(this).find("td").eq(columnIndex).text().toLowerCase();
+var found = cellText.indexOf(value) > -1;
+$(this).toggle(found);
+});
+}
+
+// Event handlers for each input element
+$("#searchNom").on("keyup", function () {
+searchColumn(1, $(this).val().toLowerCase());
+});
+
+$("#searchLibelle").on("keyup", function () {
+searchColumn(2, $(this).val().toLowerCase());
+});
+
+
+
+$("#searchRevenuesCultures").on("keyup", function () {
+searchColumn(3, $(this).val().toLowerCase());
+});
+});
+</script>
 
 {% endblock %}

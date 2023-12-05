@@ -20,6 +20,10 @@ class Note
     #[ORM\JoinColumn(name: 'idvet', referencedColumnName: 'idvet')]
     private ?Veterinaire $veterinaire = null;
 
+    #[ORM\ManyToOne(inversedBy: 'notes')]
+    private ?User $user = null;
+
+    
     public function getId(): ?int
     {
         return $this->id;
@@ -45,6 +49,18 @@ class Note
     public function setVeterinaire(?Veterinaire $veterinaire): static
     {
         $this->veterinaire = $veterinaire;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

@@ -6,6 +6,7 @@ use App\Entity\Traitementmedicale;
 use App\Form\TraitementmedicaleType;
 use App\Repository\TraitementmedicaleRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Dompdf\Dompdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,19 +18,18 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 #[Route('/traitementmedicale')]
 class TraitementmedicaleController extends AbstractController
 {
-   /* #[Route('/', name: 'app_traitementmedicale_index', methods: ['GET'])]
-    public function index(EntityManagerInterface $entityManager): Response
-    {
-        $traitementmedicales = $entityManager
-            ->getRepository(Traitementmedicale::class)
-            ->findAll();
+//    #[Route('/', name: 'app_traitementmedicale_index', methods: ['GET'])]
+//     public function index(EntityManagerInterface $entityManager): Response
+//     {
+//         $traitementmedicales = $entityManager
+//             ->getRepository(Traitementmedicale::class)
+//             ->findAll();
 
-        return $this->render('traitementmedicale/index.html.twig', [
-            'traitementmedicales' => $traitementmedicales,
-        ]);
-    }
-*/
-/*
+//         return $this->render('traitementmedicale/index.html.twig', [
+//             'traitementmedicales' => $traitementmedicales,
+//         ]);
+//     }
+
     #[Route('/', name: 'app_traitementmedicale_index', methods: ['GET'])]
     public function index(TraitementmedicaleRepository $traitementmedicaleRepository, PaginatorInterface $paginator, Request $request): Response
     {
@@ -38,7 +38,7 @@ class TraitementmedicaleController extends AbstractController
         $pagination = $paginator->paginate(
             $traitementmedicale,
             $request->query->getInt('page', 1),
-            6 // Number of items per page
+            3 // Number of items per page
         );
 
         return $this->render('traitementmedicale/index.html.twig', [
@@ -46,7 +46,55 @@ class TraitementmedicaleController extends AbstractController
         ]);
     }
 
-*/
+    #[Route('/pdf', name: 'pdf', methods: ['GET'])]
+    public function index_pdf(TraitementmedicaleRepository $traitementmedicaleRepository, Request $request): Response
+    {
+        // Création d'une nouvelle instance de la classe Dompdf
+        $dompdf = new Dompdf();
+
+        // Récupération de la liste des événements à partir du repository
+        $traitementmedicale = $traitementmedicaleRepository->findAll();
+        $imagePath = $this->getParameter('kernel.project_dir') . '/public/img/1.jpeg';
+        // Encode the image to base64
+        $imageData = base64_encode(file_get_contents($imagePath));
+        $imageSrc = 'data:image/jpeg;base64,' . $imageData;
+        // Génération du HTML à partir du template Twig 'evenement/pdf_file.html.twig' en passant la liste des événements
+        $html = $this->renderView('traitementmedicale/file_pdf.html.twig', [
+            'traitementmedicales' => $traitementmedicale,
+            'imagePath' => $imageSrc,
+
+        ]);
+
+        // Récupération des options de Dompdf et activation du chargement des ressources à distance
+        $options = $dompdf->getOptions();
+        $options->set([
+            'isHtml5ParserEnabled' => true,
+            'isPhpEnabled' => true,  // Enable PHP rendering
+        ]);
+
+        $dompdf->setOptions($options);
+
+        // Chargement du HTML généré dans Dompdf
+        $dompdf->loadHtml($html);
+
+        // Configuration du format de la page en A4 en mode portrait
+        $dompdf->setPaper('A4', 'portrait');
+
+        // Génération du PDF
+        $dompdf->render();
+
+        // Récupération du contenu du PDF généré
+        $output = $dompdf->output();
+
+        // Set headers for PDF download
+        $response = new Response($output, 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="list.pdf"',
+        ]);
+
+        return $response;
+    }
+
     #[Route('/traitementback', name: 'app_traitementmedicale_back', methods: ['GET'])]
     public function indexback(EntityManagerInterface $entityManager): Response
     {
@@ -202,5 +250,5 @@ public function advancedSearch(Request $request)
         ]);
     }
    
-   
+
 }

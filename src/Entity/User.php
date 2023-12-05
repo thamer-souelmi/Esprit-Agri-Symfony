@@ -87,8 +87,8 @@ class User implements UserInterface//, TwoFactorInterface
     
     private ?string $image = null;
     
-    // #[ORM\Column(nullable: true)]
-    // private ?string $googleAuthenticatorSecret ;
+    #[ORM\Column(nullable: true)]
+    private ?string $googleAuthenticatorSecret ;
 
     #[ORM\Column(nullable: true)]
     private ?bool $isBanned = false; // Indicates if the user is banned
@@ -103,8 +103,8 @@ class User implements UserInterface//, TwoFactorInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Produit::class)]
     private Collection $produits;
 
-    #[ORM\OneToMany(mappedBy: "user", targetEntity: Annoncerecrutement::class)]
-    private Collection $annonces;
+    // #[ORM\OneToMany(mappedBy: "user", targetEntity: Annoncerecrutement::class)]
+    // private Collection $annonces;
 
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Reclamation::class)]
@@ -113,12 +113,19 @@ class User implements UserInterface//, TwoFactorInterface
     private ?string $googleID = null;
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $resetToken ;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Note::class)]
+    private Collection $notes;
  
+
+  
 
     public function __construct()
     {
         $this->produits = new ArrayCollection();
         $this->reclamations = new ArrayCollection();
+        $this->notes = new ArrayCollection();
+        
     }
     
    
@@ -323,10 +330,7 @@ class User implements UserInterface//, TwoFactorInterface
         return $this->mail;
     }
 
-    public function getGoogleAuthenticatorSecret(): ?string
-    {
-        // return $this->googleAuthenticatorSecret;
-    }
+
 
     public function setGoogleAuthenticatorSecret(?string $googleAuthenticatorSecret): void
     {
@@ -392,10 +396,10 @@ class User implements UserInterface//, TwoFactorInterface
         }
     }
 
-    public function getAnnonces(): Collection
-    {
-        return $this->annonces;
-    }
+    // public function getAnnonces(): Collection
+    // {
+    //     return $this->annonces;
+    // }
 
 
 
@@ -420,6 +424,36 @@ class User implements UserInterface//, TwoFactorInterface
     public function setResetToken(?string $resetToken): self
     {
         $this->resetToken = $resetToken;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Note>
+     */
+    public function getNotes(): Collection
+    {
+        return $this->notes;
+    }
+
+    public function addNote(Note $note): static
+    {
+        if (!$this->notes->contains($note)) {
+            $this->notes->add($note);
+            $note->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNote(Note $note): static
+    {
+        if ($this->notes->removeElement($note)) {
+            // set the owning side to null (unless already changed)
+            if ($note->getUser() === $this) {
+                $note->setUser(null);
+            }
+        }
 
         return $this;
     }

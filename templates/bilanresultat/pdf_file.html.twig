@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Bilan Résultat</title>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+
+        .content-container {
+            text-align: right;
+            margin-right: 20px; /* Adjust the margin as needed */
+        }
+
+        h3 {
+            margin: 0;
+        }
+    
+
+    .event-image {
+        float: left;
+        margin-right: 20px; /* Add margin for spacing */
+        max-width: 70px;
+    }
+   
+        
+            
+</style>
+
+</head>
+	
+	<body>
+	<img class="event-image" src="{{ imagePath }}" alt="Event Image">
+    <p style="color: #214216; font-style: italic; font-family: 'Elegant Font', sans-serif; text-align: right;">"Esprit-Agri Votre allié en agriculture"</p>
+    <h1 style="text-align: center; margin: 30; padding: 0; border-top: 2px solid #214216; border-bottom: 2px solid #214216; padding: 20px; color: #214216;">Bilan Résultat</h1>
+
+ 
+    <div class="content-container">
+        <h3>Année: {{ bilanresultat.anneer ? bilanresultat.anneer|date('Y-m-d') : '' }}</h3>
+    </div>
+    <br>
+
+		
+                <table class="table">
+            <tbody>
+            <tr>
+                <th style="text-align: center; font-weight: bold; text-decoration: underline;">REVENUS</th>
+                <td style="text-align: center;"></td>
+            </tr>
+            <p class="card-text">----------------------------------------------------------------------------------</p>
+            <tr>
+                <th>Revenus Cultures</th>
+                <td>{{ bilanresultat.revenuescultures }}</td>
+            </tr>
+            <tr>
+                <th>Subvention</th>
+                <td>{{ bilanresultat.subvention }}</td>
+            </tr>
+            <tr>
+                <th>Autres Revenus</th>
+                <td>{{ bilanresultat.autrerevenus }}</td>
+            </tr>
+            <br>
+            <tr>
+                <th style="text-align: center; font-weight: bold; text-decoration: none; color: black;">Total Revenus</th>
+                <td style="text-align: center; font-weight: bold; color: black;">{{ totalRevenus }}</td>
+            </tr>
+            <br>
+            <tr>
+                <th style="text-align: center; font-weight: bold; text-decoration: underline;">COÛTS ET CHARGES</th>
+                <td style="text-align: center;"></td>
+            </tr>
+            <p class="card-text">----------------------------------------------------------------------------------</p>
+            <tr>
+                <th>Coûts de production :</th>
+                <td></td>
+            </tr>
+            <tr>
+                <th>Semences</th>
+                <td>{{ bilanresultat.semences }}</td>
+            </tr>
+            <tr>
+                <th>Coût Main d'Œuvre</th>
+                <td>{{ bilanresultat.coutmainoeuvre }}</td>
+            </tr>
+            <tr>
+                <th>Coûts Plantations</th>
+                <td>{{ bilanresultat.coutsplantations }}</td>
+            </tr>
+            <tr>
+                <th>Coût Interventions Médicales</th>
+                <td>{{ bilanresultat.coutinterventionmedicale }}</td>
+            </tr>
+            <tr>
+                <th>Total Cout de production</th>
+                <td>{{ productionCosts }}</td>
+            </tr>
+            <tr>
+                <th>Charges d'exploitation :</th>
+                <td></td>
+            </tr>
+            <tr>
+                <th>Charges Électricité et eau</th>
+                <td>{{ bilanresultat.chargeselectricite }}</td>
+            </tr>
+            <tr>
+                <th>Charges Entretiens</th>
+                <td>{{ bilanresultat.chargeentretien }}</td>
+            </tr>
+            <tr>
+                <th>Charges Administratives</th>
+                <td>{{ bilanresultat.chargeadministratives }}</td>
+            </tr>
+            <tr>
+                <th>Total Charges d'exploitation</th>
+                <td>{{ totalOperatingExpenses }}</td>
+            </tr>
+            <br>
+            <tr>
+                <th style="text-align: center; font-weight: bold; text-decoration: none; color: black;">Total Coûts et Charges</th>
+                <td style="text-align: center; font-weight: bold; color: black;">{{ productionCosts+totalOperatingExpenses }}</td>
+            </tr>
+            <br>
+            <tr>
+                <th style="text-align: center; font-weight: bold; text-decoration: none; color: black;">BÉNÉFICE AVANT IMPÔTS</th>
+                <td style="text-align: center; font-weight: bold; color: black;">{{ totalRevenus-(productionCosts+totalOperatingExpenses) }}</td>
+            </tr>
+            <br>
+            <tr>
+                <th style="text-align: center; font-weight: bold; text-decoration: none; color: black;">Impôts sur le revenu</th>
+                <td style="text-align: center; font-weight: bold; color: black;">{{ (totalRevenus-(productionCosts+totalOperatingExpenses))*0.1 }}</td>
+            </tr>
+            <br>
+            <tr>
+                <th style="text-align: center; font-weight: bold; text-decoration: none; color: black;">RESULTAT NET DE L’EXERCICE</th>
+                <td style="text-align: center; font-weight: bold; color: black;">{{ (totalRevenus-(productionCosts+totalOperatingExpenses))-((totalRevenus-(productionCosts+totalOperatingExpenses))*0.1) }}</td>
+            </tr>
+            
+            
+        </tbody>
+       </table>
+           
+            
+            
+
+	</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Bilan Comptable</title>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+
+        .content-container {
+            text-align: right;
+            margin-right: 20px; /* Adjust the margin as needed */
+        }
+
+        h3 {
+            margin: 0;
+        }
+    
+
+    .event-image {
+        float: left;
+        margin-right: 20px; /* Add margin for spacing */
+        max-width: 70px;
+    }
+   
+        
+            
+</style>
+
+</head>
+	
+	<body>
+	<img class="event-image" src="{{ imagePath }}" alt="Event Image">
+    <p style="color: #214216; font-style: italic; font-family: 'Elegant Font', sans-serif; text-align: right;">"Esprit-Agri Votre allié en agriculture"</p>
+    <h1 style="text-align: center; margin: 30; padding: 0; border-top: 2px solid #214216; border-bottom: 2px solid #214216; padding: 20px; color: #214216;">Bilan Comptable</h1>
+
+ 
+    <div class="content-container">
+        <h3>Année: {{ bilancomptable.annee ? bilancomptable.annee|date('Y-m-d') : '' }}</h3>
+    </div>
+    <br>
+
+		
+                <table class="table">
+            <tbody>
+            <tr>
+                <th style="text-align: center; font-weight: bold; text-decoration: underline;">ACTIF</th>
+                <td style="text-align: center;"></td>
+            </tr>
+            <p class="card-text">----------------------------------------------------------------------------------</p>
+            <tr>
+                <th>Actif immobilisé:</th>
+                <td></td>
+            </tr>
+            <tr>
+                <th>Terrains et bâtiments</th>
+                <td>{{ bilancomptable.valeurterrain }}</td>
+            </tr>
+            <tr>
+                <th>Autres Immobilisations</th>
+                <td>{{ bilancomptable.autresimmobilisations }}</td>
+            </tr>
+            <tr>
+                <th>Matériels</th>
+                <td>{{ bilancomptable.materiels }}</td>
+            </tr>
+            <tr>
+                <th>Total Actif immobilisé</th>
+                <td>{{ totalActifImmobilise }}</td>
+            </tr>
+            <tr>
+                <th>Actif circulant:</th>
+                <td></td>
+            </tr>
+            <tr>
+                <th>Stocks de produits</th>
+                <td>{{ bilancomptable.stocksproduits }}</td>
+            </tr>
+            <tr>
+                <th>Créance Client</th>
+                <td>{{ bilancomptable.creanceclient }}</td>
+            </tr>
+            <tr>
+                <th>Trésorerie</th>
+                <td>{{ bilancomptable.tresorie }}</td>
+            </tr>
+            <tr>
+                <th>Total Actif circulant</th>
+                <td>{{ totalActifCirculant }}</td>
+            </tr>
+            <br>
+            <tr>
+                <th style="text-align: center; font-weight: bold; text-decoration: none; color: black;">Total Actif</th>
+                <td style="text-align: center; font-weight: bold; color: black;">{{ totalActifImmobilise+totalActifCirculant }}</td>
+            </tr>
+            <br>
+            <tr>
+                <th style="text-align: center; font-weight: bold; text-decoration: underline;">PASSIF</th>
+                <td style="text-align: center;"></td>
+            </tr>
+            <p class="card-text">----------------------------------------------------------------------------------</p>
+            <tr>
+                <th>Capitaux propres :</th>
+                <td></td>
+            </tr>
+            <tr>
+                <th>Capital Social</th>
+                <td>{{ bilancomptable.capitalsocial }}</td>
+            </tr>
+            <tr>
+                <th>Réserves</th>
+                <td>{{ bilancomptable.reserves }}</td>
+            </tr>
+            <tr>
+                <th>Resultat Net</th>
+                <td>{{ bilancomptable.resultatnet }}</td>
+            </tr>
+            <tr>
+                <th>Total Capitaux propres</th>
+                <td>{{ totalCapitauxPropres }}</td>
+            </tr>
+            <tr>
+                <th>Dettes à long terme :</th>
+                <td></td>
+            </tr>
+            <tr>
+                <th>Emprunts bancaires</th>
+                <td>{{ bilancomptable.emprunts }}</td>
+            </tr>
+            <tr>
+                <th>Dettes Long terme</th>
+                <td>{{ bilancomptable.dettesit }}</td>
+            </tr>
+            <tr>
+                <th>Total Dettes à long terme </th>
+                <td>{{ totalDettesLongTerme }}</td>
+            </tr>
+            <tr>
+                <th>Dettes à court terme :</th>
+                <td></td>
+            </tr>
+            <tr>
+                <th>Fournisseurs</th>
+                <td>{{ bilancomptable.fournisseurs }}</td>
+            </tr>
+            <tr>
+                <th>Dettes Court terme</th>
+                <td>{{ bilancomptable.dettesct }}</td>
+            </tr>
+            <tr>
+                <th>Total Dettes à court terme </th>
+                <td>{{ totalDettesCourtTerme }}</td>
+            </tr>
+            <br>
+            <tr>
+                <th style="text-align: center; font-weight: bold; text-decoration: none; color: black;">Total Passif</th>
+                <td style="text-align: center; font-weight: bold; color: black;">{{ totalCapitauxPropres+totalDettesLongTerme+totalDettesCourtTerme }}</td>
+            </tr>
+            
+            
+        </tbody>
+       </table>
+           
+            
+            
+
+	</body>
+</html>
