@@ -20,6 +20,8 @@ use Endroid\QrCode\Writer\PngWriter;
 use Endroid\QrCodeBundle\Response\QrCodeResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use App\Entity\User;
+use Symfony\Component\Security\Core\Security;
 
 #[Route('/annonceinvestissement')]
 class AnnonceinvestissementController extends AbstractController
@@ -61,9 +63,11 @@ public function index(AnnonceinvestissementRepository $annonceinvestissementRepo
     /////////////////////////////BACK//////////////////////////////////////////
 
     #[Route('/new', name: 'app_annonceinvestissement_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager,Security $security): Response
     {
+        $user = $security->getUser();
         $annonceinvestissement = new Annonceinvestissement();
+        $annonceinvestissement->setUser($user);
         $currentDate = new \DateTime();
         $annonceinvestissement->setDatepublication($currentDate);
         $form = $this->createForm(AnnonceinvestissementType::class, $annonceinvestissement);
@@ -85,6 +89,7 @@ public function index(AnnonceinvestissementRepository $annonceinvestissementRepo
                 // Save the image file name to the entity
                 $annonceinvestissement->setPhoto($fileName);
             }
+            $annonceinvestissement -> setUser($user);
 
             $entityManager->persist($annonceinvestissement);
             $entityManager->flush();

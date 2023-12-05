@@ -15,6 +15,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 #[Route('/negociation')]
 class NegociationController extends AbstractController
@@ -83,10 +85,12 @@ class NegociationController extends AbstractController
       /////////////////////////////BACK//////////////////////////////////////////
 
       #[Route('/new/{idannonce}', name: 'app_negociation_new', methods: ['GET', 'POST'])]
-      public function new(Request $request, EntityManagerInterface $entityManager, $idannonce,MailerInterface $mailer): Response
+      public function new(Request $request, EntityManagerInterface $entityManager, $idannonce,MailerInterface $mailer,Security $security): Response
       {
           $annonceinvestissement = $entityManager->getRepository(Annonceinvestissement::class)->find($idannonce);
           $negociation = new Negociation();
+          $user = $security->getUser();
+          $negociation->setUsers($user);
           $negociation->setIdannonce($annonceinvestissement);
           $currentDate = new \DateTime();
           $negociation->setDatenegociation($currentDate);

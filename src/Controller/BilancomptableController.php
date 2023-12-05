@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\Security\Core\Security;
 use Mpdf\Mpdf;
 use Dompdf\Dompdf;
 
@@ -38,9 +39,11 @@ class BilancomptableController extends AbstractController
     }
 
     #[Route('/new', name: 'app_bilancomptable_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager,Security $security): Response
     {
         $bilancomptable = new Bilancomptable();
+        $user = $security->getUser();
+        $bilancomptable->setUser($user);
         $form = $this->createForm(BilancomptableType::class, $bilancomptable);
         $form->handleRequest($request);
 
