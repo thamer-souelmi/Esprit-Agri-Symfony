@@ -57,10 +57,17 @@ class AnnoncerecrutementController extends AbstractController
         ]);
     }
     #[Route('/back', name: 'app_annoncerecrutementback_index', methods: ['GET'])]
-    public function indexba(AnnoncerecrutementRepository $annoncerecrutementRepository): Response
+    public function indexba(AnnoncerecrutementRepository $annoncerecrutementRepository, PaginatorInterface $paginator, Request $request): Response
     {
+        // Pass the array of annoncerecrutements to the paginator
+        $pagination = $paginator->paginate(
+            $annoncerecrutementRepository->findAll(), // Pass the array of annoncerecrutements
+            $request->query->getInt('page', 1), // Current page
+            5 // Items per page
+        );
+    
         return $this->render('annoncerecrutement/indexback.html.twig', [
-            'annoncerecrutements' => $annoncerecrutementRepository->findAll(),
+            'pagination' => $pagination,
         ]);
     }
 
