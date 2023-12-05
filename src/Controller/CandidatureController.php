@@ -9,6 +9,7 @@ use App\Form\CandidatureType;
 use App\Repository\CandidatureRepository;
 use App\Repository\AnnoncerecrutementRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Dompdf\Dompdf;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -50,6 +51,38 @@ class CandidatureController extends AbstractController
         return $this->render('candidature/index.html.twig', [
             'pagination' => $pagination,
         ]);
+    }
+
+    #[Route('/pdf', name: 'hpdf', methods: ['GET'])]
+    public function index_pdf(CandidatureRepository $candidatureRepository, Request $request): Response
+    {
+        $dompdf = new Dompdf();
+        $candidature = $candidatureRepository->findAll();
+        $imagePath = $this->getParameter('kernel.project_dir') . '/public/img/logoespritAgri.png';
+        $imageData = base64_encode(file_get_contents($imagePath));
+        $imageSrc = 'data:image/png;base64,' . $imageData;
+        $html = $this->renderView('candidature/hpdf_file.html.twig', [
+            'candidature' => $candidature,
+            'imagePath' => $imageSrc,
+
+        ]);
+        $options = $dompdf->getOptions();
+        $options->set([
+            'isHtml5ParserEnabled' => true,
+            'isPhpEnabled' => true, 
+        ]);
+        $dompdf->setOptions($options);
+
+        // Chargement du HTML généré dans Dompdf
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('legal', 'landscape');
+        $dompdf->render();
+        $output = $dompdf->output();
+        $response = new Response($output, 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="candidature.pdf"',
+        ]);
+        return $response;
     }
     
     #[Route('/back', name: 'app_candidatureback_index', methods: ['GET'])]
@@ -253,6 +286,7 @@ public function showRelatedCandidatures(int $idRecrut, CandidatureRepository $ca
 
         return $this->redirectToRoute('app_candidature_index');
     }
+
 }
 // #[Route('/confirm_candidature/{id}', name: 'confirm_candidature', methods: ['GET', 'POST'])]
 // public function confirmCandidature($id, Request $request, ?string $decision, EntityManagerInterface $entityManager, AnnoncerecrutementRepository $annoncerecrutementRepository): Response
