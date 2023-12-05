@@ -19,6 +19,7 @@ class VeterinaireType extends AbstractType
             ->add('adresscabinet')
             ->add('numtel')
             ->add('adressmail')
+            
             ->add('specialite',FileType::class, [
                 'label' => 'Votre Image (JPG, JPEG, PNG file)',
                 'mapped' => false,

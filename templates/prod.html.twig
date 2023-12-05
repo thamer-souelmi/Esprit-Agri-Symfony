@@ -103,14 +103,13 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
                 <a href="{{ path('app_home') }}" class="nav-item nav-link active">Accueil</a>
-                <a href="" class="nav-item nav-link">Recrutement</a>
-                <a href="" class="nav-item nav-link">Investissement</a>
+                <a href="{{ path('app_annoncerecrutement_index')}}" class="nav-item nav-link">Recrutement</a>
+                <a href="{{ path('app_annonceinvestissement_index')}}" class="nav-item nav-link">Investissement</a>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Visite médicale</a>
                     <div class="dropdown-menu bg-light m-0">
                         <a href="{{ path('app_traitementmedicale_index') }}" class="dropdown-item">Traitement médical</a>
                         <a href="{{ path('frontaffich')}}" class="dropdown-item">Véterinaire</a>
-                        
                         
                     </div>
                 </div>
