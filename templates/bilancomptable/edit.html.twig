@@ -1,0 +1,13 @@
+{% extends 'baseback.html.twig' %}
+
+{% block title %}Edit Bilancomptable{% endblock %}
+
+{% block body %}
+    <h1>Edit Bilancomptable</h1>
+
+    {{ include('bilancomptable/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_bilancomptable_index') }}">back to list</a>
+
+    {{ include('bilancomptable/_delete_form.html.twig') }}
+{% endblock %}

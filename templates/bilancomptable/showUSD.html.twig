@@ -1,0 +1,184 @@
+{% extends 'baseback.html.twig' %}
+
+{% block title %}Bilancomptable{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">Bilan comptable</h1>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th class="text-right">Annee:</th>
+                            <td>{{ bilancomptable.annee ? bilancomptable.annee|date('Y-m-d') : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: center; font-weight: bold; text-decoration: underline;">ACTIF</th>
+                            <td style="text-align: center;"></td>
+                        </tr>
+                        <tr>
+                            <th>Actif immobilisé:</th>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>Terrains et bâtiments</th>
+                            <td><i class="fas fa-dollar-sign"><span class="converted-amount-usd" data-original="{{ bilancomptable.valeurterrain }}">{{ bilancomptable.valeurterrain }}</span></td>
+                        </tr>
+                        <!-- Repeat similar lines for other rows -->
+                        <tr>
+                            <th>Autres Immobilisations</th>
+                            <td><i class="fas fa-dollar-sign"><span class="converted-amount-usd" data-original="{{ bilancomptable.autresimmobilisations }}">{{ bilancomptable.autresimmobilisations }}</span></td>
+                        </tr>
+                        <tr>
+                            <th>Matériels</th>
+                            <td><i class="fas fa-dollar-sign">
+                            <i class="fas fa-dollar-sign"><span class="converted-amount-usd" data-original="{{ bilancomptable.materiels }}">{{ bilancomptable.materiels }}</span></td>
+                        </tr>
+                        <tr>
+                            <th>Total Actif immobilisé</th>
+                            <td><i class="fas fa-dollar-sign"><span class="converted-amount-usd" data-original="{{ totalActifImmobilise }}">{{ totalActifImmobilise }}</span></td>
+                        </tr>
+                        <tr>
+                            <th>Actif circulant:</th>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>Stocks de produits</th>
+                            <td><i class="fas fa-dollar-sign"><span class="converted-amount-usd" data-original="{{ bilancomptable.stocksproduits }}">{{ bilancomptable.stocksproduits }}</span></td>
+                        </tr>
+                        <tr>
+                            <th>Créance Client</th>
+                            <td><i class="fas fa-dollar-sign"><span class="converted-amount-usd" data-original="{{ bilancomptable.creanceclient }}">{{ bilancomptable.creanceclient }}</span></td>
+                        </tr>
+                        <tr>
+                            <th>Trésorerie</th>
+                            <td><i class="fas fa-dollar-sign"><span class="converted-amount-usd" data-original="{{ bilancomptable.tresorie }}">{{ bilancomptable.tresorie }}</span></td>
+                        </tr>
+                        <tr>
+                            <th>Total Actif circulant</th>
+                            <td><i class="fas fa-dollar-sign"><span class="converted-amount-usd" data-original="{{ totalActifCirculant }}">{{ totalActifCirculant }}</span></td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: center; font-weight: bold; text-decoration: none; color: black;">Total Actif</th>
+                            <td style="text-align: center; font-weight: bold; color: black;">
+                            <i class="fas fa-dollar-sign"><span class="converted-amount-usd" data-original="{{ totalActifImmobilise+totalActifCirculant }}">{{ totalActifImmobilise+totalActifCirculant }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: center; font-weight: bold; text-decoration: underline;">PASSIF</th>
+                            <td style="text-align: center;"></td>
+                        </tr>
+                        <tr>
+                            <th>Capitaux propres :</th>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>Capital Social</th>
+                            <td><i class="fas fa-dollar-sign"><span class="converted-amount-usd" data-original="{{ bilancomptable.capitalsocial }}">{{ bilancomptable.capitalsocial }}</span></td>
+                        </tr>
+                        <tr>
+                            <th>Réserves</th>
+                            <td><i class="fas fa-dollar-sign"><span class="converted-amount-usd" data-original="{{ bilancomptable.reserves }}">{{ bilancomptable.reserves }}</span></td>
+                        </tr>
+                        <tr>
+                            <th>Resultat Net</th>
+                            <td><i class="fas fa-dollar-sign"><span class="converted-amount-usd" data-original="{{ bilancomptable.resultatnet }}">{{ bilancomptable.resultatnet }}</span></td>
+                        </tr>
+                        <tr>
+                            <th>Total Capitaux propres</th>
+                            <td><i class="fas fa-dollar-sign"><span class="converted-amount-usd" data-original="{{ totalCapitauxPropres }}">{{ totalCapitauxPropres }}</span></td>
+                        </tr>
+                        <tr>
+                            <th>Dettes à long terme :</th>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>Emprunts bancaires</th>
+                            <td><i class="fas fa-dollar-sign"><span class="converted-amount-usd" data-original="{{ bilancomptable.emprunts }}">{{ bilancomptable.emprunts }}</span></td>
+                        </tr>
+                        <tr>
+                            <th>Dettes Long terme</th>
+                            <td><i class="fas fa-dollar-sign"><span class="converted-amount-usd" data-original="{{ bilancomptable.dettesit }}">{{ bilancomptable.dettesit }}</span></td>
+                        </tr>
+                        <tr>
+                            <th>Total Dettes à long terme </th>
+                            <td><i class="fas fa-dollar-sign"><span class="converted-amount-usd" data-original="{{ totalDettesLongTerme }}">{{ totalDettesLongTerme }}</span></td>
+                        </tr>
+                        <tr>
+                            <th>Dettes à court terme :</th>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>Fournisseurs</th>
+                            <td><i class="fas fa-dollar-sign"><span class="converted-amount-usd" data-original="{{ bilancomptable.fournisseurs }}">{{ bilancomptable.fournisseurs }}</span></td>
+                        </tr>
+                        <tr>
+                            <th>Dettes Court terme</th>
+                            <td><i class="fas fa-dollar-sign"><span class="converted-amount-usd" data-original="{{ bilancomptable.dettesct }}">{{ bilancomptable.dettesct }}</span></td>
+                        </tr>
+                        <tr>
+                            <th>Total Dettes à court terme </th>
+                            <td><i class="fas fa-dollar-sign"><span class="converted-amount-usd" data-original="{{ totalDettesCourtTerme }}">{{ totalDettesCourtTerme }}</span></td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: center; font-weight: bold; text-decoration: none; color: black;">Total Passif</th>
+                            <td style="text-align: center; font-weight: bold; color: black;">
+                                <i class="fas fa-dollar-sign"><span class="converted-amount-usd" data-original="{{ totalCapitauxPropres+totalDettesLongTerme+totalDettesCourtTerme }}">
+                                    {{ totalCapitauxPropres+totalDettesLongTerme+totalDettesCourtTerme }}
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <br>
+
+    <!-- Add this script for conversion -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            function convertCurrencyToEuro(amount, element) {
+                const apiUrl = 'http://apilayer.net/api/live?access_key=62cd0b67e64af4cd8c54f819bcdef722&currencies=EUR&source=TND&format=1';
+
+                fetch(apiUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                        const euroRate = data.quotes['TNDEUR'];
+                        const convertedAmount = (amount * euroRate).toFixed(2);
+                        element.textContent = convertedAmount;
+                    })
+                    .catch(error => console.error('Error fetching exchange rates:', error));
+            }
+
+            function convertCurrencyToUSD(amount, element) {
+                const apiUrl = 'http://apilayer.net/api/live?access_key=62cd0b67e64af4cd8c54f819bcdef722&currencies=USD&source=TND&format=1';
+
+                fetch(apiUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                        const usdRate = data.quotes['TNDUSD'];
+                        const convertedAmount = (amount * usdRate).toFixed(2);
+                        element.textContent = convertedAmount;
+                    })
+                    .catch(error => console.error('Error fetching exchange rates:', error));
+            }
+
+            const elementsEuro = document.querySelectorAll('.converted-amount-eur');
+            elementsEuro.forEach(element => {
+                const originalAmount = parseFloat(element.getAttribute('data-original'));
+                convertCurrencyToEuro(originalAmount, element);
+            });
+
+            const elementsUSD = document.querySelectorAll('.converted-amount-usd');
+            elementsUSD.forEach(element => {
+                const originalAmount = parseFloat(element.getAttribute('data-original'));
+                convertCurrencyToUSD(originalAmount, element);
+            });
+        });
+    </script>
+{% endblock %}
