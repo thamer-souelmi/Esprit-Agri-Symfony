@@ -8,6 +8,7 @@ use App\Form\VeterinaireType;
 use App\Mailer\VeterinaryMailer as MailerVeterinaryMailer;
 use App\Repository\VeterinaireRepository;
 use App\Service\GeocodingService;
+use Doctrine\DBAL\Schema\View;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -231,35 +232,32 @@ public function yourAction(GeocodingService $geocodingService, VeterinaireReposi
     }
     */
     #[Route('/sendEmail/{id}', name: 'send_email', methods: ['POST'])]
-    public function sendEmail(Request $request, MailerInterface $mailer, Veterinaire $veterinaire ): Response
+    public function sendEmail(Request $request, MailerInterface $mailer, Veterinaire $veterinaire): Response
     {
-        $fname=$request->request->get('fname');
-        $email=$request->request->get('email');
-        $subject=$request->request->get('subject');
-        $message=$request->request->get('message');
-
-        // envoie du mail
-        $email = (new Email())
-        ->from('malek.frikhi@esprit.tn')
-        ->to('agriesprit3@gmail.com')
-        ->subject('Rendez-vous')
+        $fname = $request->request->get('fname');
+        $email = $request->request->get('email');
+        $subject = $request->request->get('subject');
+        $message = $request->request->get('message');
     
-        ->html("
-        <p>Bonjour,</p>
-        <p>Vous avez un nouveau message de $fname concernant le sujet '$subject'.</p>
-        <p>Message : $message</p>
-        <p>Le demandeur souhaite prendre un rendez-vous. Merci de le contacter à l'adresse e-mail $email.</p>
-        <p>Cordialement,</p>
-        <p>Votre application Agri-Esprit</p>
-        <img src='/img/logoagri.png' width='200'>
-    ");
-
-    $mailer->send($email);
-
-
+        // Render the Twig template
+        $emailContent = $this->renderView('veterinaire/mailtemplate.html.twig', [
+            'fname' => $fname,
+            'subject' => $subject,
+            'message' => $message,
+            'email' => $email,
+        ]);
+    
+        // Send the email
+        $email = (new Email())
+            ->from('malek.frikhi@esprit.tn')
+            ->to('agriesprit3@gmail.com')
+            ->subject('Rendez-vous')
+            ->html($emailContent);
+    
+        $mailer->send($email);
+    
         return $this->redirectToRoute('contactvet', ['id' => $veterinaire->getIdvet()]);
     }
-
 
     
     #[Route('/graphique/veterinaires-par-ville', name: 'graphique_veterinaires_par_ville')]
