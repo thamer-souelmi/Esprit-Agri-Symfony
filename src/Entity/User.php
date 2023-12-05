@@ -118,6 +118,10 @@ class User implements UserInterface//, TwoFactorInterface
 
    
 
+
+    // #[ORM\OneToMany(mappedBy: "user", targetEntity: Annoncerecrutement::class)]
+    // private Collection $annonces;
+
     
     public function isBanned(): ?bool
     {
@@ -381,6 +385,7 @@ class User implements UserInterface//, TwoFactorInterface
 
         return $this;
     }
+
     public function getGoogleID(): ?string
     {
         return $this->googleID;
