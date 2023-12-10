@@ -1,19 +1,13 @@
-    {% extends 'annoncerecrut.html.twig' %}
+{% extends 'prod.html.twig' %}
 
-    {% block banner_image %}
-    <div class="container-fluid banner my-5 py-5" data-parallax="scroll" data-image-src="{{ asset('img/tibarabarka.jpg') }}">
-                <div class="container py-5">
-                    <div class="row g-5">
-                        <div class="col-lg-6 wow fadeIn" data-wow-delay="0.3s">
-                            <div class="container text-center py-5">
-                                <h1 class="display-3 text-white mb-4 animated slideInDown">Candidature</h1>
-                                <nav aria-label="breadcrumb animated slideInDown"></nav>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-    {% endblock %}
+{% block title %}Recrutement{% endblock %}
+{% block banner_image %}
+    {{ asset('img/recru.jpg') }}
+{% endblock %}
+{% block product_heading %}
+    <h1 class="display-3 text-white mb-4 animated slideInDown">Recrutement </h1>
+{% endblock %}
+   
     {% block body %}
     <!-- message flash mouch kmla -->
     {% for message in app.flashes('success') %}
@@ -27,13 +21,7 @@
             {{ message }}
         </div>
     {% endfor %}
-                <header class="bg-dark py-5">
-                <div class="container px-4 px-lg-5 my-5">
-                    <div class="text-center text-white">
-                        <h1 class="display-4 fw-bolder text-white">Annonces Recrutement</h1>
-                    </div>
-                </div>
-            <br>
+               
     
     <section class="py-5">
         <div class="container px-4 px-lg-5 my-5">
@@ -62,12 +50,12 @@
                                     <p class="fw-bolder"> Date prévue d'embauche :  <br> <i class="bi bi-calendar3"></i>  {{ annoncerecrutement.dateembauche ? annoncerecrutement.dateembauche|date('d-m-Y') : '' }}</p>
                                     <p class="fw-bolder"> <i class="bi bi-geo-fill"></i> {{ annoncerecrutement.localisation }}</p>
                                     <p class="fw-bolder"> Nombre de postes recherchés : <i class="bi bi-people-fill"></i> {{ annoncerecrutement.nbposterecherche }}</p>
-    <a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_candidature_new', {'idRecurt': annoncerecrutement.idRecrut }) }}"> <i class="bi bi-person-plus"></i> </a>
-                                <a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_annoncerecrutement_edit', {'idRecrut': annoncerecrutement.idRecrut}) }}"><i class="bi bi-pencil"></i>  </a>
+  {% if app.user.role == 'ouvrier' %}  <a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_candidature_new', {'idRecurt': annoncerecrutement.idRecrut }) }}"> <i class="bi bi-person-plus"></i> </a>{% endif %}
+                       {% if app.user.role == 'agriculteur' %}          <a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_annoncerecrutement_edit', {'idRecrut': annoncerecrutement.idRecrut}) }}"><i class="bi bi-pencil"></i>  </a>
     <a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_show_related_candidatures', {'idRecrut': annoncerecrutement.idRecrut}) }}"><i class="bi bi-eye"></i>  </a>
     <br>
         <br> <!-- Avoir -->
-            {% include 'annoncerecrutement/_delete_form.html.twig' with {'submit_button': 'Supprimer'} %}
+            {% include 'annoncerecrutement/_delete_form.html.twig' with {'submit_button': 'Supprimer'} %}{%endif%}
 
                                 <div style="margin-left: 5px;">
                                 <br>
@@ -87,12 +75,13 @@
         </div>
         
     </section>
-
+{% if app.user.role == 'agriculteur' %} 
     <div class="text-center">
         <a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_annoncerecrutement_new') }}">Ajouter Annonce</a>
         <a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_candidature_index') }}">Les candidatures</a>
 
     </div>
+    {% endif%}
 
     <script>
         // Add this script to handle the minimization of the box

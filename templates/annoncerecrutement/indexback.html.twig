@@ -20,6 +20,8 @@
     <table class="table" id="dataTable">
         <thead>
             <tr>
+                <th>Nom</th>
+                <th>Prenom</th>
                 <th>Poste proposé</th>
                 <th>Salaire</th>
                 <th>Contrat proposé</th>
@@ -34,6 +36,8 @@
         <tbody>
             {% for annoncerecrutement in pagination %}
                 <tr>
+                    <td>{{ annoncerecrutement.user.getNom() }}</td>
+                    <td>{{ annoncerecrutement.user.getPrenom() }}</td>
                     <td>{{ annoncerecrutement.postedemande }}</td>
                     <td>{{ annoncerecrutement.salairepropose }} <i class="bi bi-cash-stack"></i></td>
                     <td>{{ annoncerecrutement.typecontrat }}</td>

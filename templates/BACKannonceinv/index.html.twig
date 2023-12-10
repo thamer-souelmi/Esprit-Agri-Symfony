@@ -29,6 +29,8 @@
         <table class="table">
             <thead>
                 <tr>
+                    <th>Nom</th>
+                    <th>Prenom</th>
                     <th>Titre</th>
                     <th>Montant</th>
                     <th>Date publication</th>
@@ -41,6 +43,8 @@
             <tbody id="myTable">
                 {% for annonceinvestissement in pagination %}
                     <tr>
+                        <td>{{ annonceinvestissement.user.getNom() }}</td>
+                        <td>{{ annonceinvestissement.user.getPrenom() }}</td>
                         <td>{{ annonceinvestissement.titre }}</td>
                         <td>{{ annonceinvestissement.montant }}</td>
                         <td>{{ annonceinvestissement.datepublication ? annonceinvestissement.datepublication|date('Y-m-d') : '' }}</td>

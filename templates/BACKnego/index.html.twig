@@ -7,6 +7,8 @@
         <table class="table">
             <thead>
                 <tr>
+                    <th>Nom</th>
+                    <th>Prenom</th>
                     <th>Montant proposé</th>
                     <th>Message</th>
                     <th>Date Négociation</th>
@@ -16,6 +18,8 @@
             <tbody>
                 {% for acceptedNegociation in acceptedPagination %}
                     <tr>
+                        <td>{{ acceptedNegociation.users.getNom() }}</td>
+                        <td>{{ acceptedNegociation.users.getPrenom() }}</td>
                         <td>{{ acceptedNegociation.montantpropose }}</td>
                         <td>{{ acceptedNegociation.message }}</td>
                         <td>{{ acceptedNegociation.datenegociation ? acceptedNegociation.datenegociation|date('Y-m-d') : '' }}</td>
@@ -35,6 +39,8 @@
         <table class="table">
             <thead>
                 <tr>
+                    <th>Nom</th>
+                    <th>Prenom</th>
                     <th>Montant proposé</th>
                     <th>Message</th>
                     <th>Date Négociation</th>
@@ -44,6 +50,8 @@
             <tbody>
                 {% for rejectedNegociation in rejectedPagination %}
                     <tr>
+                        <td>{{ rejectedNegociation.users.getNom() }}</td>
+                        <td>{{ rejectedNegociation.users.getPrenom() }}</td>
                         <td>{{ rejectedNegociation.montantpropose }}</td>
                         <td>{{ rejectedNegociation.message }}</td>
                         <td>{{ rejectedNegociation.datenegociation ? rejectedNegociation.datenegociation|date('Y-m-d') : '' }}</td>

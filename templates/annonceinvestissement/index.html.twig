@@ -1,6 +1,6 @@
 {% extends 'prod.html.twig' %}
 
-{% block title %}Investissement{% endblock %}
+{% block title %}Investissementi{% endblock %}
 {% block banner_image %}
     {{ asset('img/investissement.jpg') }}
 {% endblock %}
@@ -98,9 +98,9 @@
     {# Bouton #}
     <div class="d-flex justify-content-end">
     <div class="text-center">
-        <a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_annonceinvestissement_new') }}">Ajouter Annonce</a>
+   {% if app.user.role == 'agriculteur' %}      <a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_annonceinvestissement_new') }}">Ajouter Annonce</a>
         <a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_negociation_index') }}">Listes des Négociations</a>
-    </div>
+   {%endif%} </div>
     </div>
 
     
@@ -114,7 +114,7 @@
                             <!-- Your existing code for each announcement -->
                             <img class="img-fluid rounded" src="{{ asset('img/' ~ annonceinvestissement.photo) }}" style="width: 336px; height: 336px; object-fit: cover;">
                             <div class="product-overlay">
-                                <a class="btn btn-square btn-secondary rounded-circle m-1"
+                      {% if app.user.role == 'agriculteur' %}           <a class="btn btn-square btn-secondary rounded-circle m-1"
                                     href="{{ path('app_annonceinvestissement_edit', {'idannonce': annonceinvestissement.idannonce}) }}">
                                     <i class="bi bi-pencil"></i>
                                 </a>
@@ -122,21 +122,21 @@
                                     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ annonceinvestissement.idannonce) }}">
                                     <button type="submit" class="btn btn-secondary rounded-circle m-1">
                                          <i class="bi bi-trash"></i>
-                                    </button>
+                                    </button> {%endif%}
                                 </form>
-                                <a class="btn btn-square btn-secondary rounded-circle m-1"
+                    {% if app.user.role == 'investisseur' %}               <a class="btn btn-square btn-secondary rounded-circle m-1"
                                     href="{{ path('app_negociation_new', {'idannonce': annonceinvestissement.idannonce}) }}">
                                     <i class="bi bi-link"></i>
-                                </a>
-                                <a class="btn btn-square btn-secondary rounded-circle m-1"
+                                </a>{%endif%}
+                   {% if app.user.role == 'agriculteur' %}              <a class="btn btn-square btn-secondary rounded-circle m-1"
                                     href="{{ path('app_negociation_show', {'idannonce': annonceinvestissement.idannonce }) }}">
                                     <i class="bi bi-eye"></i>
-                                </a>
+                                </a>{%endif%}
                                 
-                                <a class="btn btn-square btn-secondary rounded-circle m-1"
+                              {% if app.user.role == 'investisseur' %}   <a class="btn btn-square btn-secondary rounded-circle m-1"
                                     href="{{ path('app_annonceinvestissement_show', {'idannonce': annonceinvestissement.idannonce }) }}">
                                     <i class="bi bi-upc-scan"></i>
-                                </a>
+                                </a>{%endif%}
                             </div>
                         </div>
                         

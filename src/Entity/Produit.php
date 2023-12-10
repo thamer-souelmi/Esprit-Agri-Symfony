@@ -62,6 +62,9 @@ class Produit
     #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Reclamation::class)]
     private Collection $reclamations;
 
+    #[ORM\ManyToOne(inversedBy: 'produits')]
+    private ?Client $client = null;
+
 
     
 
@@ -249,6 +252,18 @@ public function __construct()
               $reclamation->setProduit(null);
           }
       }
+
+      return $this;
+  }
+
+  public function getClient(): ?Client
+  {
+      return $this->client;
+  }
+
+  public function setClient(?Client $client): static
+  {
+      $this->client = $client;
 
       return $this;
   }

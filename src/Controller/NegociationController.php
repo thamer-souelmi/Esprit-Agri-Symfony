@@ -357,7 +357,7 @@ public function statistics(Request $request, NegociationRepository $negoRepo, Pa
 }
 private function badWords(string $text): bool
     {
-        $badWords = ['violence', 'haine', 'israil','putain','débile','con','gueule','merde','fils de','espece de','connard','idiot']; // Remplacez ces valeurs par votre liste de mots interdits
+        $badWords = ['violence', 'haine', 'israil','putain','débile','gueule','merde','fils de','espece de','idiot']; // Remplacez ces valeurs par votre liste de mots interdits
 
         foreach ($badWords as $badWord) {
             if (stripos($text, $badWord) !== false) {

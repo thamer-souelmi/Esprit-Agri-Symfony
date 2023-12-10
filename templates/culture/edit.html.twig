@@ -1,14 +1,15 @@
-{% extends 'culturefront.html.twig'%}
+{% extends 'prod.html.twig' %}
 
-{% block title %}Modifier Culture
+{% block title %}New Produit{% endblock %}
+{% block banner_image %}
+    {{ asset('img/1.jpeg') }}
+{% endblock %}
+{% block product_heading %}
+    <h1 class="display-3 text-white mb-4 animated slideInDown">Culture</h1>
 {% endblock %}
 
 {% block body %}
-	<h1>Modifier Culture</h1>
 
 	{{ include('culture/_form.html.twig', {'button_label': 'Update'}) }}
 
-	<a href="{{ path('app_culture_index') }}" class="btn btn-primary">Retourner au list</a>
-
-	{{ include('culture/_delete_form.html.twig') }}
 {% endblock %}

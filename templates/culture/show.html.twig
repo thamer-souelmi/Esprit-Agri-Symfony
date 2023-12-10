@@ -1,8 +1,15 @@
-{% extends 'culturefront.html.twig'%}
+{% extends 'prod.html.twig' %}
 
-
-{% block title %}Culture
+{% block title %}New Produit{% endblock %}
+{% block banner_image %}
+    {{ asset('img/1.jpeg') }}
 {% endblock %}
+{% block product_heading %}
+    <h1 class="display-3 text-white mb-4 animated slideInDown">Culture</h1>
+{% endblock %}
+
+
+
 
 {% block body %}
 	<h1>Culture</h1>
@@ -44,17 +51,7 @@
 		type="hidden" name="_token" value="{{ csrf_token('delete' ~ culture.id) }}">
 		{# <button class="btn btn-danger">Supprimer</button> #}
 
-		<div class="form-group row">
-			<div class="col-sm-20 mb-3 mb-sm-0">
-				<a href="{{ path('app_culture_index') }}" class="btn btn-light btn-icon-split btn-lg">
-					<span class="icon text-gray-600">
-						<i class="fas fa-arrow-left"></i>
-					</span>
-					<span class="text">Retourner au list</span>
-				</a>
-			</div>
-		</div>
-		<a href="{{ path('app_culture_index') }}" class="btn btn-primary">Retourner au list</a>
+		
 
 	</form>
 {% endblock %}

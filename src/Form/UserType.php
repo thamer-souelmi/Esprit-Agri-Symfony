@@ -54,7 +54,6 @@ class UserType extends AbstractType
                 'Agriculteur' => 'agriculteur',
                 'Client' => 'client',
                 'Investisseur'=>'investisseur',
-                'Veterinaire'=>'veterinaire',
                 'Ouvrier'=>'ouvrier'
             ],
         ])

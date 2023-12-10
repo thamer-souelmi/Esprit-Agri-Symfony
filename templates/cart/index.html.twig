@@ -1,12 +1,18 @@
-{% extends 'culturefront.html.twig' %}
+{% extends 'prod.html.twig' %}
 
 {% block title %}Votre panier
 {% endblock %}
-
+{% block what %}Panier
+{% endblock %}
+{% block banner_image %}
+	{{ asset('img/panier achat on 0.png') }}
+{% endblock %}
 {% block body %}
 	<section class="bg-light p-3">
 		<h1>Votre panier</h1>
 	</section>
+	{% include 'cart/flash_messages.html.twig' %}
+
 
 	<table class="table">
 		<thead>
@@ -23,10 +29,10 @@
 				<tr>
 					<td>{{ element.produit.nomprod }}</td>
 					<td class="text-end">{{ element.produit.prix }}
-						€</td>
+						TND</td>
 					<td>{{ element.quantite }}</td>
 					<td class="text-end">{{ element.quantite * element.produit.prix }}
-						€</td>
+						TND</td>
 					<td>
 						<a href="{{ path("cart_add", {id: element.produit.id}) }}" class="btn btn-success">
 							<i class="bi bi-cart-plus"></i>
@@ -49,7 +55,7 @@
 			<tr>
 				<td colspan="3">Total</td>
 				<td class="text-end">{{ total }}
-					€</td>
+					TND</td>
 				<td>
 					<a href="{{ path("cart_delete_all") }}" class="btn btn-danger">
 						<i class="bi bi-cart-x"></i>
@@ -58,7 +64,8 @@
 			</tr>
 		</tfoot>
 	</table>
-			<a href="{{ path("cart_mail") }}" class="btn btn-danger">
-							Valider Payment<i class="bi bi-cart-x"></i>
-						</a>
+
+	<a href="{{ path("cart_mail") }}" class="btn btn-danger">
+		Valider Commande<i class="bi bi-cart-x"></i>
+	</a>
 {% endblock %}
