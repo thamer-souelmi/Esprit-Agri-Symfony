@@ -40,9 +40,7 @@
             </tr>
             <tr>
                 <th><i class="bi bi-camera-fill">CODE QR</th>
-                <td><button onclick="{{ path('app_annonceinvestissement_qrcode', {'idannonce': annonceinvestissement.idannonce}) }}" type="button" class="btn btn-warning m-2">Générer le code QR</button></td>
-                				<a class="btn btn-square btn-secondary rounded-circle m-1" href="{{ path('app_annonceinvestissement_qrcode', {'idannonce': annonceinvestissement.idannonce}) }}"> QR<i class="bi bi-upc-scan"></i>
-											</a>
+                <td><button onclick="generateQR()" type="button" class="btn btn-warning m-2">Générer le code QR</button></td>
             </tr><!-- Bouton pour générer le code QR -->
     
             

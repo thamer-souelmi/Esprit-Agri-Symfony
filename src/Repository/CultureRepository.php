@@ -50,4 +50,14 @@ class CultureRepository extends ServiceEntityRepository
 
         return $query->getResult();
     }
+    public function getCategoryCultureCounts(): array
+{
+    $qb = $this->createQueryBuilder('p')
+        ->select('c.type as type, COUNT(p.id) as cultureCount')
+        ->addSelect("p AS culture")
+        ->leftJoin('p.category', 'c')
+        ->groupBy('c.id');
+
+    return $qb->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+}
 }

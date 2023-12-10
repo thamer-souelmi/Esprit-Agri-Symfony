@@ -1,5 +1,12 @@
-{% extends 'condi.html.twig' %}
+{% extends 'prod.html.twig' %}
 
+{% block title %}Candidature{% endblock %}
+{% block banner_image %}
+    {{ asset('img/tibarabarka.jpg') }}
+{% endblock %}
+{% block product_heading %}
+    <h1 class="display-3 text-white mb-4 animated slideInDown">Candidature</h1>
+{% endblock %}
 {% block body %}
 {% for message in app.flashes('danger') %}
 	<div class="alert alert-danger">
@@ -9,7 +16,6 @@
     <br>
     <br>
 
-                              <a href="{{ path('hpdf') }}" class="btn btn-danger ml-auto"><i class="fas fa-file-pdf"></i></a>
 
     <div class="row">
 
@@ -58,14 +64,14 @@
                 <p>no records found</p>
             </div>
         {% endfor %}
+        <a href="{{ path('hpdf') }}" class="btn btn-danger ml-auto">
+        <span class="icon text-gray-600">
+            <i class="fas fa-file-pdf"></i>
+        </span>
+    </a>
     </div>
 
- <a href="{{ path('app_annoncerecrutement_index') }}" class="btn btn-light btn-icon-split btn-lg">
-        <span class="icon text-gray-600">
-            <i class="fas fa-arrow-left"></i>
-        </span>
-        <span class="text">Retour aux annonces </span>
-    </a>
+ 
     		<br>
 
 

@@ -33,10 +33,16 @@ class ProduitController extends AbstractController
     //             'produits' => $produits,
     //         ]);
     // }
-    public function index(ProduitRepository $produitRepository,PaginatorInterface $paginator,Request $request): Response
-    {   $produit = $produitRepository->findAll();
+    public function index(EntityManagerInterface $entityManager,ProduitRepository $produitRepository,PaginatorInterface $paginator,Request $request, Security $security): Response
+    {   
+        $user = $security->getUser();
+        
+            $id = $user->getId(); // Assuming getId() returns the user's ID
+            $produits = $entityManager
+                ->getRepository(Produit::class)
+                ->findByUserId($id);
         $pagination = $paginator->paginate(
-            $produit,
+            $produits,
             $request->query->getInt('page', 1),
             4 // Number of items per page
         );

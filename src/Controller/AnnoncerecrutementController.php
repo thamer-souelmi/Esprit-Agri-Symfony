@@ -184,7 +184,7 @@ public function deleteback(
     // Check if Annoncerecrutement is used by Candidature
     if ($annoncerecrutementRepository->isUsedByCandidature($annoncerecrutement)) {
         // Add flash message or handle the case where Annoncerecrutement is used
-        $this->addFlash('warning', 'Cannot delete, Annoncerecrutement is used by Candidature.');
+        $this->addFlash('warning', 'Impossible de supprimer, Annoncerecrutement est utilisé par Candidature.');
 
         return $this->redirectToRoute('app_annoncerecrutement_index');
     }

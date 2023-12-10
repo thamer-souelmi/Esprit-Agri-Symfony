@@ -1,7 +1,8 @@
 {% extends 'prod.html.twig' %}
-{% block title %}Modifier Produit{% endblock %}
+
+{% block title %}New Produit{% endblock %}
 {% block banner_image %}
-{{ asset('img/1.jpeg') }}
+    {{ asset('img/pngtree-fruits-and-vegetables-picture-image_3712726.jpg') }}
 {% endblock %}
 {% block product_heading %}
     <h1 class="display-3 text-white mb-4 animated slideInDown">Produit</h1>
@@ -14,7 +15,6 @@
         <div class="row justify-content-center">
             <div class="col-lg-7">
                 <div class="p-5">
-                    <h1>Créer un nouveau produit</h1>
                     {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 
                     <div class="form-group">
@@ -52,11 +52,10 @@
                         {{ form_widget(form.image, {'attr': {'class': 'form-control'}}) }}
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Ajouter</button>
+                    <button type="submit" class="btn btn-primary">Modifier</button>
 
                     {{ form_end(form) }}
 
-                    <a href="{{ path('app_produit_index') }}">Retour</a>
                 </div>
             </div>
         </div>

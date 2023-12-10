@@ -249,8 +249,8 @@ public function yourAction(GeocodingService $geocodingService, VeterinaireReposi
     
         // Send the email
         $email = (new Email())
-            ->from('malek.frikhi@esprit.tn')
-            ->to('agriesprit3@gmail.com')
+            ->from('espritagri11@gmail.com')
+            ->to('malek.frikhi@esprit.tn')
             ->subject('Rendez-vous')
             ->html($emailContent);
     

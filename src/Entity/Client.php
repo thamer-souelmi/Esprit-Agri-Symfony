@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 
 use App\Repository\ClientRepository;
@@ -57,6 +59,14 @@ class Client
 
     #[ORM\Column(length: 150)]
     private ?string $image = null;
+
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Produit::class)]
+    private Collection $produits;
+
+    public function __construct()
+    {
+        $this->produits = new ArrayCollection();
+    }
 
     public function getImage(): ?string
     {
@@ -144,6 +154,36 @@ class Client
     public function setQte(float $qte): static
     {
         $this->qte = $qte;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Produit>
+     */
+    public function getProduits(): Collection
+    {
+        return $this->produits;
+    }
+
+    public function addProduit(Produit $produit): static
+    {
+        if (!$this->produits->contains($produit)) {
+            $this->produits->add($produit);
+            $produit->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProduit(Produit $produit): static
+    {
+        if ($this->produits->removeElement($produit)) {
+            // set the owning side to null (unless already changed)
+            if ($produit->getClient() === $this) {
+                $produit->setClient(null);
+            }
+        }
 
         return $this;
     }

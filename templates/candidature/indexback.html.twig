@@ -19,6 +19,8 @@
         <thead>
             <tr>
                 <th>#</th>
+                <th>Nom</th>
+                <th>Prenom</th>
                 <th>Date de Candidature</th>
                 <th>Expérience Professionnelle</th>
                 <th>Formation</th>
@@ -32,6 +34,8 @@
             {% for candidature in paginationAccepted.items|filter(c => c.statusCandidature == 1) %}
                 <tr>
                     <td>{{ loop.index }}</td>
+                    <td>{{ candidature.user.getNom() }}</td>
+                    <td>{{ candidature.user.getPrenom() }}</td>
                     <td>{{ candidature.datecandidature ? candidature.datecandidature|date('Y-m-d') : '' }}</td>
                     <td>{{ candidature.experienceprofessionnelle }}</td>
                     <td>{{ candidature.formation }}</td>
@@ -72,6 +76,8 @@
         <thead>
             <tr>
                 <th>#</th>
+                <th>Nom</th>
+                <th>Prenom</th>
                 <th>Date de Candidature</th>
                 <th>Expérience Professionnelle</th>
                 <th>Formation</th>
@@ -84,7 +90,10 @@
         <tbody>
             {% for candidature in paginationRefused.items|filter(c => c.statusCandidature == 0) %}
                 <tr>
-                    <td>{{ loop.index }}</td>
+                <td>{{ loop.index }}</td>
+                    <td>{{ candidature.user.getNom() }}</td>
+                    <td>{{ candidature.user.getPrenom() }}</td>
+                    
                     <td>{{ candidature.datecandidature ? candidature.datecandidature|date('Y-m-d') : '' }}</td>
                     <td>{{ candidature.experienceprofessionnelle }}</td>
                     <td>{{ candidature.formation }}</td>
@@ -115,6 +124,8 @@
         <div class="row justify-content-center">
             <div class="text-center">
                 {{ knp_pagination_render(paginationRefused) }}
+                <br>
+                <br>
             </div>
         </div>
     </div>
