@@ -1,0 +1,29 @@
+{% extends 'prod.html.twig' %}
+
+{% block body %}
+    <div class="container mt-5">
+        {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+        
+        {{ form_row(form.NomEquipe, {'label': 'Nom de l\'Équipe', 'attr': {'class': 'form-control', 'placeholder': 'Nom de l\'Équipe'}}) }}
+        <br>
+        {{ form_row(form.tacheAttribut, {'label': 'Tache Attribut', 'attr': {'class': 'form-control', 'placeholder': 'Tache Attribut'}}) }}
+        <br>
+        {{ form_row(form.dateDebut, {'label': 'Date de Début', 'attr': {'class': 'form-control', 'placeholder': 'Date de Début'}}) }}
+        <br>
+        {{ form_row(form.duree, {'label': 'Durée', 'attr': {'class': 'form-control', 'placeholder': 'Durée'}}) }}
+        <br>
+
+
+        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+            <div>
+                {% include 'equipe/_form.html.twig' with {'submit_button': 'Modifier'} %}
+            </div>
+            <div>
+                {% include 'equipe/_delete_form.html.twig' with {'submit_button': 'Supprimer'} %}
+            </div>
+        </div>
+
+    </div>
+
+    {{ form_end(form) }}
+{% endblock %}

@@ -1,0 +1,117 @@
+{% extends 'baseback.html.twig' %}
+
+{% block body %}
+<div class="card-body">
+    <h5 class="card-title"></h5>
+    <div class="row">
+        <div class="col">
+            <input type="text" value="" class="form-control" placeholder="poste de travail" id="searchNom">
+        </div>
+        <div class="col">
+            <input type="text" value="" class="form-control" placeholder="salaire" id="searchLibelle">
+        </div>
+        
+        <div class="col">
+            <input type="text" value="" class="form-control" placeholder="type de contrat" id="searchRevenuesCultures">
+        </div>
+    </div>
+</div>
+<section>
+    <table class="table" id="dataTable">
+        <thead>
+            <tr>
+                <th>Nom equipe</th>
+                <th>Tache Attribue</th>
+                <th>Date Debut</th>
+                <th>Duree</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for equipe in pagination %}
+                <tr>
+                    <td>{{ equipe.NomEquipe }}</td>
+                    <td>{{ equipe.tacheAttribut }} <i class="bi bi-cash-stack"></i></td>
+                    <td>{{ equipe.dateDebut ? equipe.dateDebut|date('d-m-Y') : '' }}</td>
+                    <td>{{ equipe.duree }} <i class="bi bi-cash-stack"></i></td>
+
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+{# Pagination #}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="text-center">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+    </div>
+</div>
+
+{# style of pagination #}
+<style>
+    .pagination {
+        display: flex;
+        justify-content: center;
+        list-style: none;
+        padding: 0;
+    }
+
+    .pagination li {
+        margin: 0 5px;
+    }
+
+    .button-container {
+        display: flex;
+        flex-direction: row;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .button-container button {
+        margin-right: 10px; /* Espacement entre les boutons */
+    }
+
+    .pagination a {
+        text-decoration: none;
+        padding: 5px 10px;
+        border: 1px solid #404a3d; /* Bleu */
+        border-radius: 3px;
+        color: #404a3d; /* Bleu */
+    }
+
+    .pagination a:hover {
+        background-color: #404a3d; /* Bleu au survol */
+        color: #fff; /* Texte blanc au survol */
+    }
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        // Function to perform the search based on the specified column
+        function searchColumn(columnIndex, value) {
+            $("#dataTable tbody tr").filter(function () {
+                var cellText = $(this).find("td").eq(columnIndex).text().toLowerCase();
+                var found = cellText.indexOf(value) > -1;
+                $(this).toggle(found);
+            });
+        }
+
+        // Event handlers for each input element
+        $("#searchNom").on("keyup", function () {
+            searchColumn(0, $(this).val().toLowerCase());
+        });
+
+        $("#searchLibelle").on("keyup", function () {
+            searchColumn(1, $(this).val().toLowerCase());
+        });
+
+        $("#searchRevenuesCultures").on("keyup", function () {
+            searchColumn(2, $(this).val().toLowerCase());
+        });
+    });
+</script>
+{% endblock %}

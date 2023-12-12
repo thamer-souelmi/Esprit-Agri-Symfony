@@ -21,28 +21,17 @@ class OuvrierRepository extends ServiceEntityRepository
         parent::__construct($registry, Ouvrier::class);
     }
 
-//    /**
-//     * @return Ouvrier[] Returns an array of Ouvrier objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('o')
-//            ->andWhere('o.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('o.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    // Add your custom repository methods here, if needed
 
-//    public function findOneBySomeField($value): ?Ouvrier
-//    {
-//        return $this->createQueryBuilder('o')
-//            ->andWhere('o.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    // For example, a custom query to find ouvriers by a specific criteria
+    // public function findByCustomCriteria($criteria): array
+    // {
+    //     return $this->createQueryBuilder('o')
+    //         ->andWhere('o.someField = :val')
+    //         ->setParameter('val', $criteria)
+    //         ->orderBy('o.id', 'ASC')
+    //         ->getQuery()
+    //         ->getResult()
+    //     ;
+    // }
 }

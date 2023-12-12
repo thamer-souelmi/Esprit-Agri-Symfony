@@ -1,0 +1,52 @@
+{% extends 'prod.html.twig' %}
+
+{% block body %}
+    <div class="container mt-5">
+        {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+        {# Common Form Fields #}
+        {{ form_row(form.cinouvrier, {'label': 'CIN Ouvrier', 'attr': {'class': 'form-control', 'placeholder': 'CIN Ouvrier'}}) }}
+        <br>
+        {{ form_row(form.nomouvrier, {'label': 'Nom Ouvrier', 'attr': {'class': 'form-control', 'placeholder': 'Nom Ouvrier'}}) }}
+        <br>
+        {{ form_row(form.prenomouvrier, {'label': 'Prénom Ouvrier', 'attr': {'class': 'form-control', 'placeholder': 'Prénom Ouvrier'}}) }}
+        <br>
+        {{ form_row(form.datenaissance, {'label': 'Date de Naissance', 'attr': {'class': 'form-control', 'placeholder': 'Date de Naissance'}}) }}
+        <br>
+        {{ form_row(form.genreouv, {'label': 'Genre ', 'attr': {'class': 'form-control', 'placeholder': 'Genre Ouvrier'}}) }}
+        <br>
+        {{ form_row(form.dateembauche, {'label': 'Date d\'embauche', 'attr': {'class': 'form-control', 'placeholder': 'Date d\'embauche'}}) }}
+        <br>
+        {{ form_row(form.email, {'label': 'Email', 'attr': {'class': 'form-control', 'placeholder': 'Email'}}) }}
+        <br>
+        {{ form_row(form.adresse, {'label': 'Adresse', 'attr': {'class': 'form-control', 'placeholder': 'Adresse'}}) }}
+        <br>
+        {{ form_row(form.phone, {'label': 'Téléphone', 'attr': {'class': 'form-control', 'placeholder': 'Téléphone'}}) }}
+        <br>
+        {{ form_row(form.poste, {'label': 'Poste', 'attr': {'class': 'form-control', 'placeholder': 'Poste'}}) }}
+        <br>
+        {{ form_row(form.salaire, {'label': 'Salaire', 'attr': {'class': 'form-control', 'placeholder': 'Salaire'}}) }}
+        <br>
+        {{ form_row(form.equipe, {'label': 'Équipe', 'attr': {'class': 'form-control', 'placeholder': 'Équipe'}}) }}
+        <br>
+        {{ form_row(form.photo, {'label': 'Photo', 'attr': {'class': 'form-control', 'placeholder': 'Photo '}}) }}
+        <br>
+
+        <button type="submit" class="btn btn-primary">Valider</button>
+
+        {{ form_end(form) }}
+
+        <a href="{{ path('app_equipe_index') }}" class="btn btn-light btn-icon-split btn-lg">
+            <span class="icon text-gray-600">
+                <i class="fas fa-arrow-left"></i>
+            </span>
+            <span class="text">Retour aux équipes</span>
+        </a>
+    </div>
+
+    <style>
+        .text-danger {
+            color: red;
+        }
+    </style>
+{% endblock %}
