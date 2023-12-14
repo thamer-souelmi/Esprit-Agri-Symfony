@@ -82,7 +82,7 @@ public function index(AnnonceinvestissementRepository $annonceinvestissementRepo
 
                 // Move the file to the desired directory
                 $file->move(
-                    'C:\Users\thame\OneDrive\Bureau\ya 7lili 3a rou7i\Esprit-Agri-Symfony\public\img',
+                    'C:\Users\thame\Desktop\ya 7lili 3a rou7i\Esprit-Agri-Symfony\public\img',
                     $fileName
                 );
 

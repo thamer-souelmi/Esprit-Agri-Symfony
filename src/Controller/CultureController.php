@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -179,9 +180,10 @@ class CultureController extends AbstractController
     }
 
     #[Route('/new', name: 'app_culture_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, CultureRepository $cultureRepository, SluggerInterface $slugger): Response
+    public function new(Request $request, CultureRepository $cultureRepository,Security $security,SluggerInterface $slugger): Response
     {
         $culture = new Culture();
+  
         $form = $this->createForm(CultureType::class, $culture);
         $form->handleRequest($request);
 

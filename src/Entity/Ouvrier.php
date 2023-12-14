@@ -21,17 +21,20 @@ class Ouvrier
 
    
         #[ORM\Column(name: "cinOuvrier")]
+        #[Assert\NotBlank(message: 'Le CIN ne doit pas être vide.')]
+    #[Assert\Type(type: 'numeric', message: 'Le CIN doit être un nombre.')]
+    #[Assert\GreaterThanOrEqual(value: 0, message: 'CIN ne peuvent pas être négatifs.')]
         public ?int $cinouvrier = null;
 
    
 
-    #[Assert\NotBlank(message: 'La localisation ne peut pas être vide.')]
+    #[Assert\NotBlank(message: 'La nom ne peut pas être vide.')]
     #[ORM\Column(length: 200)]
     private ?string $nomouvrier = null;
 
     
 
-    #[Assert\NotBlank(message: 'La localisation ne peut pas être vide.')]
+    #[Assert\NotBlank(message: 'La prenom ne peut pas être vide.')]
     #[ORM\Column(length: 200)]
     private ?string $prenomouvrier = null;
 
@@ -39,9 +42,10 @@ class Ouvrier
 
 
 
-    #[Assert\NotBlank(message: 'La date d\'embauche ne peut pas être vide.')]
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $datenaissance;
+    #[Assert\Type(type: '\DateTimeInterface', message: 'La date de naissance doit être une date valide.')]
+#[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+private ?\DateTimeInterface $datenaissance;
+
 
    
 
@@ -51,16 +55,19 @@ class Ouvrier
 
 
     #[Assert\NotBlank(message: 'La date d\'embauche ne peut pas être vide.')]
-    #[Assert\GreaterThan(propertyPath: "datenaissance", message: 'La date d\'embauche doit être supérieure à la date de publication.')]
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $dateembauche;
+#[Assert\GreaterThan(propertyPath: "datenaissance", message: 'La date d\'embauche doit être supérieure à la date de naissance.')]
+#[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+private ?\DateTimeInterface $dateembauche = null;
+
  
     
 
 
 
-    #[Assert\NotBlank(message: 'La localisation ne peut pas être vide.')]
+    
     #[ORM\Column(length: 200)]
+    #[Assert\NotBlank(message: 'L\'email ne doit pas être vide.')]
+    #[Assert\Email(message: 'Format d\'email invalide.')]
     private ?string $email = null;
 
 
@@ -72,8 +79,14 @@ class Ouvrier
 
 
 
-    #[Assert\NotBlank(message: 'Le numero de telephone ne peut pas être vide.')]
-    #[ORM\Column()]
+    #[Assert\NotBlank(message: 'Le numéro de téléphone ne peut pas être vide.')]
+    #[Assert\Length(
+        min: 8,
+    max: 8,
+    exactMessage: 'Le numéro de téléphone doit comporter exactement {{ limit }} chiffres.',
+    
+    )]
+    #[Assert\GreaterThanOrEqual(value: 0, message: 'Le numéro ne peuvent pas être négatifs.')]    #[ORM\Column()]
     private ?int $phone;
 
   
@@ -174,10 +187,10 @@ class Ouvrier
             return $this->datenaissance;
         }
 
-        public function setDatenaissance(\DateTimeInterface $datenaissance): static
+        public function setDatenaissance(?\DateTimeInterface $datenaissance): static
         {
             $this->datenaissance = $datenaissance;
-
+        
             return $this;
         }
 
@@ -197,12 +210,13 @@ class Ouvrier
         return $this->dateembauche;
     }
 
-    public function setDateembauche(\DateTimeInterface $dateembauche): static
-    {
-        $this->dateembauche = $dateembauche;
+    public function setDateembauche(?\DateTimeInterface $dateembauche): static
+{
+    $this->dateembauche = $dateembauche;
 
-        return $this;
-    }
+    return $this;
+}
+
     public function getEmail(): ?string
     {
         return $this->email;

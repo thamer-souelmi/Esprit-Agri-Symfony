@@ -18,18 +18,19 @@ class Equipe
     #[ORM\Column(name: "idEquipe")]
     private ?int $idEquipe = null;
 
-    #[Assert\NotBlank(message: 'Le nombre de postes recherchés ne peut pas être vide.')]
+    #[Assert\NotBlank(message: 'tache ne peut pas être vide.')]
     #[ORM\Column(length: 200)]
     private ?string $tacheAttribut = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $dateDebut;
+    private ?\DateTime $dateDebut;
 
     #[Assert\NotBlank(message: 'La duree ne peut pas être vide.')]
     #[ORM\Column(length: 200)]
     private string $duree;
 
     #[ORM\Column(length: 200)]
+    #[Assert\NotBlank(message: 'nom ne peut pas être vide.')]
     private ?string $NomEquipe = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
@@ -72,12 +73,12 @@ class Equipe
         return $this;
     }
 
-    public function getdateDebut(): ?\DateTimeInterface
+    public function getdateDebut(): ?\DateTime
     {
         return $this->dateDebut;
     }
 
-    public function setdateDebut(\DateTimeInterface $dateDebut): static
+    public function setdateDebut(\DateTime $dateDebut): static
     {
         $this->dateDebut = $dateDebut;
 

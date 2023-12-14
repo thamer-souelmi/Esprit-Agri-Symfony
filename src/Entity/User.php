@@ -29,6 +29,7 @@ class User implements UserInterface//, TwoFactorInterface
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'Le CIN ne doit pas être vide.')]
     #[Assert\Type(type: 'numeric', message: 'Le CIN doit être un nombre.')]
+    #[Assert\GreaterThanOrEqual(value: 0, message: 'CIN ne peuvent pas être négatifs.')]
     private ?string $cin = null;
 
     #[ORM\Column(length: 255)]
@@ -75,6 +76,7 @@ class User implements UserInterface//, TwoFactorInterface
     exactMessage: 'Le numéro de téléphone doit comporter exactement {{ limit }} chiffres.',
     
     )]
+    #[Assert\GreaterThanOrEqual(value: 0, message: 'Le numéro ne peuvent pas être négatifs.')]
     private ?int $numtel = null;
 
 

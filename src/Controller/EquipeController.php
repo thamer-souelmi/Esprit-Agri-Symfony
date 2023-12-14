@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 #[Route('/equipe')]
 class EquipeController extends AbstractController
@@ -22,8 +23,8 @@ class EquipeController extends AbstractController
             'equipes' => $equipeRepository->findAll(),
         ]);
     }
-    #[Route('/back', name: 'app_equipeback_index', methods: ['GET'])]
-    public function indexba(EquipeRepository $equipeRepository, PaginatorInterface $paginator, Request $request): Response
+    #[Route('/back', name: 'app_equipeback_index1', methods: ['GET'])]
+    public function indexba( EquipeRepository $equipeRepository, PaginatorInterface $paginator, Request $request): Response
     {
         // Pass the array of annoncerecrutements to the paginator
         $pagination = $paginator->paginate(
@@ -32,16 +33,18 @@ class EquipeController extends AbstractController
             5 // Items per page
         );
     
-        return $this->render('Equipe/back.html.twig', [
+        return $this->render('equipe/back.html.twig', [
             'pagination' => $pagination,
         ]);
     }
 
 
     #[Route('/new', name: 'app_equipe_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request,Security $security, EntityManagerInterface $entityManager): Response
     {
+        $user = $security->getUser();
         $equipe = new Equipe();
+        $equipe->setUser($user);
         $form = $this->createForm(EquipeType::class, $equipe);
         $form->handleRequest($request);
 

@@ -24,6 +24,8 @@ class Annonceinvestissement
 
     #[ORM\Column(name: "montant", type: "float", precision: 10, scale: 0, nullable: false)]
     #[Assert\NotBlank(message: "Veuillez ajouter le montant !")]
+    
+    #[Assert\GreaterThanOrEqual(value: 0, message: 'Le montant ne peut pas être négatif.')]
     private float $montant;
 
     #[ORM\Column(name: "datePublication", type: "date", nullable: false)]

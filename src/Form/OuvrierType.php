@@ -29,7 +29,6 @@ class OuvrierType extends AbstractType
                 'attr' => ['class' => 'form-control'], 
                 'constraints' => [
                     new NotNull(),
-                    new GreaterThan('today'),
                 ],
                 ])
             ->add('genreouv', ChoiceType::class, [
@@ -45,7 +44,7 @@ class OuvrierType extends AbstractType
                 'attr' => ['class' => 'form-control'], 
                 'constraints' => [
                     new NotNull(),
-                    new GreaterThan('today'),
+
                 ],
                 ])
             ->add('email')

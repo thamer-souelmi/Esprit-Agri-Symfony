@@ -1,5 +1,10 @@
 {% extends 'prod.html.twig' %}
-
+{% block banner_image %}
+    {{ asset('img/recru.jpg') }}
+{% endblock %}
+{% block product_heading %}
+    <h1 class="display-3 text-white mb-4 animated slideInDown">Equipe </h1>
+{% endblock %}
 {% block body %}
     <div class="row justify-content-center">
         <div class="col-lg-7">

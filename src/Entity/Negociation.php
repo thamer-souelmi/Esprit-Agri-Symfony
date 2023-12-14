@@ -17,6 +17,7 @@ class Negociation
     private ?int $id = null;
 
     #[ORM\Column(name: "montantPropose", type: "float", precision: 10, scale: 0, nullable: false)]
+    #[Assert\GreaterThanOrEqual(value: 0, message: 'Le montant ne peut pas être négatif.')]
     #[Assert\NotBlank(message: "Veuillez ajouter le montant proposé !")]
     private $montantpropose;
 

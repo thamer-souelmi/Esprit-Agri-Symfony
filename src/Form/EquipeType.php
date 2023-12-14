@@ -21,7 +21,8 @@ class EquipeType extends AbstractType
                 'attr' => ['class' => 'form-control'],
                 'constraints' => [
                     new NotNull(),
-                    new GreaterThan(['value' => 'today']),
+                    new GreaterThan('today'),
+
                 ],
             ])
             ->add('duree')

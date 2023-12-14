@@ -147,7 +147,7 @@ class ReclamationController extends AbstractController
     }
     private function badWords(string $text): bool
     {
-        $badWords = ['pidev', 'projet', 'israil']; // Remplacez ces valeurs par votre liste de mots interdits
+        $badWords = ['pidev', 'con', 'israil']; // Remplacez ces valeurs par votre liste de mots interdits
 
         foreach ($badWords as $badWord) {
             if (stripos($text, $badWord) !== false) {

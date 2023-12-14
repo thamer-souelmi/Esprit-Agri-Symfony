@@ -53,7 +53,7 @@ class CartController extends AbstractController
 
         $email = (new TemplatedEmail())
             ->from('espritagri11@gmail.com')
-            ->to('zoxzo81@gmail.com')
+            ->to('lmouldi769@gmail.com')
             ->subject('Confirmation Commande')
             ->text('nous a vous contacter pour confirme l achat')
             ->htmlTemplate('cart/confirmationpayement.html.twig')

@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\Security\Core\Security;
 
 
 #[Route('/ouvrier')]
@@ -40,9 +41,11 @@ class OuvrierController extends AbstractController
     }
 
     #[Route('/new', name: 'app_ouvrier_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, Security $security,EntityManagerInterface $entityManager): Response
     {
         $ouvrier = new Ouvrier();
+        $user = $security->getUser();
+        $ouvrier->setUser($user);
         $form = $this->createForm(OuvrierType::class, $ouvrier);
         $form->handleRequest($request);
     
