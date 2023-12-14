@@ -117,11 +117,11 @@ public function setBan(Request $request, UserRepository $userRepository, TwilioS
         // Handle case where user is not found
     }
     $produit = $user->getNom();
-    $to = '+21650378582'; 
+    $to = '+21624816800'; 
 
     $message = "Bonjour {$produit}, votre compte a été suspendu pour non-respect des conditions d'utilisation.";
 
-   // $twilioService->sendSMS($to, $message);
+   $twilioService->sendSMS($to, $message);
 
     // Set the user as banned
     $user->setIsBanned(true);

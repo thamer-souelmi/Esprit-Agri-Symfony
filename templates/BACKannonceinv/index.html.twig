@@ -90,23 +90,23 @@
             }
 
             $("#searchTitre").on("keyup", function () {
-                searchColumn(0, $(this).val().toLowerCase());
+                searchColumn(2, $(this).val().toLowerCase());
             });
 
             $("#searchMontant").on("keyup", function () {
-                searchColumn(1, $(this).val().toLowerCase());
-            });
-
-            $("#searchDatePublication").on("change", function () {
-                searchColumn(2, $(this).val());
-            });
-
-            $("#searchLocalisation").on("keyup", function () {
                 searchColumn(3, $(this).val().toLowerCase());
             });
 
+            $("#searchDatePublication").on("change", function () {
+                searchColumn(4, $(this).val());
+            });
+
+            $("#searchLocalisation").on("keyup", function () {
+                searchColumn(5, $(this).val().toLowerCase());
+            });
+
             $("#searchDescription").on("keyup", function () {
-                searchColumn(4, $(this).val().toLowerCase());
+                searchColumn(6, $(this).val().toLowerCase());
             });
         });
     </script>

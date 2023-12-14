@@ -1,0 +1,96 @@
+{% extends 'prod.html.twig' %}
+
+{% block banner_image %}
+    {{ asset('img/tibarabarka.jpg') }}
+{% endblock %}
+{% block product_heading %}
+    <h1 class="display-3 text-white mb-4 animated slideInDown">Ouvrier </h1>
+{% endblock %}
+{% block body %}
+    </div>
+    <!-- Page Header End -->
+    <!-- About Start -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="row g-5 align-items-end">
+                <div class="col-lg-6">
+                    <div class="row g-2">
+                        <div class="col-12 position-relative wow fadeIn" data-wow-delay="0.7s">
+                            <!-- Include an image if available -->
+                            <img class="img-fluid rounded" src="{{ asset('img/' ~ ouvrier.photo) }}">
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <a class="btn btn-secondary rounded-pill py-2 px-4" href="{{ path('app_ouvrier_index') }}"> Retour à la liste  </a>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
+                    <p class="section-title bg-white text-start text-primary pe-3">Détails de l'ouvrier</p>
+
+                    <table class="table">
+                        <tbody>
+                      
+
+                            <tr>
+                                <th>Nomouvrier</th>
+                                <td>{{ ouvrier.nomouvrier }}</td>
+                            </tr>
+                            <tr>
+                                <th>Prenomouvrier</th>
+                                <td>{{ ouvrier.prenomouvrier }}</td>
+                            </tr>
+                            <tr>
+                                <th>Cinouvrier</th>
+                                <td>{{ ouvrier.cinouvrier }}</td>
+                            </tr>
+                            <tr>
+                                <th>Datenaissance</th>
+                                <td>{{ ouvrier.datenaissance ? ouvrier.datenaissance|date('Y-m-d') : '' }}</td>
+                            </tr>
+                            <tr>
+                                <th>Genreouv</th>
+                                <td>{{ ouvrier.genreouv }}</td>
+                            </tr>
+                            <tr>
+                                <th>Dateembauche</th>
+                                <td>{{ ouvrier.dateembauche ? ouvrier.dateembauche|date('Y-m-d') : '' }}</td>
+                            </tr>
+                            <tr>
+                                <th>Email</th>
+                                <td>{{ ouvrier.email }}</td>
+                            </tr>
+                            <tr>
+                                <th>Adresse</th>
+                                <td>{{ ouvrier.adresse }}</td>
+                            </tr>
+                            <tr>
+                                <th>Phone</th>
+                                <td>{{ ouvrier.phone }}</td>
+                            </tr>
+                            <tr>
+                                <th>Poste</th>
+                                <td>{{ ouvrier.poste }}</td>
+                            </tr>
+                            <tr>
+                                <th>Salaire</th>
+                                <td>{{ ouvrier.salaire }}</td>
+                            </tr>
+                               <tr>
+                                <th>Equipe</th>
+                                <td>{{ ouvrier.NomEquipe }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="mt-2">
+                        <a class="btn btn-primary rounded-pill py-2 px-3 d-inline" href="{{ path('app_ouvrier_edit', {'idouvrier': ouvrier.idouvrier}) }}"> Modifier </a>
+                    </div>
+                    <br>
+
+                    {{ include('ouvrier/_delete_form.html.twig') }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

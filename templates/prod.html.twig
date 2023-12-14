@@ -115,6 +115,16 @@
                     </div>
                 </div>
                 {% endif %}
+                 {% if app.user.role == 'agriculteur' %} <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Main d'oeuvre</a>
+                    <div class="dropdown-menu bg-light m-0">
+                        <a href="{{ path('app_ouvrier_index') }}" class="dropdown-item">Ouvrier</a>
+                        <a href="{{ path('app_equipe_index')}}" class="dropdown-item">Equipe</a>
+                        
+                        
+                    </div>
+                </div>
+                {% endif %}
             {% if app.user.role == 'agriculteur' %}    <a href="{{ path('app_produit_index') }}" class="nav-item nav-link">Produit</a>
                 <a href="{{ path('app_culture_index') }}" class="nav-item nav-link">Culture</a>{% endif%}
 				{% if app.user.role == 'client' or app.user.role == 'agriculteur'  %}<a href="{{ path('app_client_index') }}" class="nav-item nav-link">Marche</a>{% endif%}

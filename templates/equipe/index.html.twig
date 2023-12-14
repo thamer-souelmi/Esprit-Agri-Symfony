@@ -1,0 +1,56 @@
+{% extends 'prod.html.twig' %}
+
+{% block banner_image %}
+    {{ asset('img/recru.jpg') }}
+{% endblock %}
+{% block product_heading %}
+    <h1 class="display-3 text-white mb-4 animated slideInDown">Equipe </h1>
+{% endblock %}
+{% block body %}
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
+                <p class="section-title bg-white text-center text-primary px-3">Equipe </p>
+                <h1 class="mb-5">Liste des Equipes</h1>
+            </div>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nom d'equipe</th>
+                        <th>Tache attribut</th>
+                        <th>Date de debut</th>
+                        <th>Duree</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for equipe in equipes %}
+                    <tr>
+                        <td>{{ equipe.NomEquipe }}</td>
+                        <td>{{ equipe.tacheattribut }}</td>
+                        <td>{{ equipe.datedebut ? equipe.datedebut|date('Y-m-d') : '' }}</td>
+                        <td>{{ equipe.duree }}</td>
+                        <td>
+                            <a class="btn btn-square btn-secondary rounded-circle m-1" href="{{ path('app_equipe_show', {'idEquipe': equipe.idEquipe}) }}">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a class="btn btn-square btn-secondary rounded-circle m-1" href="{{ path('app_equipe_edit', {'idEquipe': equipe.idEquipe}) }}">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5">Aucun enregistrement trouvé</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="text-center">
+                <a class="btn btn-primary" href="{{ path('app_equipe_new') }}">Créer une nouvelle équipe</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
