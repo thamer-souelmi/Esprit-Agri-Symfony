@@ -250,37 +250,33 @@ public function delete(
 
 
     //******************************************QR CODE**************************************************//
-    #[Route('/{idannonce}/qrcode', name: 'app_annonceinvestissement_qrcode', methods: ['GET'])]
-    public function generateQrCode(Annonceinvestissement $annonceinvestissement,$id,AnnonceinvestissementRepository $repo)
-    {
-        $annonceinvestissement = $repo->find($id);
+    #[Route('/qrcode/{idannonce}', name: 'app_annonceinvestissement_qrcode', methods: ['GET'])]
+public function generateQrCode($idannonce, AnnonceinvestissementRepository $repo)
+{
+    $annonceinvestissement = $repo->find($idannonce);
         // Créer un nouvel objet QRCode
         $qrContent = sprintf(
-            "Titre de l'annonce: %s\nMontant: %s\nLocalisation:\nDate de publication: %s",
+            "Titre de l'annonce: %s\nMontant: %s\nLocalisation: %s",
             $annonceinvestissement->getTitre(),
             $annonceinvestissement->getMontant(),
-            $annonceinvestissement->getLocalisation(),
-            $annonceinvestissement->getDatepublication()
+            $annonceinvestissement->getLocalisation()
 
         );
 
-        // Créer une instance de QrCode
-        $qrCode = new QrCode($qrContent);
+         // Créer une instance de QrCode
+         $qrCode = new QrCode($qrContent);
 
-        // Créer une instance de PngWriter pour générer le résultat sous forme d'image PNG
-        $writer = new PngWriter();
-        $result = $writer->write($qrCode);
-
-        // Créer une réponse avec le résultat du QR Code
-        $response = new Response($result->getString(), Response::HTTP_OK, [
-            'Content-Type' => $result->getMimeType(),
-        ]);
-
-
-        
-
-        return $response;
-    }
+         // Créer une instance de PngWriter pour générer le résultat sous forme d'image PNG
+         $writer = new PngWriter();
+         $result = $writer->write($qrCode);
+ 
+         // Créer une réponse avec le résultat du QR Code
+         $response = new Response($result->getString(), Response::HTTP_OK, [
+             'Content-Type' => $result->getMimeType(),
+         ]);
+ 
+         return $response;
+     }
     
     
 }

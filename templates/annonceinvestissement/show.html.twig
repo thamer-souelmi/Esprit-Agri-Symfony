@@ -9,6 +9,9 @@
 
 
 
+
+
+
 {% block body %}
     
 
@@ -39,40 +42,21 @@
                 <td><img src="{{ asset('img/' ~ annonceinvestissement.photo) }}" alt="User Image" style="max-width:100px;max-height:100px;"></td>
             </tr>
             <tr>
-                <th><i class="bi bi-camera-fill">CODE QR</th>
-                <td><button onclick="generateQR()" type="button" class="btn btn-warning m-2">Générer le code QR</button></td>
-            </tr><!-- Bouton pour générer le code QR -->
+            <th><i class="bi bi-upc-scan"> Code QR</th>
+
+                <td>
+                 <a href="{{ path('app_annonceinvestissement_qrcode', {'idannonce': annonceinvestissement.idannonce}) }}" class="btn btn-warning m-2">
+                <i class="bi bi-upc-scan"></i> Générer le code QR
+                </a>
+                </td>
+                                            
+            </tr>
     
             
         </tbody>
     </table>
 
-<!-- Inclusion de la bibliothèque QRCode.js -->
-    <script type="text/javascript" src="{{ asset('js/qrcodejs-master/qrcode.min.js') }}"></script>
-    
-    <!-- Élément pour afficher le code QR -->
-    <div id="mon_qr_code" class="d-flex justify-content-center align-items-center"></div>
 
-    <!-- Inclusion de la bibliothèque QRCode.js -->
-    <script type="text/javascript" src="{{ asset('public/js/qrcodejs-master/qrcode.min.js') }}"></script>
-
-    <!-- Script pour générer le code QR -->
-    <script type="text/javascript">
-        var qrcode; 
-
-        function generateQR() {
-            var url = "{{ path('app_annonceinvestissement_show', {'idannonce': annonceinvestissement.idannonce}) }}";
-            qrcode.clear();
-            qrcode.makeCode(url);
-        }
-
-        window.onload = function() {
-            qrcode = new QRCode("mon_qr_code", {
-                width: 128,
-                height: 128
-            });
-        }
-    </script>
 
     
     
